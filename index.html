@@ -911,6 +911,14 @@ body{font-family:'League Spartan',sans-serif;background:var(--ivory);color:var(-
 const SUPABASE_URL='https://lsoddhgahdfcpmuydmbt.supabase.co';
 const SUPABASE_KEY='sb_publishable_GheUBnXhhcVRyqYchb-ZQg_5MFbhv_x';
 const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+async function allerVersStripe(lienBase) {
+  const { data: { user } } = await sb.auth.getUser();
+  if (!user) {
+    alert("Connecte-toi d'abord pour t'abonner.");
+    return;
+  }
+  window.location.href = `${lienBase}?client_reference_id=${user.id}`;
+}
 let currentUser=null;
 
 /* ═══════ DATA ═══════ */
@@ -1964,15 +1972,20 @@ function addRecipeToday(){
 }
 
 /* ═══════ CHECKOUT ═══════ */
-function goToCheckout(url){
+async function goToCheckout(url){
   try{
+    const { data: { user } } = await sb.auth.getUser();
+    if(!user){
+      alert("Connecte-toi d'abord pour t'abonner.");
+      return;
+    }
+    const finalUrl = url + '?client_reference_id=' + user.id;
     toast('Redirection en cours...');
-    setTimeout(()=>{window.location.href=url;},300);
+    setTimeout(()=>{window.location.href=finalUrl;},300);
   }catch(e){
     alert('Erreur : '+e.message);
   }
 }
-
 /* ═══════ TOAST ═══════ */
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
 

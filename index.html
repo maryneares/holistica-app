@@ -447,6 +447,87 @@ body{font-family:'League Spartan',sans-serif;background:var(--ivory);color:var(-
 .rd-btn.added{background:var(--ink-l);}
 .vd-btn.done{background:var(--lav-pale);color:var(--purple);}
 </style>
+<script>
+/* ======== GOOGLE ANALYTICS + CONSENTEMENT ======== */
+function chargerGA(){
+  var s = document.createElement('script');
+  s.async = true;
+  s.src = 'https://www.googletagmanager.com/gtag/js?id=G-E4FD2GFX8F';
+  document.head.appendChild(s);
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  window.gtag = gtag;
+  gtag('js', new Date());
+  gtag('config', 'G-E4FD2GFX8F');
+}
+
+function trackEvent(nomEvenement, params){
+  if(window.gtag){ gtag('event', nomEvenement, params || {}); }
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  var consentement = localStorage.getItem('hc_cookie_consent');
+  if(consentement === 'accepte'){
+    chargerGA();
+  } else if(consentement === null){
+    var banniere = document.createElement('div');
+    banniere.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#2A2438;color:#fff;padding:16px;z-index:9999;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:center;font-size:14px;';
+    banniere.innerHTML = '<span>Nous utilisons des cookies pour mesurer l\'audience du site.</span>' +
+      '<button id="hc-accept" style="background:#7B6EC8;color:#fff;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;">Accepter</button>' +
+      '<button id="hc-refuse" style="background:transparent;color:#fff;border:1px solid #fff;padding:8px 16px;border-radius:6px;cursor:pointer;">Refuser</button>';
+    document.body.appendChild(banniere);
+    document.getElementById('hc-accept').onclick = function(){
+      localStorage.setItem('hc_cookie_consent', 'accepte');
+      chargerGA();
+      banniere.remove();
+    };
+    document.getElementById('hc-refuse').onclick = function(){
+      localStorage.setItem('hc_cookie_consent', 'refuse');
+      banniere.remove();
+    };
+  }
+});
+</script><script>
+/* ======== GOOGLE ANALYTICS + CONSENTEMENT ======== */
+function chargerGA(){
+  var s = document.createElement('script');
+  s.async = true;
+  s.src = 'https://www.googletagmanager.com/gtag/js?id=G-E4FD2GFX8F';
+  document.head.appendChild(s);
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  window.gtag = gtag;
+  gtag('js', new Date());
+  gtag('config', 'G-E4FD2GFX8F');
+}
+
+function trackEvent(nomEvenement, params){
+  if(window.gtag){ gtag('event', nomEvenement, params || {}); }
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  var consentement = localStorage.getItem('hc_cookie_consent');
+  if(consentement === 'accepte'){
+    chargerGA();
+  } else if(consentement === null){
+    var banniere = document.createElement('div');
+    banniere.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#2A2438;color:#fff;padding:16px;z-index:9999;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:center;font-size:14px;';
+    banniere.innerHTML = '<span>Nous utilisons des cookies pour mesurer l\'audience du site.</span>' +
+      '<button id="hc-accept" style="background:#7B6EC8;color:#fff;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;">Accepter</button>' +
+      '<button id="hc-refuse" style="background:transparent;color:#fff;border:1px solid #fff;padding:8px 16px;border-radius:6px;cursor:pointer;">Refuser</button>';
+    document.body.appendChild(banniere);
+    document.getElementById('hc-accept').onclick = function(){
+      localStorage.setItem('hc_cookie_consent', 'accepte');
+      chargerGA();
+      banniere.remove();
+    };
+    document.getElementById('hc-refuse').onclick = function(){
+      localStorage.setItem('hc_cookie_consent', 'refuse');
+      banniere.remove();
+    };
+  }
+});
+</script>
 </head>
 <body>
 
@@ -973,6 +1054,7 @@ async function handleSignUp(){
   const {error}=await sb.auth.signUp({email,password});
   if(error){toast('Erreur : '+error.message);return;}
   toast('Compte créé 🌸 Complète ton profil');
+trackEvent('inscription');
   // La navigation est gérée par onAuthStateChange ci-dessous
 }
 
@@ -1980,6 +2062,7 @@ async function goToCheckout(url){
       return;
     }
     const finalUrl = url + '?client_reference_id=' + user.id;
+trackEvent('clic_offre');
     toast('Redirection en cours...');
     setTimeout(()=>{window.location.href=finalUrl;},300);
   }catch(e){
@@ -2032,6 +2115,13 @@ if('serviceWorker' in navigator){
     navigator.serviceWorker.register('sw.js').catch(err=>console.log('SW registration failed:',err));
   });
 }
+const _origGo = go;
+go = function(id){
+  if(id !== 'onboarding' && document.getElementById('onboarding') && document.getElementById('onboarding').classList.contains('active')){
+    trackEvent('onboarding_complete');
+  }
+  return _origGo(id);
+};
 </script>
 </body>
 </html>

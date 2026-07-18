@@ -42,7 +42,7 @@ body{font-family:'League Spartan',sans-serif;background:var(--ivory);color:var(-
 .b2{width:200px;height:180px;background:var(--rose-l);bottom:100px;left:-60px;border-radius:40% 70% 30% 60%/60% 40% 70% 30%;}
 
 /* Section */
-.sec{padding:16px 20px 8px;display:flex;align-items:baseline;justify-content:space-between;}
+.sec{padding:28px 20px 12px;display:flex;align-items:baseline;justify-content:space-between;}
 .sec h2{font-family:'League Spartan',sans-serif;font-size:19px;color:var(--ink);font-weight:700;letter-spacing:-.01em;}
 .sec-sub{font-size:11px;color:var(--ink-l);margin-top:2px;font-weight:500;}
 .sec h2 em{font-style:normal;font-weight:800;background:var(--grad-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--purple-m);}
@@ -57,7 +57,7 @@ body{font-family:'League Spartan',sans-serif;background:var(--ivory);color:var(-
 .r1{width:120px;height:120px;}.r2{width:220px;height:220px;}.r3{width:320px;height:320px;}.r4{width:420px;height:420px;}.r5{width:520px;height:520px;}
 
 /* ═══ SIGNIN ═══ */
-#signin{background:var(--grad-h);position:relative;overflow:hidden;justify-content:space-between;}
+#signin,#signup{background:var(--grad-h);position:relative;overflow:hidden;justify-content:space-between;}
 .si-top{position:relative;z-index:2;padding:60px 24px 0;display:flex;flex-direction:column;align-items:center;}
 .si-logo{width:80px;height:80px;object-fit:contain;filter:brightness(0) invert(1);opacity:.9;}
 .si-brand{font-family:'League Spartan',sans-serif;font-size:26px;font-weight:800;color:white;margin-top:10px;letter-spacing:-.01em;}
@@ -88,6 +88,8 @@ body{font-family:'League Spartan',sans-serif;background:var(--ivory);color:var(-
 .ob-content{flex:1;overflow-y:auto;padding:0 24px;display:flex;flex-direction:column;position:relative;z-index:1;}
 .ob-part{font-size:12px;color:rgba(255,255,255,0.85);font-weight:800;text-align:center;margin-top:20px;letter-spacing:1px;text-transform:uppercase;}
 .ob-title{font-family:'League Spartan',sans-serif;font-weight:800;font-size:28px;color:white;text-align:center;margin:6px 0 6px;line-height:1.15;letter-spacing:-.01em;}
+.ob-title.dt-title{color:var(--ink);}
+.ob-title.dt-title em{background:var(--grad-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--purple-m);}
 .ob-title em{font-style:normal;font-weight:800;color:var(--peach);}
 .ob-q{font-size:15px;color:rgba(255,255,255,0.85);text-align:center;font-weight:500;margin-bottom:20px;line-height:1.4;}
 .ob-opts{display:flex;flex-direction:column;gap:10px;padding-bottom:16px;}
@@ -98,6 +100,9 @@ body{font-family:'League Spartan',sans-serif;background:var(--ivory);color:var(-
 .ob-slider{width:100%;accent-color:white;margin:14px 0;}
 .ob-slider-labels{display:flex;justify-content:space-between;width:100%;font-size:12px;color:rgba(255,255,255,0.7);}
 .ob-input{background:rgba(255,255,255,0.14);backdrop-filter:blur(6px);border:1.5px solid rgba(255,255,255,0.3);border-radius:14px;padding:14px 16px;font-size:15px;color:white;font-family:'League Spartan',sans-serif;outline:none;width:100%;margin-bottom:10px;color-scheme:dark;}
+.ob-input.dt-input{background:var(--ivory-d);border:1.5px solid var(--border);color:var(--ink);color-scheme:light;}
+.ob-input.dt-input:focus{border-color:var(--purple-m);background:white;}
+.ob-input.dt-input::placeholder{color:var(--ink-l);}
 .ob-input:focus{border-color:white;background:rgba(255,255,255,0.22);}
 .ob-input::placeholder{color:rgba(255,255,255,0.55);}
 .ob-bottom{padding:10px 24px 34px;flex-shrink:0;position:relative;z-index:1;}
@@ -145,6 +150,25 @@ body{font-family:'League Spartan',sans-serif;background:var(--ivory);color:var(-
 
 /* Cycle card */
 .cycle-card{margin:0 20px;background:var(--grad);border-radius:18px;padding:18px;position:relative;overflow:hidden;}
+.badges-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.rc-locked,.mv-locked{opacity:.85;}
+.rc-lock-overlay{position:absolute;inset:0;background:rgba(26,24,40,0.45);display:flex;align-items:center;justify-content:center;font-size:26px;}
+.rc-lock-hint{font-size:11px;color:var(--purple-m);font-weight:700;margin-top:2px;}
+.mv-lock-overlay{position:absolute;inset:0;background:rgba(26,24,40,0.45);display:flex;align-items:center;justify-content:center;font-size:24px;}
+.badge-card{background:white;border:1.5px solid var(--border);border-radius:16px;padding:16px 12px;text-align:center;transition:opacity .2s;}
+.badge-card.locked{opacity:.5;}
+.badge-card-e{font-size:32px;margin-bottom:6px;}
+.badge-card-n{font-family:'League Spartan',sans-serif;font-weight:800;font-size:13px;color:var(--ink);margin-bottom:4px;}
+.badge-card-d{font-size:11px;color:var(--ink-l);line-height:1.35;}
+.badge-celeb{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:rgba(26,24,40,0);pointer-events:none;transition:background .3s;}
+.badge-celeb.show{background:rgba(26,24,40,0.45);}
+.badge-celeb-card{background:white;border-radius:22px;padding:32px 28px;text-align:center;max-width:280px;box-shadow:var(--sh-m);transform:scale(.7) translateY(20px);opacity:0;transition:transform .4s cubic-bezier(.34,1.56,.64,1),opacity .3s;}
+.badge-celeb.show .badge-celeb-card{transform:scale(1) translateY(0);opacity:1;}
+.badge-celeb-e{font-size:52px;margin-bottom:10px;animation:badgeBounce 1.2s ease-in-out infinite;}
+@keyframes badgeBounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+.badge-celeb-t{font-size:11px;font-weight:800;color:var(--purple-m);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;}
+.badge-celeb-n{font-family:'League Spartan',sans-serif;font-weight:800;font-size:19px;color:var(--ink);margin-bottom:6px;}
+.badge-celeb-d{font-size:12px;color:var(--ink-l);line-height:1.4;}
 .cycle-card::after{content:'';position:absolute;bottom:-20px;right:-20px;width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,0.08);}
 .cycle-t{font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:4px;}
 .cycle-v{font-family:'League Spartan',sans-serif;font-size:18px;color:white;font-weight:700;}
@@ -162,8 +186,8 @@ body{font-family:'League Spartan',sans-serif;background:var(--ivory);color:var(-
 /* Mood */
 .mood-card{margin:0 20px;background:white;border-radius:18px;padding:14px 16px;box-shadow:var(--sh);border:1px solid var(--border);}
 .mood-q{font-size:13px;color:var(--ink-m);margin-bottom:10px;font-weight:500;}
-.mood-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.mo{aspect-ratio:1.5;border-radius:14px;border:1.5px solid var(--border);background:var(--ivory);color:var(--ink-l);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;transition:all .15s;font-family:'League Spartan',sans-serif;}
+.mood-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.mo{aspect-ratio:2.1;border-radius:14px;border:1.5px solid var(--border);background:var(--ivory);color:var(--ink-l);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;transition:all .15s;font-family:'League Spartan',sans-serif;}
 .mo.sel{background:var(--lav-pale);border-color:var(--purple-l);color:var(--purple-m);transform:scale(1.02);}
 .mo-l{font-size:11px;font-weight:600;color:inherit;}
 
@@ -338,12 +362,14 @@ body{font-family:'League Spartan',sans-serif;background:var(--ivory);color:var(-
 .pe-ic{width:36px;height:36px;border-radius:11px;background:var(--lav-pale);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .pe-t{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:3px;}
 .pe-s{font-size:12px;color:var(--ink-m);line-height:1.5;}
-.astro-widget{margin:0 20px 18px;background:white;border-radius:16px;padding:14px 16px;box-shadow:var(--sh);border:1px solid var(--border);display:flex;gap:12px;}
+.astro-widget{margin:18px 20px 18px;background:white;border-radius:16px;padding:14px 16px;box-shadow:var(--sh);border:1px solid var(--border);display:flex;gap:12px;}
 .astro-moon{font-size:28px;flex-shrink:0;}
 .astro-widget-body{flex:1;}
 .astro-widget-t{font-size:12px;font-weight:800;color:var(--ink);margin-bottom:2px;}
 .astro-widget-s{font-size:11px;color:var(--ink-l);line-height:1.4;}
-.astro-widget-sign{font-size:11px;color:var(--purple-m);font-weight:700;margin-top:4px;}
+.astro-widget-context{font-size:10px;font-weight:700;color:var(--purple-m);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px;}
+.astro-widget-tip{font-size:13px;color:var(--ink-m);line-height:1.55;margin-bottom:10px;}
+.astro-widget-sign{font-size:11px;color:var(--purple-m);font-weight:700;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
 .btn-ob.purple{background:white;color:var(--purple);}
 
 /* ═══ PROFIL ═══ */
@@ -378,20 +404,53 @@ body{font-family:'League Spartan',sans-serif;background:var(--ivory);color:var(-
 .pa-arr{color:var(--lavender);font-size:16px;}
 /* Metabolism card */
 .meta-card{margin:0 20px;background:white;border-radius:18px;padding:16px;box-shadow:var(--sh);border:1px solid var(--border);}
+.dos-card{margin:16px 20px;background:white;border-radius:20px;overflow:hidden;box-shadow:var(--sh-m);border:1px solid var(--border);}
+.dos-img{width:100%;height:160px;object-fit:cover;background:var(--lav-pale);display:block;}
+.dos-body{padding:18px;}
+.dos-cat{display:inline-block;background:var(--lav-pale);color:var(--purple-m);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;padding:4px 10px;border-radius:20px;margin-bottom:10px;}
+.dos-title{font-family:'League Spartan',sans-serif;font-weight:800;font-size:19px;color:var(--ink);margin-bottom:8px;line-height:1.2;}
+.dos-intro{font-size:13px;color:var(--ink-m);line-height:1.55;margin-bottom:14px;}
+.dos-tips{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;}
+.dos-tip{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--ink-m);line-height:1.5;}
+.dos-tip-dot{width:6px;height:6px;border-radius:50%;background:var(--purple-m);flex-shrink:0;margin-top:6px;}
+.dos-empty{text-align:center;padding:60px 30px;color:var(--ink-l);font-size:13px;}
+.dos-archive-t{font-size:13px;font-weight:800;color:var(--ink-l);text-transform:uppercase;letter-spacing:.3px;margin:24px 20px 10px;}
+.dos-archive-item{margin:0 20px 10px;background:white;border-radius:14px;padding:12px 14px;border:1px solid var(--border);display:flex;align-items:center;gap:10px;cursor:pointer;}
+.dos-archive-e{width:34px;height:34px;border-radius:10px;background:var(--lav-pale);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.dos-mini{margin:0 20px 10px;background:white;border-radius:14px;padding:12px 14px;border:1px solid var(--border);display:flex;align-items:center;gap:10px;cursor:pointer;}
+.dos-mini-ic{display:flex;flex-shrink:0;width:28px;height:28px;align-items:center;justify-content:center;background:var(--lav-pale);border-radius:9px;}
+.dos-mini-body{flex:1;min-width:0;}
+.dos-mini-title{font-size:13px;font-weight:700;color:var(--ink);}
+.dos-mini-days{font-size:11px;color:var(--purple-m);font-weight:700;margin-top:1px;}
+.dos-mini-locked{opacity:.5;cursor:pointer;background:var(--ivory-d);}
+.dos-mini-locked .dos-mini-days{color:var(--ink-l);}
+.dos-mini-locked .dos-mini-ic{background:var(--border);font-size:13px;}
+.dos-archive-body{flex:1;min-width:0;}
+.dos-archive-title{font-size:13px;font-weight:700;color:var(--ink);}
+.dos-archive-date{font-size:11px;color:var(--ink-l);}
 .meta-t{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:4px;}
 .meta-v{font-family:'League Spartan',sans-serif;font-size:32px;font-weight:800;background:var(--grad-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--purple-m);}
 .meta-unit{font-size:14px;color:var(--ink-l);}
 .meta-note{font-size:11px;color:var(--ink-l);margin-top:6px;line-height:1.5;font-style:italic;}
+.meta-duo{display:flex;align-items:center;}
+.meta-duo-col{flex:1;min-width:0;}
+.meta-duo-col .meta-t{font-size:12px;margin-bottom:4px;}
+.meta-duo-col .meta-v{font-size:24px;display:block;}
+.meta-duo-col .meta-unit{font-size:11px;margin-left:2px;}
+.meta-duo-sep{width:1px;align-self:stretch;background:var(--border);margin:2px 16px;}
+.meta-macro-lbl{font-size:11px;font-weight:700;color:var(--ink-l);text-transform:uppercase;letter-spacing:.3px;margin-top:16px;padding-top:14px;border-top:1px solid var(--border);}
 
 /* ═══ BOTTOM NAV ═══ */
 .bnav{position:fixed;left:0;right:0;bottom:0;max-width:430px;margin:0 auto;z-index:100;flex-shrink:0;background:rgba(250,248,255,0.97);backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;align-items:center;padding:4px 4px 18px;gap:1px;}
+.bnav-half{flex:1;display:flex;align-items:center;gap:1px;min-width:0;}
+.bnav-spacer{width:46px;flex-shrink:0;}
 .ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;cursor:pointer;padding:5px 1px;border-radius:10px;transition:all .15s;color:var(--purple-l);}
 .ni-ic{display:flex;transition:transform .15s;}
 .ni-l{font-size:7px;color:var(--ink-l);font-weight:600;letter-spacing:.2px;text-transform:uppercase;line-height:1;font-family:'League Spartan',sans-serif;}
 .ni.act{background:var(--lav-pale);color:var(--purple);}
 .ni.act .ni-l{color:var(--purple);font-weight:800;}
 .ni.act .ni-ic{transform:scale(1.1);}
-.ni-ctr{width:42px;height:42px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;flex-shrink:0;margin:-8px 1px 0;font-size:18px;box-shadow:0 4px 14px rgba(91,78,168,0.4);}
+.ni-ctr{position:absolute;left:50%;top:-13px;transform:translateX(-50%);width:42px;height:42px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;flex-shrink:0;font-size:18px;box-shadow:0 4px 14px rgba(91,78,168,0.4);}
 
 /* ═══ TOAST ═══ */
 .toast{position:fixed;bottom:86px;left:50%;transform:translateX(-50%) translateY(8px);background:var(--purple);color:white;padding:8px 16px;border-radius:50px;font-size:12px;font-weight:600;opacity:0;transition:all .3s;z-index:400;white-space:nowrap;box-shadow:0 4px 20px rgba(91,78,168,0.4);}
@@ -502,11 +561,31 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="si-form">
 <input class="si-input" id="siEmail" type="email" placeholder="e-mail">
 <input class="si-input" id="siPassword" type="password" placeholder="mot de passe">
-<div class="si-forgot">Mot de passe oublié ?</div>
+<div class="si-forgot" onclick="handleForgotPassword()">Mot de passe oublié ?</div>
 <button class="btn-w" id="siLoginBtn" onclick="handleSignIn()">Se connecter</button>
 <div class="si-div">ou</div>
-<button class="btn-glass" onclick="signInWithOAuth('google')">🌐 Continuer avec Google</button>
-<div class="si-btm">Pas de compte ? <a onclick="handleSignUp()">Créer un compte</a></div>
+<button class="btn-glass" onclick="signInWithOAuth('google')" style="display:flex;align-items:center;justify-content:center;gap:10px;"><svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/></svg>Continuer avec Google</button>
+<div class="si-btm">Pas de compte ? <a onclick="go('signup')">Créer un compte</a></div>
+</div>
+<div class="si-bubbles"><div class="bubble bb1"></div><div class="bubble bb2"></div><div class="bubble bb3"></div></div>
+</div>
+
+<!-- ═══ SIGNUP ═══ -->
+<div id="signup" class="screen">
+<button class="vd-back" onclick="go('signin')" style="background:rgba(255,255,255,0.25);top:20px;">←</button>
+<div class="rings"><div class="ring r1"></div><div class="ring r2"></div><div class="ring r3"></div><div class="ring r4"></div><div class="ring r5"></div></div>
+<div class="si-top">
+<img src="logo-mark.png" class="si-logo" onerror="this.style.display='none'">
+<div class="si-brand">Créer un <span>compte</span></div>
+<div class="si-tagline">Rejoins Holistica Club</div>
+</div>
+<div class="si-form">
+<input class="si-input" id="suEmail" type="email" placeholder="e-mail">
+<input class="si-input" id="suPassword" type="password" placeholder="mot de passe (6 car. min)">
+<button class="btn-w" id="suSignupBtn" onclick="handleSignUp()">Créer mon compte</button>
+<div class="si-div">ou</div>
+<button class="btn-glass" onclick="signInWithOAuth('google')" style="display:flex;align-items:center;justify-content:center;gap:10px;"><svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/></svg>Continuer avec Google</button>
+<div class="si-btm">Déjà un compte ? <a onclick="go('signin')">Se connecter</a></div>
 </div>
 <div class="si-bubbles"><div class="bubble bb1"></div><div class="bubble bb2"></div><div class="bubble bb3"></div></div>
 </div>
@@ -514,10 +593,25 @@ document.addEventListener('DOMContentLoaded', function(){
 <!-- ═══ ONBOARDING ═══ -->
 <div id="onboarding" class="screen">
 <div class="ob-top">
+<button class="vd-back" onclick="obPrev()" id="obBackBtn" style="position:relative;top:0;left:0;background:rgba(255,255,255,0.25);margin-bottom:10px;">←</button>
 <div class="ob-progress"><div class="ob-fill" id="obFill" style="width:10%"></div></div>
 </div>
 <div class="ob-content" id="obContent"></div>
 <div class="ob-bottom"><button class="btn-ob" id="obBtn" onclick="obNext()">Continuer</button></div>
+</div>
+
+<!-- ═══ RÉINITIALISATION MOT DE PASSE ═══ -->
+<div id="resetPassword" class="screen" style="background:var(--grad-h);justify-content:center;">
+<div class="rings"><div class="ring r1"></div><div class="ring r2"></div><div class="ring r3"></div><div class="ring r4"></div><div class="ring r5"></div></div>
+<div class="si-top" style="padding-top:0;">
+<div class="si-brand">Nouveau <span>mot de passe</span></div>
+<div class="si-tagline">Choisis un mot de passe pour ton compte</div>
+</div>
+<div class="si-form">
+<input class="si-input" id="rpPassword" type="password" placeholder="Nouveau mot de passe (6 car. min)">
+<input class="si-input" id="rpPassword2" type="password" placeholder="Confirme le mot de passe">
+<button class="btn-w" id="rpBtn" onclick="confirmNewPassword()">Valider le nouveau mot de passe</button>
+</div>
 </div>
 
 <!-- ═══ DASHBOARD ═══ -->
@@ -533,14 +627,30 @@ document.addEventListener('DOMContentLoaded', function(){
 </div>
 </div>
 <div class="scroll">
-<!-- Tracker mini -->
-<div class="trk-row">
-<div class="trk-mini"><span class="trk-mini-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 17c-1 3-3 4-5 4s-3-1-3-3c0-3 3-4 5-4"/><path d="M11 7c1-3 3-4 5-4s3 1 3 3c0 3-3 4-5 4"/><circle cx="6" cy="9" r="1"/><circle cx="18" cy="15" r="1"/></svg></span><div class="trk-mini-v" id="dSteps">0</div><div class="trk-mini-l">Pas</div></div>
-<div class="trk-mini"><span class="trk-mini-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c1.5 3 4 5 4 9a4 4 0 0 1-8 0c0-1.2.5-2 1-3 .3 1 1 1.5 1.5 1 .5-.5 0-1.5 0-3 0-1.5.7-2.7 1.5-4z"/></svg></span><div class="trk-mini-v" id="dBurned">0</div><div class="trk-mini-l">kcal brûlées</div></div>
-<div class="trk-mini"><span class="trk-mini-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/><path d="M8 13l2.5 2.5L16 10"/></svg></span><div class="trk-mini-v" id="dSessionsMonth">0</div><div class="trk-mini-l">séances ce mois</div></div>
-</div>
-<!-- Lune & Astro du jour -->
+<!-- Ta phrase du jour : premier contenu, juste après le message de bienvenue -->
 <div class="astro-widget" id="astroWidget"></div>
+<!-- Métabolisme & apport du jour -->
+<div class="sec"><h2>Ton <em>équilibre nutritionnel</em></h2></div>
+<div class="meta-card">
+<div class="meta-duo">
+<div class="meta-duo-col">
+<div class="meta-t">🔥 Métabolisme de base</div>
+<div class="meta-v" id="dBmr">0<span class="meta-unit">kcal/j</span></div>
+</div>
+<div class="meta-duo-sep"></div>
+<div class="meta-duo-col">
+<div class="meta-t">🍽️ Apport conseillé</div>
+<div class="meta-v" id="dCalGoal">0<span class="meta-unit">kcal/j</span></div>
+</div>
+</div>
+<div class="meta-macro-lbl">Répartition conseillée pour la journée</div>
+<div class="rc-macros" style="margin-top:6px;">
+<div class="rc-m"><span class="rc-m-ic">Prot.</span><div class="rc-m-v p" id="dMacroP" style="font-size:15px;">0g</div></div>
+<div class="rc-m"><span class="rc-m-ic">Gluc.</span><div class="rc-m-v g" id="dMacroG" style="font-size:15px;">0g</div></div>
+<div class="rc-m"><span class="rc-m-ic">Lip.</span><div class="rc-m-v l" id="dMacroL" style="font-size:15px;">0g</div></div>
+</div>
+<div class="meta-note" style="margin-top:10px;">Pensé pour un poids sain, une masse grasse maîtrisée, une masse musculaire bien développée, et un métabolisme et un équilibre hormonal sains.</div>
+</div>
 <!-- Recovery & Hormonal -->
 <div class="sec"><h2>Ton équilibre <em>du jour</em></h2></div>
 <div class="duo-row">
@@ -562,16 +672,16 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="mood-q">Mon humeur aujourd'hui...</div>
 <div class="mood-grid">
 <button class="mo" onclick="setMood(this,'En forme',5)">
-<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="9" cy="10" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="1" fill="currentColor" stroke="none"/><path d="M8 14c1.3 2 2.7 3 4 3s2.7-1 4-3"/><path d="M4.5 4.5l1.2 1.2M19.5 4.5l-1.2 1.2"/></svg>
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="9" cy="10" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="1" fill="currentColor" stroke="none"/><path d="M8 14c1.3 2 2.7 3 4 3s2.7-1 4-3"/><path d="M4.5 4.5l1.2 1.2M19.5 4.5l-1.2 1.2"/></svg>
 <span class="mo-l">En forme</span></button>
 <button class="mo" onclick="setMood(this,'Normal',3)">
-<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="9" cy="10" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="1" fill="currentColor" stroke="none"/><path d="M8.5 15h7"/></svg>
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="9" cy="10" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="1" fill="currentColor" stroke="none"/><path d="M8.5 15h7"/></svg>
 <span class="mo-l">Normal</span></button>
 <button class="mo" onclick="setMood(this,'Un peu fatiguée',2)">
-<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.2 10h2M13.8 10h2"/><path d="M8 16c1.3-1.3 2.7-2 4-2s2.7.7 4 2"/></svg>
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.2 10h2M13.8 10h2"/><path d="M8 16c1.3-1.3 2.7-2 4-2s2.7.7 4 2"/></svg>
 <span class="mo-l">Un peu fatiguée</span></button>
 <button class="mo" onclick="setMood(this,'Très fatiguée',1)">
-<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 10.5c.5-.5 1.5-.5 2 0M14 10.5c.5-.5 1.5-.5 2 0"/><path d="M8 17c1.3-2 2.7-3 4-3s2.7 1 4 3"/><path d="M16 5.5h2.5L16.5 8H19"/></svg>
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 10.5c.5-.5 1.5-.5 2 0M14 10.5c.5-.5 1.5-.5 2 0"/><path d="M8 17c1.3-2 2.7-3 4-3s2.7 1 4 3"/><path d="M16 5.5h2.5L16.5 8H19"/></svg>
 <span class="mo-l">Très fatiguée</span></button>
 </div>
 </div>
@@ -598,6 +708,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="blob b1"></div><div class="blob b2"></div>
 <div class="mv-h1">Tes séances <em>bien-être</em></div>
 <div class="mv-sub">Par Maryne Arès · Yoga · Pilates · Méditation</div>
+<div class="d-pill" style="margin-top:10px;"><div class="d-pill-dot"></div><div class="d-pill-txt"><span id="dSessionsMonth">0</span> séance(s) complétée(s) ce mois-ci</div></div>
 </div>
 <div class="wk-cal">
 <div class="wk-cal-head"><span class="wk-cal-title">Cette semaine</span></div>
@@ -616,6 +727,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="blob b1"></div><div class="blob b2"></div>
 <div class="rc-h1">Recettes</div>
 <div class="rc-sub">Macros · Adaptées à ton Dosha</div>
+<div class="d-pill" style="margin-top:10px;"><div class="d-pill-dot"></div><div class="d-pill-txt"><span id="dRecipesTried">0</span> recette(s) essayée(s)</div></div>
 </div>
 <div class="rc-srch">
 <span style="color:var(--ink-l);font-size:13px">🔍</span>
@@ -626,6 +738,16 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="scroll">
 <div class="rg" id="rcGrid"></div>
 </div>
+</div>
+
+<!-- ═══ NATUROPATHIE ═══ -->
+<div id="naturo" class="screen">
+<div class="rc-top">
+<div class="blob b1"></div><div class="blob b2"></div>
+<div class="rc-h1">Dossier <em>de la semaine</em></div>
+<div class="rc-sub">Naturopathie · Aromathérapie · Rituels de saison</div>
+</div>
+<div class="scroll" id="naturoBody"></div>
 </div>
 
 <!-- ═══ CHALLENGE ═══ -->
@@ -707,7 +829,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="dosha-bar" id="doshaBar"><div class="dosha-bar-v" id="doshaBarV"></div><div class="dosha-bar-p" id="doshaBarP"></div><div class="dosha-bar-k" id="doshaBarK"></div></div>
 <div class="dosha-bar-lbl" id="doshaBarLbl"></div>
 <div class="pf-xp-t"><div class="pf-xp-f" id="xpFill" style="width:15%"></div></div>
-<div class="pf-xp-l">Niveau 1 · <span id="xpCount">0</span> points</div>
+<div class="pf-xp-l"><span id="pfLevel">Niveau 1</span> · <span id="xpCount">0</span> points</div>
 </div>
 <div class="scroll">
 <div class="sec"><h2>Métabolisme <em>de base</em></h2></div>
@@ -721,6 +843,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="pa" onclick="openEditInfo()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.5 3-6.5 7-6.5s7 3 7 6.5"/></svg></div><div class="pa-body"><div class="pa-t">Modifier mes informations</div><div class="pa-s">Nom, poids, taille, activité</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="go('doshaProfile')"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1.5 3 2.5 5 2.5 8a2.5 2.5 0 0 1-5 0c0-3 1-5 2.5-8z"/><path d="M5 10c2 1 4 3 5 6"/><path d="M19 10c-2 1-4 3-5 6"/><path d="M4 15c2.5 3 5 4 8 4s5.5-1 8-4"/></svg></div><div class="pa-body"><div class="pa-t">Mon profil ayurvédique</div><div class="pa-s" id="pfDoshaDetail">Vata dominant</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="openWellnessHistory()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V10M9 19V5M14 19v-7M19 19V8"/></svg></div><div class="pa-body"><div class="pa-t">Historique bien-être</div><div class="pa-s">Sommeil · Stress · Humeur</div></div><span class="pa-arr">›</span></div>
+<div class="pa" onclick="go('badgesScreen');renderBadges();"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M8.5 13.5L7 22l5-3 5 3-1.5-8.5"/></svg></div><div class="pa-body"><div class="pa-t">Mes badges</div><div class="pa-s" id="pfBadgesDetail">0/9 débloqués</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="openCycleSettings()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg></div><div class="pa-body"><div class="pa-t">Durée & suivi de mon cycle</div><div class="pa-s">Dernières règles, durée, comprendre les phases</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="openAstro()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/><circle cx="12" cy="12" r="4"/></svg></div><div class="pa-body"><div class="pa-t">Mon thème astral</div><div class="pa-s" id="paAstroSub">Renseigne ta date de naissance</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="go('offers')"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6L17 7M7 17l-1.4 1.4"/><circle cx="12" cy="12" r="3"/></svg></div><div class="pa-body"><div class="pa-t">Mon abonnement</div><div class="pa-s">Plan Équilibre · 29€/mois</div></div><span class="pa-arr">›</span></div>
@@ -741,15 +864,15 @@ document.addEventListener('DOMContentLoaded', function(){
 <button class="vd-back" onclick="go('profil')" style="position:static;">←</button>
 </div>
 <div class="scroll" style="padding:0 24px;">
-<div class="ob-title" style="text-align:left;font-size:22px;margin-top:8px;">Modifier mes <em>informations</em></div>
-<div class="f-row-app"><label>Prénom</label><input type="text" id="eiName" class="ob-input"></div>
-<div class="f-row-app"><label>Nom de famille</label><input type="text" id="eiLastName" class="ob-input"></div>
-<div class="f-row-app"><label>Adresse e-mail</label><input type="email" id="eiEmail" class="ob-input" placeholder="ton@email.com"></div>
-<div class="f-row-app"><label>Poids (kg)</label><input type="number" id="eiWeight" class="ob-input"></div>
-<div class="f-row-app"><label>Taille (cm)</label><input type="number" id="eiHeight" class="ob-input"></div>
-<div class="f-row-app"><label>Âge</label><input type="number" id="eiAge" class="ob-input"></div>
+<div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Modifier mes <em>informations</em></div>
+<div class="f-row-app"><label>Prénom</label><input type="text" id="eiName" class="ob-input dt-input"></div>
+<div class="f-row-app"><label>Nom de famille</label><input type="text" id="eiLastName" class="ob-input dt-input"></div>
+<div class="f-row-app"><label>Adresse e-mail</label><input type="email" id="eiEmail" class="ob-input dt-input" placeholder="ton@email.com"></div>
+<div class="f-row-app"><label>Poids (kg)</label><input type="number" id="eiWeight" class="ob-input dt-input"></div>
+<div class="f-row-app"><label>Taille (cm)</label><input type="number" id="eiHeight" class="ob-input dt-input"></div>
+<div class="f-row-app"><label>Âge</label><input type="number" id="eiAge" class="ob-input dt-input"></div>
 <div class="f-row-app"><label>Niveau d'activité</label>
-<select id="eiActivity" class="ob-input">
+<select id="eiActivity" class="ob-input dt-input">
 <option value="sédentaire">Sédentaire (bureau, peu de mouvement)</option>
 <option value="légère">Légèrement active (marche, ménage)</option>
 <option value="modérée">Modérée (sport 2-3x/semaine)</option>
@@ -757,7 +880,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <option value="très active">Très active (sport quotidien intense)</option>
 </select></div>
 <div class="f-row-app"><label>Ton objectif principal</label>
-<select id="eiGoal" class="ob-input">
+<select id="eiGoal" class="ob-input dt-input">
 <option value="bien-être">Bien-être général</option>
 <option value="perte de poids">Perte de poids</option>
 <option value="prise de masse">Prise de masse musculaire</option>
@@ -775,7 +898,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <button class="vd-back" onclick="go('profil')" style="position:static;">←</button>
 </div>
 <div class="scroll" style="padding:0 24px;">
-<div class="ob-title" style="text-align:left;font-size:22px;margin-top:8px;">Mon profil <em>ayurvédique</em></div>
+<div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Mon profil <em>ayurvédique</em></div>
 <div class="dosha-detail-card">
 <div class="dosha-bar" style="height:12px;"><div class="dosha-bar-v" id="dpBarV"></div><div class="dosha-bar-p" id="dpBarP"></div><div class="dosha-bar-k" id="dpBarK"></div></div>
 <div class="dosha-detail-row"><span class="dd-dot v"></span>Vata <b id="dpV">33%</b></div>
@@ -795,9 +918,22 @@ document.addEventListener('DOMContentLoaded', function(){
 <button class="vd-back" onclick="go('profil')" style="position:static;">←</button>
 </div>
 <div class="scroll" style="padding:0 24px;">
-<div class="ob-title" style="text-align:left;font-size:22px;margin-top:8px;">Historique <em>bien-être</em></div>
+<div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Historique <em>bien-être</em></div>
 <div style="font-size:13px;color:var(--ink-l);margin-bottom:16px;">Tes 14 derniers jours suivis</div>
 <div id="wellnessList"></div>
+<div style="height:30px;"></div>
+</div>
+</div>
+
+<!-- ═══ BADGES ═══ -->
+<div id="badgesScreen" class="screen">
+<div class="ob-top" style="background:var(--ivory);padding:50px 20px 10px;">
+<button class="vd-back" onclick="go('profil')" style="position:static;">←</button>
+</div>
+<div class="scroll" style="padding:0 24px;">
+<div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Mes <em>badges</em></div>
+<div style="font-size:13px;color:var(--ink-l);margin-bottom:16px;"><span id="badgesCount">0/9</span> débloqués — continue pour tous les obtenir</div>
+<div class="badges-grid" id="badgesGrid"></div>
 <div style="height:30px;"></div>
 </div>
 </div>
@@ -808,8 +944,8 @@ document.addEventListener('DOMContentLoaded', function(){
 <button class="vd-back" onclick="go('profil')" style="position:static;">←</button>
 </div>
 <div class="scroll" style="padding:0 24px;">
-<div class="ob-title" style="text-align:left;font-size:22px;margin-top:8px;">Mon <em>cycle</em></div>
-<div class="f-row-app"><label>Premier jour de tes dernières règles</label><input type="date" id="csLastPeriod" class="ob-input"></div>
+<div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Mon <em>cycle</em></div>
+<div class="f-row-app"><label>Premier jour de tes dernières règles</label><input type="date" id="csLastPeriod" class="ob-input dt-input"></div>
 <div class="f-row-app"><label>Durée moyenne de ton cycle</label><div class="cycle-len-input" style="width:100%;justify-content:center;"><input type="number" id="csCycleLength" min="21" max="45" value="28" style="width:50px;font-size:18px;"><span>jours</span></div></div>
 <button class="btn-ob" style="margin-top:6px;" onclick="saveCycleSettings()">Enregistrer</button>
 
@@ -828,10 +964,10 @@ document.addEventListener('DOMContentLoaded', function(){
 <button class="vd-back" onclick="go('profil')" style="position:static;">←</button>
 </div>
 <div class="scroll" style="padding:0 24px;">
-<div class="ob-title" style="text-align:left;font-size:22px;margin-top:8px;">Mon thème <em>astral</em></div>
-<div class="f-row-app"><label>Date de naissance</label><input type="date" id="astroDate" class="ob-input"></div>
-<div class="f-row-app"><label>Heure de naissance (si connue)</label><input type="time" id="astroTime" class="ob-input"></div>
-<div class="f-row-app"><label>Lieu de naissance</label><input type="text" id="astroPlace" class="ob-input" placeholder="Ville, Pays"></div>
+<div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Mon thème <em>astral</em></div>
+<div class="f-row-app"><label>Date de naissance</label><input type="date" id="astroDate" class="ob-input dt-input"></div>
+<div class="f-row-app"><label>Heure de naissance (si connue)</label><input type="time" id="astroTime" class="ob-input dt-input"></div>
+<div class="f-row-app"><label>Lieu de naissance</label><input type="text" id="astroPlace" class="ob-input dt-input" placeholder="Ville, Pays"></div>
 <button class="btn-ob" style="margin-top:6px;" onclick="calculateAstro()">Calculer mon thème</button>
 
 <div id="astroResult" style="display:none;margin-top:24px;">
@@ -872,7 +1008,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <button class="vd-back" onclick="go('profil')" style="position:static;">←</button>
 </div>
 <div class="scroll" style="padding:0 24px;">
-<div class="ob-title" style="text-align:left;font-size:22px;margin-top:8px;">Politique de <em>confidentialité</em></div>
+<div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Politique de <em>confidentialité</em></div>
 <div style="font-size:13px;color:var(--ink-m);line-height:1.7;margin-top:12px;">
 <p style="margin-bottom:14px;"><strong>Dernière mise à jour :</strong> juillet 2026</p>
 <p style="margin-bottom:14px;">Holistica Club collecte les données suivantes dans le cadre de ton utilisation de l'application : ton prénom, âge, taille, poids, niveau d'activité, informations sur ton cycle menstruel, ton profil Ayurvédique (dosha), ainsi que des données de bien-être quotidiennes (humeur, sommeil, niveau de stress) et ta progression (points, séances complétées, série).</p>
@@ -891,7 +1027,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <button class="vd-back" onclick="go('profil')" style="position:static;">←</button>
 </div>
 <div class="scroll" style="padding:0 24px;">
-<div class="ob-title" style="text-align:left;font-size:22px;margin-top:8px;">Conditions <em>d'utilisation</em></div>
+<div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Conditions <em>d'utilisation</em></div>
 <div style="font-size:13px;color:var(--ink-m);line-height:1.7;margin-top:12px;">
 <p style="margin-bottom:14px;"><strong>Dernière mise à jour :</strong> juillet 2026</p>
 <p style="margin-bottom:14px;"><strong>1. Objet.</strong> Holistica Club propose des contenus de bien-être (routines, séances de mouvement, recettes) à visée informative et de mieux-être. L'application ne fournit pas de diagnostic médical et ne remplace pas l'avis d'un professionnel de santé.</p>
@@ -936,11 +1072,17 @@ document.addEventListener('DOMContentLoaded', function(){
 
 <!-- NAV -->
 <nav class="bnav" id="bnav" style="display:none">
+<div class="bnav-half">
 <button class="ni" id="ni-mouvement" onclick="go('mouvement')"><span class="ni-ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2"/><path d="M12 7.3v4.2"/><path d="M9.3 9c0 1.5.9 2.5 2.7 2.5s2.7-1 2.7-2.5"/><path d="M12 11.5c-1.4 0-2.2 1-2.6 2.3-.3 1.1-.9 1.9-1.9 2.5-1.3.8-2 1.6-1.8 2.5.2.7 1 1 2.1.7 1.6-.5 2.6-1 4.2-1 1.6 0 2.6.5 4.2 1 1.1.3 1.9 0 2.1-.7.2-.9-.5-1.7-1.8-2.5-1-.6-1.6-1.4-1.9-2.5-.4-1.3-1.2-2.3-2.6-2.3z"/></svg></span><span class="ni-l">Séances</span></button>
 <button class="ni" id="ni-recettes" onclick="go('recettes')"><span class="ni-ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3v5.5M6 3v5.5M6 8.5c0 1.5-.4 2-.75 2M6 8.5c0-1.5.4-2 .75-2M5.25 10.5V21"/><circle cx="13.5" cy="12" r="7.5"/><circle cx="13.5" cy="12" r="4"/><path d="M19.5 3c1.2.3 1.5 2 1.5 3.5S20.7 9.7 19.5 10"/></svg></span><span class="ni-l">Recettes</span></button>
+<button class="ni" id="ni-naturo" onclick="go('naturo')"><span class="ni-ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4C11 4 4 11 4 20c9 0 16-7 16-16z"/><path d="M8 20c0-6 4-10 10-12"/></svg></span><span class="ni-l">Naturo</span></button>
+</div>
+<div class="bnav-spacer"></div>
 <button class="ni-ctr" id="ni-dashboard" onclick="go('dashboard')"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11.5l8-7.5 8 7.5"/><path d="M6 10v9.5a1 1 0 0 0 1 1h3.5v-6.5h3v6.5H17a1 1 0 0 0 1-1V10"/></svg></button>
+<div class="bnav-half">
 <button class="ni" id="ni-challenge" onclick="go('challenge')"><span class="ni-ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10v4a5 5 0 0 1-10 0V4z"/><path d="M7 5H4v2a3 3 0 0 0 3 3M17 5h3v2a3 3 0 0 1-3 3"/><path d="M12 13v3"/><path d="M9 20h6M10 17h4v3h-4z"/></svg></span><span class="ni-l">Challenge</span></button>
 <button class="ni" id="ni-profil" onclick="go('profil')"><span class="ni-ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.5 3-6.5 7-6.5s7 3 7 6.5"/></svg></span><span class="ni-l">Profil</span></button>
+</div>
 </nav>
 
 <div class="toast" id="toast"></div>
@@ -965,29 +1107,34 @@ let currentUser=null;
 /* ═══════ DATA ═══════ */
 let VIDEOS=[];
 let RECIPES=[];
+let DOSSIERS=[];
 
 async function loadContent(){
   try{
-    const [{data:vids,error:vErr},{data:recs,error:rErr}]=await Promise.all([
+    const [{data:vids,error:vErr},{data:recs,error:rErr},{data:doss,error:dErr}]=await Promise.all([
       sb.from('videos').select('*'),
-      sb.from('recipes').select('*')
+      sb.from('recipes').select('*'),
+      sb.from('dossiers').select('*').order('publish_date',{ascending:false})
     ]);
     if(vErr)console.error('Erreur chargement vidéos:',vErr);
     if(rErr)console.error('Erreur chargement recettes:',rErr);
+    if(dErr)console.error('Erreur chargement dossiers:',dErr);
     if(vids&&vids.length)VIDEOS=vids;
     if(recs&&recs.length)RECIPES=recs;
+    if(doss)DOSSIERS=doss;
   }catch(e){
     console.error('Erreur loadContent:',e);
   }
   // Rafraîchit les écrans si déjà affichés/visités
   if(document.getElementById('mvFilters'))renderMv();
   if(document.getElementById('rcFilters'))renderRec();
+  if(document.getElementById('naturoBody'))renderNaturo();
 }
 loadContent();
 
 
 /* ═══════ STATE ═══════ */
-let xp=0,sessions=0,streak=0,currentVid=null,completedVids=new Set();
+let xp=0,sessions=0,streak=0,currentVid=null,completedVids=new Set(),triedRecipes=new Set(),unlockedBadges=new Set(),readDossiers=new Set(),naturoViewId=null;
 let dailyCalGoal=2000,consumedCal=0,currentRC=null,sessionDates=[],wellnessLog=[],retakeDoshaMode=false;
 let userProfile={name:'',lastName:'',email:'',goal:'bien-être',age:30,weight:62,height:165,activity:'modérée',hasPeriod:true,menopause:false,dosha:'vata',lastPeriodStart:'',doshaV:33,doshaP:33,doshaK:34,cycleLength:28,birthDate:'',birthTime:'',birthPlace:''};
 let moodScore=0,sleepScore=8,stressScore=5;
@@ -1007,14 +1154,56 @@ async function handleSignIn(){
   // La navigation est gérée par onAuthStateChange ci-dessous
 }
 
-async function handleSignUp(){
-  const email=document.getElementById('siEmail').value.trim();
-  const password=document.getElementById('siPassword').value;
-  if(!email||!password){toast('Entre un email et un mot de passe (6 car. min)');return;}
-  const {error}=await sb.auth.signUp({email,password});
+async function confirmNewPassword(){
+  const p1=document.getElementById('rpPassword').value;
+  const p2=document.getElementById('rpPassword2').value;
+  if(!p1||p1.length<6){toast('Le mot de passe doit faire au moins 6 caractères');return;}
+  if(p1!==p2){toast('Les deux mots de passe ne correspondent pas');return;}
+  const btn=document.getElementById('rpBtn');btn.textContent='Validation...';
+  const {error}=await sb.auth.updateUser({password:p1});
+  btn.textContent='Valider le nouveau mot de passe';
   if(error){toast('Erreur : '+error.message);return;}
+  toast('Mot de passe mis à jour ✓');
+  // La session de récupération est déjà active : on entre directement dans l'app
+  currentUser=(await sb.auth.getUser()).data.user;
+  loadProfileAndEnter();
+}
+
+async function handleForgotPassword(){
+  const email=document.getElementById('siEmail').value.trim();
+  if(!email){toast('Entre d\'abord ton email ci-dessus, puis reclique');return;}
+  const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+window.location.pathname});
+  if(error){toast('Erreur : '+error.message);return;}
+  toast('📧 Email de réinitialisation envoyé à '+email);
+}
+
+async function handleSignUp(){
+  const email=document.getElementById('suEmail').value.trim();
+  const password=document.getElementById('suPassword').value;
+  if(!email||!password){toast('Entre un email et un mot de passe (6 car. min)');return;}
+  if(password.length<6){toast('Le mot de passe doit faire au moins 6 caractères');return;}
+  const btn=document.getElementById('suSignupBtn');btn.textContent='Création...';
+  const {data,error}=await sb.auth.signUp({email,password});
+  btn.textContent='Créer mon compte';
+  if(error){
+    if(error.message.includes('already registered')||error.message.includes('already exists')){
+      toast('Un compte existe déjà avec cet email, connecte-toi plutôt');
+      go('signin');
+      document.getElementById('siEmail').value=email;
+    } else {
+      toast('Erreur : '+error.message);
+    }
+    return;
+  }
+  trackEvent('inscription');
+  if(!data.session){
+    // La confirmation par email est activée côté Supabase : pas de session tant que le lien n'est pas cliqué
+    go('signin');
+    document.getElementById('siEmail').value=email;
+    toast('📧 Vérifie tes emails pour confirmer ton compte avant de te connecter');
+    return;
+  }
   toast('Compte créé 🌸 Complète ton profil');
-trackEvent('inscription');
   // La navigation est gérée par onAuthStateChange ci-dessous
 }
 
@@ -1052,12 +1241,17 @@ async function loadProfileAndEnter(){
   if(error){console.error('Erreur profil:',error);toast('⚠️ '+error.message);}
   if(profile){
     userProfile={name:profile.name||'',lastName:profile.last_name||'',email:profile.email||'',goal:profile.goal||'bien-être',age:profile.age||30,weight:profile.weight||62,height:profile.height||165,activity:profile.activity||'modérée',hasPeriod:profile.has_period,menopause:profile.menopause,dosha:profile.dosha||'vata',lastPeriodStart:profile.last_period_start||'',doshaV:profile.dosha_v??33,doshaP:profile.dosha_p??33,doshaK:profile.dosha_k??34,cycleLength:profile.cycle_length||28,birthDate:profile.birth_date||'',birthTime:profile.birth_time||'',birthPlace:profile.birth_place||''};
-    xp=profile.xp||0;sessions=profile.sessions||0;streak=profile.streak||0;
+    xp=profile.xp||0;sessions=profile.sessions||0;
     moodScore=profile.mood_score||0;sleepScore=profile.sleep_score||7;stressScore=profile.stress_score||5;
     completedVids=new Set(profile.completed_videos||[]);
     sessionDates=profile.session_dates||[];
     wellnessLog=profile.wellness_log||[];
-    go('dashboard');enterApp();addXP(0);
+    triedRecipes=new Set(profile.tried_recipes||[]);
+    unlockedBadges=new Set(profile.badges_unlocked||[]);
+    readDossiers=new Set(profile.read_dossiers||[]);
+    streak=calcStreak();
+    lastCelebratedLevel=profile.last_celebrated_level??(Math.floor(xp/100)+1);
+    go('dashboard');enterApp();addXP(0);checkBadges(true);
   } else {
     go('onboarding');
   }
@@ -1076,7 +1270,8 @@ function saveProfile(){
       last_name:userProfile.lastName,email:userProfile.email,goal:userProfile.goal,
       birth_date:userProfile.birthDate||null,birth_time:userProfile.birthTime||null,birth_place:userProfile.birthPlace,
       xp,sessions,streak,mood_score:moodScore,sleep_score:sleepScore,stress_score:stressScore,
-      completed_videos:Array.from(completedVids),session_dates:sessionDates,wellness_log:wellnessLog,updated_at:new Date().toISOString()
+      completed_videos:Array.from(completedVids),session_dates:sessionDates,wellness_log:wellnessLog,
+      tried_recipes:Array.from(triedRecipes),badges_unlocked:Array.from(unlockedBadges),last_celebrated_level:lastCelebratedLevel,read_dossiers:Array.from(readDossiers),updated_at:new Date().toISOString()
     });
   },600);
 }
@@ -1084,6 +1279,12 @@ function saveProfile(){
 // Point d'entrée unique pour toute connexion réussie : email/mdp, Google, Apple, ou session déjà active
 sb.auth.onAuthStateChange((event,session)=>{
   console.log('[Auth] event:',event,'session:',!!session);
+  if(event==='PASSWORD_RECOVERY'){
+    profileLoaded=true; // empêche l'entrée automatique dans l'app tant que le nouveau mot de passe n'est pas défini
+    currentUser=session.user;
+    go('resetPassword');
+    return;
+  }
   if(session&&!profileLoaded){
     profileLoaded=true;
     currentUser=session.user;
@@ -1121,8 +1322,123 @@ function go(id){
   const ni=document.getElementById('ni-'+id);if(ni)ni.classList.add('act');
   if(id==='mouvement')renderMv();
   if(id==='recettes')renderRec();
+  if(id==='naturo')renderNaturo();
   if(id==='dashboard')refreshDash();
   if(id==='doshaProfile')renderDoshaProfile();
+}
+
+const ACTIVITY_MULTIPLIER={'sédentaire':1.2,'légère':1.375,'modérée':1.55,'active':1.725,'très active':1.9};
+function calcNutrition(){
+  const bmr=Math.round(447.593+(9.247*userProfile.weight)+(3.098*userProfile.height)-(4.33*userProfile.age));
+  const mult=ACTIVITY_MULTIPLIER[userProfile.activity]||1.375;
+  dailyCalGoal=Math.round(bmr*mult);
+
+  // Répartition macro personnalisée (protéines élevées selon poids+activité, lipides ~30% pour l'équilibre hormonal, glucides = reste)
+  const proteinPerKg={'sédentaire':1.6,'légère':1.7,'modérée':1.8,'active':1.9,'très active':2.0}[userProfile.activity]||1.7;
+  const proteinG=Math.round(userProfile.weight*proteinPerKg);
+  const fatG=Math.round((dailyCalGoal*0.30)/9);
+  const carbG=Math.max(0,Math.round((dailyCalGoal-(proteinG*4)-(fatG*9))/4));
+
+  if(document.getElementById('pfMeta'))document.getElementById('pfMeta').innerHTML=bmr.toLocaleString('fr-FR')+' <span class="meta-unit">kcal/jour</span>';
+  if(document.getElementById('dBmr'))document.getElementById('dBmr').innerHTML=bmr.toLocaleString('fr-FR')+' <span class="meta-unit">kcal/jour</span>';
+  if(document.getElementById('dCalGoal'))document.getElementById('dCalGoal').innerHTML=dailyCalGoal.toLocaleString('fr-FR')+' <span class="meta-unit">kcal/jour</span>';
+  if(document.getElementById('dMacroP'))document.getElementById('dMacroP').textContent=proteinG+'g';
+  if(document.getElementById('dMacroG'))document.getElementById('dMacroG').textContent=carbG+'g';
+  if(document.getElementById('dMacroL'))document.getElementById('dMacroL').textContent=fatG+'g';
+
+  updateRemainingCal();
+  saveProfile();
+}
+
+/* ═══════ NATUROPATHIE : DOSSIER DE LA SEMAINE ═══════ */
+const CATEGORY_META={
+  aromatherapie:{e:'🌿',label:'Aromathérapie'},
+  saison:{e:'☀️',label:'Rituel de saison'},
+  menage:{e:'🧴',label:'Ménage naturel'},
+  astuces:{e:'🌸',label:'Astuce du quotidien'},
+  plantes:{e:'🌱',label:'Plantes médicinales'},
+  'peau-cheveux':{e:'✨',label:'Peau & cheveux'}
+};
+
+function openArchiveDossier(id){naturoViewId=id;renderNaturo();}
+function backToCurrentDossier(){naturoViewId=null;renderNaturo();}
+
+function renderNaturo(){
+  const body=document.getElementById('naturoBody');
+  if(!body)return;
+  const today=new Date();today.setHours(0,0,0,0);
+  const todayStr=today.toISOString().split('T')[0];
+  const published=DOSSIERS.filter(d=>d.publish_date<=todayStr).sort((a,b)=>b.publish_date.localeCompare(a.publish_date));
+  if(!published.length){
+    body.innerHTML='<div class="dos-empty">🌿 Le premier dossier de la semaine arrive bientôt, reviens vite !</div>';
+    return;
+  }
+  const current=published[0];
+  const rest=published.slice(1);
+  const leafIcon='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4C11 4 4 11 4 20c9 0 16-7 16-16z"/><path d="M8 20c0-6 4-10 10-12"/></svg>';
+
+  // Depuis combien de jours ce dossier a-t-il été détrôné par le suivant plus récent ?
+  function daysSinceSuperseded(idx){
+    const supersededBy=idx===0?current:rest[idx-1];
+    const d=new Date(supersededBy.publish_date+'T00:00:00');
+    return Math.floor((today-d)/86400000);
+  }
+  // Les 2 dossiers encore accessibles (fenêtre de 4 jours après avoir été détrônés), rotation naturelle
+  const accessible=[];
+  for(let i=0;i<rest.length && accessible.length<2;i++){
+    const remaining=4-daysSinceSuperseded(i);
+    if(remaining>0)accessible.push({...rest[i],remaining});
+    else break;
+  }
+  // Dossier verrouillé (pédagogique) : celui qui suit juste après, pour montrer que ça défile puis se ferme
+  const lockedItem=rest[accessible.length]||null;
+
+  const viewing=naturoViewId?(DOSSIERS.find(d=>d.id===naturoViewId)||current):current;
+  const isRead=readDossiers.has(viewing.id);
+  const isCurrent=viewing.id===current.id;
+
+  let html='';
+  if(!isCurrent){
+    html+='<div class="dos-archive-t" style="margin-top:16px;cursor:pointer;" onclick="backToCurrentDossier()">← Revenir au dossier de la semaine</div>';
+  }
+  html+=`<div class="dos-card">
+    ${viewing.image?`<img class="dos-img" src="${viewing.image}" onerror="this.style.display='none'">`:''}
+    <div class="dos-body">
+      <div class="dos-title">${viewing.title}</div>
+      <div class="dos-intro">${viewing.intro||''}</div>
+      <div class="dos-tips">${(viewing.tips||[]).map(t=>`<div class="dos-tip"><span class="dos-tip-dot"></span>${t}</div>`).join('')}</div>
+      <button class="btn-w" onclick="markDossierRead('${viewing.id}')" ${isRead?'disabled':''} style="${isRead?'opacity:.6;':''}">${isRead?'✓ Dossier lu':'Marquer comme lu · +'+(viewing.points||10)+' points'}</button>
+    </div>
+  </div>`;
+
+  if(isCurrent && (accessible.length||lockedItem)){
+    html+='<div class="dos-archive-t">Encore accessibles</div>';
+    accessible.forEach(d=>{
+      html+=`<div class="dos-mini" onclick="openArchiveDossier('${d.id}')">
+        <span class="dos-mini-ic">${leafIcon}</span>
+        <div class="dos-mini-body"><div class="dos-mini-title">${d.title}</div><div class="dos-mini-days">Encore accessible ${d.remaining} jour${d.remaining>1?'s':''}</div></div>
+        <span class="pa-arr">›</span>
+      </div>`;
+    });
+    if(lockedItem){
+      const lockIcon='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ink-l)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
+      html+=`<div class="dos-mini dos-mini-locked" onclick="toast('🔒 Ce dossier n\\'est plus accessible')">
+        <span class="dos-mini-ic">${lockIcon}</span>
+        <div class="dos-mini-body"><div class="dos-mini-title">${lockedItem.title}</div><div class="dos-mini-days">Plus accessible</div></div>
+      </div>`;
+    }
+  }
+  body.innerHTML=html;
+}
+
+function markDossierRead(id){
+  if(readDossiers.has(id))return;
+  readDossiers.add(id);
+  const d=DOSSIERS.find(x=>x.id===id);
+  addXP(d?.points||10);
+  toast('Dossier lu · +'+(d?.points||10)+' points 🌿');
+  checkBadges();
+  renderNaturo();
 }
 
 function enterApp(){
@@ -1142,12 +1458,8 @@ function enterApp(){
   document.getElementById('doshaBarP').style.width=userProfile.doshaP+'%';
   document.getElementById('doshaBarK').style.width=userProfile.doshaK+'%';
   document.getElementById('doshaBarLbl').textContent='Vata '+userProfile.doshaV+'% · Pitta '+userProfile.doshaP+'% · Kapha '+userProfile.doshaK+'%';
-  // Calc metabolism
-  const bmr=Math.round(447.593+(9.247*userProfile.weight)+(3.098*userProfile.height)-(4.33*userProfile.age));
-  document.getElementById('pfMeta').innerHTML=bmr.toLocaleString('fr-FR')+' <span class="meta-unit">kcal/jour</span>';
-  dailyCalGoal=Math.round(bmr*1.3);
-  updateRemainingCal();
-  saveProfile();
+  // Calc metabolism, apport calorique réel (selon activité) et macros personnalisées
+  calcNutrition();
   // Cycle
   renderCycle();
   // Build routine
@@ -1172,12 +1484,18 @@ function renderOB(){
   const s=OB_STEPS[obStep];
   const pct=Math.round(((obStep+1)/OB_STEPS.length)*100);
   document.getElementById('obFill').style.width=pct+'%';
+  const backBtn=document.getElementById('obBackBtn');
+  if(backBtn)backBtn.style.visibility=obStep===0?'hidden':'visible';
   let html='<div class="ob-part">'+s.part+'</div><div class="ob-title">'+s.title+'</div>';
   
   if(s.type==='input'){
     html+=s.fields.map(f=>'<input class="ob-input" id="'+f.id+'" type="'+f.type+'" placeholder="'+f.ph+'">').join('');
   } else if(s.type==='slider'){
-    html+='<div class="ob-slider-wrap"><div class="ob-slider-val" id="'+s.id+'Val">'+s.val+'</div><input type="range" class="ob-slider" id="'+s.id+'" min="'+s.min+'" max="'+s.max+'" value="'+s.val+'" oninput="document.getElementById(\''+s.id+'Val\').textContent=this.value"><div class="ob-slider-labels"><span>'+s.min+(s.unit?' '+s.unit:'')+'</span><span>'+s.max+(s.unit?' '+s.unit:'')+'</span></div></div>';
+    let val=s.val;
+    if(s.id==='obAge'&&userProfile.age)val=userProfile.age;
+    if(s.id==='obHeight'&&userProfile.height)val=userProfile.height;
+    if(s.id==='obWeight'&&userProfile.weight)val=userProfile.weight;
+    html+='<div class="ob-slider-wrap"><div class="ob-slider-val" id="'+s.id+'Val">'+val+'</div><input type="range" class="ob-slider" id="'+s.id+'" min="'+s.min+'" max="'+s.max+'" value="'+val+'" oninput="document.getElementById(\''+s.id+'Val\').textContent=this.value"><div class="ob-slider-labels"><span>'+s.min+(s.unit?' '+s.unit:'')+'</span><span>'+s.max+(s.unit?' '+s.unit:'')+'</span></div></div>';
   } else if(s.type==='choice'){
     html+='<div class="ob-opts">'+s.opts.map((o,i)=>'<div class="ob-opt" onclick="selectOBOpt(this,'+i+')">'+o+'</div>').join('')+'</div>';
   } else if(s.type==='date'){
@@ -1190,12 +1508,16 @@ function renderOB(){
       {q:'Ta corpulence',v:'Fine, peu développée',p:'Moyenne, athlétique',k:'Large, bien développée'},
       {q:'Ta prise de poids',v:'Difficile à prendre',p:'Facile à gérer',k:'Facile à prendre'},
       {q:'Ta peau',v:'Sèche, rugueuse',p:'Sensible, rougeurs',k:'Douce, grasse, hydratée'},
+      {q:'Signes de peau fréquents',v:'Manque d\'hydratation, rides',p:'Rougeurs, taches de rousseur',k:'Peau grasse, points noirs, acné'},
+      {q:'La couleur de ta peau',v:'Sombre',p:'Jaune ou rosée',k:'Blanche ou claire'},
       {q:'Tes cheveux',v:'Secs, fins, cassants',p:'Fins, gras, grisonnants tôt',k:'Épais, forts, brillants'},
       {q:'Tes dents',v:'Irrégulières, fragiles',p:'Moyennes, jaunissent facile',k:'Grandes, blanches, solides'},
       {q:'Tes gencives',v:'Petites, sensibles',p:'Rouges, saignent facile',k:'Épaisses, roses'},
       {q:'La forme de ton nez',v:'Fin, narines inégales',p:'Moyen, droit',k:'Épaté, épais'},
       {q:'Tes yeux',v:'Petits, secs',p:'Moyens, regard perçant',k:'Grands, doux, humides'},
+      {q:'Ton regard',v:'Fuyant, mobile',p:'Soutenu, pénétrant',k:'Doux, assuré'},
       {q:'Tes ongles',v:'Cassants, secs',p:'Souples, roses',k:'Épais, solides, clairs'},
+      {q:'Tes mains',v:'Fines, sèches, doigts longs',p:'Moyennes, chaudes, légèrement grasses',k:'Épaisses, moites, fraîches'},
       {q:'Tes lèvres',v:'Fines, gercent facile',p:'Taille moyenne, rouges',k:'Épaisses, pulpeuses'},
       {q:'La forme de ton visage',v:'Petit, anguleux',p:'Ovale, menton pointu',k:'Large, menton rond'},
       {q:'Tes articulations',v:'Craquent, proéminentes',p:'Normales, souples',k:'Épaisses, bien lubrifiées'},
@@ -1207,11 +1529,14 @@ function renderOB(){
       {q:'Tes selles',v:'Sèches, difficiles',p:'Abondantes, molles',k:'Solides, collantes'},
       {q:'Ton sommeil',v:'Léger, insomnies',p:'Court mais réparateur',k:'Profond, aime dormir'},
       {q:'Tes rêves',v:'Mouvement, air, course',p:'Feu, passion, combats',k:'Eau, doux, sentimentaux'},
+      {q:'Tes hobbies',v:'Voyages, musique, créer',p:'Sport, compétition, débats',k:'Lecture, cuisine, famille'},
+      {q:'Ta créativité',v:'Idées abstraites, inventer',p:'Concrétiser, technique',k:'Méthodes, projets long terme'},
       {q:'Ta mémoire',v:'Bonne à court terme',p:'Bonne si objectif clair',k:'Bonne à long terme'},
       {q:'Ton énergie',v:'Par à-coups, irrégulière',p:'Régulière, dynamique',k:'Stable, endurante'},
       {q:'Ta sociabilité',v:'Beaucoup de liens, papillonne',p:'Donnant/donnant, opportuniste',k:'Peu d\'amis mais fidèles'},
       {q:'Ton mental',v:'Vif, agité, créatif',p:'Organisé, ambitieux',k:'Calme, patient, stable'},
       {q:'Tes émotions',v:'Anxieuse, changeante',p:'Irritable, passionnée',k:'Sereine, sentimentale, possessive'},
+      {q:'Ta sensibilité sensorielle',v:'Bruits, ouïe sensible',p:'Lumière, vue sensible',k:'Odeurs, textures'},
       {q:'Ton rapport à l\'argent',v:'Dépense facilement',p:'Bon gestionnaire, ambitieux',k:'Économe, sécurisant'},
       {q:'Ta sensibilité au froid',v:'Aime chaud, déteste froid',p:'Aime froid, déteste chaud',k:'Aime tempéré, déteste humide'},
     ];
@@ -1243,6 +1568,18 @@ function selectDosha(el){
   answered.forEach(e=>{doshaScores[e.dataset.d]++;});
   const prog=document.getElementById('doshaProgress');
   if(prog)prog.textContent=answered.length+' / '+(document.querySelectorAll('.dosha-grid').length)+' répondu(e)s';
+}
+
+function obPrev(){
+  if(obStep<=0)return;
+  obStep--;
+  // Re-saute l'étape date si elle avait été sautée à l'aller (pas de règles)
+  if(OB_STEPS[obStep] && OB_STEPS[obStep].type==='date' && !userProfile.hasPeriod){
+    obStep--;
+  }
+  if(obStep<0)obStep=0;
+  obChoiceIdx=-1;
+  renderOB();
 }
 
 function obNext(){
@@ -1314,10 +1651,70 @@ const DAILY_THEMES_BY_ELEMENT={
   Air:['Les échanges et discussions sont favorisés, communique ce que tu ressens.','Ton esprit est vif, c\'est le bon jour pour apprendre ou planifier.','La journée invite à la légèreté, laisse circuler tes idées librement.'],
   Eau:['Ton intuition est particulièrement forte aujourd\'hui, écoute-la.','Prends un moment pour toi et pour tes émotions, elles ont des choses à te dire.','Les liens affectifs sont mis en lumière, un appel ou un message pourrait faire du bien.'],
 };
+const DOSHA_TODAY_TIP={vata:'ancre-toi et privilégie la régularité',pitta:'accorde-toi de la fraîcheur et du lâcher-prise',kapha:'bouge et stimule ton énergie',tridoshique:'reste à l\'écoute de ton équilibre du moment'};
+
+const DOSHA_MIX_THRESHOLD=9; // écart de points en dessous duquel le dosha secondaire est considéré significatif
+function getSeason(date){
+  const m=date.getMonth()+1; // Hémisphère nord (France)
+  if(m===12||m<=2)return 'Hiver';
+  if(m<=5)return 'Printemps';
+  if(m<=8)return 'Été';
+  return 'Automne';
+}
+const SEASON_DOSHA_TIP={
+  vata:{Hiver:'le froid et le sec augmentent ton Vata, mise sur la chaleur et la régularité',Printemps:'reste ancrée malgré l\'énergie mouvante du printemps',Été:'profite de la chaleur pour t\'apaiser sans t\'épuiser',Automne:'l\'automne est ta saison la plus sensible, redouble de douceur et de rituels stables'},
+  pitta:{Hiver:'le froid tempère naturellement ton feu intérieur, profites-en',Printemps:'reste vigilante à ne pas trop en faire avec l\'énergie du printemps',Été:'l\'été amplifie ton Pitta, privilégie fraîcheur et lâcher-prise',Automne:'la fraîcheur de l\'automne t\'apaise naturellement'},
+  kapha:{Hiver:'le froid et l\'humidité alourdissent ton Kapha, bouge un peu plus que d\'habitude',Printemps:'le printemps est ta saison la plus sensible, stimule activement ton énergie',Été:'la chaleur de l\'été t\'aide naturellement à te dynamiser',Automne:'profite de la légèreté de l\'automne pour rester active'}
+};
+function getAgeNuance(age){
+  if(!age)return '';
+  if(age>=55)return ' Avec les années, le Vata augmente naturellement : accorde-toi encore plus de régularité et de chaleur.';
+  if(age<=25)return ' Le Kapha est souvent plus présent à cet âge : bouger régulièrement t\'aide à rester dynamique.';
+  return '';
+}
+// Classe les 3 doshas par % réel (pas juste le texte 'vata-pitta') pour un croisement fidèle aux vraies proportions
+function getDoshaWeights(){
+  return [
+    {k:'vata',v:userProfile.doshaV??33},
+    {k:'pitta',v:userProfile.doshaP??33},
+    {k:'kapha',v:userProfile.doshaK??34}
+  ].sort((a,b)=>b.v-a.v);
+}
+
 function renderAstroWidget(){
   const el=document.getElementById('astroWidget');
   if(!el)return;
+  // Lien cliquable posé en priorité, avant tout calcul, pour garantir qu'il fonctionne toujours
+  el.style.cursor='pointer';
+  el.onclick=()=>openAstro();
+
   const moon=getMoonPhase(new Date());
+  const weights=getDoshaWeights();
+  const primary=weights[0].k,secondary=weights[1];
+  const isMixed=(weights[0].v-secondary.v)<DOSHA_MIX_THRESHOLD; // écart faible = profil vraiment mixte
+  const doshaLabel=primary.charAt(0).toUpperCase()+primary.slice(1);
+  const season=getSeason(new Date());
+  const cycle=getCurrentCycleInfo();
+
+  // Contexte du jour : lune + cycle (ligne courte, style sous-titre)
+  let context=`${moon.e} ${moon.n}`;
+  if(cycle){
+    context+=` · Jour ${cycle.cycleDay}, phase ${cycle.phase.toLowerCase()}`;
+  }
+
+  // Conseil croisé : dosha (+ secondaire si profil mixte) + cycle + saison + âge
+  let tip=(cycle&&CYCLE_DOSHA_TIP[primary]&&CYCLE_DOSHA_TIP[primary][cycle.phase])
+    ? CYCLE_DOSHA_TIP[primary][cycle.phase].replace(/^[^\s]+\s/,'')
+    : `Profil ${doshaLabel} : ${DOSHA_TODAY_TIP[primary]||DOSHA_TODAY_TIP.vata}`;
+  if(isMixed){
+    const secLabel=secondary.k.charAt(0).toUpperCase()+secondary.k.slice(1);
+    tip+=` (nuancé par ton ${secLabel} : ${DOSHA_TODAY_TIP[secondary.k]})`;
+  }
+  if(SEASON_DOSHA_TIP[primary]&&SEASON_DOSHA_TIP[primary][season]){
+    tip+=`. En ${season.toLowerCase()}, ${SEASON_DOSHA_TIP[primary][season]}`;
+  }
+  tip+=getAgeNuance(userProfile.age);
+
   let signHtml='<div class="astro-widget-sign">Renseigne ta date de naissance dans ton profil pour voir ton astrologie du jour →</div>';
   if(userProfile.birthDate){
     const d=new Date(userProfile.birthDate+'T00:00:00');
@@ -1328,20 +1725,17 @@ function renderAstroWidget(){
       signHtml=`<div class="astro-widget-sign">${sign.e} ${sign.n}, ${themes[dayIdx]}</div>`;
     }
   }
-  el.innerHTML=`<div class="astro-moon">${moon.e}</div><div class="astro-widget-body"><div class="astro-widget-t">${moon.n}</div><div class="astro-widget-s">Phase lunaire du jour</div>${signHtml}</div>`;
-  el.onclick=()=>go('astroScreen');
-  el.style.cursor='pointer';
+  el.innerHTML=`<div class="astro-moon">${moon.e}</div><div class="astro-widget-body"><div class="astro-widget-t">Ta phrase du jour</div><div class="astro-widget-context">${context}</div><div class="astro-widget-tip">${tip}</div>${signHtml}</div>`;
 }
 
 function refreshDash(){
   document.getElementById('dSleep').innerHTML=sleepScore+'<span class="quick-unit">h</span>';
   calcRecovery();
   renderCycle();
+  buildRoutine();
+  calcNutrition();
   updateSessionsMonth();
   renderAstroWidget();
-  // Simulate steps
-  document.getElementById('dSteps').textContent=Math.floor(Math.random()*4000+2000).toLocaleString('fr-FR');
-  document.getElementById('dBurned').textContent=Math.floor(Math.random()*200+100);
 }
 
 function setMood(btn,label,score){
@@ -1385,6 +1779,7 @@ function calcRecovery(){
   document.getElementById('dHormoGauge').innerHTML=gaugeSVG(hormo,'var(--peach)');
   logWellnessToday();
   saveProfile();
+  checkBadges();
 }
 
 function logWellnessToday(){
@@ -1398,6 +1793,27 @@ function logWellnessToday(){
   // Garde seulement les 60 derniers jours pour rester léger
   wellnessLog=wellnessLog.slice(-60);
 }
+
+const CYCLE_DOSHA_TIP={
+  vata:{
+    Menstruelle:'🌙 Vata + phase menstruelle : ton énergie déjà changeante est amplifiée. Repose-toi sans culpabiliser, cherche la chaleur et le calme.',
+    Folliculaire:'🌱 Vata + phase folliculaire : profite de ce regain d\'énergie pour structurer tes idées, sans perdre ta routine stable.',
+    Ovulation:'✨ Vata + ovulation : bon moment pour te sociabiliser, garde quand même des temps d\'ancrage dans la journée.',
+    Lutéale:'🍂 Vata + phase lutéale : l\'anxiété peut monter. Mise sur la régularité, le chaud et des rituels apaisants ce soir.'
+  },
+  pitta:{
+    Menstruelle:'🌙 Pitta + phase menstruelle : lâche prise sur le contrôle, accorde-toi de la douceur et évite les excès aujourd\'hui.',
+    Folliculaire:'🌱 Pitta + phase folliculaire : ta concentration est à son meilleur, avance sur tes projets ambitieux.',
+    Ovulation:'✨ Pitta + ovulation : ta confiance est à son pic, canalise-la sans tomber dans l\'impatience.',
+    Lutéale:'🍂 Pitta + phase lutéale : l\'irritabilité peut pointer. Privilégie la fraîcheur et des activités calmes.'
+  },
+  kapha:{
+    Menstruelle:'🌙 Kapha + phase menstruelle : accepte de ralentir, ton corps a besoin de repos même si tu résistes.',
+    Folliculaire:'🌱 Kapha + phase folliculaire : bouge et stimule-toi, c\'est le bon moment pour te motiver.',
+    Ovulation:'✨ Kapha + ovulation : ton énergie sociale est là, profites-en pour sortir de ta routine.',
+    Lutéale:'🍂 Kapha + phase lutéale : la léthargie peut s\'installer, garde un mouvement doux mais régulier.'
+  }
+};
 
 function buildRoutine(){
   const d=userProfile.dosha;
@@ -1414,11 +1830,111 @@ function buildRoutine(){
     tridoshique:['🪷 Abhyanga huile sésame équilibrante, 10 min','🍵 Petit-déj chaud, simple et équilibré','🧘 Yoga complet, 30 min','💧 Eau tiède + infusion équilibrante','🌙 Méditation gratitude & présence, 10 min'],
   };
   const items=routines[d]||routines.vata;
+  const weights=getDoshaWeights();
+  const primary=weights[0].k,secondary=weights[1];
+  const isMixed=(weights[0].v-secondary.v)<DOSHA_MIX_THRESHOLD;
+  const cycle=getCurrentCycleInfo();
+  const season=getSeason(new Date());
+  if(cycle && CYCLE_DOSHA_TIP[primary] && CYCLE_DOSHA_TIP[primary][cycle.phase]){
+    let tip=CYCLE_DOSHA_TIP[primary][cycle.phase];
+    if(isMixed){
+      const secLabel=secondary.k.charAt(0).toUpperCase()+secondary.k.slice(1);
+      tip+=` (nuancé par ton ${secLabel} : ${DOSHA_TODAY_TIP[secondary.k]})`;
+    }
+    items.push(tip);
+  }
+  if(SEASON_DOSHA_TIP[primary] && SEASON_DOSHA_TIP[primary][season]){
+    items.push(`🍃 En ${season.toLowerCase()} : ${SEASON_DOSHA_TIP[primary][season]}`);
+  }
+  const ageNuance=getAgeNuance(userProfile.age).trim();
+  if(ageNuance)items.push('🎂 '+ageNuance);
   document.getElementById('todoWrap').innerHTML=items.map(t=>`<div class="todo-i"><div class="tck" onclick="toggleTodo(this)"></div><div class="todo-body"><div class="todo-t">${t}</div></div></div>`).join('');
 }
 
 function toggleTodo(el){el.classList.toggle('done');el.nextElementSibling.querySelector('.todo-t').classList.toggle('done');if(el.classList.contains('done')){addXP(10);toast('+10 points 🪷');}}
-function addXP(n){xp+=n;document.getElementById('xpCount').textContent=xp;if(document.getElementById('pfXp'))document.getElementById('pfXp').textContent=xp;document.getElementById('xpFill').style.width=Math.min(xp%100,100)+'%';saveProfile();}
+const CONTENT_BADGES=['streak_7','streak_30','recipes_10','wellness_28','level_5'];
+function badgeById(id){return BADGES.find(b=>b.id===id);}
+function isContentLocked(item){
+  return !!(item.unlock_badge && CONTENT_BADGES.includes(item.unlock_badge) && !unlockedBadges.has(item.unlock_badge));
+}
+
+const BADGES=[
+  {id:'first_session',e:'🧘',n:'Première séance',d:'Tu as complété ta première séance vidéo',cond:()=>sessions>=1},
+  {id:'sessions_10',e:'🌿',n:'10 séances',d:'10 séances de yoga, pilates ou méditation complétées',cond:()=>sessions>=10},
+  {id:'streak_7',e:'🔥',n:'Une semaine régulière',d:'7 jours d\'affilée avec au moins une séance',cond:()=>streak>=7},
+  {id:'streak_30',e:'⚡️',n:'Un mois de constance',d:'30 jours d\'affilée, un vrai rituel installé',cond:()=>streak>=30},
+  {id:'first_recipe',e:'🥗',n:'Première recette',d:'Tu as essayé ta première recette Holistica',cond:()=>triedRecipes.size>=1},
+  {id:'recipes_10',e:'🍽️',n:'10 recettes essayées',d:'10 recettes différentes ajoutées à ton journal',cond:()=>triedRecipes.size>=10},
+  {id:'wellness_28',e:'🌙',n:'Un cycle suivi',d:'28 jours de suivi bien-être (humeur, sommeil, stress)',cond:()=>new Set(wellnessLog.map(w=>w.date)).size>=28},
+  {id:'dossiers_4',e:'🌿',n:'Adepte de naturopathie',d:'4 dossiers de la semaine lus, un mois de bons rituels',cond:()=>readDossiers.size>=4},
+  {id:'level_5',e:'⭐',n:'Niveau 5',d:'500 points cumulés, un beau chemin parcouru',cond:()=>Math.floor(xp/100)+1>=5},
+];
+
+function checkBadges(silent){
+  BADGES.forEach(b=>{
+    if(!unlockedBadges.has(b.id) && b.cond()){
+      unlockedBadges.add(b.id);
+      const isContentUnlock=CONTENT_BADGES.includes(b.id);
+      if(!silent && isContentUnlock)showBadgeCelebration(b);
+      saveProfile();
+    }
+  });
+  if(document.getElementById('badgesGrid'))renderBadges();
+}
+
+function showBadgeCelebration(b){
+  const el=document.createElement('div');
+  el.className='badge-celeb';
+  el.innerHTML=`<div class="badge-celeb-card"><div class="badge-celeb-e">${b.e}</div><div class="badge-celeb-t">Nouveau contenu débloqué !</div><div class="badge-celeb-n">${b.n}</div><div class="badge-celeb-d">${b.d} — de nouvelles recettes et séances bonus sont maintenant accessibles 🎉</div></div>`;
+  document.body.appendChild(el);
+  setTimeout(()=>el.classList.add('show'),20);
+  setTimeout(()=>{el.classList.remove('show');setTimeout(()=>el.remove(),400);},3200);
+}
+
+function renderBadges(){
+  const grid=document.getElementById('badgesGrid');
+  if(!grid)return;
+  grid.innerHTML=BADGES.map(b=>{
+    const unlocked=unlockedBadges.has(b.id);
+    return `<div class="badge-card ${unlocked?'unlocked':'locked'}">
+      <div class="badge-card-e">${unlocked?b.e:'🔒'}</div>
+      <div class="badge-card-n">${b.n}</div>
+      <div class="badge-card-d">${b.d}</div>
+    </div>`;
+  }).join('');
+  document.getElementById('badgesCount').textContent=unlockedBadges.size+'/'+BADGES.length;
+  if(document.getElementById('pfBadgesDetail'))document.getElementById('pfBadgesDetail').textContent=unlockedBadges.size+'/'+BADGES.length+' débloqués';
+}
+
+let lastCelebratedLevel=0;
+// Paliers tous les niveaux (100 pts) jusqu'au niveau 5, puis tous les 2 niveaux (200 pts) ensuite — pour garder un rythme motivant sans surcharger
+function isMilestoneLevel(level){
+  if(level<=5)return true;
+  return (level-5)%2===0;
+}
+function checkLevelMilestone(){
+  const level=Math.floor(xp/100)+1;
+  if(level>lastCelebratedLevel && isMilestoneLevel(level)){
+    lastCelebratedLevel=level;
+    showLevelCelebration(level);
+    saveProfile();
+  }
+}
+function showLevelCelebration(level){
+  const el=document.createElement('div');
+  el.className='badge-celeb';
+  el.innerHTML=`<div class="badge-celeb-card"><div class="badge-celeb-e">🎉</div><div class="badge-celeb-t">Palier atteint</div><div class="badge-celeb-n">Niveau ${level}</div><div class="badge-celeb-d">Continue comme ça, ta régularité paie 🪷</div></div>`;
+  document.body.appendChild(el);
+  setTimeout(()=>el.classList.add('show'),20);
+  setTimeout(()=>{el.classList.remove('show');setTimeout(()=>el.remove(),400);},3200);
+}
+
+function addXP(n){xp+=n;document.getElementById('xpCount').textContent=xp;if(document.getElementById('pfXp'))document.getElementById('pfXp').textContent=xp;document.getElementById('xpFill').style.width=Math.min(xp%100,100)+'%';updateLevel();saveProfile();checkLevelMilestone();}
+function updateLevel(){
+  const level=Math.floor(xp/100)+1;
+  const el=document.getElementById('pfLevel');
+  if(el)el.textContent='Niveau '+level;
+}
 
 /* ═══════ SUIVI DE CYCLE ═══════ */
 function updateCycleLength(v){
@@ -1452,9 +1968,22 @@ function getCyclePhaseInfo(cycleDay,daysUntilNext,cycleLength){
   return{phase:'Lutéale',emoji:best.emoji,energy:daysUntilNext<=5?'Basse':'Moyenne',title:best.title,text:best.text};
 }
 
+function getCurrentCycleInfo(){
+  if(!userProfile.hasPeriod||userProfile.menopause||!userProfile.lastPeriodStart)return null;
+  const len=userProfile.cycleLength||28;
+  const start=new Date(userProfile.lastPeriodStart+'T00:00:00');
+  const today=new Date();today.setHours(0,0,0,0);
+  const diffDays=Math.floor((today-start)/86400000);
+  const cycleDay=((diffDays%len)+len)%len+1;
+  const daysUntilNext=len-cycleDay+1;
+  const info=getCyclePhaseInfo(cycleDay,daysUntilNext,len);
+  return {cycleDay,daysUntilNext,len,...info};
+}
+
 function renderCycle(){
   if(document.getElementById('cycleLenInput'))document.getElementById('cycleLenInput').value=userProfile.cycleLength;
-  if(!userProfile.hasPeriod||userProfile.menopause||!userProfile.lastPeriodStart){
+  const c=getCurrentCycleInfo();
+  if(!c){
     document.getElementById('cycleBadge').textContent='🌸 Cycle';
     document.getElementById('cycleDayLbl').textContent='';
     document.getElementById('cycleBarFill').style.width='0%';
@@ -1463,27 +1992,25 @@ function renderCycle(){
     document.getElementById('cycleEnergy').innerHTML='';
     return;
   }
-  const len=userProfile.cycleLength||28;
-  const start=new Date(userProfile.lastPeriodStart+'T00:00:00');
-  const today=new Date();today.setHours(0,0,0,0);
-  const diffDays=Math.floor((today-start)/86400000);
-  const cycleDay=((diffDays%len)+len)%len+1;
-  const daysUntilNext=len-cycleDay+1;
-  const info=getCyclePhaseInfo(cycleDay,daysUntilNext,len);
-  document.getElementById('cycleBadge').textContent=info.emoji+' '+info.phase;
-  document.getElementById('cycleDayLbl').textContent='Jour '+cycleDay+'/'+len+' · règles dans '+daysUntilNext+'j';
-  document.getElementById('cycleBarFill').style.width=Math.round(cycleDay/len*100)+'%';
-  document.getElementById('cycleMsgTitle').textContent=info.title;
-  document.getElementById('cycleMsgBody').textContent=info.text;
-  document.getElementById('cycleEnergy').innerHTML='<span class="cycle-energy-dot"></span>Énergie estimée : '+info.energy;
+  document.getElementById('cycleBadge').textContent=c.emoji+' '+c.phase;
+  document.getElementById('cycleDayLbl').textContent='Jour '+c.cycleDay+'/'+c.len+' · règles dans '+c.daysUntilNext+'j';
+  document.getElementById('cycleBarFill').style.width=Math.round(c.cycleDay/c.len*100)+'%';
+  document.getElementById('cycleMsgTitle').textContent=c.title;
+  document.getElementById('cycleMsgBody').textContent=c.text;
+  document.getElementById('cycleEnergy').innerHTML='<span class="cycle-energy-dot"></span>Énergie estimée : '+c.energy;
 }
 
 /* ═══════ MOUVEMENT ═══════ */
 const MV_FILTERS=['Tout','Yoga','Pilates','Renforcement','Méditation','Respiration','Yin','Vata','Pitta','Kapha','Matin','Soir','Été','Automne','Hiver','Printemps'];
 const WK_LABELS=['L','M','M','J','V','S','D'];
-function weekdayVideo(i){return VIDEOS[i%VIDEOS.length];}
+function weekdayVideo(i){return VIDEOS.length?VIDEOS[i%VIDEOS.length]:null;}
 
 function renderMvCalendar(){
+  if(!VIDEOS.length){
+    document.getElementById('wkCalRow').innerHTML='';
+    document.getElementById('wkTodayCard').innerHTML='<div style="padding:16px;color:var(--ink-l);font-size:13px;">Chargement des séances...</div>';
+    return;
+  }
   const today=new Date();
   const todayIdx=(today.getDay()+6)%7; // 0=Lundi...6=Dimanche
   const monday=new Date(today);
@@ -1523,6 +2050,11 @@ function setMvFilter(f){activeMvFilter=f;renderMvFilters();renderMv();}
 function renderMv(){
   renderMvCalendar();
   renderMvFilters();
+  updateSessionsMonth();
+  if(!VIDEOS.length){
+    document.getElementById('mvList').innerHTML='<div style="text-align:center;padding:40px 20px;color:var(--ink-l);">Chargement des séances...</div>';
+    return;
+  }
   const f=activeMvFilter;
   const vids=VIDEOS.filter(v=>{
     if(f==='Tout') return true;
@@ -1530,12 +2062,19 @@ function renderMv(){
   });
   document.getElementById('mvList').innerHTML=vids.map(v=>{
     const done=completedVids.has(v.id);
+    const locked=isContentLocked(v);
+    if(locked){
+      const badge=badgeById(v.unlock_badge);
+      return `<div class="mv-card mv-locked" onclick="toast('🔒 Débloque le badge « ${badge?.n||'?'} » pour accéder à cette séance')"><div class="mv-th"><img src="https://img.youtube.com/vi/${v.ytId}/mqdefault.jpg" onerror="this.style.display='none'"><div class="mv-lock-overlay">🔒</div></div><div class="mv-info"><div class="mv-cat">${v.cat}</div><div class="mv-title">${v.title}</div><div class="mv-tags"><span class="mv-tag">${badge?badge.e+' '+badge.n:'Bonus'}</span></div></div></div>`;
+    }
     return `<div class="mv-card" onclick="openVD('${v.id}')"><div class="mv-th"><img src="https://img.youtube.com/vi/${v.ytId}/mqdefault.jpg" onerror="this.style.display='none'"><div class="mv-play">${done?'✓':'▶'}</div></div><div class="mv-info"><div class="mv-cat">${v.cat}</div><div class="mv-title">${v.title}</div><div class="mv-tags"><span class="mv-tag">⏱ ${v.dur}</span><span class="mv-tag">🪷 ${v.dosha}</span><span class="mv-tag">${v.moment}</span>${done?'<span class="mv-tag" style="background:rgba(91,78,168,0.15);color:var(--purple);font-weight:700">✓ Fait</span>':''}</div></div></div>`;
   }).join('')||'<div style="text-align:center;padding:40px 20px;color:var(--ink-l);">Aucune séance dans ce filtre</div>';
 }
 
 function openVD(id){
-  const v=VIDEOS.find(x=>x.id===id);if(!v)return;currentVid=id;
+  const v=VIDEOS.find(x=>x.id===id);if(!v)return;
+  if(isContentLocked(v)){const b=badgeById(v.unlock_badge);toast('🔒 Débloque le badge « '+(b?.n||'?')+' » pour accéder à cette séance');return;}
+  currentVid=id;
   document.getElementById('vdIframe').src=`https://www.youtube.com/embed/${v.ytId}?autoplay=1&rel=0&modestbranding=1`;
   document.getElementById('vdTitle').textContent=v.title;
   document.getElementById('vdDur').textContent=v.dur;
@@ -1567,10 +2106,28 @@ async function toggleVideoFullscreen(){
     toast('📺 Utilise le bouton plein écran du lecteur vidéo');
   }
 }
+function calcStreak(){
+  if(!sessionDates.length)return 0;
+  const uniqueDays=[...new Set(sessionDates)].sort().reverse(); // du plus récent au plus ancien
+  const today=new Date();today.setHours(0,0,0,0);
+  const mostRecent=new Date(uniqueDays[0]+'T00:00:00');
+  const gapFromToday=Math.floor((today-mostRecent)/86400000);
+  if(gapFromToday>1)return 0; // streak cassé si aucune séance hier ou aujourd'hui
+  let count=1;
+  for(let i=1;i<uniqueDays.length;i++){
+    const prev=new Date(uniqueDays[i-1]+'T00:00:00');
+    const cur=new Date(uniqueDays[i]+'T00:00:00');
+    const diff=Math.round((prev-cur)/86400000);
+    if(diff===1)count++;else break;
+  }
+  return count;
+}
+
 function markVDone(){
   if(!currentVid||completedVids.has(currentVid))return;
-  completedVids.add(currentVid);sessions++;streak++;
+  completedVids.add(currentVid);sessions++;
   sessionDates.push(new Date().toISOString().split('T')[0]);
+  streak=calcStreak();
   if(document.getElementById('pfSess'))document.getElementById('pfSess').textContent=sessions;
   if(document.getElementById('pfStreak'))document.getElementById('pfStreak').textContent=streak;
   document.getElementById('vdBtn').textContent='✓ Séance complétée';
@@ -1578,6 +2135,7 @@ function markVDone(){
   if(document.getElementById('wkCalRow'))renderMvCalendar();
   updateSessionsMonth();
   addXP(15);toast('Séance validée ! +15 points 🌿');
+  checkBadges();
 }
 
 function updateSessionsMonth(){
@@ -1916,6 +2474,8 @@ function saveCycleSettings(){
   userProfile.cycleLength=Math.min(45,Math.max(21,len));
   saveProfile();
   renderCycle();
+  buildRoutine();
+  renderAstroWidget();
   toast('Cycle mis à jour ✓');
   go('profil');
 }
@@ -1929,6 +2489,7 @@ function renderRcFilters(){
 function setRcFilter(f){activeRcFilter=f;renderRcFilters();renderRec();}
 
 function renderRec(){
+  if(document.getElementById('dRecipesTried'))document.getElementById('dRecipesTried').textContent=triedRecipes.size;
   renderRcFilters();
   const q=(document.getElementById('rcSrch')?.value||'').toLowerCase();
   const f=activeRcFilter;
@@ -1948,9 +2509,14 @@ function renderRec(){
     return true;
   });
   document.getElementById('rcCount').textContent=filtered.length;
-  document.getElementById('rcGrid').innerHTML=filtered.map(r=>`
-    <div class="rc-card" onclick="openRC('${r.id}')"><div class="rc-img-w"><img class="rc-img" src="${r.img}" onerror="this.style.background='var(--lav-pale)'"><div class="rc-kcal">${r.cal} cal</div></div><div class="rc-body"><div class="rc-name">${r.n}</div><div class="rc-macros"><div class="rc-m"><span class="rc-m-ic">Prot.</span><div class="rc-m-v p">${r.p}g</div></div><div class="rc-m"><span class="rc-m-ic">Gluc.</span><div class="rc-m-v g">${r.g}g</div></div><div class="rc-m"><span class="rc-m-ic">Lip.</span><div class="rc-m-v l">${r.l}g</div></div></div></div></div>
-  `).join('');
+  document.getElementById('rcGrid').innerHTML=filtered.map(r=>{
+    const locked=isContentLocked(r);
+    const badge=locked?badgeById(r.unlock_badge):null;
+    if(locked){
+      return `<div class="rc-card rc-locked" onclick="toast('🔒 Débloque le badge « ${badge?.n||'?'} » pour accéder à cette recette')"><div class="rc-img-w"><img class="rc-img" src="${r.img}" onerror="this.style.background='var(--lav-pale)'"><div class="rc-lock-overlay">🔒</div><div class="rc-kcal">${r.cal} cal</div></div><div class="rc-body"><div class="rc-name">${r.n}</div><div class="rc-lock-hint">${badge?badge.e+' '+badge.n:'Contenu bonus'}</div></div></div>`;
+    }
+    return `<div class="rc-card" onclick="openRC('${r.id}')"><div class="rc-img-w"><img class="rc-img" src="${r.img}" onerror="this.style.background='var(--lav-pale)'"><div class="rc-kcal">${r.cal} cal</div></div><div class="rc-body"><div class="rc-name">${r.n}</div><div class="rc-macros"><div class="rc-m"><span class="rc-m-ic">Prot.</span><div class="rc-m-v p">${r.p}g</div></div><div class="rc-m"><span class="rc-m-ic">Gluc.</span><div class="rc-m-v g">${r.g}g</div></div><div class="rc-m"><span class="rc-m-ic">Lip.</span><div class="rc-m-v l">${r.l}g</div></div></div></div></div>`;
+  }).join('');
 }
 
 function macroRingSVG(p,g,l){
@@ -1972,6 +2538,7 @@ function macroRingSVG(p,g,l){
 
 function openRC(id){
   const r=RECIPES.find(x=>x.id===id);if(!r)return;
+  if(isContentLocked(r)){const b=badgeById(r.unlock_badge);toast('🔒 Débloque le badge « '+(b?.n||'?')+' » pour accéder à cette recette');return;}
   currentRC=r;
   document.getElementById('rdImg').src=r.img;
   document.getElementById('rdTitle').textContent=r.n;
@@ -2009,8 +2576,10 @@ function addRecipeToday(){
   updateRemainingCal();
   document.getElementById('rdBtn').textContent='✓ Ajouté au journal';
   document.getElementById('rdBtn').className='rd-btn added';
+  triedRecipes.add(currentRC.id);
   addXP(5);
   toast(currentRC.n+' ajoutée · +5 points 🌿');
+  checkBadges();
 }
 
 /* ═══════ CHECKOUT ═══════ */

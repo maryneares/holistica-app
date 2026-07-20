@@ -410,6 +410,10 @@ body{font-family:'League Spartan',sans-serif;background:var(--ivory);color:var(-
 .dos-cat{display:inline-block;background:var(--lav-pale);color:var(--purple-m);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;padding:4px 10px;border-radius:20px;margin-bottom:10px;}
 .dos-title{font-family:'League Spartan',sans-serif;font-weight:800;font-size:19px;color:var(--ink);margin-bottom:8px;line-height:1.2;}
 .dos-intro{font-size:13px;color:var(--ink-m);line-height:1.55;margin-bottom:14px;}
+.dos-p{margin-bottom:12px;}
+.dos-p:last-child{margin-bottom:0;}
+.dos-subhead{font-family:'League Spartan',sans-serif;font-weight:800;font-size:15px;color:var(--purple);margin:18px 0 8px;}
+.dos-subhead:first-child{margin-top:0;}
 .dos-tips{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;}
 .dos-tip{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--ink-m);line-height:1.5;}
 .dos-tip-dot{width:6px;height:6px;border-radius:50%;background:var(--purple-m);flex-shrink:0;margin-top:6px;}
@@ -437,6 +441,7 @@ body{font-family:'League Spartan',sans-serif;background:var(--ivory);color:var(-
 .meta-duo-col .meta-t{font-size:12px;margin-bottom:4px;}
 .meta-duo-col .meta-v{font-size:24px;display:block;}
 .meta-duo-col .meta-unit{font-size:11px;margin-left:2px;}
+.meta-duo-note{font-size:10px;color:var(--ink-l);margin-top:3px;line-height:1.3;}
 .meta-duo-sep{width:1px;align-self:stretch;background:var(--border);margin:2px 16px;}
 .meta-macro-lbl{font-size:11px;font-weight:700;color:var(--ink-l);text-transform:uppercase;letter-spacing:.3px;margin-top:16px;padding-top:14px;border-top:1px solid var(--border);}
 
@@ -488,6 +493,9 @@ body{font-family:'League Spartan',sans-serif;background:var(--ivory);color:var(-
 .rd-title{padding:16px 20px 4px;font-size:20px;font-weight:800;color:var(--ink);line-height:1.25;}
 .rd-meta{padding:0 20px 10px;font-size:12px;color:var(--ink-l);}
 .rd-macro-card{background:var(--lav-pale);margin:8px 20px 4px;border-radius:18px;padding:18px;display:flex;align-items:center;gap:18px;}
+.rd-servings{display:flex;gap:8px;padding:12px 20px 4px;}
+.rd-serv-btn{flex:1;background:white;border:1.5px solid var(--border);color:var(--ink-m);padding:10px 4px;border-radius:12px;font-family:'League Spartan',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all .15s;}
+.rd-serv-btn.sel{background:var(--grad);border-color:transparent;color:white;box-shadow:0 2px 10px rgba(91,78,168,0.3);}
 .rd-macro-ring{flex-shrink:0;}
 .rd-macro-stats{display:flex;flex:1;justify-content:space-between;}
 .rd-macro-stat{text-align:center;}
@@ -636,11 +644,13 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="meta-duo-col">
 <div class="meta-t">🔥 Métabolisme de base</div>
 <div class="meta-v" id="dBmr">0<span class="meta-unit">kcal/j</span></div>
+<div class="meta-duo-note">Ce que ton corps consomme au repos</div>
 </div>
 <div class="meta-duo-sep"></div>
 <div class="meta-duo-col">
 <div class="meta-t">🍽️ Apport conseillé</div>
 <div class="meta-v" id="dCalGoal">0<span class="meta-unit">kcal/j</span></div>
+<div class="meta-duo-note">Selon ton activité au quotidien</div>
 </div>
 </div>
 <div class="meta-macro-lbl">Répartition conseillée pour la journée</div>
@@ -758,22 +768,8 @@ document.addEventListener('DOMContentLoaded', function(){
 </div>
 <div class="scroll">
 <div class="sec"><h2>🌿 Ton espace <em>communauté</em></h2></div>
-<div class="ch-card">
-<div class="ch-card-t">Bienvenue dans la communauté Holistica 💜</div>
-<div class="ch-card-p">Lors de ton inscription, tu as reçu un mail avec tes accès au groupe WhatsApp où les challenges sont organisés avec les autres filles.</div>
-<ul class="ch-list">
-<li>Accès au groupe et motivation entre membres</li>
-<li>Chaque semaine et chaque mois des défis de motivation</li>
-<li>Maryne anime une fois par mois une conférence sur un thème avec questions-réponses</li>
-<li>Un cours de yoga ou pilates en visio avec ajustements et corrections (partagez votre écran !)</li>
-</ul>
-<button class="btn-ch" onclick="toast('Lien WhatsApp envoyé par email 💜')">Rejoindre le groupe WhatsApp →</button>
-</div>
-<div class="ch-upgrade">
-<div class="ch-upgrade-t">Tu n'as pas accès ?</div>
-<div class="ch-upgrade-p">La communauté et les challenges sont inclus dans l'offre supérieure. Passe à l'offre Immersion pour rejoindre les filles et bénéficier des lives avec Maryne.</div>
-<button class="btn-ch" style="margin-top:12px;" onclick="go('offers')">Voir les offres →</button>
-</div>
+<div id="chCommunityCard"></div>
+<div id="chUpgradeCard"></div>
 </div>
 </div>
 
@@ -793,9 +789,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <li>Suivi de cycle et bilan ayurvédique</li>
 <li>Recommandations personnalisées</li>
 </ul>
-<button class="btn-ob" onclick="goToCheckout('https://buy.stripe.com/3cI00jeXw06WaAScEffIs01')">M'abonner</button>
-<div class="offer-or">ou</div>
-<div id="paypal-button-container-P-8MW24146JH503981NNJLHUCA"></div>
+<button class="btn-ob" onclick="goToCheckout('https://buy.stripe.com/3cI3cw2cvaJv5wMerf7IY00')">M'abonner</button>
 </div>
 
 <div class="offer-card hl">
@@ -809,9 +803,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <li>Lives et cours en visio avec Maryne</li>
 <li>Conférence mensuelle questions-réponses</li>
 </ul>
-<button class="btn-ob purple" onclick="goToCheckout('https://buy.stripe.com/14A9AT02Cg5U9wOgUvfIs02')">M'abonner</button>
-<div class="offer-or light">ou</div>
-<div id="paypal-button-container-P-7JL17677FY990193SNJLHU3A"></div>
+<button class="btn-ob purple" onclick="goToCheckout('https://buy.stripe.com/aFa00k04neZLaR62Ix7IY01')">M'abonner</button>
 </div>
 
 
@@ -832,12 +824,6 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="pf-xp-l"><span id="pfLevel">Niveau 1</span> · <span id="xpCount">0</span> points</div>
 </div>
 <div class="scroll">
-<div class="sec"><h2>Métabolisme <em>de base</em></h2></div>
-<div class="meta-card">
-<div class="meta-t">🔥 Ton métabolisme de base</div>
-<div class="meta-v" id="pfMeta">1 420 <span class="meta-unit">kcal/jour</span></div>
-<div class="meta-note">C'est ce que ton corps consomme au repos, sans aucune activité. Tes calories journalières à consommer doivent être légèrement supérieures pour couvrir tes dépenses réelles.</div>
-</div>
 <div class="sec"><h2>Mon <em>espace</em></h2></div>
 <div class="pf-acts">
 <div class="pa" onclick="openEditInfo()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.5 3-6.5 7-6.5s7 3 7 6.5"/></svg></div><div class="pa-body"><div class="pa-t">Modifier mes informations</div><div class="pa-s">Nom, poids, taille, activité</div></div><span class="pa-arr">›</span></div>
@@ -846,7 +832,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="pa" onclick="go('badgesScreen');renderBadges();"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M8.5 13.5L7 22l5-3 5 3-1.5-8.5"/></svg></div><div class="pa-body"><div class="pa-t">Mes badges</div><div class="pa-s" id="pfBadgesDetail">0/9 débloqués</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="openCycleSettings()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg></div><div class="pa-body"><div class="pa-t">Durée & suivi de mon cycle</div><div class="pa-s">Dernières règles, durée, comprendre les phases</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="openAstro()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/><circle cx="12" cy="12" r="4"/></svg></div><div class="pa-body"><div class="pa-t">Mon thème astral</div><div class="pa-s" id="paAstroSub">Renseigne ta date de naissance</div></div><span class="pa-arr">›</span></div>
-<div class="pa" onclick="go('offers')"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6L17 7M7 17l-1.4 1.4"/><circle cx="12" cy="12" r="3"/></svg></div><div class="pa-body"><div class="pa-t">Mon abonnement</div><div class="pa-s">Plan Équilibre · 29€/mois</div></div><span class="pa-arr">›</span></div>
+<div class="pa" onclick="go('offers')"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6L17 7M7 17l-1.4 1.4"/><circle cx="12" cy="12" r="3"/></svg></div><div class="pa-body"><div class="pa-t">Mon abonnement</div><div class="pa-s" id="pfSubscription">—</div></div><span class="pa-arr">›</span></div>
 </div>
 <div class="sec"><h2>Confidentialité <em>& données</em></h2></div>
 <div class="pf-acts">
@@ -1056,6 +1042,12 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="rd-img-w"><img id="rdImg" src="" onerror="this.style.background='var(--lav-pale)'"></div>
 <div class="rd-title" id="rdTitle"></div>
 <div class="rd-meta" id="rdMeta"></div>
+<div class="rd-servings" id="rdServings">
+<button class="rd-serv-btn" data-n="1" onclick="setServings(1)">1 pers.</button>
+<button class="rd-serv-btn" data-n="2" onclick="setServings(2)">2 pers.</button>
+<button class="rd-serv-btn" data-n="3" onclick="setServings(3)">3 pers.</button>
+<button class="rd-serv-btn" data-n="4" onclick="setServings(4)">4 pers.</button>
+</div>
 <div class="rd-macro-card">
 <div class="rd-macro-ring" id="rdRing"></div>
 <div class="rd-macro-stats">
@@ -1088,7 +1080,6 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="toast" id="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script src="https://www.paypal.com/sdk/js?client-id=BAAw4hUJwYHWHdiBqW38C0pMrWLj4NuI2xS04x6wyhjI1BThvo72cM2ZDbcsl6FhnHZIeH7D1mrW1_2Bpc&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
 <script>
 /* ═══════ SUPABASE ═══════ */
 const SUPABASE_URL='https://lsoddhgahdfcpmuydmbt.supabase.co';
@@ -1103,6 +1094,16 @@ async function allerVersStripe(lienBase) {
   window.location.href = `${lienBase}?client_reference_id=${user.id}`;
 }
 let currentUser=null;
+
+// Retourne la date locale (YYYY-MM-DD) au lieu de la date UTC.
+// new Date().toISOString() convertit en UTC, donc à Paris (UTC+1/+2), autour de minuit
+// ou après un setHours(0,0,0,0), ça décalait "aujourd'hui" d'un jour en arrière —
+// et c'est ce qui empêchait les dossiers Naturo publiés "aujourd'hui" de s'afficher.
+function localDateStr(d){
+  d=d||new Date();
+  const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${day}`;
+}
 
 /* ═══════ DATA ═══════ */
 let VIDEOS=[];
@@ -1134,9 +1135,9 @@ loadContent();
 
 
 /* ═══════ STATE ═══════ */
-let xp=0,sessions=0,streak=0,currentVid=null,completedVids=new Set(),triedRecipes=new Set(),unlockedBadges=new Set(),readDossiers=new Set(),naturoViewId=null;
+let xp=0,sessions=0,streak=0,currentVid=null,completedVids=new Set(),triedRecipes=new Set(),unlockedBadges=new Set(),readDossiers=new Set(),naturoViewId=null,loginDates=new Set();
 let dailyCalGoal=2000,consumedCal=0,currentRC=null,sessionDates=[],wellnessLog=[],retakeDoshaMode=false;
-let userProfile={name:'',lastName:'',email:'',goal:'bien-être',age:30,weight:62,height:165,activity:'modérée',hasPeriod:true,menopause:false,dosha:'vata',lastPeriodStart:'',doshaV:33,doshaP:33,doshaK:34,cycleLength:28,birthDate:'',birthTime:'',birthPlace:''};
+let userProfile={name:'',lastName:'',email:'',goal:'bien-être',age:30,weight:62,height:165,activity:'modérée',hasPeriod:true,menopause:false,dosha:'vata',lastPeriodStart:'',doshaV:33,doshaP:33,doshaK:34,cycleLength:28,birthDate:'',birthTime:'',birthPlace:'',subscriptionStatus:'inactive',subscriptionPlan:null};
 let moodScore=0,sleepScore=8,stressScore=5;
 let activeMvFilter='Tout',activeRcFilter='Tout';
 
@@ -1237,10 +1238,22 @@ async function signInWithOAuth(provider){
 }
 
 async function loadProfileAndEnter(){
-  const {data:profile,error}=await sb.from('profiles').select('*').eq('id',currentUser.id).maybeSingle();
+  let data,error;
+  try{
+    const timeout=new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')),12000));
+    ({data,error}=await Promise.race([
+      sb.from('profiles').select('*').eq('id',currentUser.id).maybeSingle(),
+      timeout
+    ]));
+  }catch(e){
+    profileLoaded=false;
+    toast(e.message==='timeout'?'⚠️ La connexion à Holistica prend trop de temps, réessaie dans un instant':'⚠️ Erreur réseau : '+e.message);
+    return;
+  }
+  const profile=data;
   if(error){console.error('Erreur profil:',error);toast('⚠️ '+error.message);}
   if(profile){
-    userProfile={name:profile.name||'',lastName:profile.last_name||'',email:profile.email||'',goal:profile.goal||'bien-être',age:profile.age||30,weight:profile.weight||62,height:profile.height||165,activity:profile.activity||'modérée',hasPeriod:profile.has_period,menopause:profile.menopause,dosha:profile.dosha||'vata',lastPeriodStart:profile.last_period_start||'',doshaV:profile.dosha_v??33,doshaP:profile.dosha_p??33,doshaK:profile.dosha_k??34,cycleLength:profile.cycle_length||28,birthDate:profile.birth_date||'',birthTime:profile.birth_time||'',birthPlace:profile.birth_place||''};
+    userProfile={name:profile.name||'',lastName:profile.last_name||'',email:profile.email||'',goal:profile.goal||'bien-être',age:profile.age||30,weight:profile.weight||62,height:profile.height||165,activity:profile.activity||'modérée',hasPeriod:profile.has_period,menopause:profile.menopause,dosha:profile.dosha||'vata',lastPeriodStart:profile.last_period_start||'',doshaV:profile.dosha_v??33,doshaP:profile.dosha_p??33,doshaK:profile.dosha_k??34,cycleLength:profile.cycle_length||28,birthDate:profile.birth_date||'',birthTime:profile.birth_time||'',birthPlace:profile.birth_place||'',subscriptionStatus:profile.subscription_status||'inactive',subscriptionPlan:profile.subscription_plan||null};
     xp=profile.xp||0;sessions=profile.sessions||0;
     moodScore=profile.mood_score||0;sleepScore=profile.sleep_score||7;stressScore=profile.stress_score||5;
     completedVids=new Set(profile.completed_videos||[]);
@@ -1249,11 +1262,30 @@ async function loadProfileAndEnter(){
     triedRecipes=new Set(profile.tried_recipes||[]);
     unlockedBadges=new Set(profile.badges_unlocked||[]);
     readDossiers=new Set(profile.read_dossiers||[]);
+    loginDates=new Set(profile.login_dates||[]);
+    // Log du jour de connexion actuel (dédupliqué automatiquement par le Set) — sert de base au système de paliers tous les 15 jours actifs
+    loginDates.add(localDateStr());
     streak=calcStreak();
     lastCelebratedLevel=profile.last_celebrated_level??(Math.floor(xp/100)+1);
+    if(userProfile.subscriptionStatus!=='active'){
+      // Profil complet mais pas (ou plus) d'abonnement actif : on bloque l'accès et on affiche les offres
+      go('offers');
+      document.getElementById('bnav').style.display='none';
+      saveProfile();
+      return;
+    }
     go('dashboard');enterApp();addXP(0);checkBadges(true);
+    saveProfile();
   } else {
+    // Réinitialisation complète avant de démarrer : sans ça, un précédent essai
+    // resté en mémoire (ex: plusieurs comptes testés sans recharger la page)
+    // fait "sauter" des questions déjà vues, car obStep repart d'où il en était.
+    obStep=0;
+    obChoiceIdx=-1;
+    doshaScores={v:0,p:0,k:0};
+    retakeDoshaMode=false;
     go('onboarding');
+    renderOB();
   }
 }
 
@@ -1271,7 +1303,7 @@ function saveProfile(){
       birth_date:userProfile.birthDate||null,birth_time:userProfile.birthTime||null,birth_place:userProfile.birthPlace,
       xp,sessions,streak,mood_score:moodScore,sleep_score:sleepScore,stress_score:stressScore,
       completed_videos:Array.from(completedVids),session_dates:sessionDates,wellness_log:wellnessLog,
-      tried_recipes:Array.from(triedRecipes),badges_unlocked:Array.from(unlockedBadges),last_celebrated_level:lastCelebratedLevel,read_dossiers:Array.from(readDossiers),updated_at:new Date().toISOString()
+      tried_recipes:Array.from(triedRecipes),badges_unlocked:Array.from(unlockedBadges),last_celebrated_level:lastCelebratedLevel,read_dossiers:Array.from(readDossiers),login_dates:Array.from(loginDates),updated_at:new Date().toISOString()
     });
   },600);
 }
@@ -1315,7 +1347,46 @@ window.addEventListener('load',async()=>{
 });
 
 /* ═══════ NAV ═══════ */
+const PROTECTED_SCREENS=['dashboard','mouvement','recettes','naturo','challenge','doshaProfile','editInfo','wellnessHistory','badgesScreen','cycleSettings','astroScreen'];
+// ⚠️ À remplacer par le vrai lien d'invitation du groupe WhatsApp Holistica Club
+const WHATSAPP_GROUP_LINK='https://chat.whatsapp.com/REMPLACER_PAR_TON_LIEN';
+
+function renderChallenge(){
+  const isImmersion=userProfile.subscriptionPlan==='immersion';
+  const communityCard=document.getElementById('chCommunityCard');
+  const upgradeCard=document.getElementById('chUpgradeCard');
+  if(!communityCard||!upgradeCard)return;
+
+  communityCard.innerHTML=`<div class="ch-card">
+    <div class="ch-card-t">Bienvenue dans la communauté Holistica 💜</div>
+    <div class="ch-card-p">${isImmersion?'Ton accès au groupe WhatsApp est actif — les challenges y sont organisés avec les autres filles.':'La communauté et les challenges WhatsApp sont réservés au Plan Immersion.'}</div>
+    <ul class="ch-list">
+      <li>Accès au groupe et motivation entre membres</li>
+      <li>Chaque semaine et chaque mois des défis de motivation</li>
+      <li>Maryne anime une fois par mois une conférence sur un thème avec questions-réponses</li>
+      <li>Un cours de yoga ou pilates en visio avec ajustements et corrections (partagez votre écran !)</li>
+    </ul>
+    ${isImmersion
+      ?`<a class="btn-ch" style="display:block;text-align:center;text-decoration:none;" href="${WHATSAPP_GROUP_LINK}" target="_blank" rel="noopener">Rejoindre le groupe WhatsApp →</a>`
+      :`<button class="btn-ch" onclick="go('offers')" style="opacity:.6;">🔒 Réservé au Plan Immersion</button>`
+    }
+  </div>`;
+
+  upgradeCard.innerHTML=isImmersion?'':`<div class="ch-upgrade">
+    <div class="ch-upgrade-t">Tu n'as pas accès ?</div>
+    <div class="ch-upgrade-p">La communauté et les challenges sont inclus dans l'offre supérieure. Passe à l'offre Immersion pour rejoindre les filles et bénéficier des lives avec Maryne.</div>
+    <button class="btn-ch" style="margin-top:12px;" onclick="go('offers')">Voir les offres →</button>
+  </div>`;
+}
+
 function go(id){
+  // Garde-fou : impossible d'accéder aux écrans du contenu sans abonnement actif,
+  // même en forçant la navigation (ex: via la console). Le profil, les offres,
+  // la confidentialité et la déconnexion restent accessibles pour gérer son compte.
+  if(PROTECTED_SCREENS.includes(id) && currentUser && userProfile.subscriptionStatus!=='active'){
+    id='offers';
+    toast('🔒 Abonne-toi pour accéder à ton espace Holistica');
+  }
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   document.querySelectorAll('.ni').forEach(n=>n.classList.remove('act'));
@@ -1325,6 +1396,7 @@ function go(id){
   if(id==='naturo')renderNaturo();
   if(id==='dashboard')refreshDash();
   if(id==='doshaProfile')renderDoshaProfile();
+  if(id==='challenge')renderChallenge();
 }
 
 const ACTIVITY_MULTIPLIER={'sédentaire':1.2,'légère':1.375,'modérée':1.55,'active':1.725,'très active':1.9};
@@ -1361,13 +1433,27 @@ const CATEGORY_META={
 };
 
 function openArchiveDossier(id){naturoViewId=id;renderNaturo();}
+
+// Met en forme le texte d'un dossier : respecte les retours à la ligne saisis dans l'admin
+// (une ligne = un paragraphe). Une ligne qui commence par un emoji est traitée automatiquement
+// comme un sous-titre (mise en gras/couleur) — pas besoin de taper ## devant.
+// "## Sous-titre" reste aussi supporté pour les cas sans emoji.
+const EMOJI_START_RE=/^\s*(\p{Extended_Pictographic}(\uFE0F|\u200D\p{Extended_Pictographic})*)+/u;
+function formatDossierText(text){
+  if(!text)return '';
+  return text.split(/\n+/).map(line=>line.trim()).filter(Boolean).map(line=>{
+    if(line.startsWith('## '))return `<div class="dos-subhead">${line.slice(3)}</div>`;
+    if(EMOJI_START_RE.test(line))return `<div class="dos-subhead">${line}</div>`;
+    return `<p class="dos-p">${line}</p>`;
+  }).join('');
+}
 function backToCurrentDossier(){naturoViewId=null;renderNaturo();}
 
 function renderNaturo(){
   const body=document.getElementById('naturoBody');
   if(!body)return;
   const today=new Date();today.setHours(0,0,0,0);
-  const todayStr=today.toISOString().split('T')[0];
+  const todayStr=localDateStr(today);
   const published=DOSSIERS.filter(d=>d.publish_date<=todayStr).sort((a,b)=>b.publish_date.localeCompare(a.publish_date));
   if(!published.length){
     body.innerHTML='<div class="dos-empty">🌿 Le premier dossier de la semaine arrive bientôt, reviens vite !</div>';
@@ -1405,7 +1491,7 @@ function renderNaturo(){
     ${viewing.image?`<img class="dos-img" src="${viewing.image}" onerror="this.style.display='none'">`:''}
     <div class="dos-body">
       <div class="dos-title">${viewing.title}</div>
-      <div class="dos-intro">${viewing.intro||''}</div>
+      <div class="dos-intro">${formatDossierText(viewing.intro)}</div>
       <div class="dos-tips">${(viewing.tips||[]).map(t=>`<div class="dos-tip"><span class="dos-tip-dot"></span>${t}</div>`).join('')}</div>
       <button class="btn-w" onclick="markDossierRead('${viewing.id}')" ${isRead?'disabled':''} style="${isRead?'opacity:.6;':''}">${isRead?'✓ Dossier lu':'Marquer comme lu · +'+(viewing.points||10)+' points'}</button>
     </div>
@@ -1443,6 +1529,10 @@ function markDossierRead(id){
 
 function enterApp(){
   document.getElementById('bnav').style.display='flex';
+  if(document.getElementById('pfSubscription')){
+    const planLabels={equilibre:'Plan Équilibre · 29€/mois',immersion:'Plan Immersion · 49€/mois'};
+    document.getElementById('pfSubscription').textContent=userProfile.subscriptionPlan?planLabels[userProfile.subscriptionPlan]||'Abonnement actif':'Aucun abonnement actif';
+  }
   const h=new Date().getHours();
   document.getElementById('dGreet').textContent=h<12?'Bonjour ☀️':h<18?'Bon après-midi 🌤️':'Bonsoir 🌙';
   document.getElementById('dNameDisplay').textContent=userProfile.name||'toi';
@@ -1500,7 +1590,7 @@ function renderOB(){
     html+='<div class="ob-opts">'+s.opts.map((o,i)=>'<div class="ob-opt" onclick="selectOBOpt(this,'+i+')">'+o+'</div>').join('')+'</div>';
   } else if(s.type==='date'){
     html+='<div style="font-size:13px;color:rgba(255,255,255,0.8);text-align:center;margin-bottom:20px;">'+s.subtitle+'</div>';
-    const today=new Date().toISOString().split('T')[0];
+    const today=localDateStr();
     html+='<input type="date" class="ob-input" id="obLastPeriod" max="'+today+'" style="text-align:center;">';
   } else if(s.type==='dosha'){
     html+='<div style="font-size:13px;color:rgba(255,255,255,0.8);text-align:center;margin-bottom:16px;">'+s.subtitle+'</div>';
@@ -1540,7 +1630,7 @@ function renderOB(){
       {q:'Ton rapport à l\'argent',v:'Dépense facilement',p:'Bon gestionnaire, ambitieux',k:'Économe, sécurisant'},
       {q:'Ta sensibilité au froid',v:'Aime chaud, déteste froid',p:'Aime froid, déteste chaud',k:'Aime tempéré, déteste humide'},
     ];
-    html+='<div style="max-height:400px;overflow-y:auto;scrollbar-width:none;">';
+    html+='<div>';
     qs.forEach((q,i)=>{
       html+=`<div style="margin-bottom:14px;"><div class="dosha-q-label">${i+1}. ${q.q}</div><div class="dosha-grid"><div class="dg-item v" data-q="${i}" data-d="v" onclick="selectDosha(this)">${q.v}</div><div class="dg-item p" data-q="${i}" data-d="p" onclick="selectDosha(this)">${q.p}</div><div class="dg-item k" data-q="${i}" data-d="k" onclick="selectDosha(this)">${q.k}</div></div></div>`;
     });
@@ -1629,6 +1719,12 @@ function obNext(){
       return;
     }
     enterApp();
+    // Nouveau compte : jamais d'abonnement actif à ce stade → on bloque l'accès et on affiche les offres.
+    // enterApp() a déjà déclenché saveProfile() (via calcNutrition), donc le profil est bien enregistré.
+    if(userProfile.subscriptionStatus!=='active'){
+      go('offers');
+      document.getElementById('bnav').style.display='none';
+    }
     return;
   }
   obChoiceIdx=-1;
@@ -1783,7 +1879,7 @@ function calcRecovery(){
 }
 
 function logWellnessToday(){
-  const today=new Date().toISOString().split('T')[0];
+  const today=localDateStr();
   const existing=wellnessLog.find(w=>w.date===today);
   if(existing){
     existing.sleep=sleepScore;existing.stress=stressScore;existing.mood=moodScore;
@@ -1852,7 +1948,7 @@ function buildRoutine(){
 }
 
 function toggleTodo(el){el.classList.toggle('done');el.nextElementSibling.querySelector('.todo-t').classList.toggle('done');if(el.classList.contains('done')){addXP(10);toast('+10 points 🪷');}}
-const CONTENT_BADGES=['streak_7','streak_30','recipes_10','wellness_28','level_5'];
+const CONTENT_BADGES=['streak_7','streak_30','recipes_10','wellness_28','level_5','active_15','active_30','active_45','active_60','active_75','active_90'];
 function badgeById(id){return BADGES.find(b=>b.id===id);}
 function isContentLocked(item){
   return !!(item.unlock_badge && CONTENT_BADGES.includes(item.unlock_badge) && !unlockedBadges.has(item.unlock_badge));
@@ -1861,13 +1957,19 @@ function isContentLocked(item){
 const BADGES=[
   {id:'first_session',e:'🧘',n:'Première séance',d:'Tu as complété ta première séance vidéo',cond:()=>sessions>=1},
   {id:'sessions_10',e:'🌿',n:'10 séances',d:'10 séances de yoga, pilates ou méditation complétées',cond:()=>sessions>=10},
-  {id:'streak_7',e:'🔥',n:'Une semaine régulière',d:'7 jours d\'affilée avec au moins une séance',cond:()=>streak>=7},
-  {id:'streak_30',e:'⚡️',n:'Un mois de constance',d:'30 jours d\'affilée, un vrai rituel installé',cond:()=>streak>=30},
+  {id:'streak_7',e:'🔥',n:'Série de 7 jours',d:'7 jours d\'affilée avec au moins une séance',cond:()=>streak>=7},
+  {id:'streak_30',e:'⚡️',n:'Série de 30 jours',d:'30 jours d\'affilée, un vrai rituel installé',cond:()=>streak>=30},
   {id:'first_recipe',e:'🥗',n:'Première recette',d:'Tu as essayé ta première recette Holistica',cond:()=>triedRecipes.size>=1},
   {id:'recipes_10',e:'🍽️',n:'10 recettes essayées',d:'10 recettes différentes ajoutées à ton journal',cond:()=>triedRecipes.size>=10},
   {id:'wellness_28',e:'🌙',n:'Un cycle suivi',d:'28 jours de suivi bien-être (humeur, sommeil, stress)',cond:()=>new Set(wellnessLog.map(w=>w.date)).size>=28},
   {id:'dossiers_4',e:'🌿',n:'Adepte de naturopathie',d:'4 dossiers de la semaine lus, un mois de bons rituels',cond:()=>readDossiers.size>=4},
   {id:'level_5',e:'⭐',n:'Niveau 5',d:'500 points cumulés, un beau chemin parcouru',cond:()=>Math.floor(xp/100)+1>=5},
+  {id:'active_15',e:'🌸',n:'15 jours de connexion',d:'Palier débloqué tous les 15 jours d\'utilisation cumulés de l\'app',cond:()=>loginDates.size>=15},
+  {id:'active_30',e:'🌺',n:'30 jours de connexion',d:'Palier débloqué tous les 15 jours d\'utilisation cumulés de l\'app',cond:()=>loginDates.size>=30},
+  {id:'active_45',e:'🌷',n:'45 jours de connexion',d:'Palier débloqué tous les 15 jours d\'utilisation cumulés de l\'app',cond:()=>loginDates.size>=45},
+  {id:'active_60',e:'🌻',n:'60 jours de connexion',d:'Palier débloqué tous les 15 jours d\'utilisation cumulés de l\'app',cond:()=>loginDates.size>=60},
+  {id:'active_75',e:'🪷',n:'75 jours de connexion',d:'Palier débloqué tous les 15 jours d\'utilisation cumulés de l\'app',cond:()=>loginDates.size>=75},
+  {id:'active_90',e:'✨',n:'90 jours de connexion',d:'Palier débloqué tous les 15 jours d\'utilisation cumulés de l\'app, une régularité exemplaire',cond:()=>loginDates.size>=90},
 ];
 
 function checkBadges(silent){
@@ -2126,7 +2228,7 @@ function calcStreak(){
 function markVDone(){
   if(!currentVid||completedVids.has(currentVid))return;
   completedVids.add(currentVid);sessions++;
-  sessionDates.push(new Date().toISOString().split('T')[0]);
+  sessionDates.push(localDateStr());
   streak=calcStreak();
   if(document.getElementById('pfSess'))document.getElementById('pfSess').textContent=sessions;
   if(document.getElementById('pfStreak'))document.getElementById('pfStreak').textContent=streak;
@@ -2536,22 +2638,49 @@ function macroRingSVG(p,g,l){
   return {svg:`<svg width="80" height="80" viewBox="0 0 80 80">${paths}</svg>`,pPct,gPct,lPct};
 }
 
-function openRC(id){
-  const r=RECIPES.find(x=>x.id===id);if(!r)return;
-  if(isContentLocked(r)){const b=badgeById(r.unlock_badge);toast('🔒 Débloque le badge « '+(b?.n||'?')+' » pour accéder à cette recette');return;}
-  currentRC=r;
-  document.getElementById('rdImg').src=r.img;
-  document.getElementById('rdTitle').textContent=r.n;
-  document.getElementById('rdMeta').textContent=`Pour ${r.servings} personnes · ${r.dur} · ${r.cal} cal`;
-  const {svg,pPct,gPct,lPct}=macroRingSVG(r.p,r.g,r.l);
+let selectedServings=1;
+
+// Multiplie le premier nombre trouvé dans le texte d'un ingrédient (ex: "200 g de riz" → "400 g de riz" pour x2).
+// Les ingrédients sans quantité chiffrée en début (ex: "sel", "poivre") restent inchangés.
+function scaleIngredientText(text,factor){
+  return text.replace(/(\d+(?:[.,]\d+)?)/,(m)=>{
+    const num=parseFloat(m.replace(',','.'));
+    let scaled=Math.round(num*factor*10)/10;
+    return (scaled%1===0)?String(scaled):String(scaled).replace('.',',');
+  });
+}
+
+function setServings(n){
+  selectedServings=n;
+  renderRecipeServings();
+}
+
+function renderRecipeServings(){
+  const r=currentRC;
+  if(!r)return;
+  const factor=selectedServings; // les valeurs stockées (r.cal, r.p, r.g, r.l, r.ing) sont basées sur 1 personne
+  document.querySelectorAll('.rd-serv-btn').forEach(b=>b.classList.toggle('sel',+b.dataset.n===selectedServings));
+  const cal=Math.round(r.cal*factor),p=Math.round(r.p*factor),g=Math.round(r.g*factor),l=Math.round(r.l*factor);
+  document.getElementById('rdMeta').textContent=`Pour ${selectedServings} personne${selectedServings>1?'s':''} · ${r.dur} · ${cal} cal`;
+  const {svg,pPct,gPct,lPct}=macroRingSVG(p,g,l);
   document.getElementById('rdRing').innerHTML=svg;
   document.getElementById('rdPPct').textContent=pPct+'%';
   document.getElementById('rdGPct').textContent=gPct+'%';
   document.getElementById('rdLPct').textContent=lPct+'%';
-  document.getElementById('rdPG').textContent=r.p+'g';
-  document.getElementById('rdGG').textContent=r.g+'g';
-  document.getElementById('rdLG').textContent=r.l+'g';
-  document.getElementById('rdIng').innerHTML=r.ing.map(i=>`<div class="rd-ing-i"><span class="rd-ing-dot"></span>${i}</div>`).join('');
+  document.getElementById('rdPG').textContent=p+'g';
+  document.getElementById('rdGG').textContent=g+'g';
+  document.getElementById('rdLG').textContent=l+'g';
+  document.getElementById('rdIng').innerHTML=r.ing.map(i=>`<div class="rd-ing-i"><span class="rd-ing-dot"></span>${scaleIngredientText(i,factor)}</div>`).join('');
+}
+
+function openRC(id){
+  const r=RECIPES.find(x=>x.id===id);if(!r)return;
+  if(isContentLocked(r)){const b=badgeById(r.unlock_badge);toast('🔒 Débloque le badge « '+(b?.n||'?')+' » pour accéder à cette recette');return;}
+  currentRC=r;
+  selectedServings=1;
+  document.getElementById('rdImg').src=r.img;
+  document.getElementById('rdTitle').textContent=r.n;
+  renderRecipeServings();
   document.getElementById('rdSteps').innerHTML=r.steps.map((s,i)=>`<div class="rd-step"><div class="rd-step-n">${i+1}</div><div>${s}</div></div>`).join('');
   if(r.tips&&r.tips.length){
     document.getElementById('rdTipsWrap').style.display='block';
@@ -2572,7 +2701,7 @@ function updateRemainingCal(){
 
 function addRecipeToday(){
   if(!currentRC)return;
-  consumedCal+=currentRC.cal;
+  consumedCal+=Math.round(currentRC.cal*selectedServings);
   updateRemainingCal();
   document.getElementById('rdBtn').textContent='✓ Ajouté au journal';
   document.getElementById('rdBtn').className='rd-btn added';
@@ -2600,43 +2729,6 @@ trackEvent('clic_offre');
 }
 /* ═══════ TOAST ═══════ */
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
-
-/* ═══════ BOUTONS PAYPAL ═══════ */
-window.addEventListener('load',()=>{
-  setTimeout(()=>{
-    const c1=document.getElementById('paypal-button-container-P-8MW24146JH503981NNJLHUCA');
-    const c2=document.getElementById('paypal-button-container-P-7JL17677FY990193SNJLHU3A');
-    try{
-      if(window.paypal){
-        paypal.Buttons({
-          style:{shape:'rect',color:'gold',layout:'vertical',label:'subscribe'},
-          createSubscription:function(data,actions){
-            return actions.subscription.create({plan_id:'P-8MW24146JH503981NNJLHUCA'});
-          },
-          onApprove:function(data){toast('Abonnement Équilibre activé 🌸');},
-          onError:function(err){if(c1)c1.innerHTML='<div style="font-size:11px;color:var(--ink-l);text-align:center;">Paiement PayPal indisponible pour le moment</div>';}
-        }).render('#paypal-button-container-P-8MW24146JH503981NNJLHUCA');
-
-        paypal.Buttons({
-          style:{shape:'rect',color:'gold',layout:'vertical',label:'subscribe'},
-          createSubscription:function(data,actions){
-            return actions.subscription.create({plan_id:'P-7JL17677FY990193SNJLHU3A'});
-          },
-          onApprove:function(data){toast('Abonnement Immersion activé 🌸');},
-          onError:function(err){if(c2)c2.innerHTML='<div style="font-size:11px;color:rgba(255,255,255,0.8);text-align:center;">Paiement PayPal indisponible pour le moment</div>';}
-        }).render('#paypal-button-container-P-7JL17677FY990193SNJLHU3A');
-      } else {
-        // Le SDK PayPal n'a pas chargé du tout (bloqué par un bloqueur de pub, réseau, etc.)
-        if(c1)c1.innerHTML='<div style="font-size:11px;color:var(--ink-l);text-align:center;">Paiement PayPal indisponible (vérifie ta connexion ou désactive ton bloqueur de pub)</div>';
-        if(c2)c2.innerHTML='<div style="font-size:11px;color:rgba(255,255,255,0.8);text-align:center;">Paiement PayPal indisponible (vérifie ta connexion ou désactive ton bloqueur de pub)</div>';
-      }
-    }catch(e){
-      console.log('PayPal buttons not loaded:',e);
-      if(c1)c1.innerHTML='<div style="font-size:11px;color:var(--ink-l);text-align:center;">Paiement PayPal indisponible pour le moment</div>';
-      if(c2)c2.innerHTML='<div style="font-size:11px;color:rgba(255,255,255,0.8);text-align:center;">Paiement PayPal indisponible pour le moment</div>';
-    }
-  },1200);
-});
 
 /* ═══════ PWA ═══════ */
 if('serviceWorker' in navigator){

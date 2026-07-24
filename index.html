@@ -362,15 +362,20 @@ body{font-family:'League Spartan',sans-serif;background:var(--ivory);color:var(-
 .ch-top{background:var(--grad-h);padding:48px 20px 22px;flex-shrink:0;position:relative;overflow:hidden;}
 .ch-h1{font-family:'League Spartan',sans-serif;font-size:26px;color:white;font-weight:800;letter-spacing:-.01em;position:relative;z-index:1;}
 .ch-h1 em{font-style:normal;font-weight:800;color:var(--peach);}
-.ch-card{margin:0 20px;background:white;border-radius:18px;padding:18px;box-shadow:var(--sh);border:1px solid var(--border);}
-.ch-card-t{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:6px;}
-.ch-card-p{font-size:13px;color:var(--ink-m);line-height:1.6;margin-bottom:14px;}
-.ch-list{list-style:none;padding:0;margin:0 0 14px;}
-.ch-list li{font-size:13px;color:var(--ink-m);padding:8px 0;border-bottom:1px solid var(--border);display:flex;gap:8px;}
-.ch-list li::before{content:'✦';color:var(--purple-m);flex-shrink:0;}
-.ch-list li:last-child{border-bottom:none;}
-.btn-ch{width:100%;background:var(--grad);color:white;border:none;padding:14px;border-radius:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:'League Spartan',sans-serif;}
-.ch-upgrade{margin:14px 20px 0;background:var(--lav-pale);border-radius:16px;padding:16px;text-align:center;}
+.ch-hero{margin:0 20px 20px;background:var(--grad);border-radius:20px;padding:22px 20px;position:relative;overflow:hidden;}
+.ch-hero::after{content:'';position:absolute;bottom:-24px;right:-24px;width:90px;height:90px;border-radius:50%;background:rgba(255,255,255,0.1);}
+.ch-hero-ic{font-size:26px;margin-bottom:8px;position:relative;z-index:1;}
+.ch-hero-t{font-family:'League Spartan',sans-serif;font-size:17px;font-weight:800;color:white;margin-bottom:6px;position:relative;z-index:1;}
+.ch-hero-p{font-size:13px;color:rgba(255,255,255,0.9);line-height:1.55;position:relative;z-index:1;}
+.ch-feat-t{font-size:11px;font-weight:800;color:var(--ink-l);text-transform:uppercase;letter-spacing:.4px;margin:4px 20px 10px;}
+.ch-feature-row{display:flex;align-items:center;gap:12px;background:white;border-radius:14px;padding:13px 14px;margin:0 20px 8px;box-shadow:var(--sh);border:1px solid var(--border);}
+.ch-feature-ic{width:38px;height:38px;border-radius:12px;background:var(--lav-pale);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.ch-feature-body{flex:1;min-width:0;}
+.ch-feature-t{font-size:12px;font-weight:700;color:var(--ink);margin-bottom:1px;}
+.ch-feature-s{font-size:11px;color:var(--ink-l);line-height:1.4;}
+.btn-ch{width:100%;background:var(--grad);color:white;border:none;padding:15px;border-radius:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:'League Spartan',sans-serif;}
+.ch-cta-wrap{margin:18px 20px 0;}
+.ch-upgrade{margin:18px 20px 0;background:var(--lav-pale);border-radius:16px;padding:16px;text-align:center;}
 .ch-upgrade-t{font-size:14px;font-weight:700;color:var(--purple);margin-bottom:4px;}
 .ch-upgrade-p{font-size:12px;color:var(--ink-m);line-height:1.5;}
 
@@ -879,8 +884,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="blob b1"></div><div class="blob b2"></div>
 <div class="ch-h1">Communauté & <em>Challenges</em></div>
 </div>
-<div class="scroll">
-<div class="sec"><h2>🌿 Ton espace <em>communauté</em></h2></div>
+<div class="scroll" style="padding-top:18px;">
 <div id="chCommunityCard"></div>
 <div id="chUpgradeCard"></div>
 </div>
@@ -1507,20 +1511,30 @@ function renderChallenge(){
   const upgradeCard=document.getElementById('chUpgradeCard');
   if(!communityCard||!upgradeCard)return;
 
-  communityCard.innerHTML=`<div class="ch-card">
-    <div class="ch-card-t">Bienvenue dans la communauté Holistica 💜</div>
-    <div class="ch-card-p">${isImmersion?'Ton accès au groupe WhatsApp est actif — les challenges y sont organisés avec les autres filles.':'La communauté et les challenges WhatsApp sont réservés au Plan Immersion.'}</div>
-    <ul class="ch-list">
-      <li>Accès au groupe et motivation entre membres</li>
-      <li>Chaque semaine et chaque mois des défis de motivation</li>
-      <li>Maryne anime une fois par mois une conférence sur un thème avec questions-réponses</li>
-      <li>Un cours de yoga ou pilates en visio avec ajustements et corrections (partagez votre écran !)</li>
-    </ul>
+  const features=[
+    {ic:'👥',t:'Groupe WhatsApp privé',s:'Accès au groupe et motivation entre membres'},
+    {ic:'🏆',t:'Défis réguliers',s:'Chaque semaine et chaque mois, un nouveau challenge'},
+    {ic:'🎤',t:'Conférence mensuelle',s:'Maryne anime une session questions-réponses une fois par mois'},
+    {ic:'🧘',t:'Cours en visio',s:'Yoga ou pilates en direct, avec ajustements personnalisés'},
+  ];
+
+  communityCard.innerHTML=`
+    <div class="ch-hero">
+      <div class="ch-hero-ic">💜</div>
+      <div class="ch-hero-t">Bienvenue dans la communauté Holistica</div>
+      <div class="ch-hero-p">${isImmersion?'Ton accès au groupe WhatsApp est actif — les challenges y sont organisés avec les autres filles.':'La communauté et les challenges WhatsApp sont réservés au Plan Immersion.'}</div>
+    </div>
+    <div class="ch-feat-t">Ce qui t'attend</div>
+    ${features.map(f=>`<div class="ch-feature-row">
+      <div class="ch-feature-ic">${f.ic}</div>
+      <div class="ch-feature-body"><div class="ch-feature-t">${f.t}</div><div class="ch-feature-s">${f.s}</div></div>
+    </div>`).join('')}
+    <div class="ch-cta-wrap">
     ${isImmersion
       ?`<a class="btn-ch" style="display:block;text-align:center;text-decoration:none;" href="${WHATSAPP_GROUP_LINK}" target="_blank" rel="noopener">Rejoindre le groupe WhatsApp →</a>`
       :`<button class="btn-ch" onclick="go('offers')" style="opacity:.6;">🔒 Réservé au Plan Immersion</button>`
     }
-  </div>`;
+    </div>`;
 
   upgradeCard.innerHTML=isImmersion?'':`<div class="ch-upgrade">
     <div class="ch-upgrade-t">Tu n'as pas accès ?</div>

@@ -1367,8 +1367,17 @@ function confirmDeleteAccount(){
 async function deleteAccount(){
   if(!currentUser){toast('Aucun compte connecté');return;}
   toast('Suppression en cours...');
+  const emailToNotify=userProfile.email||currentUser.email;
+  const nameToNotify=userProfile.name||'';
   const {error}=await sb.from('profiles').delete().eq('id',currentUser.id);
   if(error){toast('⚠️ Erreur : '+error.message);return;}
+  // Envoi de la confirmation par email (best-effort — on ne bloque jamais la suppression si l'email échoue)
+  if(emailToNotify){
+    fetch('/.netlify/functions/send-account-email',{
+      method:'POST',
+      body:JSON.stringify({type:'account_deleted',email:emailToNotify,name:nameToNotify})
+    }).catch(()=>{});
+  }
   await sb.auth.signOut();
   toast('Tes données ont été supprimées 🌸');
   setTimeout(()=>location.reload(),1200);

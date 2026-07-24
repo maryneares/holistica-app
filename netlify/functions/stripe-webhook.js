@@ -154,18 +154,33 @@ exports.handler = async (event) => {
 
       case 'customer.subscription.deleted': {
         const sub = stripeEvent.data.object;
-        const { data: profile } = await supabase.from('profiles').select('id,email,name').eq('stripe_customer_id', sub.customer).maybeSingle();
+        const { data: profile } = await supabase.from('profiles').select('id,email,name,subscription_status').eq('stripe_customer_id', sub.customer).maybeSingle();
         if (!profile) break;
+
+        // Détermine si c'est une annulation volontaire (cliente encore à jour de paiement) ou
+        // une coupure suite à échec de paiement définitif (déjà en 'past_due' avant cet événement).
+        const reason = sub.cancellation_details?.reason; // 'cancellation_requested' | 'payment_failed' | ...
+        const isVoluntary = reason === 'cancellation_requested' || (!reason && profile.subscription_status === 'active');
 
         await supabase.from('profiles').update({ subscription_status: 'cancelled', subscription_plan: null }).eq('id', profile.id);
 
         if (profile.email) {
-          const html = wrapEmail('Ton accès a été suspendu', `
-            <div style="font-size:14px;line-height:1.7;color:#3D3860;">
-              Faute de paiement régularisé, ton accès à Holistica Club vient d'être suspendu. Tu peux te réabonner à tout moment directement depuis l'app pour retrouver tout ton suivi.
-            </div>
-          `);
-          await sendEmail(profile.email, 'Ton accès Holistica Club a été suspendu', html);
+          const html = isVoluntary
+            ? wrapEmail('Ton abonnement a été annulé', `
+              <div style="font-size:14px;line-height:1.7;color:#3D3860;">
+                Ton abonnement Holistica Club a bien été annulé, comme demandé. Ton accès reste actif jusqu'à la fin de la période déjà payée.
+              </div>
+              <div style="font-size:14px;line-height:1.7;color:#3D3860;margin-top:10px;">
+                Tu peux te réabonner à tout moment directement depuis l'app pour retrouver tout ton suivi — rien n'est perdu.
+              </div>
+            `)
+            : wrapEmail('Ton accès a été suspendu', `
+              <div style="font-size:14px;line-height:1.7;color:#3D3860;">
+                Faute de paiement régularisé, ton accès à Holistica Club vient d'être suspendu. Tu peux te réabonner à tout moment directement depuis l'app pour retrouver tout ton suivi.
+              </div>
+            `);
+          const subject = isVoluntary ? 'Confirmation d\'annulation — Holistica Club' : 'Ton accès Holistica Club a été suspendu';
+          await sendEmail(profile.email, subject, html);
         }
         break;
       }

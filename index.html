@@ -275,22 +275,26 @@ body{font-family:'League Spartan',sans-serif;background:var(--ivory);color:var(-
 .diet-locked-ic{font-size:44px;margin-bottom:16px;}
 .diet-locked-t{font-family:'League Spartan',sans-serif;font-size:19px;font-weight:800;color:var(--ink);margin-bottom:8px;}
 .diet-locked-p{font-size:13px;color:var(--ink-m);line-height:1.6;margin-bottom:20px;}
-.diet-summary-card{margin:0 20px 18px;background:var(--grad);border-radius:18px;padding:18px 20px;position:relative;overflow:hidden;}
-.diet-summary-card::after{content:'';position:absolute;bottom:-20px;right:-20px;width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,0.1);}
-.diet-summary-t{font-size:11px;color:rgba(255,255,255,0.75);text-transform:uppercase;letter-spacing:.4px;font-weight:800;margin-bottom:10px;position:relative;z-index:1;}
-.diet-summary-row{display:flex;justify-content:space-between;position:relative;z-index:1;}
+.diet-summary-card{margin:0 20px 20px;background:white;border-radius:18px;padding:18px 20px;box-shadow:var(--sh);border:1px solid var(--border);}
+.diet-summary-t{font-size:12px;color:var(--ink-m);font-weight:600;margin-bottom:14px;}
+.diet-summary-obj{font-size:12px;color:var(--purple-m);font-weight:700;margin-bottom:14px;}
+.diet-summary-row{display:flex;justify-content:space-between;}
 .diet-summary-item{text-align:center;flex:1;}
-.diet-summary-v{font-family:'League Spartan',sans-serif;font-size:20px;font-weight:800;color:white;}
-.diet-summary-l{font-size:10px;color:rgba(255,255,255,0.75);margin-top:2px;}
-.diet-meal-card{margin:0 20px 14px;background:white;border-radius:16px;padding:16px 18px;box-shadow:var(--sh);border:1px solid var(--border);}
-.diet-meal-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;}
-.diet-meal-name{font-size:15px;font-weight:800;color:var(--ink);}
-.diet-meal-macros{font-size:11px;color:var(--ink-l);}
-.diet-meal-opt{display:flex;gap:8px;align-items:flex-start;padding:8px 0;border-top:1px solid var(--border);font-size:12px;color:var(--ink-m);line-height:1.5;}
-.diet-meal-opt:first-of-type{border-top:none;}
-.diet-meal-opt.featured{background:var(--lav-pale);border-radius:10px;padding:8px 10px;border-top:none;margin:2px 0;}
-.diet-meal-opt-dot{flex-shrink:0;color:var(--purple-m);font-weight:800;margin-top:1px;}
-.diet-info-card{margin:20px 20px 0;background:var(--ivory-d);border-radius:16px;padding:16px 18px;}
+.diet-summary-v{font-family:'League Spartan',sans-serif;font-size:20px;font-weight:800;background:var(--grad-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--purple-m);}
+.diet-summary-l{font-size:10px;color:var(--ink-l);margin-top:2px;font-weight:600;text-transform:uppercase;letter-spacing:.3px;}
+.diet-meal-card{margin:0 20px 22px;background:white;border-radius:16px;padding:18px;box-shadow:var(--sh);border:1px solid var(--border);}
+.diet-meal-head{margin-bottom:12px;}
+.diet-meal-name{font-family:'League Spartan',sans-serif;font-size:17px;font-weight:800;color:var(--ink);margin-bottom:8px;}
+.diet-meal-macros{display:flex;gap:6px;flex-wrap:wrap;}
+.diet-macro-pill{font-size:11px;font-weight:700;padding:4px 10px;border-radius:50px;background:var(--lav-pale);color:var(--purple-m);}
+.diet-meal-idea{display:flex;gap:12px;padding:12px 0;border-top:1px solid var(--border);}
+.diet-meal-idea:first-of-type{border-top:none;padding-top:0;}
+.diet-meal-idea-img{width:52px;height:52px;border-radius:10px;object-fit:cover;flex-shrink:0;background:var(--ivory-d);}
+.diet-meal-idea-body{flex:1;min-width:0;}
+.diet-meal-idea-t{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:2px;}
+.diet-meal-idea-s{font-size:12px;color:var(--ink-m);line-height:1.5;}
+.diet-meal-empty{font-size:12px;color:var(--ink-l);font-style:italic;padding:6px 0;}
+.diet-info-card{margin:20px 20px 0;background:white;border-radius:16px;padding:18px;box-shadow:var(--sh);border:1px solid var(--border);}
 .diet-info-t{font-size:12px;font-weight:800;color:var(--purple);text-transform:uppercase;letter-spacing:.3px;margin-bottom:10px;}
 .diet-info-row{font-size:12px;color:var(--ink-m);line-height:1.5;margin-bottom:8px;}
 .diet-info-row b{color:var(--ink);}
@@ -1242,25 +1246,29 @@ let VIDEOS=[];
 let RECIPES=[];
 let DOSSIERS=[];
 let PROGRAMS=[];
+let MEAL_IDEAS=[];
 let currentProgramId=null;
 let currentDossierId=null;
 
 async function loadContent(){
   try{
-    const [{data:vids,error:vErr},{data:recs,error:rErr},{data:doss,error:dErr},{data:progs,error:pErr}]=await Promise.all([
+    const [{data:vids,error:vErr},{data:recs,error:rErr},{data:doss,error:dErr},{data:progs,error:pErr},{data:meals,error:mErr}]=await Promise.all([
       sb.from('videos').select('*'),
       sb.from('recipes').select('*'),
       sb.from('dossiers').select('*').order('publish_date',{ascending:false}),
-      sb.from('programs').select('*').order('sort_order',{ascending:true})
+      sb.from('programs').select('*').order('sort_order',{ascending:true}),
+      sb.from('meal_ideas').select('*').eq('active',true)
     ]);
     if(vErr)console.error('Erreur chargement vidéos:',vErr);
     if(rErr)console.error('Erreur chargement recettes:',rErr);
     if(dErr)console.error('Erreur chargement dossiers:',dErr);
     if(pErr)console.error('Erreur chargement programmes:',pErr);
+    if(mErr)console.error('Erreur chargement idées repas:',mErr);
     if(vids&&vids.length)VIDEOS=vids;
     if(recs&&recs.length)RECIPES=recs;
     if(doss)DOSSIERS=doss;
     if(progs)PROGRAMS=progs;
+    if(meals)MEAL_IDEAS=meals;
   }catch(e){
     console.error('Erreur loadContent:',e);
   }
@@ -1543,6 +1551,24 @@ function renderChallenge(){
   </div>`;
 }
 
+// Sélectionne jusqu'à 3 idées repas correspondant au repas/dosha/régime, en élargissant
+// progressivement si rien de pile poil ne correspond (dosha ou régime = 'tous' en repli).
+function pickMealIdeas(mealType,doshaKey,dietType,week){
+  const primaryDosha=(doshaKey||'vata').split('-')[0];
+  const pools=[
+    MEAL_IDEAS.filter(m=>m.meal_type===mealType&&(m.dosha===doshaKey||m.dosha===primaryDosha)&&m.diet_type===dietType),
+    MEAL_IDEAS.filter(m=>m.meal_type===mealType&&(m.dosha===doshaKey||m.dosha===primaryDosha)&&m.diet_type==='tous'),
+    MEAL_IDEAS.filter(m=>m.meal_type===mealType&&m.dosha==='tous'&&m.diet_type===dietType),
+    MEAL_IDEAS.filter(m=>m.meal_type===mealType&&m.dosha==='tous'&&m.diet_type==='tous'),
+  ];
+  const matched=pools.find(p=>p.length>0)||[];
+  if(!matched.length)return [];
+  const startIdx=week%matched.length;
+  const picked=[];
+  for(let i=0;i<Math.min(3,matched.length);i++)picked.push(matched[(startIdx+i)%matched.length]);
+  return picked;
+}
+
 function renderDietPlan(){
   const wrap=document.getElementById('dietScroll');
   if(!wrap)return;
@@ -1557,16 +1583,19 @@ function renderDietPlan(){
     return;
   }
   const plan=generateMealPlan();
-  const doshaLabel=(userProfile.dosha||'vata').split('-').map(p=>p.charAt(0).toUpperCase()+p.slice(1)).join('-');
+  const doshaKey=userProfile.dosha||'vata';
+  const doshaLabel=doshaKey.split('-').map(p=>p.charAt(0).toUpperCase()+p.slice(1)).join('-');
   const dietLabel={flexitarien:'Flexitarienne',vegetarien:'Végétarienne',vegan:'Végane'}[userProfile.dietType]||'Flexitarienne';
   const totalKcal=plan.reduce((s,m)=>s+m.kcal,0);
   const totalP=plan.reduce((s,m)=>s+m.protein,0);
   const totalC=plan.reduce((s,m)=>s+m.carbs,0);
   const totalF=plan.reduce((s,m)=>s+m.fat,0);
+  const week=getISOWeek(new Date());
 
-  let html=`<div class="diet-summary-card">
-    <div class="diet-summary-t">Profil ${doshaLabel} · Alimentation ${dietLabel} · Sans gluten · Sans lait de vache</div>
-    <div style="font-size:11px;color:rgba(255,255,255,0.85);margin-bottom:12px;position:relative;z-index:1;">🎯 Perte de masse grasse · Maintien musculaire · Équilibre hormonal</div>
+  let html=`<div class="sec" style="padding-top:20px;"><h2>Ton <em>résumé</em> du jour</h2></div>
+  <div class="diet-summary-card">
+    <div class="diet-summary-t">Profil ${doshaLabel} · ${dietLabel} · Sans gluten · Sans lait de vache</div>
+    <div class="diet-summary-obj">🎯 Perte de masse grasse · Maintien musculaire · Équilibre hormonal</div>
     <div class="diet-summary-row">
       <div class="diet-summary-item"><div class="diet-summary-v">${totalKcal}</div><div class="diet-summary-l">kcal/jour</div></div>
       <div class="diet-summary-item"><div class="diet-summary-v">${totalP}g</div><div class="diet-summary-l">Protéines</div></div>
@@ -1576,16 +1605,25 @@ function renderDietPlan(){
   </div>`;
 
   plan.forEach(meal=>{
-    html+=`<div class="diet-meal-card">
+    const ideas=pickMealIdeas(meal.id,doshaKey,userProfile.dietType||'flexitarien',week);
+    html+=`<div class="sec" style="padding-top:4px;"><h2>${meal.labelHtml}</h2></div>
+    <div class="diet-meal-card">
       <div class="diet-meal-head">
-        <div class="diet-meal-name">${meal.label}</div>
-        <div class="diet-meal-macros">${meal.kcal} kcal · P ${meal.protein}g · G ${meal.carbs}g · L ${meal.fat}g</div>
+        <div class="diet-meal-macros">
+          <span class="diet-macro-pill">${meal.kcal} kcal</span>
+          <span class="diet-macro-pill">P ${meal.protein}g</span>
+          <span class="diet-macro-pill">G ${meal.carbs}g</span>
+          <span class="diet-macro-pill">L ${meal.fat}g</span>
+        </div>
       </div>
-      ${meal.options.map((opt,i)=>`<div class="diet-meal-opt${i===meal.highlight?' featured':''}"><span class="diet-meal-opt-dot">${i===meal.highlight?'★':'•'}</span><span>${opt}</span></div>`).join('')}
+      ${ideas.length?ideas.map(idea=>`<div class="diet-meal-idea">
+        ${idea.image?`<img class="diet-meal-idea-img" src="${idea.image}" onerror="this.style.display='none'">`:''}
+        <div class="diet-meal-idea-body"><div class="diet-meal-idea-t">${idea.title}</div><div class="diet-meal-idea-s">${idea.ingredients||''}</div></div>
+      </div>`).join(''):`<div class="diet-meal-empty">Aucune idée de repas ajoutée pour l'instant — reviens bientôt 🌿</div>`}
     </div>`;
   });
 
-  html+=`<div class="diet-week-note">🔄 La sélection ★ change chaque semaine — les 3 options restent valables toute la semaine</div>`;
+  html+=`<div class="diet-week-note">🔄 De nouvelles idées reviennent chaque semaine</div>`;
 
   html+=`<div class="diet-info-card">
     <div class="diet-info-t">D'où viennent tes macronutriments ?</div>
@@ -2682,9 +2720,9 @@ function saveEditInfo(){
 /* ═══════ MON PROFIL AYURVÉDIQUE ═══════ */
 /* ═══════ PLAN ALIMENTAIRE PERSONNALISÉ (onglet Diététique, réservé Plan Immersion) ═══════ */
 const MEAL_SLOTS=[
-  {id:'pdj',label:'Petit-déjeuner',pct:0.25},
-  {id:'midi',label:'Déjeuner',pct:0.40},
-  {id:'diner',label:'Dîner',pct:0.35},
+  {id:'pdj',label:'Petit-déjeuner',labelHtml:'Petit-<em>déjeuner</em>',pct:0.25},
+  {id:'midi',label:'Déjeuner',labelHtml:'Ton <em>déjeuner</em>',pct:0.40},
+  {id:'diner',label:'Dîner',labelHtml:'Ton <em>dîner</em>',pct:0.35},
 ];
 // Sources de protéines simples, substituées selon le régime — toujours sans gluten et sans lait de vache (brebis/chèvre/cru acceptés)
 const PROTEIN_BY_DIET={

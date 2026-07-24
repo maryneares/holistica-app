@@ -261,6 +261,40 @@ body{font-family:'League Spartan',sans-serif;background:var(--ivory);color:var(-
 .pd-session-title{font-size:13px;font-weight:700;color:var(--ink);}
 .pd-session-meta{font-size:11px;color:var(--ink-l);margin-top:1px;}
 .pd-session-arr{color:var(--purple-m);font-size:16px;flex-shrink:0;}
+.pd-intro-card{margin:16px 20px;background:white;border-radius:16px;padding:16px 18px;box-shadow:var(--sh);border:1px solid var(--border);}
+.pd-intro-text{font-size:13px;color:var(--ink-m);line-height:1.6;}
+.pd-intro-freq{font-size:11px;color:var(--purple-m);font-weight:700;margin-top:8px;}
+.pd-progress-card{margin:0 20px 8px;background:white;border-radius:16px;padding:14px 18px;box-shadow:var(--sh);border:1px solid var(--border);}
+.pd-progress-bar{height:8px;background:var(--ivory-d);border-radius:50px;overflow:hidden;}
+.pd-progress-fill{height:100%;background:var(--grad);border-radius:50px;transition:width .4s;}
+.pd-progress-lbl{font-size:11px;color:var(--ink-l);font-weight:600;margin-top:8px;}
+.pd-week-title{font-size:12px;font-weight:800;color:var(--ink-l);text-transform:uppercase;letter-spacing:.5px;margin:22px 20px 10px;}
+.pd-week-title:first-of-type{margin-top:16px;}
+/* Diététique */
+.diet-locked-wrap{padding:60px 24px;text-align:center;}
+.diet-locked-ic{font-size:44px;margin-bottom:16px;}
+.diet-locked-t{font-family:'League Spartan',sans-serif;font-size:19px;font-weight:800;color:var(--ink);margin-bottom:8px;}
+.diet-locked-p{font-size:13px;color:var(--ink-m);line-height:1.6;margin-bottom:20px;}
+.diet-summary-card{margin:0 20px 18px;background:var(--grad);border-radius:18px;padding:18px 20px;position:relative;overflow:hidden;}
+.diet-summary-card::after{content:'';position:absolute;bottom:-20px;right:-20px;width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,0.1);}
+.diet-summary-t{font-size:11px;color:rgba(255,255,255,0.75);text-transform:uppercase;letter-spacing:.4px;font-weight:800;margin-bottom:10px;position:relative;z-index:1;}
+.diet-summary-row{display:flex;justify-content:space-between;position:relative;z-index:1;}
+.diet-summary-item{text-align:center;flex:1;}
+.diet-summary-v{font-family:'League Spartan',sans-serif;font-size:20px;font-weight:800;color:white;}
+.diet-summary-l{font-size:10px;color:rgba(255,255,255,0.75);margin-top:2px;}
+.diet-meal-card{margin:0 20px 14px;background:white;border-radius:16px;padding:16px 18px;box-shadow:var(--sh);border:1px solid var(--border);}
+.diet-meal-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;}
+.diet-meal-name{font-size:15px;font-weight:800;color:var(--ink);}
+.diet-meal-macros{font-size:11px;color:var(--ink-l);}
+.diet-meal-opt{display:flex;gap:8px;align-items:flex-start;padding:8px 0;border-top:1px solid var(--border);font-size:12px;color:var(--ink-m);line-height:1.5;}
+.diet-meal-opt:first-of-type{border-top:none;}
+.diet-meal-opt.featured{background:var(--lav-pale);border-radius:10px;padding:8px 10px;border-top:none;margin:2px 0;}
+.diet-meal-opt-dot{flex-shrink:0;color:var(--purple-m);font-weight:800;margin-top:1px;}
+.diet-info-card{margin:20px 20px 0;background:var(--ivory-d);border-radius:16px;padding:16px 18px;}
+.diet-info-t{font-size:12px;font-weight:800;color:var(--purple);text-transform:uppercase;letter-spacing:.3px;margin-bottom:10px;}
+.diet-info-row{font-size:12px;color:var(--ink-m);line-height:1.5;margin-bottom:8px;}
+.diet-info-row b{color:var(--ink);}
+.diet-week-note{text-align:center;font-size:11px;color:var(--ink-l);margin:14px 20px 4px;font-style:italic;}
 
 /* Weekly calendar */
 .wk-cal{margin:14px 20px 0;background:white;border-radius:18px;padding:14px;box-shadow:var(--sh);border:1px solid var(--border);flex-shrink:0;}
@@ -773,18 +807,39 @@ document.addEventListener('DOMContentLoaded', function(){
 
 <!-- ═══ DÉTAIL D'UN PARCOURS ═══ -->
 <div id="programDetail" class="screen">
+<button class="vd-back" onclick="go('mouvement')" style="position:fixed;top:16px;left:16px;z-index:20;background:rgba(255,255,255,0.25);">←</button>
 <div class="pd-top">
-<button class="vd-back" onclick="go('mouvement')" style="position:fixed;top:16px;left:16px;background:rgba(255,255,255,0.25);">←</button>
 <div class="blob b1"></div><div class="blob b2"></div>
 <div class="pd-h1" id="pdTitle"></div>
-<div class="pd-sub" id="pdSub"></div>
-<div class="pd-progress-wrap">
-<div class="pd-progress-bar"><div class="pd-progress-fill" id="pdProgressFill" style="width:0%"></div></div>
-<div class="pd-progress-lbl" id="pdProgressLbl"></div>
+</div>
+<div class="scroll" style="padding-top:0;">
+<div id="pdIntroCard"></div>
+<div id="pdProgressCard"></div>
+<div id="pdWeeksList"></div>
+<div style="height:20px;"></div>
 </div>
 </div>
-<div class="scroll" style="padding-top:16px;">
-<div id="pdSessionList"></div>
+
+<!-- ═══ DIÉTÉTIQUE / PLAN NUTRITION ═══ -->
+<div id="dietPlan" class="screen">
+<div class="rc-top">
+<div class="blob b1"></div><div class="blob b2"></div>
+<div class="rc-h1">Ton plan <em>alimentaire</em></div>
+<div class="rc-sub">Personnalisé selon ton dosha, ton régime et tes objectifs</div>
+</div>
+<div class="scroll" id="dietScroll"></div>
+</div>
+
+<!-- ═══ DÉTAIL D'UN DOSSIER NATURO (lecture) ═══ -->
+<div id="dossierDetail" class="screen">
+<button class="vd-back" onclick="go('naturo')" style="position:fixed;top:16px;left:16px;z-index:20;">←</button>
+<div class="scroll">
+<div id="ddImgWrap"></div>
+<div style="padding:20px;">
+<div class="ob-title dt-title" style="text-align:left;font-size:22px;margin:0 0 14px;" id="ddTitle"></div>
+<div id="ddBody"></div>
+<button class="btn-w" id="ddMarkBtn" style="margin-top:20px;width:100%;background:var(--purple);color:white;" onclick="markDossierRead(currentDossierId)"></button>
+</div>
 <div style="height:20px;"></div>
 </div>
 </div>
@@ -931,6 +986,13 @@ document.addEventListener('DOMContentLoaded', function(){
 <option value="maintien">Maintien de la forme</option>
 <option value="énergie">Plus d'énergie au quotidien</option>
 </select></div>
+<div class="f-row-app"><label>Régime alimentaire</label>
+<select id="eiDietType" class="ob-input dt-input">
+<option value="flexitarien">Flexitarienne (viande & poisson)</option>
+<option value="vegetarien">Végétarienne</option>
+<option value="vegan">Végane</option>
+</select></div>
+<div class="f-row-app"><label>Allergies ou intolérances</label><input type="text" id="eiAllergies" class="ob-input dt-input" placeholder="laisse vide si aucune"></div>
 <button class="btn-ob" style="margin-top:10px;" onclick="saveEditInfo()">Enregistrer</button>
 <div style="height:30px;"></div>
 </div>
@@ -1131,6 +1193,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <button class="ni-ctr" id="ni-dashboard" onclick="go('dashboard')"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11.5l8-7.5 8 7.5"/><path d="M6 10v9.5a1 1 0 0 0 1 1h3.5v-6.5h3v6.5H17a1 1 0 0 0 1-1V10"/></svg></button>
 <div class="bnav-half">
 <button class="ni" id="ni-challenge" onclick="go('challenge')"><span class="ni-ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10v4a5 5 0 0 1-10 0V4z"/><path d="M7 5H4v2a3 3 0 0 0 3 3M17 5h3v2a3 3 0 0 1-3 3"/><path d="M12 13v3"/><path d="M9 20h6M10 17h4v3h-4z"/></svg></span><span class="ni-l">Challenge</span></button>
+<button class="ni" id="ni-dietPlan" onclick="go('dietPlan')"><span class="ni-ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1.5 3 2.5 5 2.5 8a2.5 2.5 0 0 1-5 0c0-3 1-5 2.5-8z"/><path d="M5 10c2 1 4 3 5 6"/><path d="M19 10c-2 1-4 3-5 6"/><path d="M4 15c2.5 3 5 4 8 4s5.5-1 8-4"/></svg></span><span class="ni-l">Diététique</span></button>
 <button class="ni" id="ni-profil" onclick="go('profil')"><span class="ni-ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.5 3-6.5 7-6.5s7 3 7 6.5"/></svg></span><span class="ni-l">Profil</span></button>
 </div>
 </nav>
@@ -1176,6 +1239,7 @@ let RECIPES=[];
 let DOSSIERS=[];
 let PROGRAMS=[];
 let currentProgramId=null;
+let currentDossierId=null;
 
 async function loadContent(){
   try{
@@ -1207,7 +1271,7 @@ loadContent();
 /* ═══════ STATE ═══════ */
 let xp=0,sessions=0,streak=0,currentVid=null,completedVids=new Set(),triedRecipes=new Set(),unlockedBadges=new Set(),readDossiers=new Set(),naturoViewId=null,loginDates=new Set();
 let dailyCalGoal=2000,consumedCal=0,currentRC=null,sessionDates=[],wellnessLog=[],retakeDoshaMode=false;
-let userProfile={name:'',lastName:'',email:'',goal:'bien-être',age:30,weight:62,height:165,activity:'modérée',hasPeriod:true,menopause:false,dosha:'vata',lastPeriodStart:'',doshaV:33,doshaP:33,doshaK:34,cycleLength:28,birthDate:'',birthTime:'',birthPlace:'',subscriptionStatus:'inactive',subscriptionPlan:null};
+let userProfile={name:'',lastName:'',email:'',goal:'bien-être',age:30,weight:62,height:165,activity:'modérée',hasPeriod:true,menopause:false,dosha:'vata',lastPeriodStart:'',doshaV:33,doshaP:33,doshaK:34,cycleLength:28,birthDate:'',birthTime:'',birthPlace:'',subscriptionStatus:'inactive',subscriptionPlan:null,dietType:'flexitarien',allergies:''};
 let moodScore=0,sleepScore=8,stressScore=5;
 let activeMvFilter='Tout',activeRcFilter='Tout';
 
@@ -1332,7 +1396,7 @@ async function loadProfileAndEnter(){
             // seulement quand il est confirmé qu'aucun profil n'existe (voir plus bas).
   }
   if(profile){
-    userProfile={name:profile.name||'',lastName:profile.last_name||'',email:profile.email||'',goal:profile.goal||'bien-être',age:profile.age||30,weight:profile.weight||62,height:profile.height||165,activity:profile.activity||'modérée',hasPeriod:profile.has_period,menopause:profile.menopause,dosha:profile.dosha||'vata',lastPeriodStart:profile.last_period_start||'',doshaV:profile.dosha_v??33,doshaP:profile.dosha_p??33,doshaK:profile.dosha_k??34,cycleLength:profile.cycle_length||28,birthDate:profile.birth_date||'',birthTime:profile.birth_time||'',birthPlace:profile.birth_place||'',subscriptionStatus:profile.subscription_status||'inactive',subscriptionPlan:profile.subscription_plan||null};
+    userProfile={name:profile.name||'',lastName:profile.last_name||'',email:profile.email||'',goal:profile.goal||'bien-être',age:profile.age||30,weight:profile.weight||62,height:profile.height||165,activity:profile.activity||'modérée',hasPeriod:profile.has_period,menopause:profile.menopause,dosha:profile.dosha||'vata',lastPeriodStart:profile.last_period_start||'',doshaV:profile.dosha_v??33,doshaP:profile.dosha_p??33,doshaK:profile.dosha_k??34,cycleLength:profile.cycle_length||28,birthDate:profile.birth_date||'',birthTime:profile.birth_time||'',birthPlace:profile.birth_place||'',subscriptionStatus:profile.subscription_status||'inactive',subscriptionPlan:profile.subscription_plan||null,dietType:profile.diet_type||'flexitarien',allergies:profile.allergies||''};
     if(isDevAccount()){
       // Accès complet en mémoire uniquement pour tester (n'écrase jamais la vraie valeur en base)
       userProfile.subscriptionStatus='active';
@@ -1386,6 +1450,7 @@ function saveProfile(){
       last_period_start:userProfile.lastPeriodStart||null,dosha_v:userProfile.doshaV,dosha_p:userProfile.doshaP,dosha_k:userProfile.doshaK,cycle_length:userProfile.cycleLength,
       last_name:userProfile.lastName,email:userProfile.email,goal:userProfile.goal,
       birth_date:userProfile.birthDate||null,birth_time:userProfile.birthTime||null,birth_place:userProfile.birthPlace,
+      diet_type:userProfile.dietType,allergies:userProfile.allergies||null,
       xp,sessions,streak,mood_score:moodScore,sleep_score:sleepScore,stress_score:stressScore,
       completed_videos:Array.from(completedVids),session_dates:sessionDates,wellness_log:wellnessLog,
       tried_recipes:Array.from(triedRecipes),badges_unlocked:Array.from(unlockedBadges),last_celebrated_level:lastCelebratedLevel,read_dossiers:Array.from(readDossiers),login_dates:Array.from(loginDates),updated_at:new Date().toISOString()
@@ -1432,9 +1497,9 @@ window.addEventListener('load',async()=>{
 });
 
 /* ═══════ NAV ═══════ */
-const PROTECTED_SCREENS=['dashboard','mouvement','recettes','naturo','challenge','doshaProfile','editInfo','wellnessHistory','badgesScreen','cycleSettings','astroScreen','programDetail'];
+const PROTECTED_SCREENS=['dashboard','mouvement','recettes','naturo','challenge','doshaProfile','editInfo','wellnessHistory','badgesScreen','cycleSettings','astroScreen','programDetail','dossierDetail','dietPlan'];
 // ⚠️ À remplacer par le vrai lien d'invitation du groupe WhatsApp Holistica Club
-const WHATSAPP_GROUP_LINK='https://chat.whatsapp.com/REMPLACER_PAR_TON_LIEN';
+const WHATSAPP_GROUP_LINK='https://chat.whatsapp.com/BmQ0hxeccsU9iwspW5UQim?s=cl&p=i&mlu=4&amv=2';
 
 function renderChallenge(){
   const isImmersion=userProfile.subscriptionPlan==='immersion';
@@ -1464,6 +1529,59 @@ function renderChallenge(){
   </div>`;
 }
 
+function renderDietPlan(){
+  const wrap=document.getElementById('dietScroll');
+  if(!wrap)return;
+  const isImmersion=userProfile.subscriptionPlan==='immersion';
+  if(!isImmersion){
+    wrap.innerHTML=`<div class="diet-locked-wrap">
+      <div class="diet-locked-ic">🔒🥗</div>
+      <div class="diet-locked-t">Plan alimentaire personnalisé</div>
+      <div class="diet-locked-p">Ton menu sur-mesure (petit-déj, déjeuner, dîner) calculé selon ton dosha, ton régime et tes objectifs — réservé au Plan Immersion.</div>
+      <button class="btn-ch" onclick="go('offers')">Voir les offres →</button>
+    </div>`;
+    return;
+  }
+  const plan=generateMealPlan();
+  const doshaLabel=(userProfile.dosha||'vata').split('-').map(p=>p.charAt(0).toUpperCase()+p.slice(1)).join('-');
+  const dietLabel={flexitarien:'Flexitarienne',vegetarien:'Végétarienne',vegan:'Végane'}[userProfile.dietType]||'Flexitarienne';
+  const totalKcal=plan.reduce((s,m)=>s+m.kcal,0);
+  const totalP=plan.reduce((s,m)=>s+m.protein,0);
+  const totalC=plan.reduce((s,m)=>s+m.carbs,0);
+  const totalF=plan.reduce((s,m)=>s+m.fat,0);
+
+  let html=`<div class="diet-summary-card">
+    <div class="diet-summary-t">Profil ${doshaLabel} · Alimentation ${dietLabel} · Sans gluten · Sans lait de vache</div>
+    <div style="font-size:11px;color:rgba(255,255,255,0.85);margin-bottom:12px;position:relative;z-index:1;">🎯 Perte de masse grasse · Maintien musculaire · Équilibre hormonal</div>
+    <div class="diet-summary-row">
+      <div class="diet-summary-item"><div class="diet-summary-v">${totalKcal}</div><div class="diet-summary-l">kcal/jour</div></div>
+      <div class="diet-summary-item"><div class="diet-summary-v">${totalP}g</div><div class="diet-summary-l">Protéines</div></div>
+      <div class="diet-summary-item"><div class="diet-summary-v">${totalC}g</div><div class="diet-summary-l">Glucides</div></div>
+      <div class="diet-summary-item"><div class="diet-summary-v">${totalF}g</div><div class="diet-summary-l">Lipides</div></div>
+    </div>
+  </div>`;
+
+  plan.forEach(meal=>{
+    html+=`<div class="diet-meal-card">
+      <div class="diet-meal-head">
+        <div class="diet-meal-name">${meal.label}</div>
+        <div class="diet-meal-macros">${meal.kcal} kcal · P ${meal.protein}g · G ${meal.carbs}g · L ${meal.fat}g</div>
+      </div>
+      ${meal.options.map((opt,i)=>`<div class="diet-meal-opt${i===meal.highlight?' featured':''}"><span class="diet-meal-opt-dot">${i===meal.highlight?'★':'•'}</span><span>${opt}</span></div>`).join('')}
+    </div>`;
+  });
+
+  html+=`<div class="diet-week-note">🔄 La sélection ★ change chaque semaine — les 3 options restent valables toute la semaine</div>`;
+
+  html+=`<div class="diet-info-card">
+    <div class="diet-info-t">D'où viennent tes macronutriments ?</div>
+    ${MACRO_SOURCES_INFO.map(m=>`<div class="diet-info-row"><b>${m.t} :</b> ${m.s}</div>`).join('')}
+  </div>
+  <div style="height:24px;"></div>`;
+
+  wrap.innerHTML=html;
+}
+
 function go(id){
   // Garde-fou : impossible d'accéder aux écrans du contenu sans abonnement actif,
   // même en forçant la navigation (ex: via la console). Le profil, les offres,
@@ -1482,6 +1600,7 @@ function go(id){
   if(id==='dashboard')refreshDash();
   if(id==='doshaProfile')renderDoshaProfile();
   if(id==='challenge')renderChallenge();
+  if(id==='dietPlan')renderDietPlan();
 }
 
 const ACTIVITY_MULTIPLIER={'sédentaire':1.2,'légère':1.375,'modérée':1.55,'active':1.725,'très active':1.9};
@@ -1572,13 +1691,16 @@ function renderNaturo(){
   if(!isCurrent){
     html+='<div class="dos-archive-t" style="margin-top:16px;cursor:pointer;" onclick="backToCurrentDossier()">← Revenir au dossier de la semaine</div>';
   }
+  // Aperçu compact : image, titre, un court extrait — la lecture complète se fait sur un écran dédié.
+  const plainExcerpt=(viewing.intro||'').replace(/\n+/g,' ').trim();
+  const excerpt=plainExcerpt.length>140?plainExcerpt.slice(0,140).trim()+'…':plainExcerpt;
   html+=`<div class="dos-card">
     ${viewing.image?`<img class="dos-img" src="${viewing.image}" onerror="this.style.display='none'">`:''}
     <div class="dos-body">
       <div class="dos-title">${viewing.title}</div>
-      <div class="dos-intro">${formatDossierText(viewing.intro)}</div>
-      <div class="dos-tips">${(viewing.tips||[]).map(t=>`<div class="dos-tip"><span class="dos-tip-dot"></span>${t}</div>`).join('')}</div>
-      <button class="btn-w" onclick="markDossierRead('${viewing.id}')" ${isRead?'disabled':''} style="${isRead?'opacity:.6;':''}">${isRead?'✓ Dossier lu':'Marquer comme lu · +'+(viewing.points||10)+' points'}</button>
+      <div class="dos-intro" style="margin-bottom:14px;">${excerpt}</div>
+      <button class="btn-w" onclick="openDossierDetail('${viewing.id}')" style="width:100%;">📖 Lire le dossier</button>
+      ${isRead?'<div style="text-align:center;font-size:11px;color:var(--purple-m);font-weight:700;margin-top:10px;">✓ Dossier lu</div>':''}
     </div>
   </div>`;
 
@@ -1602,6 +1724,21 @@ function renderNaturo(){
   body.innerHTML=html;
 }
 
+function openDossierDetail(id){
+  currentDossierId=id;
+  const d=DOSSIERS.find(x=>x.id===id);
+  if(!d)return;
+  const isRead=readDossiers.has(id);
+  document.getElementById('ddImgWrap').innerHTML=d.image?`<img src="${d.image}" style="width:100%;height:200px;object-fit:cover;display:block;" onerror="this.style.display='none'">`:'';
+  document.getElementById('ddTitle').textContent=d.title;
+  document.getElementById('ddBody').innerHTML=formatDossierText(d.intro)+
+    ((d.tips||[]).length?`<div class="dos-tips" style="margin-top:10px;">${d.tips.map(t=>`<div class="dos-tip"><span class="dos-tip-dot"></span>${t}</div>`).join('')}</div>`:'');
+  const btn=document.getElementById('ddMarkBtn');
+  btn.textContent=isRead?'✓ Dossier lu':'Marquer comme lu · +'+(d.points||10)+' points';
+  btn.disabled=isRead;
+  btn.style.opacity=isRead?'.6':'1';
+  go('dossierDetail');
+}
 function markDossierRead(id){
   if(readDossiers.has(id))return;
   readDossiers.add(id);
@@ -1610,6 +1747,7 @@ function markDossierRead(id){
   toast('Dossier lu · +'+(d?.points||10)+' points 🌿');
   checkBadges();
   renderNaturo();
+  if(currentDossierId===id)openDossierDetail(id); // Rafraîchit le bouton sur l'écran de lecture
 }
 
 function enterApp(){
@@ -1652,6 +1790,8 @@ const OB_STEPS=[
   {type:'choice',part:'Ton Profil',title:'As-tu tes menstruations ?',opts:['Oui','Non, ménopause','Non, autre raison']},
   {type:'date',part:'Ton Profil',title:'Le premier jour de tes dernières règles ?',subtitle:'Pour suivre ton cycle et t\'accompagner phase par phase.'},
   {type:'choice',part:'Ton Profil',title:'Ton niveau d\'activité physique ?',opts:['Sédentaire (bureau, peu de mouvement)','Légèrement active (marche, ménage)','Modérée (sport 2-3x/semaine)','Active (sport 4-5x/semaine)','Très active (sport quotidien intense)']},
+  {type:'choice',part:'Alimentation',title:'Ton régime alimentaire ?',opts:['Flexitarienne (viande & poisson)','Végétarienne','Végane']},
+  {type:'input',part:'Alimentation',title:'Des allergies ou intolérances ?',fields:[{id:'obAllergies',ph:'ex: fruits à coque, fruits de mer... (laisse vide si aucune)',type:'text'}]},
   {type:'dosha',part:'Ton Dosha',title:'Bilan Ayurvédique complet',subtitle:'Réponds intuitivement à chaque critère, il n\'y a pas de mauvaise réponse.'},
 ];
 
@@ -1800,6 +1940,10 @@ function obNext(){
     userProfile.lastPeriodStart=document.getElementById('obLastPeriod')?.value||'';
   } else if(s.type==='choice' && OB_STEPS[obStep].title.includes('activité')){
     userProfile.activity=['sédentaire','légère','modérée','active','très active'][obChoiceIdx]||'modérée';
+  } else if(s.type==='choice' && OB_STEPS[obStep].title.includes('régime alimentaire')){
+    userProfile.dietType=['flexitarien','vegetarien','vegan'][obChoiceIdx]||'flexitarien';
+  } else if(s.type==='input' && OB_STEPS[obStep].title.includes('allergies')){
+    userProfile.allergies=document.getElementById('obAllergies')?.value.trim()||'';
   } else if(s.type==='dosha'){
     const doshaPageCount=Math.ceil(DOSHA_QUESTIONS.length/DOSHA_PER_PAGE);
     if(doshaPage<doshaPageCount-1){
@@ -2078,6 +2222,23 @@ function isContentLocked(item){
   return !!(item.unlock_badge && CONTENT_BADGES.includes(item.unlock_badge) && !unlockedBadges.has(item.unlock_badge));
 }
 
+function badgeUnlockHint(badge){
+  if(!badge)return '';
+  const m={
+    streak_7:'Débloqué à 7 jours d\'affilée',
+    streak_30:'Débloqué à 30 jours d\'affilée',
+    recipes_10:'Débloqué à 10 recettes essayées',
+    wellness_28:'Débloqué à 28 jours de suivi bien-être',
+    level_5:'Débloqué au niveau 5 (500 points)',
+    active_15:'Débloqué à 15 jours de connexion',
+    active_30:'Débloqué à 30 jours de connexion',
+    active_45:'Débloqué à 45 jours de connexion',
+    active_60:'Débloqué à 60 jours de connexion',
+    active_75:'Débloqué à 75 jours de connexion',
+    active_90:'Débloqué à 90 jours de connexion',
+  };
+  return m[badge.id]||'';
+}
 const BADGES=[
   {id:'first_session',e:'🧘',n:'Première séance',d:'Tu as complété ta première séance vidéo',cond:()=>sessions>=1},
   {id:'sessions_10',e:'🌿',n:'10 séances',d:'10 séances de yoga, pilates ou méditation complétées',cond:()=>sessions>=10},
@@ -2298,15 +2459,15 @@ function renderPrograms(){
   row.innerHTML=PROGRAMS.map(p=>{
     const prog=getProgramProgress(p.id);
     const pct=prog.total?Math.round(prog.completed/prog.total*100):0;
-    const icon=PROGRAM_ICON[p.category]||'✨';
+    const coverInner=p.cover_image?`<img src="${p.cover_image}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'">`:'';
     if(!p.active){
       return `<div class="prog-card soon">
-        <div class="prog-cover ${p.category}">${icon}<span class="prog-soon-badge">Bientôt</span></div>
+        <div class="prog-cover ${p.category}">${coverInner}<span class="prog-soon-badge">Bientôt</span></div>
         <div class="prog-body"><div class="prog-name">${p.name}</div><div class="prog-progress-lbl">${p.total_sessions} séances</div></div>
       </div>`;
     }
     return `<div class="prog-card" onclick="openProgram('${p.id}')">
-      <div class="prog-cover ${p.category}">${icon}</div>
+      <div class="prog-cover ${p.category}">${coverInner}</div>
       <div class="prog-body">
         <div class="prog-name">${p.name}</div>
         <div class="prog-progress-bar"><div class="prog-progress-fill" style="width:${pct}%"></div></div>
@@ -2328,26 +2489,46 @@ function renderProgramDetail(){
   const prog=getProgramProgress(p.id);
   const pct=prog.total?Math.round(prog.completed/prog.total*100):0;
   document.getElementById('pdTitle').textContent=p.name;
-  document.getElementById('pdSub').textContent=(p.description||'')+(p.frequency_hint?' · '+p.frequency_hint:'');
-  document.getElementById('pdProgressFill').style.width=pct+'%';
-  document.getElementById('pdProgressLbl').textContent=prog.completed+'/'+prog.total+' séances complétées';
-  document.getElementById('pdSessionList').innerHTML=prog.videos.map((v,i)=>{
-    const done=completedVids.has(v.id);
-    // Débloquée si c'est la première séance, ou si la précédente est complétée
-    const unlocked=i===0||completedVids.has(prog.videos[i-1].id);
-    const numClass=done?'done':(unlocked?'':'locked');
-    if(!unlocked){
-      return `<div class="pd-session locked" onclick="toast('🔒 Termine la séance précédente pour débloquer celle-ci')">
-        <div class="pd-session-num locked">${v.session_number||i+1}</div>
-        <div class="pd-session-body"><div class="pd-session-title">${v.title}</div><div class="pd-session-meta">🔒 Verrouillée</div></div>
-      </div>`;
-    }
-    return `<div class="pd-session" onclick="openVD('${v.id}')">
-      <div class="pd-session-num ${numClass}">${done?'✓':(v.session_number||i+1)}</div>
-      <div class="pd-session-body"><div class="pd-session-title">${v.title}</div><div class="pd-session-meta">${v.dur||''}${done?' · Complétée':''}</div></div>
-      <span class="pd-session-arr">›</span>
-    </div>`;
-  }).join('')||'<div class="empty">Les vidéos de ce parcours arrivent bientôt.</div>';
+
+  // Note d'intro explicative sur le parcours
+  document.getElementById('pdIntroCard').innerHTML=`<div class="pd-intro-card">
+    <div class="pd-intro-text">${p.description||'Un parcours guidé, séance après séance.'}</div>
+    ${p.frequency_hint?`<div class="pd-intro-freq">🗓️ ${p.frequency_hint}</div>`:''}
+  </div>`;
+
+  // Barre de progression, séparée proprement de l'intro
+  document.getElementById('pdProgressCard').innerHTML=`<div class="pd-progress-card">
+    <div class="pd-progress-bar"><div class="pd-progress-fill" style="width:${pct}%"></div></div>
+    <div class="pd-progress-lbl">${prog.completed}/${prog.total} séances complétées</div>
+  </div>`;
+
+  // Regroupement des séances par semaine (selon sessions_per_week choisi dans l'admin)
+  const perWeek=p.sessions_per_week||3;
+  const weeksHtml=[];
+  for(let i=0;i<prog.videos.length;i+=perWeek){
+    const weekVideos=prog.videos.slice(i,i+perWeek);
+    const weekNum=Math.floor(i/perWeek)+1;
+    weeksHtml.push(`<div class="pd-week-title">Semaine ${weekNum}</div>`);
+    weekVideos.forEach((v,localI)=>{
+      const globalI=i+localI;
+      const done=completedVids.has(v.id);
+      const unlocked=globalI===0||completedVids.has(prog.videos[globalI-1].id);
+      const numClass=done?'done':(unlocked?'':'locked');
+      if(!unlocked){
+        weeksHtml.push(`<div class="pd-session locked" onclick="toast('🔒 Termine la séance précédente pour débloquer celle-ci')">
+          <div class="pd-session-num locked">${v.session_number||globalI+1}</div>
+          <div class="pd-session-body"><div class="pd-session-title">${v.title}</div><div class="pd-session-meta">🔒 Verrouillée</div></div>
+        </div>`);
+      } else {
+        weeksHtml.push(`<div class="pd-session" onclick="openVD('${v.id}')">
+          <div class="pd-session-num ${numClass}">${done?'✓':(v.session_number||globalI+1)}</div>
+          <div class="pd-session-body"><div class="pd-session-title">${v.title}</div><div class="pd-session-meta">${v.dur||''}${done?' · Complétée':''}</div></div>
+          <span class="pd-session-arr">›</span>
+        </div>`);
+      }
+    });
+  }
+  document.getElementById('pdWeeksList').innerHTML=weeksHtml.join('')||'<div class="empty">Les vidéos de ce parcours arrivent bientôt.</div>';
 }
 
 function renderMv(){
@@ -2369,7 +2550,7 @@ function renderMv(){
     const locked=isContentLocked(v);
     if(locked){
       const badge=badgeById(v.unlock_badge);
-      return `<div class="mv-card mv-locked" onclick="toast('🔒 Débloque le badge « ${badge?.n||'?'} » pour accéder à cette séance')"><div class="mv-th"><img src="https://img.youtube.com/vi/${v.ytId}/mqdefault.jpg" onerror="this.style.display='none'"><div class="mv-lock-overlay">🔒</div></div><div class="mv-info"><div class="mv-cat">${v.cat}</div><div class="mv-title">${v.title}</div><div class="mv-tags"><span class="mv-tag">${badge?badge.e+' '+badge.n:'Bonus'}</span></div></div></div>`;
+      return `<div class="mv-card mv-locked" onclick="toast('🔒 Débloque le badge « ${badge?.n||'?'} » pour accéder à cette séance')"><div class="mv-th"><img src="https://img.youtube.com/vi/${v.ytId}/mqdefault.jpg" onerror="this.style.display='none'"><div class="mv-lock-overlay">🔒</div></div><div class="mv-info"><div class="mv-cat">${v.cat}</div><div class="mv-title">${v.title}</div><div class="mv-tags"><span class="mv-tag">${badge?badge.e+' '+badge.n:'Bonus'}</span></div><div style="font-size:10px;color:var(--ink-l);margin-top:3px;">${badgeUnlockHint(badge)}</div></div></div>`;
     }
     return `<div class="mv-card" onclick="openVD('${v.id}')"><div class="mv-th"><img src="https://img.youtube.com/vi/${v.ytId}/mqdefault.jpg" onerror="this.style.display='none'"><div class="mv-play">${done?'✓':'▶'}</div></div><div class="mv-info"><div class="mv-cat">${v.cat}</div><div class="mv-title">${v.title}</div><div class="mv-tags"><span class="mv-tag">⏱ ${v.dur}</span><span class="mv-tag">🪷 ${v.dosha}</span><span class="mv-tag">${v.moment}</span>${done?'<span class="mv-tag" style="background:rgba(91,78,168,0.15);color:var(--purple);font-weight:700">✓ Fait</span>':''}</div></div></div>`;
   }).join('')||'<div style="text-align:center;padding:40px 20px;color:var(--ink-l);">Aucune séance dans ce filtre</div>';
@@ -2438,7 +2619,7 @@ function markVDone(){
   document.getElementById('vdBtn').className='vd-btn done';
   if(document.getElementById('wkCalRow'))renderMvCalendar();
   if(document.getElementById('progRow'))renderPrograms();
-  if(currentProgramId && document.getElementById('pdSessionList'))renderProgramDetail();
+  if(currentProgramId && document.getElementById('pdWeeksList'))renderProgramDetail();
   updateSessionsMonth();
   addXP(15);toast('Séance validée ! +15 points 🌿');
   checkBadges();
@@ -2463,6 +2644,8 @@ function openEditInfo(){
   document.getElementById('eiAge').value=userProfile.age;
   document.getElementById('eiActivity').value=userProfile.activity;
   document.getElementById('eiGoal').value=userProfile.goal||'bien-être';
+  document.getElementById('eiDietType').value=userProfile.dietType||'flexitarien';
+  document.getElementById('eiAllergies').value=userProfile.allergies||'';
   go('editInfo');
 }
 function saveEditInfo(){
@@ -2474,6 +2657,8 @@ function saveEditInfo(){
   userProfile.age=parseInt(document.getElementById('eiAge').value)||userProfile.age;
   userProfile.activity=document.getElementById('eiActivity').value;
   userProfile.goal=document.getElementById('eiGoal').value;
+  userProfile.dietType=document.getElementById('eiDietType').value;
+  userProfile.allergies=document.getElementById('eiAllergies').value.trim();
   saveProfile();
   toast('Informations mises à jour ✓');
   go('profil');
@@ -2481,6 +2666,119 @@ function saveEditInfo(){
 }
 
 /* ═══════ MON PROFIL AYURVÉDIQUE ═══════ */
+/* ═══════ PLAN ALIMENTAIRE PERSONNALISÉ (onglet Diététique, réservé Plan Immersion) ═══════ */
+const MEAL_SLOTS=[
+  {id:'pdj',label:'Petit-déjeuner',pct:0.25},
+  {id:'midi',label:'Déjeuner',pct:0.40},
+  {id:'diner',label:'Dîner',pct:0.35},
+];
+// Sources de protéines simples, substituées selon le régime — toujours sans gluten et sans lait de vache (brebis/chèvre/cru acceptés)
+const PROTEIN_BY_DIET={
+  flexitarien:['Poulet','Dinde','Poisson blanc','Saumon','Œufs','Viande maigre de bœuf'],
+  vegetarien:['Œufs','Fromage de brebis','Tofu','Tempeh','Yaourt de brebis'],
+  vegan:['Tofu','Tempeh','Lentilles','Pois chiches','Graines de chanvre','Protéines de pois'],
+};
+// Pools d'ingrédients simples par dosha pur — les profils combinés (ex: vata-pitta) et le tridoshique
+// sont générés automatiquement en fusionnant ces 3 pools, pas besoin de tout réécrire à la main.
+const DOSHA_FOOD_POOLS={
+  vata:{
+    grains:['Riz basmati complet','Sarrasin','Quinoa','Patate douce','Avoine sans gluten'],
+    vegetables:['Courgette cuite','Carotte cuite','Betterave cuite','Courge butternut','Épinards cuits'],
+    spices:['Cannelle','Gingembre frais','Cumin doux','Cardamome'],
+    herbs:['Coriandre fraîche','Persil'],
+    oils:['Huile de sésame','Huile d\'olive'],
+  },
+  pitta:{
+    grains:['Riz basmati','Quinoa','Sarrasin','Patate douce','Millet'],
+    vegetables:['Courgette','Concombre','Épinards','Brocoli vapeur','Fenouil'],
+    spices:['Coriandre moulue','Fenouil','Curcuma (petite quantité)'],
+    herbs:['Menthe fraîche','Coriandre fraîche','Persil'],
+    oils:['Huile de coco','Huile d\'olive'],
+  },
+  kapha:{
+    grains:['Quinoa','Sarrasin','Millet','Riz basmati (petite quantité)'],
+    vegetables:['Brocoli','Chou kale','Poivron','Asperges','Épinards'],
+    spices:['Gingembre','Poivre noir','Curcuma','Piment doux'],
+    herbs:['Coriandre fraîche','Persil'],
+    oils:['Huile d\'olive (filet)'],
+  },
+};
+const MACRO_SOURCES_INFO=[
+  {t:'Protéines',s:'Volailles, poissons, œufs, tofu/tempeh, légumineuses, graines de chanvre — pour préserver et développer la masse musculaire.'},
+  {t:'Glucides',s:'Riz, sarrasin, quinoa, patate douce, millet — toujours sans gluten, pour l\'énergie sans inflammation.'},
+  {t:'Lipides',s:'Huile d\'olive, huile de coco, huile de sésame — pour l\'équilibre hormonal, en quantité modérée pour la perte de masse grasse.'},
+];
+
+function getPrimaryDoshaKey(){
+  const weights=getDoshaWeights();
+  return weights[0].k;
+}
+// Fusionne les pools des doshas concernés (ex: 'vata-pitta' → fusion vata + pitta, 'tridoshique' → les 3)
+function getDoshaFoodPool(doshaKey){
+  if(DOSHA_FOOD_POOLS[doshaKey])return DOSHA_FOOD_POOLS[doshaKey];
+  const parts=doshaKey==='tridoshique'?['vata','pitta','kapha']:doshaKey.split('-');
+  const merged={grains:[],vegetables:[],spices:[],herbs:[],oils:[]};
+  parts.forEach(p=>{
+    const pool=DOSHA_FOOD_POOLS[p];
+    if(!pool)return;
+    merged.grains.push(...pool.grains);
+    merged.vegetables.push(...pool.vegetables);
+    merged.spices.push(...pool.spices);
+    merged.herbs.push(...pool.herbs);
+    merged.oils.push(...pool.oils);
+  });
+  Object.keys(merged).forEach(k=>merged[k]=[...new Set(merged[k])]);
+  return merged.grains.length?merged:DOSHA_FOOD_POOLS.vata;
+}
+function getISOWeek(d){
+  const date=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));
+  date.setUTCDate(date.getUTCDate()+4-(date.getUTCDay()||7));
+  const yearStart=new Date(Date.UTC(date.getUTCFullYear(),0,1));
+  return Math.ceil((((date-yearStart)/86400000)+1)/7);
+}
+// Construit une option simple (pas de "recette") : céréale + protéine en grammes + légume + épice/herbe + huile.
+// Le décalage (offset) permet de proposer 3 options différentes pour un même repas, qui tournent aussi chaque semaine.
+function buildSimpleMealOption(pool,proteinList,week,mealIndex,offset,proteinGrams){
+  const idx=week+mealIndex+offset;
+  const grain=pool.grains[idx%pool.grains.length];
+  const veg=pool.vegetables[idx%pool.vegetables.length];
+  const spice=pool.spices[idx%pool.spices.length];
+  const herb=pool.herbs[(idx+1)%pool.herbs.length];
+  const oil=pool.oils[idx%pool.oils.length];
+  const protein=proteinList[idx%proteinList.length];
+  return `${grain} · ${protein} (${proteinGrams}g) · ${veg} · ${spice}, ${herb} · ${oil}`;
+}
+function generateMealPlan(){
+  const doshaKey=userProfile.dosha||getPrimaryDoshaKey();
+  const pool=getDoshaFoodPool(doshaKey);
+  const proteinList=PROTEIN_BY_DIET[userProfile.dietType]||PROTEIN_BY_DIET.flexitarien;
+  // Recalcule les macros du jour (même formule que le tableau de bord) — riche en protéines et
+  // modéré en lipides, pensé pour la perte de masse grasse tout en préservant le muscle et l'équilibre hormonal.
+  const bmr=Math.round(447.593+(9.247*userProfile.weight)+(3.098*userProfile.height)-(4.33*userProfile.age));
+  const mult=ACTIVITY_MULTIPLIER[userProfile.activity]||1.375;
+  const dailyCal=Math.round(bmr*mult);
+  const proteinPerKg={'sédentaire':1.6,'légère':1.7,'modérée':1.8,'active':1.9,'très active':2.0}[userProfile.activity]||1.7;
+  const proteinTotal=Math.round(userProfile.weight*proteinPerKg);
+  const fatTotal=Math.round((dailyCal*0.30)/9);
+  const carbTotal=Math.max(0,Math.round((dailyCal-(proteinTotal*4)-(fatTotal*9))/4));
+  const week=getISOWeek(new Date());
+  const highlightIdx=week%3;
+
+  return MEAL_SLOTS.map((slot,mealIndex)=>{
+    const proteinGrams=Math.round(proteinTotal*slot.pct);
+    const options=[0,1,2].map(offset=>buildSimpleMealOption(pool,proteinList,week,mealIndex,offset,proteinGrams));
+    return {
+      ...slot,
+      kcal:Math.round(dailyCal*slot.pct),
+      protein:proteinGrams,
+      carbs:Math.round(carbTotal*slot.pct),
+      fat:Math.round(fatTotal*slot.pct),
+      options,
+      highlight:highlightIdx,
+    };
+  });
+}
+
 const DOSHA_DETAIL={
   vata:{
     element:'Air et Éther (l\'Espace)',
@@ -2820,7 +3118,7 @@ function renderRec(){
     const locked=isContentLocked(r);
     const badge=locked?badgeById(r.unlock_badge):null;
     if(locked){
-      return `<div class="rc-card rc-locked" onclick="toast('🔒 Débloque le badge « ${badge?.n||'?'} » pour accéder à cette recette')"><div class="rc-img-w"><img class="rc-img" src="${r.img}" onerror="this.style.background='var(--lav-pale)'"><div class="rc-lock-overlay">🔒</div><div class="rc-kcal">${r.cal} cal</div></div><div class="rc-body"><div class="rc-name">${r.n}</div><div class="rc-lock-hint">${badge?badge.e+' '+badge.n:'Contenu bonus'}</div></div></div>`;
+      return `<div class="rc-card rc-locked" onclick="toast('🔒 Débloque le badge « ${badge?.n||'?'} » pour accéder à cette recette')"><div class="rc-img-w"><img class="rc-img" src="${r.img}" onerror="this.style.background='var(--lav-pale)'"><div class="rc-lock-overlay">🔒</div><div class="rc-kcal">${r.cal} cal</div></div><div class="rc-body"><div class="rc-name">${r.n}</div><div class="rc-lock-hint">${badge?badge.e+' '+badge.n:'Contenu bonus'}</div><div class="rc-lock-hint" style="opacity:.7;font-weight:500;">${badgeUnlockHint(badge)}</div></div></div>`;
     }
     return `<div class="rc-card" onclick="openRC('${r.id}')"><div class="rc-img-w"><img class="rc-img" src="${r.img}" onerror="this.style.background='var(--lav-pale)'"><div class="rc-kcal">${r.cal} cal</div></div><div class="rc-body"><div class="rc-name">${r.n}</div><div class="rc-macros"><div class="rc-m"><span class="rc-m-ic">Prot.</span><div class="rc-m-v p">${r.p}g</div></div><div class="rc-m"><span class="rc-m-ic">Gluc.</span><div class="rc-m-v g">${r.g}g</div></div><div class="rc-m"><span class="rc-m-ic">Lip.</span><div class="rc-m-v l">${r.l}g</div></div></div></div></div>`;
   }).join('');

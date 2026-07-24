@@ -1,0 +1,10 @@
+# Configuration Netlify — indique où se trouvent les fonctions serverless (le webhook Stripe)
+[build]
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+
+# Exécute automatiquement l'email d'upsell chaque jour à 9h UTC (~11h heure de Paris en été)
+[functions."send-upsell-emails"]
+  schedule = "0 9 * * *"

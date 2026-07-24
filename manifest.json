@@ -1,4 +1,5 @@
 {
+  "id": "/",
   "name": "Holistica Club",
   "short_name": "Holistica",
   "description": "Ton compagnon bien-être holistique : routine dosha, mouvement, recettes saines.",
@@ -9,6 +10,8 @@
   "background_color": "#FAF8FF",
   "theme_color": "#5B4EA8",
   "lang": "fr",
+  "categories": ["health", "lifestyle", "wellness"],
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "icon-192.png",

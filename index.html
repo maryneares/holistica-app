@@ -224,6 +224,43 @@ body{font-family:'League Spartan',sans-serif;background:var(--ivory);color:var(-
 .mv-sub{font-size:12px;color:rgba(255,255,255,0.6);margin-top:3px;position:relative;z-index:1;}
 .mv-filters{display:flex;gap:6px;padding:10px 20px;overflow-x:auto;scrollbar-width:none;flex-shrink:0;}
 .mv-filters::-webkit-scrollbar{display:none;}
+/* Parcours guidés */
+.prog-section{padding:0 20px;margin-top:6px;}
+.prog-row{display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;}
+.prog-row::-webkit-scrollbar{display:none;}
+.prog-card{flex-shrink:0;width:200px;background:white;border-radius:18px;overflow:hidden;box-shadow:var(--sh);border:1px solid var(--border);cursor:pointer;}
+.prog-card.soon{opacity:.55;cursor:default;}
+.prog-cover{width:100%;height:100px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:26px;position:relative;}
+.prog-cover.pilates{background:linear-gradient(135deg,#7B6EC8,#9B8ED8);}
+.prog-cover.meditation{background:linear-gradient(135deg,#5B4EA8,#C890C8);}
+.prog-cover.yoga{background:linear-gradient(135deg,#C890C8,#F0B088);}
+.prog-cover.pranayama{background:linear-gradient(135deg,#7FBFA0,#7B6EC8);}
+.prog-soon-badge{position:absolute;top:8px;right:8px;background:rgba(26,24,40,0.55);color:white;font-size:9px;font-weight:800;padding:4px 9px;border-radius:50px;text-transform:uppercase;letter-spacing:.3px;}
+.prog-body{padding:12px 14px;}
+.prog-name{font-size:13px;font-weight:700;color:var(--ink);line-height:1.3;margin-bottom:6px;min-height:34px;}
+.prog-progress-bar{height:5px;background:var(--ivory-d);border-radius:50px;overflow:hidden;margin-bottom:5px;}
+.prog-progress-fill{height:100%;background:var(--grad);border-radius:50px;}
+.prog-progress-lbl{font-size:10px;color:var(--ink-l);font-weight:600;}
+.explore-divider{display:flex;align-items:center;gap:10px;padding:24px 20px 4px;}
+.explore-divider-t{font-size:13px;font-weight:800;color:var(--ink-l);text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;}
+.explore-divider-line{flex:1;height:1px;background:var(--border);}
+/* Écran détail parcours */
+.pd-top{background:var(--grad-h);padding:48px 20px 24px;flex-shrink:0;position:relative;overflow:hidden;}
+.pd-h1{font-family:'League Spartan',sans-serif;font-size:22px;color:white;font-weight:800;letter-spacing:-.01em;position:relative;z-index:1;line-height:1.2;}
+.pd-sub{font-size:12px;color:rgba(255,255,255,0.75);margin-top:6px;position:relative;z-index:1;}
+.pd-progress-wrap{margin-top:14px;position:relative;z-index:1;}
+.pd-progress-bar{height:7px;background:rgba(255,255,255,0.22);border-radius:50px;overflow:hidden;}
+.pd-progress-fill{height:100%;background:white;border-radius:50px;transition:width .4s;}
+.pd-progress-lbl{font-size:11px;color:rgba(255,255,255,0.85);font-weight:600;margin-top:6px;}
+.pd-session{display:flex;align-items:center;gap:12px;background:white;border-radius:16px;padding:12px;margin:0 20px 10px;border:1px solid var(--border);box-shadow:var(--sh);cursor:pointer;}
+.pd-session.locked{opacity:.5;cursor:default;}
+.pd-session-num{width:36px;height:36px;border-radius:12px;background:var(--lav-pale);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;color:var(--purple);flex-shrink:0;}
+.pd-session-num.done{background:var(--grad);color:white;}
+.pd-session-num.locked{background:var(--border);color:var(--ink-l);}
+.pd-session-body{flex:1;min-width:0;}
+.pd-session-title{font-size:13px;font-weight:700;color:var(--ink);}
+.pd-session-meta{font-size:11px;color:var(--ink-l);margin-top:1px;}
+.pd-session-arr{color:var(--purple-m);font-size:16px;flex-shrink:0;}
 
 /* Weekly calendar */
 .wk-cal{margin:14px 20px 0;background:white;border-radius:18px;padding:14px;box-shadow:var(--sh);border:1px solid var(--border);flex-shrink:0;}
@@ -725,9 +762,30 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="wk-cal-row" id="wkCalRow"></div>
 <div class="wk-today-card" id="wkTodayCard"></div>
 </div>
-<div class="mv-filters" id="mvFilters"></div>
 <div class="scroll">
+<div class="sec" style="padding-top:20px;"><h2>Tes <em>parcours</em></h2><div class="sec-sub">Une ligne directrice claire, séance après séance</div></div>
+<div class="prog-section"><div class="prog-row" id="progRow"></div></div>
+<div class="explore-divider"><span class="explore-divider-t">Explorer librement</span><span class="explore-divider-line"></span></div>
+<div class="mv-filters" id="mvFilters"></div>
 <div class="mv-list" id="mvList"></div>
+</div>
+</div>
+
+<!-- ═══ DÉTAIL D'UN PARCOURS ═══ -->
+<div id="programDetail" class="screen">
+<div class="pd-top">
+<button class="vd-back" onclick="go('mouvement')" style="position:fixed;top:16px;left:16px;background:rgba(255,255,255,0.25);">←</button>
+<div class="blob b1"></div><div class="blob b2"></div>
+<div class="pd-h1" id="pdTitle"></div>
+<div class="pd-sub" id="pdSub"></div>
+<div class="pd-progress-wrap">
+<div class="pd-progress-bar"><div class="pd-progress-fill" id="pdProgressFill" style="width:0%"></div></div>
+<div class="pd-progress-lbl" id="pdProgressLbl"></div>
+</div>
+</div>
+<div class="scroll" style="padding-top:16px;">
+<div id="pdSessionList"></div>
+<div style="height:20px;"></div>
 </div>
 </div>
 
@@ -1095,6 +1153,13 @@ async function allerVersStripe(lienBase) {
 }
 let currentUser=null;
 
+// ═══════ COMPTE(S) DÉVELOPPEUR : accès gratuit permanent, sans passer par Stripe ═══════
+// Ajoute ici toute adresse email qui doit toujours avoir accès, quel que soit son statut d'abonnement réel.
+const DEV_EMAILS=['maryne.monnier@gmail.com'];
+function isDevAccount(){
+  return !!(currentUser && currentUser.email && DEV_EMAILS.includes(currentUser.email.toLowerCase()));
+}
+
 // Retourne la date locale (YYYY-MM-DD) au lieu de la date UTC.
 // new Date().toISOString() convertit en UTC, donc à Paris (UTC+1/+2), autour de minuit
 // ou après un setHours(0,0,0,0), ça décalait "aujourd'hui" d'un jour en arrière —
@@ -1109,20 +1174,25 @@ function localDateStr(d){
 let VIDEOS=[];
 let RECIPES=[];
 let DOSSIERS=[];
+let PROGRAMS=[];
+let currentProgramId=null;
 
 async function loadContent(){
   try{
-    const [{data:vids,error:vErr},{data:recs,error:rErr},{data:doss,error:dErr}]=await Promise.all([
+    const [{data:vids,error:vErr},{data:recs,error:rErr},{data:doss,error:dErr},{data:progs,error:pErr}]=await Promise.all([
       sb.from('videos').select('*'),
       sb.from('recipes').select('*'),
-      sb.from('dossiers').select('*').order('publish_date',{ascending:false})
+      sb.from('dossiers').select('*').order('publish_date',{ascending:false}),
+      sb.from('programs').select('*').order('sort_order',{ascending:true})
     ]);
     if(vErr)console.error('Erreur chargement vidéos:',vErr);
     if(rErr)console.error('Erreur chargement recettes:',rErr);
     if(dErr)console.error('Erreur chargement dossiers:',dErr);
+    if(pErr)console.error('Erreur chargement programmes:',pErr);
     if(vids&&vids.length)VIDEOS=vids;
     if(recs&&recs.length)RECIPES=recs;
     if(doss)DOSSIERS=doss;
+    if(progs)PROGRAMS=progs;
   }catch(e){
     console.error('Erreur loadContent:',e);
   }
@@ -1251,9 +1321,23 @@ async function loadProfileAndEnter(){
     return;
   }
   const profile=data;
-  if(error){console.error('Erreur profil:',error);toast('⚠️ '+error.message);}
+  if(error){
+    console.error('Erreur profil:',error);
+    profileLoaded=false;
+    toast('⚠️ Erreur de connexion, nouvelle tentative dans 3s...');
+    setTimeout(()=>{
+      if(!profileLoaded){profileLoaded=true;loadProfileAndEnter();}
+    },3000);
+    return; // Important : on ne redirige JAMAIS vers l'onboarding sur une erreur —
+            // seulement quand il est confirmé qu'aucun profil n'existe (voir plus bas).
+  }
   if(profile){
     userProfile={name:profile.name||'',lastName:profile.last_name||'',email:profile.email||'',goal:profile.goal||'bien-être',age:profile.age||30,weight:profile.weight||62,height:profile.height||165,activity:profile.activity||'modérée',hasPeriod:profile.has_period,menopause:profile.menopause,dosha:profile.dosha||'vata',lastPeriodStart:profile.last_period_start||'',doshaV:profile.dosha_v??33,doshaP:profile.dosha_p??33,doshaK:profile.dosha_k??34,cycleLength:profile.cycle_length||28,birthDate:profile.birth_date||'',birthTime:profile.birth_time||'',birthPlace:profile.birth_place||'',subscriptionStatus:profile.subscription_status||'inactive',subscriptionPlan:profile.subscription_plan||null};
+    if(isDevAccount()){
+      // Accès complet en mémoire uniquement pour tester (n'écrase jamais la vraie valeur en base)
+      userProfile.subscriptionStatus='active';
+      userProfile.subscriptionPlan='immersion';
+    }
     xp=profile.xp||0;sessions=profile.sessions||0;
     moodScore=profile.mood_score||0;sleepScore=profile.sleep_score||7;stressScore=profile.stress_score||5;
     completedVids=new Set(profile.completed_videos||[]);
@@ -1267,7 +1351,7 @@ async function loadProfileAndEnter(){
     loginDates.add(localDateStr());
     streak=calcStreak();
     lastCelebratedLevel=profile.last_celebrated_level??(Math.floor(xp/100)+1);
-    if(userProfile.subscriptionStatus!=='active'){
+    if(!isDevAccount() && userProfile.subscriptionStatus!=='active'){
       // Profil complet mais pas (ou plus) d'abonnement actif : on bloque l'accès et on affiche les offres
       go('offers');
       document.getElementById('bnav').style.display='none';
@@ -1282,7 +1366,8 @@ async function loadProfileAndEnter(){
     // fait "sauter" des questions déjà vues, car obStep repart d'où il en était.
     obStep=0;
     obChoiceIdx=-1;
-    doshaScores={v:0,p:0,k:0};
+    doshaAnswers={};
+    doshaPage=0;
     retakeDoshaMode=false;
     go('onboarding');
     renderOB();
@@ -1347,7 +1432,7 @@ window.addEventListener('load',async()=>{
 });
 
 /* ═══════ NAV ═══════ */
-const PROTECTED_SCREENS=['dashboard','mouvement','recettes','naturo','challenge','doshaProfile','editInfo','wellnessHistory','badgesScreen','cycleSettings','astroScreen'];
+const PROTECTED_SCREENS=['dashboard','mouvement','recettes','naturo','challenge','doshaProfile','editInfo','wellnessHistory','badgesScreen','cycleSettings','astroScreen','programDetail'];
 // ⚠️ À remplacer par le vrai lien d'invitation du groupe WhatsApp Holistica Club
 const WHATSAPP_GROUP_LINK='https://chat.whatsapp.com/REMPLACER_PAR_TON_LIEN';
 
@@ -1383,7 +1468,7 @@ function go(id){
   // Garde-fou : impossible d'accéder aux écrans du contenu sans abonnement actif,
   // même en forçant la navigation (ex: via la console). Le profil, les offres,
   // la confidentialité et la déconnexion restent accessibles pour gérer son compte.
-  if(PROTECTED_SCREENS.includes(id) && currentUser && userProfile.subscriptionStatus!=='active'){
+  if(PROTECTED_SCREENS.includes(id) && currentUser && !isDevAccount() && userProfile.subscriptionStatus!=='active'){
     id='offers';
     toast('🔒 Abonne-toi pour accéder à ton espace Holistica');
   }
@@ -1570,31 +1655,7 @@ const OB_STEPS=[
   {type:'dosha',part:'Ton Dosha',title:'Bilan Ayurvédique complet',subtitle:'Réponds intuitivement à chaque critère, il n\'y a pas de mauvaise réponse.'},
 ];
 
-function renderOB(){
-  const s=OB_STEPS[obStep];
-  const pct=Math.round(((obStep+1)/OB_STEPS.length)*100);
-  document.getElementById('obFill').style.width=pct+'%';
-  const backBtn=document.getElementById('obBackBtn');
-  if(backBtn)backBtn.style.visibility=obStep===0?'hidden':'visible';
-  let html='<div class="ob-part">'+s.part+'</div><div class="ob-title">'+s.title+'</div>';
-  
-  if(s.type==='input'){
-    html+=s.fields.map(f=>'<input class="ob-input" id="'+f.id+'" type="'+f.type+'" placeholder="'+f.ph+'">').join('');
-  } else if(s.type==='slider'){
-    let val=s.val;
-    if(s.id==='obAge'&&userProfile.age)val=userProfile.age;
-    if(s.id==='obHeight'&&userProfile.height)val=userProfile.height;
-    if(s.id==='obWeight'&&userProfile.weight)val=userProfile.weight;
-    html+='<div class="ob-slider-wrap"><div class="ob-slider-val" id="'+s.id+'Val">'+val+'</div><input type="range" class="ob-slider" id="'+s.id+'" min="'+s.min+'" max="'+s.max+'" value="'+val+'" oninput="document.getElementById(\''+s.id+'Val\').textContent=this.value"><div class="ob-slider-labels"><span>'+s.min+(s.unit?' '+s.unit:'')+'</span><span>'+s.max+(s.unit?' '+s.unit:'')+'</span></div></div>';
-  } else if(s.type==='choice'){
-    html+='<div class="ob-opts">'+s.opts.map((o,i)=>'<div class="ob-opt" onclick="selectOBOpt(this,'+i+')">'+o+'</div>').join('')+'</div>';
-  } else if(s.type==='date'){
-    html+='<div style="font-size:13px;color:rgba(255,255,255,0.8);text-align:center;margin-bottom:20px;">'+s.subtitle+'</div>';
-    const today=localDateStr();
-    html+='<input type="date" class="ob-input" id="obLastPeriod" max="'+today+'" style="text-align:center;">';
-  } else if(s.type==='dosha'){
-    html+='<div style="font-size:13px;color:rgba(255,255,255,0.8);text-align:center;margin-bottom:16px;">'+s.subtitle+'</div>';
-    const qs=[
+const DOSHA_QUESTIONS=[
       {q:'Ta corpulence',v:'Fine, peu développée',p:'Moyenne, athlétique',k:'Large, bien développée'},
       {q:'Ta prise de poids',v:'Difficile à prendre',p:'Facile à gérer',k:'Facile à prendre'},
       {q:'Ta peau',v:'Sèche, rugueuse',p:'Sensible, rougeurs',k:'Douce, grasse, hydratée'},
@@ -1629,15 +1690,58 @@ function renderOB(){
       {q:'Ta sensibilité sensorielle',v:'Bruits, ouïe sensible',p:'Lumière, vue sensible',k:'Odeurs, textures'},
       {q:'Ton rapport à l\'argent',v:'Dépense facilement',p:'Bon gestionnaire, ambitieux',k:'Économe, sécurisant'},
       {q:'Ta sensibilité au froid',v:'Aime chaud, déteste froid',p:'Aime froid, déteste chaud',k:'Aime tempéré, déteste humide'},
-    ];
+];
+const DOSHA_PER_PAGE=5; // Nombre de questions affichées par page, au lieu des 34 en une seule fois
+let doshaPage=0;
+
+function renderOB(){
+  const s=OB_STEPS[obStep];
+  const doshaPageCount=Math.ceil(DOSHA_QUESTIONS.length/DOSHA_PER_PAGE);
+  // Barre de progression : on compte les pages du quiz dosha comme des sous-étapes à part entière
+  const totalVirtualSteps=(OB_STEPS.length-1)+doshaPageCount;
+  const currentVirtualStep=s.type==='dosha'?(OB_STEPS.length-1)+doshaPage:obStep;
+  const pct=Math.round(((currentVirtualStep+1)/totalVirtualSteps)*100);
+  document.getElementById('obFill').style.width=pct+'%';
+  const backBtn=document.getElementById('obBackBtn');
+  if(backBtn)backBtn.style.visibility=(obStep===0&&doshaPage===0)?'hidden':'visible';
+  let html='<div class="ob-part">'+s.part+'</div><div class="ob-title">'+s.title+'</div>';
+  
+  if(s.type==='input'){
+    html+=s.fields.map(f=>'<input class="ob-input" id="'+f.id+'" type="'+f.type+'" placeholder="'+f.ph+'">').join('');
+  } else if(s.type==='slider'){
+    let val=s.val;
+    if(s.id==='obAge'&&userProfile.age)val=userProfile.age;
+    if(s.id==='obHeight'&&userProfile.height)val=userProfile.height;
+    if(s.id==='obWeight'&&userProfile.weight)val=userProfile.weight;
+    html+='<div class="ob-slider-wrap"><div class="ob-slider-val" id="'+s.id+'Val">'+val+'</div><input type="range" class="ob-slider" id="'+s.id+'" min="'+s.min+'" max="'+s.max+'" value="'+val+'" oninput="document.getElementById(\''+s.id+'Val\').textContent=this.value"><div class="ob-slider-labels"><span>'+s.min+(s.unit?' '+s.unit:'')+'</span><span>'+s.max+(s.unit?' '+s.unit:'')+'</span></div></div>';
+  } else if(s.type==='choice'){
+    html+='<div class="ob-opts">'+s.opts.map((o,i)=>'<div class="ob-opt" onclick="selectOBOpt(this,'+i+')">'+o+'</div>').join('')+'</div>';
+  } else if(s.type==='date'){
+    html+='<div style="font-size:13px;color:rgba(255,255,255,0.8);text-align:center;margin-bottom:20px;">'+s.subtitle+'</div>';
+    const today=localDateStr();
+    html+='<input type="date" class="ob-input" id="obLastPeriod" max="'+today+'" style="text-align:center;">';
+  } else if(s.type==='dosha'){
+    if(doshaPage===0){
+      html+='<div style="font-size:13px;color:rgba(255,255,255,0.8);text-align:center;margin-bottom:16px;">'+s.subtitle+'</div>';
+    }
+    html+='<div style="text-align:center;font-size:11px;color:rgba(255,255,255,0.7);margin-bottom:14px;">Page '+(doshaPage+1)+' / '+doshaPageCount+'</div>';
+    const startIdx=doshaPage*DOSHA_PER_PAGE;
+    const pageQs=DOSHA_QUESTIONS.slice(startIdx,startIdx+DOSHA_PER_PAGE);
     html+='<div>';
-    qs.forEach((q,i)=>{
-      html+=`<div style="margin-bottom:14px;"><div class="dosha-q-label">${i+1}. ${q.q}</div><div class="dosha-grid"><div class="dg-item v" data-q="${i}" data-d="v" onclick="selectDosha(this)">${q.v}</div><div class="dg-item p" data-q="${i}" data-d="p" onclick="selectDosha(this)">${q.p}</div><div class="dg-item k" data-q="${i}" data-d="k" onclick="selectDosha(this)">${q.k}</div></div></div>`;
+    pageQs.forEach((q,localI)=>{
+      const i=startIdx+localI; // index global, pour garder les réponses cohérentes entre les pages
+      const selV=doshaAnswers[i]==='v'?' sel':'',selP=doshaAnswers[i]==='p'?' sel':'',selK=doshaAnswers[i]==='k'?' sel':'';
+      html+=`<div style="margin-bottom:14px;"><div class="dosha-q-label">${i+1}. ${q.q}</div><div class="dosha-grid"><div class="dg-item v${selV}" data-q="${i}" data-d="v" onclick="selectDosha(this)">${q.v}</div><div class="dg-item p${selP}" data-q="${i}" data-d="p" onclick="selectDosha(this)">${q.p}</div><div class="dg-item k${selK}" data-q="${i}" data-d="k" onclick="selectDosha(this)">${q.k}</div></div></div>`;
     });
-    html+='<div style="text-align:center;font-size:11px;color:rgba(255,255,255,0.7);margin-top:6px;" id="doshaProgress">0 / '+qs.length+' répondu(e)s</div>';
     html+='</div>';
   }
   document.getElementById('obContent').innerHTML=html;
+  const obBtn=document.getElementById('obBtn');
+  if(obBtn && s.type==='dosha'){
+    obBtn.textContent=(doshaPage>=doshaPageCount-1)?'Voir mon profil':'Continuer';
+  } else if(obBtn){
+    obBtn.textContent='Continuer';
+  }
 }
 
 let obChoiceIdx=-1;
@@ -1648,19 +1752,26 @@ function selectOBOpt(el,idx){
   setTimeout(()=>obNext(),300);
 }
 
-let doshaScores={v:0,p:0,k:0};
+let doshaAnswers={}; // { indexQuestion: 'v'|'p'|'k' }, conserve les réponses entre les pages
 function selectDosha(el){
   const q=el.dataset.q;
   document.querySelectorAll(`[data-q="${q}"]`).forEach(e=>e.classList.remove('sel'));
   el.classList.add('sel');
-  doshaScores={v:0,p:0,k:0};
-  const answered=document.querySelectorAll('.dg-item.sel');
-  answered.forEach(e=>{doshaScores[e.dataset.d]++;});
-  const prog=document.getElementById('doshaProgress');
-  if(prog)prog.textContent=answered.length+' / '+(document.querySelectorAll('.dosha-grid').length)+' répondu(e)s';
+  doshaAnswers[q]=el.dataset.d;
+}
+function computeDoshaScores(){
+  const scores={v:0,p:0,k:0};
+  Object.values(doshaAnswers).forEach(d=>scores[d]++);
+  return scores;
 }
 
 function obPrev(){
+  const s=OB_STEPS[obStep];
+  if(s.type==='dosha' && doshaPage>0){
+    doshaPage--;
+    renderOB();
+    return;
+  }
   if(obStep<=0)return;
   obStep--;
   // Re-saute l'étape date si elle avait été sautée à l'aller (pas de règles)
@@ -1690,6 +1801,14 @@ function obNext(){
   } else if(s.type==='choice' && OB_STEPS[obStep].title.includes('activité')){
     userProfile.activity=['sédentaire','légère','modérée','active','très active'][obChoiceIdx]||'modérée';
   } else if(s.type==='dosha'){
+    const doshaPageCount=Math.ceil(DOSHA_QUESTIONS.length/DOSHA_PER_PAGE);
+    if(doshaPage<doshaPageCount-1){
+      doshaPage++;
+      renderOB();
+      return;
+    }
+    // Dernière page : on calcule le profil dosha final
+    const doshaScores=computeDoshaScores();
     const total=doshaScores.v+doshaScores.p+doshaScores.k;
     const pctV=total?Math.round(doshaScores.v/total*100):33;
     const pctP=total?Math.round(doshaScores.p/total*100):33;
@@ -1704,6 +1823,7 @@ function obNext(){
     } else {
       userProfile.dosha=sorted[0].d;
     }
+    doshaPage=0; // Réinitialise pour un futur "Refaire le test"
     if(retakeDoshaMode){
       retakeDoshaMode=false;
       saveProfile();
@@ -1721,7 +1841,11 @@ function obNext(){
     enterApp();
     // Nouveau compte : jamais d'abonnement actif à ce stade → on bloque l'accès et on affiche les offres.
     // enterApp() a déjà déclenché saveProfile() (via calcNutrition), donc le profil est bien enregistré.
-    if(userProfile.subscriptionStatus!=='active'){
+    if(isDevAccount()){
+      userProfile.subscriptionStatus='active';
+      userProfile.subscriptionPlan='immersion';
+      enterApp(); // Rafraîchit l'affichage (ex: "Mon abonnement") avec les nouvelles valeurs
+    } else if(userProfile.subscriptionStatus!=='active'){
       go('offers');
       document.getElementById('bnav').style.display='none';
     }
@@ -2149,8 +2273,86 @@ function renderMvFilters(){
 
 function setMvFilter(f){activeMvFilter=f;renderMvFilters();renderMv();}
 
+/* ═══════ PARCOURS GUIDÉS ═══════ */
+const PROGRAM_ICON={pilates:'🧘‍♀️',meditation:'🌙',yoga:'🪷',pranayama:'🌬️'};
+
+// Calcule la progression : le nombre de séances complétées d'affilée depuis le début.
+// La séance suivante n'est débloquée que si toutes les précédentes sont faites (verrouillage séquentiel).
+function getProgramProgress(programId){
+  const vids=VIDEOS.filter(v=>v.program_id===programId).sort((a,b)=>(a.session_number||0)-(b.session_number||0));
+  let completed=0;
+  for(const v of vids){
+    if(completedVids.has(v.id))completed++;
+    else break;
+  }
+  return {total:vids.length,completed,videos:vids};
+}
+
+function renderPrograms(){
+  const row=document.getElementById('progRow');
+  if(!row)return;
+  if(!PROGRAMS.length){
+    row.innerHTML='<div style="color:var(--ink-l);font-size:12px;padding:10px 0;">Chargement des parcours...</div>';
+    return;
+  }
+  row.innerHTML=PROGRAMS.map(p=>{
+    const prog=getProgramProgress(p.id);
+    const pct=prog.total?Math.round(prog.completed/prog.total*100):0;
+    const icon=PROGRAM_ICON[p.category]||'✨';
+    if(!p.active){
+      return `<div class="prog-card soon">
+        <div class="prog-cover ${p.category}">${icon}<span class="prog-soon-badge">Bientôt</span></div>
+        <div class="prog-body"><div class="prog-name">${p.name}</div><div class="prog-progress-lbl">${p.total_sessions} séances</div></div>
+      </div>`;
+    }
+    return `<div class="prog-card" onclick="openProgram('${p.id}')">
+      <div class="prog-cover ${p.category}">${icon}</div>
+      <div class="prog-body">
+        <div class="prog-name">${p.name}</div>
+        <div class="prog-progress-bar"><div class="prog-progress-fill" style="width:${pct}%"></div></div>
+        <div class="prog-progress-lbl">${prog.completed}/${prog.total} séances</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openProgram(programId){
+  currentProgramId=programId;
+  renderProgramDetail();
+  go('programDetail');
+}
+
+function renderProgramDetail(){
+  const p=PROGRAMS.find(x=>x.id===currentProgramId);
+  if(!p)return;
+  const prog=getProgramProgress(p.id);
+  const pct=prog.total?Math.round(prog.completed/prog.total*100):0;
+  document.getElementById('pdTitle').textContent=p.name;
+  document.getElementById('pdSub').textContent=(p.description||'')+(p.frequency_hint?' · '+p.frequency_hint:'');
+  document.getElementById('pdProgressFill').style.width=pct+'%';
+  document.getElementById('pdProgressLbl').textContent=prog.completed+'/'+prog.total+' séances complétées';
+  document.getElementById('pdSessionList').innerHTML=prog.videos.map((v,i)=>{
+    const done=completedVids.has(v.id);
+    // Débloquée si c'est la première séance, ou si la précédente est complétée
+    const unlocked=i===0||completedVids.has(prog.videos[i-1].id);
+    const numClass=done?'done':(unlocked?'':'locked');
+    if(!unlocked){
+      return `<div class="pd-session locked" onclick="toast('🔒 Termine la séance précédente pour débloquer celle-ci')">
+        <div class="pd-session-num locked">${v.session_number||i+1}</div>
+        <div class="pd-session-body"><div class="pd-session-title">${v.title}</div><div class="pd-session-meta">🔒 Verrouillée</div></div>
+      </div>`;
+    }
+    return `<div class="pd-session" onclick="openVD('${v.id}')">
+      <div class="pd-session-num ${numClass}">${done?'✓':(v.session_number||i+1)}</div>
+      <div class="pd-session-body"><div class="pd-session-title">${v.title}</div><div class="pd-session-meta">${v.dur||''}${done?' · Complétée':''}</div></div>
+      <span class="pd-session-arr">›</span>
+    </div>`;
+  }).join('')||'<div class="empty">Les vidéos de ce parcours arrivent bientôt.</div>';
+}
+
 function renderMv(){
   renderMvCalendar();
+  renderPrograms();
   renderMvFilters();
   updateSessionsMonth();
   if(!VIDEOS.length){
@@ -2235,6 +2437,8 @@ function markVDone(){
   document.getElementById('vdBtn').textContent='✓ Séance complétée';
   document.getElementById('vdBtn').className='vd-btn done';
   if(document.getElementById('wkCalRow'))renderMvCalendar();
+  if(document.getElementById('progRow'))renderPrograms();
+  if(currentProgramId && document.getElementById('pdSessionList'))renderProgramDetail();
   updateSessionsMonth();
   addXP(15);toast('Séance validée ! +15 points 🌿');
   checkBadges();
@@ -2353,7 +2557,8 @@ function renderDoshaProfile(){
 }
 function retakeDoshaQuiz(){
   retakeDoshaMode=true;
-  doshaScores={v:0,p:0,k:0};
+  doshaAnswers={};
+  doshaPage=0;
   obStep=OB_STEPS.length-1; // dernière étape = quiz dosha
   obChoiceIdx=-1;
   go('onboarding');

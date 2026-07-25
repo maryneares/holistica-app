@@ -1601,7 +1601,7 @@ function renderPlanAlimentaireMensuelHtml(plan){
   return `<div class="sec" style="padding-top:20px;"><h2>Ton <em>programme du mois</em></h2></div>
   <div class="diet-summary-card" style="margin-bottom:10px;">
     <div class="diet-summary-t">${plan.titre}</div>
-    <div class="diet-summary-obj">🎯 ${plan.objectif}</div>
+    <div class="diet-summary-obj">${plan.objectif}</div>
     ${plan.profil_ayurvedique_line?`<div class="diet-info-row" style="display:block;margin-top:8px;">${plan.profil_ayurvedique_line}</div>`:''}
     ${plan.intro?`<div class="diet-info-row" style="display:block;margin-top:8px;">${plan.intro.replace(/\n/g,'<br>')}</div>`:''}
   </div>
@@ -1650,7 +1650,7 @@ async function renderDietPlan(){
   let html=`<div class="sec" style="padding-top:20px;"><h2>Ton <em>résumé</em> du jour</h2></div>
   <div class="diet-summary-card">
     <div class="diet-summary-t">Profil ${doshaLabel} · ${dietLabel} · Sans gluten · Sans lait de vache</div>
-    <div class="diet-summary-obj">🎯 Équilibre santé global · Maintien musculaire · Soutien hormonal · Anti-inflammatoire</div>
+    <div class="diet-summary-obj">Perte de masse grasse · Maintien musculaire · Soutien hormonal · Anti-inflammatoire</div>
     <div class="diet-summary-row">
       <div class="diet-summary-item"><div class="diet-summary-v">${totalKcal}</div><div class="diet-summary-l">kcal/jour</div></div>
       <div class="diet-summary-item"><div class="diet-summary-v">${totalP}g</div><div class="diet-summary-l">Protéines</div></div>

@@ -298,6 +298,20 @@ body{font-family:'League Spartan',sans-serif;background:var(--ivory);color:var(-
 .diet-info-t{font-size:12px;font-weight:800;color:var(--purple);text-transform:uppercase;letter-spacing:.3px;margin-bottom:10px;}
 .diet-info-row{font-size:12px;color:var(--ink-m);line-height:1.5;margin-bottom:8px;}
 .diet-info-row b{color:var(--ink);}
+.plan-option-t{font-size:13px;font-weight:800;color:var(--ink);margin:14px 0 4px;}
+.plan-option-t:first-child{margin-top:0;}
+.plan-label{font-size:12.5px;font-weight:700;color:var(--purple-m);margin:8px 0 3px;}
+.plan-label:first-child{margin-top:0;}
+.plan-list{font-size:12px;color:var(--ink-m);line-height:1.6;margin-bottom:8px;}
+.plan-line{font-size:12px;color:var(--ink-m);line-height:1.6;margin-bottom:8px;}
+.plan-table{width:100%;border-collapse:collapse;margin-top:4px;}
+.plan-table td{font-size:12px;color:var(--ink-m);padding:7px 6px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5;}
+.plan-table td:first-child{font-weight:700;color:var(--ink);width:36%;white-space:nowrap;}
+.plan-table tr:last-child td{border-bottom:none;}
+.plan-holistica-card{margin:0 20px 10px;background:linear-gradient(135deg,var(--purple-l,#f3eefc),#fff);border-radius:16px;padding:16px 18px;box-shadow:var(--sh);border:1px solid var(--border);}
+.plan-holistica-t{font-size:11px;font-weight:800;color:var(--purple);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;}
+.plan-holistica-body{font-size:12.5px;font-weight:700;color:var(--ink);line-height:1.6;}
+.plan-divider{border:none;height:3px;border-radius:3px;background:var(--grad);margin:22px 20px 6px;}
 .diet-week-note{text-align:center;font-size:11px;color:var(--ink-l);margin:14px 20px 4px;font-style:italic;}
 
 /* Weekly calendar */
@@ -1576,8 +1590,8 @@ function doshaToProfilPlan(doshaKey){
   return 'VATA';
 }
 
-async function getPlanAlimentaireMoisCourant(){
-  const profil=doshaToProfilPlan(userProfile.dosha);
+async function getPlanAlimentaireMoisCourant(doshaKeySnapshot){
+  const profil=doshaToProfilPlan(doshaKeySnapshot);
   const mois=getMoisCourantFrance();
   const cacheKey=profil+'-'+mois;
   if(_planMoisCache&&_planMoisCacheKey===cacheKey)return _planMoisCache;
@@ -1587,25 +1601,175 @@ async function getPlanAlimentaireMoisCourant(){
   return data;
 }
 
-function renderPlanAlimentaireMensuelHtml(plan){
-  if(!plan){
-    return `<div class="sec" style="padding-top:20px;"><h2>Ton <em>programme du mois</em></h2></div>
-    <div class="diet-info-card"><div class="diet-info-t">Programme en préparation</div><div class="diet-info-row">Le programme alimentaire détaillé de ce mois n'est pas encore disponible pour ton profil.</div></div>`;
-  }
-  const sectionsHtml=(plan.sections||[]).map(s=>`
-    <div class="diet-info-card" style="margin-bottom:10px;">
-      <div class="diet-info-t">${s.title}</div>
-      <div class="diet-info-row" style="display:block;">${(s.content||'').replace(/\n/g,'<br>')}</div>
-    </div>`).join('');
+function cleanInlineBullets(s){
+  let out=(s||'').replace(/\s*•\s*/g,', ').replace(/,\s*,/g,',').replace(/^,\s*/,'').trim();
+  out=out.replace(/[.,:;]+$/,'').trim();
+  return out;
+}
 
-  return `<div class="sec" style="padding-top:20px;"><h2>Ton <em>programme du mois</em></h2></div>
-  <div class="diet-summary-card" style="margin-bottom:10px;">
-    <div class="diet-summary-t">${plan.titre}</div>
-    <div class="diet-summary-obj">${plan.objectif}</div>
-    ${plan.profil_ayurvedique_line?`<div class="diet-info-row" style="display:block;margin-top:8px;">${plan.profil_ayurvedique_line}</div>`:''}
-    ${plan.intro?`<div class="diet-info-row" style="display:block;margin-top:8px;">${plan.intro.replace(/\n/g,'<br>')}</div>`:''}
-  </div>
-  ${sectionsHtml}`;
+// Transforme un bloc de texte brut (titres, "• items", "Option N", "Épices : X • Y")
+// en HTML lisible : les listes à puces deviennent du texte séparé par des virgules,
+// regroupé sous leur intitulé, avec un peu d'air entre chaque bloc (Option 1/2/3...).
+function formatPlanSectionHtml(text){
+  const lines=(text||'').split('\n').map(l=>l.trim()).filter(l=>l.length);
+  let html='';
+  let i=0;
+  while(i<lines.length){
+    const line=lines[i];
+    const isBullet=line.startsWith('•');
+    if(isBullet){
+      const items=[];
+      while(i<lines.length&&lines[i].startsWith('•')){
+        items.push(cleanInlineBullets(lines[i].replace(/^•\s*/,'')));
+        i++;
+      }
+      html+=`<div class="plan-list">${items.join(', ')}</div>`;
+      continue;
+    }
+    if(i+1<lines.length&&lines[i+1].startsWith('•')){
+      const label=cleanInlineBullets(line);
+      i++;
+      const items=[];
+      while(i<lines.length&&lines[i].startsWith('•')){
+        items.push(cleanInlineBullets(lines[i].replace(/^•\s*/,'')));
+        i++;
+      }
+      html+=`<div class="plan-label">${label}</div><div class="plan-list">${items.join(', ')}</div>`;
+      continue;
+    }
+    if(/^Option\s*\d/i.test(line)){
+      html+=`<div class="plan-option-t">${cleanInlineBullets(line)}</div>`;
+      i++;
+      continue;
+    }
+    // Ligne autonome (pas une puce, pas suivie d'une puce) : on regroupe toutes
+    // les lignes qui suivent dans le même cas de figure en UN SEUL paragraphe,
+    // pour ne jamais couper une phrase en plein milieu.
+    const paraLines=[];
+    while(i<lines.length&&!lines[i].startsWith('•')&&!/^Option\s*\d/i.test(lines[i])&&!(i+1<lines.length&&lines[i+1].startsWith('•'))){
+      paraLines.push(lines[i]);
+      i++;
+    }
+    if(paraLines.length){
+      html+=`<div class="plan-line">${cleanInlineBullets(paraLines.join(' '))}</div>`;
+    } else {
+      html+=`<div class="plan-line">${cleanInlineBullets(lines[i])}</div>`;
+      i++;
+    }
+  }
+  return html;
+}
+
+// Pour "Les meilleurs aliments du mois" : rendu en lignes de tableau
+// (catégorie | aliments séparés par virgules) plutôt qu'en longue liste.
+function alimentsRowsHtml(text){
+  const lines=(text||'').split('\n').map(l=>l.trim()).filter(l=>l.length);
+  let rows='';
+  let i=0;
+  while(i<lines.length){
+    const line=lines[i];
+    if(!line.startsWith('•')&&i+1<lines.length&&lines[i+1].startsWith('•')){
+      const label=cleanInlineBullets(line);
+      i++;
+      const items=[];
+      while(i<lines.length&&lines[i].startsWith('•')){
+        items.push(cleanInlineBullets(lines[i].replace(/^•\s*/,'')));
+        i++;
+      }
+      rows+=`<tr><td>${label}</td><td>${items.join(', ')}</td></tr>`;
+    } else {
+      rows+=`<tr><td colspan="2">${cleanInlineBullets(line)}</td></tr>`;
+      i++;
+    }
+  }
+  return rows;
+}
+
+// Transforme une liste à puces plate (comme "Épices du mois") en une seule
+// ligne de texte séparée par des virgules, pour l'intégrer dans le tableau.
+function flatBulletListToCommaText(text){
+  const lines=(text||'').split('\n').map(l=>l.trim()).filter(l=>l.length);
+  return lines.map(l=>cleanInlineBullets(l.startsWith('•')?l.replace(/^•\s*/,''):l)).filter(Boolean).join(', ');
+}
+
+// Regroupe les sections restantes (hors petit-déj/déjeuner/dîner, déjà injectées
+// dans leurs cartes repas) : fusionne les 2 sections "épices" avec "les meilleurs
+// aliments" dans UN SEUL tableau, fusionne TOUS les "Conseil(s) Ayurveda" (courts
+// et longs) dans UNE SEULE carte, met "Le conseil Holistica" en évidence à part,
+// et laisse le reste (Au réveil, Légumes de saison, Collation...) en cartes individuelles.
+function renderPlanSectionsRestantesHtml(plan){
+  if(!plan||!plan.sections)return '';
+  const sections=plan.sections;
+
+  const isRepas=t=>(/petit-d[ée]jeuner|(?<!petit-)d[ée]jeuner|d[îi]ner|^collation\s*\(/i.test(t))&&!/meilleurs aliments/i.test(t);
+  const isEpices=t=>/[ée]pices/i.test(t)&&!/meilleurs aliments/i.test(t);
+  const isAliments=t=>/meilleurs aliments/i.test(t);
+  const isHolistica=t=>/conseil holistica/i.test(t);
+  const isConseil=t=>/conseils? ayurveda/i.test(t)&&!/meilleurs aliments/i.test(t);
+
+  const restantes=sections.filter(s=>!isRepas(s.title));
+  const epicesSections=restantes.filter(s=>isEpices(s.title));
+  const alimentsSection=restantes.find(s=>isAliments(s.title));
+  const holisticaSection=restantes.find(s=>isHolistica(s.title));
+  const conseilsSections=restantes.filter(s=>isConseil(s.title));
+  const autres=restantes.filter(s=>!isEpices(s.title)&&!isAliments(s.title)&&!isConseil(s.title)&&!isHolistica(s.title));
+
+  let html='';
+
+  // Cartes individuelles restantes (Au réveil, Légumes de saison, Collation...)
+  autres.forEach(s=>{
+    html+=`<div class="diet-info-card" style="margin-bottom:10px;">
+      <div class="diet-info-t">${s.title}</div>
+      ${formatPlanSectionHtml(s.content)}
+    </div>`;
+  });
+
+  // Carte fusionnée unique : tous les conseils Ayurveda (courts, répétés à chaque
+  // repas dans le PDF, + le conseil long de fin de mois) regroupés ensemble.
+  if(conseilsSections.length){
+    const body=conseilsSections.map(s=>formatPlanSectionHtml(s.content)).join('');
+    html+=`<div class="diet-info-card" style="margin-bottom:10px;">
+      <div class="diet-info-t">Conseils Ayurveda</div>
+      ${body}
+    </div>`;
+  }
+
+  // Carte fusionnée : aliments + épices du mois, toutes en lignes du même tableau
+  if(alimentsSection||epicesSections.length){
+    let rows='';
+    if(alimentsSection)rows+=alimentsRowsHtml(alimentsSection.content);
+    epicesSections.forEach(s=>{
+      const label=/idéales/i.test(s.title)?'Épices idéales':'Épices du mois';
+      rows+=`<tr><td>${label}</td><td>${flatBulletListToCommaText(s.content)}</td></tr>`;
+    });
+    html+=`<div class="diet-info-card" style="margin-bottom:10px;">
+      <div class="diet-info-t">Les aliments & épices du mois</div>
+      <table class="plan-table">${rows}</table>
+    </div>`;
+  }
+
+  // Le conseil Holistica : mis en avant, en gras, dans son propre encadré
+  if(holisticaSection){
+    html+=`<div class="plan-holistica-card">
+      <div class="plan-holistica-t">🌿 Le conseil Holistica</div>
+      <div class="plan-holistica-body">${cleanInlineBullets(holisticaSection.content.replace(/\n/g,' '))}</div>
+    </div>`;
+  }
+
+  return html;
+}
+
+// Trouve la section du plan mensuel correspondant à un repas donné (pdj/midi/diner),
+// sans confondre "Petit-déjeuner" et "Déjeuner".
+function findPlanSectionForMeal(plan,mealId){
+  if(!plan||!plan.sections)return null;
+  return plan.sections.find(s=>{
+    const t=s.title.toLowerCase();
+    if(mealId==='pdj')return t.includes('petit-déjeuner')||t.includes('petit déjeuner');
+    if(mealId==='midi')return (t.includes('déjeuner'))&&!t.includes('petit');
+    if(mealId==='diner')return t.includes('dîner')||t.includes('diner');
+    return false;
+  })||null;
 }
 
 function pickMealIdeas(mealType,doshaKey,dietType,week){
@@ -1646,6 +1810,7 @@ async function renderDietPlan(){
   const totalC=plan.reduce((s,m)=>s+m.carbs,0);
   const totalF=plan.reduce((s,m)=>s+m.fat,0);
   const week=getISOWeek(new Date());
+  const planMois=await getPlanAlimentaireMoisCourant(doshaKey);
 
   let html=`<div class="sec" style="padding-top:20px;"><h2>Ton <em>résumé</em> du jour</h2></div>
   <div class="diet-summary-card">
@@ -1661,6 +1826,18 @@ async function renderDietPlan(){
 
   plan.forEach(meal=>{
     const ideas=pickMealIdeas(meal.id,doshaKey,userProfile.dietType||'flexitarien',week);
+    const planSection=findPlanSectionForMeal(planMois,meal.id);
+    let bodyHtml;
+    if(planSection){
+      bodyHtml=formatPlanSectionHtml(planSection.content);
+    } else if(ideas.length){
+      bodyHtml=ideas.map(idea=>`<div class="diet-meal-idea">
+        ${idea.image?`<img class="diet-meal-idea-img" src="${idea.image}" onerror="this.style.display='none'">`:''}
+        <div class="diet-meal-idea-body"><div class="diet-meal-idea-t">${idea.title}</div><div class="diet-meal-idea-s">${idea.ingredients||''}</div></div>
+      </div>`).join('');
+    } else {
+      bodyHtml=`<div class="diet-meal-empty">Aucune idée de repas ajoutée pour l'instant — reviens bientôt 🌿</div>`;
+    }
     html+=`<div class="sec" style="padding-top:4px;"><h2>${meal.labelHtml}</h2></div>
     <div class="diet-meal-card">
       <div class="diet-meal-head">
@@ -1671,21 +1848,28 @@ async function renderDietPlan(){
           <span class="diet-macro-pill">L ${meal.fat}g</span>
         </div>
       </div>
-      ${ideas.length?ideas.map(idea=>`<div class="diet-meal-idea">
-        ${idea.image?`<img class="diet-meal-idea-img" src="${idea.image}" onerror="this.style.display='none'">`:''}
-        <div class="diet-meal-idea-body"><div class="diet-meal-idea-t">${idea.title}</div><div class="diet-meal-idea-s">${idea.ingredients||''}</div></div>
-      </div>`).join(''):`<div class="diet-meal-empty">Aucune idée de repas ajoutée pour l'instant — reviens bientôt 🌿</div>`}
+      ${bodyHtml}
     </div>`;
   });
 
-  html+=`<div class="diet-week-note">🔄 De nouvelles idées reviennent chaque semaine</div>`;
+  const collationSection=planMois?.sections?.find(s=>/^collation\s*\(/i.test(s.title));
+  if(collationSection){
+    html+=`<div class="sec" style="padding-top:4px;"><h2>Collation <em>en option</em></h2></div>
+    <div class="diet-meal-card">
+      ${formatPlanSectionHtml(collationSection.content)}
+    </div>`;
+  }
 
-  const planMois=await getPlanAlimentaireMoisCourant();
-  html+=renderPlanAlimentaireMensuelHtml(planMois);
+  html+=`<div class="diet-week-note">🔄 De nouvelles idées reviennent chaque mois</div>`;
+
+  html+=`<hr class="plan-divider">`;
+  html+=`<div class="sec" style="padding-top:4px;"><h2>Informations</h2></div>`;
+
+  html+=renderPlanSectionsRestantesHtml(planMois);
 
   html+=`<div class="diet-info-card">
     <div class="diet-info-t">D'où viennent tes macronutriments ?</div>
-    ${MACRO_SOURCES_INFO.map(m=>`<div class="diet-info-row"><b>${m.t} :</b> ${m.s}</div>`).join('')}
+    <table class="plan-table">${MACRO_SOURCES_INFO.map(m=>`<tr><td>${m.t}</td><td>${m.s}</td></tr>`).join('')}</table>
   </div>
   <div style="height:24px;"></div>`;
 
@@ -2855,9 +3039,9 @@ const DOSHA_FOOD_POOLS={
   },
 };
 const MACRO_SOURCES_INFO=[
-  {t:'Protéines',s:'Volailles, poissons, œufs, tofu/tempeh, légumineuses, graines de chanvre — pour préserver et développer la masse musculaire.'},
-  {t:'Glucides',s:'Riz, sarrasin, quinoa, patate douce, millet — toujours sans gluten, pour l\'énergie sans inflammation.'},
-  {t:'Lipides',s:'Huile d\'olive, huile de coco, huile de sésame — pour l\'équilibre hormonal et anti-inflammatoire, en quantité modérée.'},
+  {t:'Protéines',s:'Volailles, poissons, œufs, tofu, tempeh, légumineuses, graines de chanvre : pour préserver et développer la masse musculaire.'},
+  {t:'Glucides',s:'Riz, sarrasin, quinoa, patate douce, millet : toujours sans gluten, pour de l\'énergie sans inflammation.'},
+  {t:'Lipides',s:'Huile d\'olive, huile de coco, huile de sésame : en quantité modérée, pour l\'équilibre hormonal et l\'effet anti-inflammatoire.'},
 ];
 
 function getPrimaryDoshaKey(){

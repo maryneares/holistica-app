@@ -1562,6 +1562,52 @@ function renderChallenge(){
 
 // Sélectionne jusqu'à 3 idées repas correspondant au repas/dosha/régime, en élargissant
 // progressivement si rien de pile poil ne correspond (dosha ou régime = 'tous' en repli).
+/* ═══ PLAN ALIMENTAIRE MENSUEL (48 plans : 4 profils × 12 mois) ═══
+   Rotation automatique le 1er de chaque mois, en heure de Paris,
+   selon le dosha dominant de l'utilisatrice. */
+let _planMoisCache=null;
+let _planMoisCacheKey=null;
+
+function doshaToProfilPlan(doshaKey){
+  const primaire=(doshaKey||'vata').split('-')[0].toLowerCase();
+  if(primaire==='tridoshique')return 'TRIDOSHIQUE';
+  if(primaire==='pitta')return 'PITTA';
+  if(primaire==='kapha')return 'KAPHA';
+  return 'VATA';
+}
+
+async function getPlanAlimentaireMoisCourant(){
+  const profil=doshaToProfilPlan(userProfile.dosha);
+  const mois=getMoisCourantFrance();
+  const cacheKey=profil+'-'+mois;
+  if(_planMoisCache&&_planMoisCacheKey===cacheKey)return _planMoisCache;
+  const {data,error}=await sb.from('plans_alimentaires').select('*').eq('profil',profil).eq('mois',mois).single();
+  if(error){console.error('Erreur récupération plan alimentaire du mois :',error);return null;}
+  _planMoisCache=data;_planMoisCacheKey=cacheKey;
+  return data;
+}
+
+function renderPlanAlimentaireMensuelHtml(plan){
+  if(!plan){
+    return `<div class="sec" style="padding-top:20px;"><h2>Ton <em>programme du mois</em></h2></div>
+    <div class="diet-info-card"><div class="diet-info-t">Programme en préparation</div><div class="diet-info-row">Le programme alimentaire détaillé de ce mois n'est pas encore disponible pour ton profil.</div></div>`;
+  }
+  const sectionsHtml=(plan.sections||[]).map(s=>`
+    <div class="diet-info-card" style="margin-bottom:10px;">
+      <div class="diet-info-t">${s.title}</div>
+      <div class="diet-info-row" style="display:block;">${(s.content||'').replace(/\n/g,'<br>')}</div>
+    </div>`).join('');
+
+  return `<div class="sec" style="padding-top:20px;"><h2>Ton <em>programme du mois</em></h2></div>
+  <div class="diet-summary-card" style="margin-bottom:10px;">
+    <div class="diet-summary-t">${plan.titre}</div>
+    <div class="diet-summary-obj">🎯 ${plan.objectif}</div>
+    ${plan.profil_ayurvedique_line?`<div class="diet-info-row" style="display:block;margin-top:8px;">${plan.profil_ayurvedique_line}</div>`:''}
+    ${plan.intro?`<div class="diet-info-row" style="display:block;margin-top:8px;">${plan.intro.replace(/\n/g,'<br>')}</div>`:''}
+  </div>
+  ${sectionsHtml}`;
+}
+
 function pickMealIdeas(mealType,doshaKey,dietType,week){
   const primaryDosha=(doshaKey||'vata').split('-')[0];
   const pools=[
@@ -1578,7 +1624,7 @@ function pickMealIdeas(mealType,doshaKey,dietType,week){
   return picked;
 }
 
-function renderDietPlan(){
+async function renderDietPlan(){
   const wrap=document.getElementById('dietScroll');
   if(!wrap)return;
   const isImmersion=userProfile.subscriptionPlan==='immersion';
@@ -1604,7 +1650,7 @@ function renderDietPlan(){
   let html=`<div class="sec" style="padding-top:20px;"><h2>Ton <em>résumé</em> du jour</h2></div>
   <div class="diet-summary-card">
     <div class="diet-summary-t">Profil ${doshaLabel} · ${dietLabel} · Sans gluten · Sans lait de vache</div>
-    <div class="diet-summary-obj">🎯 Perte de masse grasse · Maintien musculaire · Équilibre hormonal</div>
+    <div class="diet-summary-obj">🎯 Équilibre santé global · Maintien musculaire · Soutien hormonal · Anti-inflammatoire</div>
     <div class="diet-summary-row">
       <div class="diet-summary-item"><div class="diet-summary-v">${totalKcal}</div><div class="diet-summary-l">kcal/jour</div></div>
       <div class="diet-summary-item"><div class="diet-summary-v">${totalP}g</div><div class="diet-summary-l">Protéines</div></div>
@@ -1633,6 +1679,9 @@ function renderDietPlan(){
   });
 
   html+=`<div class="diet-week-note">🔄 De nouvelles idées reviennent chaque semaine</div>`;
+
+  const planMois=await getPlanAlimentaireMoisCourant();
+  html+=renderPlanAlimentaireMensuelHtml(planMois);
 
   html+=`<div class="diet-info-card">
     <div class="diet-info-t">D'où viennent tes macronutriments ?</div>
@@ -2808,7 +2857,7 @@ const DOSHA_FOOD_POOLS={
 const MACRO_SOURCES_INFO=[
   {t:'Protéines',s:'Volailles, poissons, œufs, tofu/tempeh, légumineuses, graines de chanvre — pour préserver et développer la masse musculaire.'},
   {t:'Glucides',s:'Riz, sarrasin, quinoa, patate douce, millet — toujours sans gluten, pour l\'énergie sans inflammation.'},
-  {t:'Lipides',s:'Huile d\'olive, huile de coco, huile de sésame — pour l\'équilibre hormonal, en quantité modérée pour la perte de masse grasse.'},
+  {t:'Lipides',s:'Huile d\'olive, huile de coco, huile de sésame — pour l\'équilibre hormonal et anti-inflammatoire, en quantité modérée.'},
 ];
 
 function getPrimaryDoshaKey(){
@@ -2855,7 +2904,7 @@ function generateMealPlan(){
   const pool=getDoshaFoodPool(doshaKey);
   const proteinList=PROTEIN_BY_DIET[userProfile.dietType]||PROTEIN_BY_DIET.flexitarien;
   // Recalcule les macros du jour (même formule que le tableau de bord) — riche en protéines et
-  // modéré en lipides, pensé pour la perte de masse grasse tout en préservant le muscle et l'équilibre hormonal.
+  // équilibré en lipides, pensé pour la santé globale, le maintien musculaire et l'équilibre hormonal.
   const bmr=Math.round(447.593+(9.247*userProfile.weight)+(3.098*userProfile.height)-(4.33*userProfile.age));
   const mult=ACTIVITY_MULTIPLIER[userProfile.activity]||1.375;
   const dailyCal=Math.round(bmr*mult);

@@ -748,7 +748,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="duo-card hl"><div class="gauge-wrap" id="dHormoGauge"></div><div class="duo-lbl"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--ink-l)" stroke-width="2" stroke-linecap="round" style="vertical-align:-1px;margin-right:3px;"><path d="M12 8a4 4 0 1 1 4 4 4 4 0 1 1-4 4 4 4 0 1 1-4-4 4 4 0 1 1 4-4z"/></svg>Équilibre hormonal</div><div class="duo-sub">Phase cycle + stress + sommeil</div></div>
 </div>
 <!-- Cycle -->
-<div class="sec"><h2>Ton <em>cycle</em></h2></div>
+<div class="sec"><h2 id="cycleSecTitle">Ton <em>cycle</em></h2></div>
 <div class="cycle-card" id="cycleCard">
 <div class="cycle-head"><span class="cycle-badge" id="cycleBadge">🌙 Cycle</span><span class="cycle-day" id="cycleDayLbl">Jour 1</span></div>
 <div class="cycle-bar"><div class="cycle-bar-fill" id="cycleBarFill" style="width:0%"></div></div>
@@ -2428,8 +2428,49 @@ function getCurrentCycleInfo(){
   return {cycleDay,daysUntilNext,len,...info};
 }
 
-function renderCycle(){
+/* Cache simple pour éviter de re-fetch à chaque appel de renderCycle() */
+let _menopauseConseilCache=null;
+let _menopauseConseilMois=null;
+
+function getMoisCourantFrance(){
+  return parseInt(new Intl.DateTimeFormat('fr-FR',{timeZone:'Europe/Paris',month:'numeric'}).format(new Date()),10);
+}
+
+async function getConseilMenopauseDuMois(){
+  const mois=getMoisCourantFrance();
+  if(_menopauseConseilCache&&_menopauseConseilMois===mois)return _menopauseConseilCache;
+  const {data,error}=await sb.from('conseils_menopause').select('*').eq('mois',mois).single();
+  if(error){console.error('Erreur récupération conseil ménopause :',error);return null;}
+  _menopauseConseilCache=data;_menopauseConseilMois=mois;
+  return data;
+}
+
+async function renderCycle(){
   if(document.getElementById('cycleLenInput'))document.getElementById('cycleLenInput').value=userProfile.cycleLength;
+
+  if(userProfile.menopause){
+    document.getElementById('cycleSecTitle').innerHTML='Conseils <em>ménopause du mois</em>';
+    const m=await getConseilMenopauseDuMois();
+    if(!m){
+      document.getElementById('cycleBadge').textContent='🍃 Ménopause';
+      document.getElementById('cycleDayLbl').textContent='';
+      document.getElementById('cycleBarFill').style.width='100%';
+      document.getElementById('cycleMsgTitle').textContent='Conseils du mois indisponibles';
+      document.getElementById('cycleMsgBody').textContent='Reviens un peu plus tard, le contenu de ce mois est en cours de préparation.';
+      document.getElementById('cycleEnergy').innerHTML='';
+      return;
+    }
+    document.getElementById('cycleBadge').textContent='🍃 '+m.saison;
+    document.getElementById('cycleDayLbl').textContent=m.periode_titre;
+    document.getElementById('cycleBarFill').style.width='100%';
+    document.getElementById('cycleMsgTitle').textContent=m.axe_prioritaire;
+    const routineTxt=(m.routine_plantes||[]).map(r=>r.label+' : '+r.content).join(' · ');
+    document.getElementById('cycleMsgBody').textContent=routineTxt;
+    document.getElementById('cycleEnergy').innerHTML='<span class="cycle-energy-dot"></span>Mouvement : '+m.mouvement;
+    return;
+  }
+
+  document.getElementById('cycleSecTitle').innerHTML='Ton <em>cycle</em>';
   const c=getCurrentCycleInfo();
   if(!c){
     document.getElementById('cycleBadge').textContent='🌸 Cycle';

@@ -5,6 +5,6 @@
 [functions]
   node_bundler = "esbuild"
 
-# Exécute automatiquement l'email d'upsell chaque jour à 9h UTC (~11h heure de Paris en été)
-[[functions."send-lifecycle-emails"]] 
-schedule = "0 8 * * *" 
+# Exécute automatiquement l'email de cycle de vie chaque jour à 8h UTC
+[functions."send-lifecycle-emails"]
+  schedule = "0 8 * * *"

@@ -275,6 +275,13 @@ body{font-family:'League Spartan',sans-serif;background:var(--ivory);color:var(-
 .pd-week-title:first-of-type{margin-top:16px;}
 /* Diététique */
 .diet-locked-wrap{padding:60px 24px;text-align:center;}
+.referral-card{background:white;border-radius:20px;padding:22px;text-align:center;box-shadow:var(--sh);border:1.5px solid var(--purple-l);}
+.referral-card-lbl{font-size:11px;font-weight:700;color:var(--ink-l);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;}
+.referral-code{font-family:'League Spartan',sans-serif;font-size:30px;font-weight:800;color:var(--purple);letter-spacing:2px;margin-bottom:6px;}
+.referral-link{font-size:11px;color:var(--ink-l);word-break:break-all;}
+.referral-stat-card{background:var(--lav-pale);border-radius:18px;padding:20px;text-align:center;margin-top:14px;}
+.referral-stat-v{font-family:'League Spartan',sans-serif;font-size:32px;font-weight:800;color:var(--purple);}
+.referral-stat-l{font-size:12px;color:var(--ink-m);font-weight:600;margin-top:2px;}
 .diet-locked-ic{font-size:44px;margin-bottom:16px;}
 .diet-locked-t{font-family:'League Spartan',sans-serif;font-size:19px;font-weight:800;color:var(--ink);margin-bottom:8px;}
 .diet-locked-p{font-size:13px;color:var(--ink-m);line-height:1.6;margin-bottom:20px;}
@@ -408,6 +415,15 @@ body{font-family:'League Spartan',sans-serif;background:var(--ivory);color:var(-
 
 /* Offres */
 .offer-card{background:white;border-radius:20px;padding:22px;margin-bottom:16px;border:1.5px solid var(--border);position:relative;box-shadow:var(--sh);}
+.billing-toggle{display:flex;background:var(--lav-pale);border-radius:14px;padding:4px;margin-bottom:10px;}
+.bt-opt{flex:1;border:none;background:transparent;padding:11px 8px;border-radius:11px;font-size:13px;font-weight:700;color:var(--ink-m);cursor:pointer;font-family:'League Spartan',sans-serif;transition:all .2s;}
+.bt-opt.active{background:white;color:var(--purple);box-shadow:var(--sh);}
+.bt-save{display:inline-block;background:var(--grad);color:white;font-size:9.5px;font-weight:800;padding:2px 6px;border-radius:20px;margin-left:5px;vertical-align:middle;}
+.trial-note{text-align:center;font-size:12px;color:var(--purple-m);font-weight:700;margin-bottom:18px;}
+.offer-price-sub{font-size:11.5px;font-weight:700;color:var(--purple-m);text-align:center;margin-top:-12px;margin-bottom:16px;}
+.offer-price-sub b{color:var(--purple);}
+.offer-card.hl .offer-price-sub{color:rgba(255,255,255,0.9);}
+.offer-card.hl .offer-price-sub b{color:white;}
 .offer-card.hl{background:var(--grad-warm);border:none;box-shadow:var(--sh-m);}
 .offer-badge{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--ink);color:white;font-size:10px;font-weight:700;padding:5px 14px;border-radius:50px;text-transform:uppercase;letter-spacing:.3px;}
 .offer-name{font-family:'League Spartan',sans-serif;font-size:16px;font-weight:700;color:var(--ink);text-align:center;margin-bottom:6px;}
@@ -922,32 +938,41 @@ document.addEventListener('DOMContentLoaded', function(){
 <button class="vd-back" onclick="go('challenge')" style="position:fixed;top:16px;left:16px;z-index:5;">←</button>
 <div class="scroll" style="padding:0 20px;">
 <div class="ob-title" style="text-align:center;margin-top:60px;font-size:24px;">Choisis ton <em>accompagnement</em></div>
-<div style="font-size:13px;color:var(--ink-l);text-align:center;margin-bottom:22px;">Deux formules pour avancer à ton rythme</div>
+<div style="font-size:13px;color:var(--ink-l);text-align:center;margin-bottom:18px;">Deux formules pour avancer à ton rythme</div>
+
+<div class="billing-toggle">
+  <button class="bt-opt active" id="btMonthly" onclick="setBillingPeriod('monthly')">Mensuel</button>
+  <button class="bt-opt" id="btAnnual" onclick="setBillingPeriod('annual')">Annuel <span class="bt-save">-20%</span></button>
+</div>
+<div class="trial-note">✨ Essai gratuit de 3 jours, sans engagement</div>
 
 <div class="offer-card">
 <div class="offer-name">Plan Équilibre</div>
-<div class="offer-price">29€<span>/mois</span></div>
+<div class="offer-price" id="priceEquilibre">29€<span>/mois</span></div>
+<div class="offer-price-sub" id="priceEquilibreSub" onclick="setBillingPeriod('annual')" style="cursor:pointer;">ou <b>279€/an</b> (-20%, soit 23€/mois) →</div>
 <ul class="offer-list">
 <li>Accès complet à l'application</li>
 <li>Toutes les recettes et séances vidéo</li>
 <li>Suivi de cycle et bilan ayurvédique</li>
 <li>Recommandations personnalisées</li>
 </ul>
-<button class="btn-ob" onclick="goToCheckout('https://buy.stripe.com/3cI3cw2cvaJv5wMerf7IY00')">M'abonner</button>
+<button class="btn-ob" id="btnEquilibre" onclick="goToCheckout(CHECKOUT_LINKS.equilibre[billingPeriod])">Commencer l'essai gratuit</button>
 </div>
 
 <div class="offer-card hl">
 <div class="offer-badge">Le plus populaire</div>
 <div class="offer-name">Plan Immersion</div>
-<div class="offer-price">49€<span>/mois</span></div>
+<div class="offer-price" id="priceImmersion">49€<span>/mois</span></div>
+<div class="offer-price-sub" id="priceImmersionSub" onclick="setBillingPeriod('annual')" style="cursor:pointer;">ou <b>470€/an</b> (-20%, soit 39€/mois) →</div>
 <ul class="offer-list">
 <li>Tout le Plan Équilibre, inclus</li>
+<li>Plan alimentaire personnalisé selon ton profil Ayurvédique</li>
 <li>Groupe WhatsApp privé avec les autres membres</li>
 <li>Challenges hebdomadaires et mensuels</li>
 <li>Lives et cours en visio avec Maryne</li>
 <li>Conférence mensuelle questions-réponses</li>
 </ul>
-<button class="btn-ob purple" onclick="goToCheckout('https://buy.stripe.com/aFa00k04neZLaR62Ix7IY01')">M'abonner</button>
+<button class="btn-ob purple" id="btnImmersion" onclick="goToCheckout(CHECKOUT_LINKS.immersion[billingPeriod])">Commencer l'essai gratuit</button>
 </div>
 
 
@@ -977,6 +1002,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="pa" onclick="openCycleSettings()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg></div><div class="pa-body"><div class="pa-t">Durée & suivi de mon cycle</div><div class="pa-s">Dernières règles, durée, comprendre les phases</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="openAstro()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/><circle cx="12" cy="12" r="4"/></svg></div><div class="pa-body"><div class="pa-t">Mon thème astral</div><div class="pa-s" id="paAstroSub">Renseigne ta date de naissance</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="go('offers')"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6L17 7M7 17l-1.4 1.4"/><circle cx="12" cy="12" r="3"/></svg></div><div class="pa-body"><div class="pa-t">Mon abonnement</div><div class="pa-s" id="pfSubscription">—</div></div><span class="pa-arr">›</span></div>
+<div class="pa" onclick="go('referralScreen');renderReferralScreen();" style="background:linear-gradient(135deg,rgba(123,110,200,0.08),rgba(200,144,200,0.08));border-color:var(--purple-l);"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="pa-body"><div class="pa-t">🎁 Parraine tes amies</div><div class="pa-s">Offre-leur un mois, gagne le tien</div></div><span class="pa-arr">›</span></div>
 </div>
 <div class="sec"><h2>Confidentialité <em>& données</em></h2></div>
 <div class="pf-acts">
@@ -1199,6 +1225,44 @@ document.addEventListener('DOMContentLoaded', function(){
 </div>
 </div>
 
+<!-- ═══ PARRAINAGE ═══ -->
+<div id="referralScreen" class="screen">
+<div class="ob-top" style="background:var(--grad);padding:50px 20px 30px;">
+<button class="vd-back" onclick="go('profil')" style="position:static;background:rgba(255,255,255,0.2);">←</button>
+<div style="text-align:center;margin-top:10px;">
+<div style="font-size:40px;margin-bottom:8px;">🎁</div>
+<div class="ob-title" style="color:white;font-size:22px;">Parraine tes <em style="color:#FFE8C0;">amies</em></div>
+<div style="font-size:13px;color:rgba(255,255,255,0.85);margin-top:6px;">Elle profite d'1 mois offert, tu en gagnes 1 aussi</div>
+</div>
+</div>
+<div class="scroll" style="padding:20px 20px 0;">
+
+<div class="referral-card">
+  <div class="referral-card-lbl">Ton code personnel</div>
+  <div class="referral-code" id="referralCode">...</div>
+  <div class="referral-link" id="referralLink"></div>
+  <div style="display:flex;gap:10px;margin-top:14px;">
+    <button class="btn-ob purple" style="flex:1;" onclick="copyReferralLink()">Copier le lien</button>
+    <button class="btn-ob purple" style="flex:1;" onclick="shareReferralLink()">Partager</button>
+  </div>
+</div>
+
+<div class="referral-stat-card">
+  <div class="referral-stat-v" id="referralCount">0</div>
+  <div class="referral-stat-l">amie(s) inscrite(s) avec ton lien</div>
+</div>
+
+<div class="diet-info-card" style="margin-top:16px;">
+  <div class="diet-info-t">Comment ça marche</div>
+  <div class="plan-line">1. Partage ton lien ou ton code à une amie</div>
+  <div class="plan-line">2. Elle l'utilise en créant son compte et profite d'une réduction de bienvenue</div>
+  <div class="plan-line">3. Une fois son abonnement actif, tu reçois ton mois offert (Maryne te contactera directement pour l'appliquer)</div>
+</div>
+
+<div style="height:30px;"></div>
+</div>
+</div>
+
 <!-- VIDEO DETAIL -->
 <div class="vdetail" id="vdetail">
 <button class="vd-back" onclick="closeVD()">←</button>
@@ -1258,6 +1322,15 @@ document.addEventListener('DOMContentLoaded', function(){
 const SUPABASE_URL='https://lsoddhgahdfcpmuydmbt.supabase.co';
 const SUPABASE_KEY='sb_publishable_GheUBnXhhcVRyqYchb-ZQg_5MFbhv_x';
 const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+// Capture immédiate d'un éventuel lien de parrainage (?ref=CODE) — stocké en
+// attendant que la personne crée son compte / se connecte, puis appliqué une
+// seule fois via applyPendingReferral().
+(function captureReferralParam(){
+  const params=new URLSearchParams(window.location.search);
+  const ref=params.get('ref');
+  if(ref)localStorage.setItem('pendingReferralCode',ref.trim().toUpperCase());
+})();
 async function allerVersStripe(lienBase) {
   const { data: { user } } = await sb.auth.getUser();
   if (!user) {
@@ -1327,7 +1400,7 @@ loadContent();
 /* ═══════ STATE ═══════ */
 let xp=0,sessions=0,streak=0,currentVid=null,completedVids=new Set(),triedRecipes=new Set(),unlockedBadges=new Set(),readDossiers=new Set(),naturoViewId=null,loginDates=new Set();
 let dailyCalGoal=2000,consumedCal=0,currentRC=null,sessionDates=[],wellnessLog=[],retakeDoshaMode=false;
-let userProfile={name:'',lastName:'',email:'',goal:'bien-être',age:30,weight:62,height:165,activity:'modérée',hasPeriod:true,menopause:false,dosha:'vata',lastPeriodStart:'',doshaV:33,doshaP:33,doshaK:34,cycleLength:28,birthDate:'',birthTime:'',birthPlace:'',subscriptionStatus:'inactive',subscriptionPlan:null,dietType:'flexitarien',allergies:''};
+let userProfile={name:'',lastName:'',email:'',goal:'bien-être',age:30,weight:62,height:165,activity:'modérée',hasPeriod:true,menopause:false,dosha:'vata',lastPeriodStart:'',doshaV:33,doshaP:33,doshaK:34,cycleLength:28,birthDate:'',birthTime:'',birthPlace:'',subscriptionStatus:'inactive',subscriptionPlan:null,dietType:'flexitarien',allergies:'',referralCode:'',referredBy:null};
 let moodScore=0,sleepScore=8,stressScore=5;
 let activeMvFilter='Tout',activeRcFilter='Tout';
 
@@ -1461,7 +1534,7 @@ async function loadProfileAndEnter(){
             // seulement quand il est confirmé qu'aucun profil n'existe (voir plus bas).
   }
   if(profile){
-    userProfile={name:profile.name||'',lastName:profile.last_name||'',email:profile.email||'',goal:profile.goal||'bien-être',age:profile.age||30,weight:profile.weight||62,height:profile.height||165,activity:profile.activity||'modérée',hasPeriod:profile.has_period,menopause:profile.menopause,dosha:profile.dosha||'vata',lastPeriodStart:profile.last_period_start||'',doshaV:profile.dosha_v??33,doshaP:profile.dosha_p??33,doshaK:profile.dosha_k??34,cycleLength:profile.cycle_length||28,birthDate:profile.birth_date||'',birthTime:profile.birth_time||'',birthPlace:profile.birth_place||'',subscriptionStatus:profile.subscription_status||'inactive',subscriptionPlan:profile.subscription_plan||null,dietType:profile.diet_type||'flexitarien',allergies:profile.allergies||''};
+    userProfile={name:profile.name||'',lastName:profile.last_name||'',email:profile.email||'',goal:profile.goal||'bien-être',age:profile.age||30,weight:profile.weight||62,height:profile.height||165,activity:profile.activity||'modérée',hasPeriod:profile.has_period,menopause:profile.menopause,dosha:profile.dosha||'vata',lastPeriodStart:profile.last_period_start||'',doshaV:profile.dosha_v??33,doshaP:profile.dosha_p??33,doshaK:profile.dosha_k??34,cycleLength:profile.cycle_length||28,birthDate:profile.birth_date||'',birthTime:profile.birth_time||'',birthPlace:profile.birth_place||'',subscriptionStatus:profile.subscription_status||'inactive',subscriptionPlan:profile.subscription_plan||null,dietType:profile.diet_type||'flexitarien',allergies:profile.allergies||'',referralCode:profile.referral_code||'',referredBy:profile.referred_by||null};
     if(isDevAccount()){
       // Accès complet en mémoire uniquement pour tester (n'écrase jamais la vraie valeur en base)
       userProfile.subscriptionStatus='active';
@@ -1480,6 +1553,8 @@ async function loadProfileAndEnter(){
     loginDates.add(localDateStr());
     streak=calcStreak();
     lastCelebratedLevel=profile.last_celebrated_level??(Math.floor(xp/100)+1);
+    ensureReferralCode();
+    applyPendingReferral();
     if(!isDevAccount() && userProfile.subscriptionStatus!=='active'){
       // Profil complet mais pas (ou plus) d'abonnement actif : on bloque l'accès et on affiche les offres
       go('offers');
@@ -1519,7 +1594,7 @@ function saveProfile(){
       diet_type:userProfile.dietType,allergies:userProfile.allergies||null,
       xp,sessions,streak,mood_score:moodScore,sleep_score:sleepScore,stress_score:stressScore,
       completed_videos:Array.from(completedVids),session_dates:sessionDates,wellness_log:wellnessLog,
-      tried_recipes:Array.from(triedRecipes),badges_unlocked:Array.from(unlockedBadges),last_celebrated_level:lastCelebratedLevel,read_dossiers:Array.from(readDossiers),login_dates:Array.from(loginDates),updated_at:new Date().toISOString()
+      tried_recipes:Array.from(triedRecipes),badges_unlocked:Array.from(unlockedBadges),last_celebrated_level:lastCelebratedLevel,read_dossiers:Array.from(readDossiers),login_dates:Array.from(loginDates),referral_code:userProfile.referralCode||null,referred_by:userProfile.referredBy||null,updated_at:new Date().toISOString()
     });
     if(error){
       console.error('Erreur sauvegarde profil :',error);
@@ -1576,7 +1651,7 @@ window.addEventListener('load',async()=>{
 });
 
 /* ═══════ NAV ═══════ */
-const PROTECTED_SCREENS=['dashboard','mouvement','recettes','naturo','challenge','doshaProfile','editInfo','wellnessHistory','badgesScreen','cycleSettings','astroScreen','programDetail','dossierDetail','dietPlan'];
+const PROTECTED_SCREENS=['dashboard','mouvement','recettes','naturo','challenge','doshaProfile','editInfo','wellnessHistory','badgesScreen','cycleSettings','astroScreen','programDetail','dossierDetail','dietPlan','referralScreen'];
 // ⚠️ À remplacer par le vrai lien d'invitation du groupe WhatsApp Holistica Club
 const WHATSAPP_GROUP_LINK='https://chat.whatsapp.com/BmQ0hxeccsU9iwspW5UQim?s=cl&p=i&mlu=4&amv=2';
 
@@ -2121,6 +2196,8 @@ function markDossierRead(id){
 }
 
 function enterApp(){
+  ensureReferralCode();
+  applyPendingReferral();
   document.getElementById('bnav').style.display='flex';
   if(document.getElementById('pfSubscription')){
     const planLabels={equilibre:'Plan Équilibre · 29€/mois',immersion:'Plan Immersion · 49€/mois'};
@@ -3629,6 +3706,42 @@ function addRecipeToday(){
 }
 
 /* ═══════ CHECKOUT ═══════ */
+/* ═══ Sélecteur Mensuel / Annuel (écran des offres) ═══
+   ⚠️ Remplace les liens "annual" ci-dessous par tes vrais Payment
+   Links Stripe une fois créés (abonnement annuel Équilibre/Immersion). */
+let billingPeriod='monthly';
+const CHECKOUT_LINKS={
+  equilibre:{
+    monthly:'https://buy.stripe.com/3cI3cw2cvaJv5wMerf7IY00',
+    annual:'https://buy.stripe.com/eVq4gA4kDg3PbVa3MB7IY04'
+  },
+  immersion:{
+    monthly:'https://buy.stripe.com/aFa00k04neZLaR62Ix7IY01',
+    annual:'https://buy.stripe.com/6oU3cwg3lg3P6AQaaZ7IY05'
+  }
+};
+
+function setBillingPeriod(period){
+  billingPeriod=period;
+  document.getElementById('btMonthly').classList.toggle('active',period==='monthly');
+  document.getElementById('btAnnual').classList.toggle('active',period==='annual');
+  const isAnnual=period==='annual';
+  document.getElementById('priceEquilibre').innerHTML=isAnnual?'279€<span>/an</span>':'29€<span>/mois</span>';
+  document.getElementById('priceImmersion').innerHTML=isAnnual?'470€<span>/an</span>':'49€<span>/mois</span>';
+  document.getElementById('priceEquilibreSub').innerHTML=isAnnual?'soit 23€/mois, facturé 279€/an':'ou <b>279€/an</b> (-20%, soit 23€/mois) →';
+  document.getElementById('priceImmersionSub').innerHTML=isAnnual?'soit 39€/mois, facturé 470€/an':'ou <b>470€/an</b> (-20%, soit 39€/mois) →';
+  document.getElementById('priceEquilibreSub').style.visibility='visible';
+  document.getElementById('priceImmersionSub').style.visibility='visible';
+  document.getElementById('priceEquilibreSub').onclick=isAnnual?null:()=>setBillingPeriod('annual');
+  document.getElementById('priceImmersionSub').onclick=isAnnual?null:()=>setBillingPeriod('annual');
+  document.getElementById('priceEquilibreSub').style.cursor=isAnnual?'default':'pointer';
+  document.getElementById('priceImmersionSub').style.cursor=isAnnual?'default':'pointer';
+  const btnLabel=isAnnual?"M'abonner":"Commencer l'essai gratuit";
+  document.getElementById('btnEquilibre').textContent=btnLabel;
+  document.getElementById('btnImmersion').textContent=btnLabel;
+  document.querySelector('.trial-note').style.visibility=isAnnual?'hidden':'visible';
+}
+
 async function goToCheckout(url){
   try{
     const { data: { user } } = await sb.auth.getUser();
@@ -3645,6 +3758,59 @@ trackEvent('clic_offre');
   }
 }
 /* ═══════ TOAST ═══════ */
+/* ═══════ PARRAINAGE ═══════ */
+function generateReferralCode(){
+  const base=(userProfile.name||'AMIE').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-zA-Z]/g,'').toUpperCase().slice(0,6)||'AMIE';
+  const suffix=Math.random().toString(36).slice(2,6).toUpperCase();
+  return base+suffix;
+}
+
+function ensureReferralCode(){
+  if(userProfile.referralCode)return;
+  userProfile.referralCode=generateReferralCode();
+  saveProfile();
+}
+
+function applyPendingReferral(){
+  if(userProfile.referredBy)return; // déjà défini, on ne touche plus jamais à cette valeur
+  const pending=localStorage.getItem('pendingReferralCode');
+  if(!pending)return;
+  if(pending===userProfile.referralCode){
+    // Une personne ne peut pas se parrainer elle-même
+    localStorage.removeItem('pendingReferralCode');
+    return;
+  }
+  userProfile.referredBy=pending;
+  saveProfile();
+  localStorage.removeItem('pendingReferralCode');
+  toast('🎁 Code de parrainage appliqué !');
+}
+
+async function renderReferralScreen(){
+  const el=document.getElementById('referralScreen');
+  if(!el)return;
+  const link='https://app.holisticaclub.com/?ref='+userProfile.referralCode;
+  document.getElementById('referralCode').textContent=userProfile.referralCode||'...';
+  document.getElementById('referralLink').textContent=link;
+  const {count}=await sb.from('profiles').select('id',{count:'exact',head:true}).eq('referred_by',userProfile.referralCode);
+  document.getElementById('referralCount').textContent=count||0;
+}
+
+function copyReferralLink(){
+  const link='https://app.holisticaclub.com/?ref='+userProfile.referralCode;
+  navigator.clipboard.writeText(link).then(()=>toast('🔗 Lien copié !'));
+}
+
+function shareReferralLink(){
+  const link='https://app.holisticaclub.com/?ref='+userProfile.referralCode;
+  const text='Je te partage Holistica Club, l\'app bien-être Ayurvéda que j\'utilise 🌸 Avec mon lien tu as un mois offert en t\'abonnant : '+link;
+  if(navigator.share){
+    navigator.share({text}).catch(()=>{});
+  } else {
+    navigator.clipboard.writeText(text).then(()=>toast('📋 Message copié, colle-le où tu veux !'));
+  }
+}
+
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
 
 /* ═══════ PWA ═══════ */

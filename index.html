@@ -231,7 +231,7 @@ body{font-family:'League Spartan',sans-serif;background:var(--ivory);color:var(-
 .prog-row::-webkit-scrollbar{display:none;}
 .prog-card{flex-shrink:0;width:200px;background:white;border-radius:18px;overflow:hidden;box-shadow:var(--sh);border:1px solid var(--border);cursor:pointer;}
 .prog-card.soon{opacity:.55;cursor:default;}
-.prog-cover{width:100%;height:100px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:26px;position:relative;}
+.prog-cover{width:100%;height:112px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:26px;position:relative;overflow:hidden;}
 .prog-cover.pilates{background:linear-gradient(135deg,#7B6EC8,#9B8ED8);}
 .prog-cover.meditation{background:linear-gradient(135deg,#5B4EA8,#C890C8);}
 .prog-cover.yoga{background:linear-gradient(135deg,#C890C8,#F0B088);}
@@ -253,11 +253,13 @@ body{font-family:'League Spartan',sans-serif;background:var(--ivory);color:var(-
 .pd-progress-bar{height:7px;background:rgba(255,255,255,0.22);border-radius:50px;overflow:hidden;}
 .pd-progress-fill{height:100%;background:white;border-radius:50px;transition:width .4s;}
 .pd-progress-lbl{font-size:11px;color:rgba(255,255,255,0.85);font-weight:600;margin-top:6px;}
-.pd-session{display:flex;align-items:center;gap:12px;background:white;border-radius:16px;padding:12px;margin:0 20px 10px;border:1px solid var(--border);box-shadow:var(--sh);cursor:pointer;}
+.pd-session{display:flex;align-items:center;gap:12px;background:white;border-radius:16px;padding:10px;margin:0 20px 10px;border:1px solid var(--border);box-shadow:var(--sh);cursor:pointer;}
 .pd-session.locked{opacity:.5;cursor:default;}
-.pd-session-num{width:36px;height:36px;border-radius:12px;background:var(--lav-pale);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;color:var(--purple);flex-shrink:0;}
-.pd-session-num.done{background:var(--grad);color:white;}
-.pd-session-num.locked{background:var(--border);color:var(--ink-l);}
+.pd-session-th{width:96px;height:64px;border-radius:12px;flex-shrink:0;position:relative;overflow:hidden;background:var(--ivory-d);}
+.pd-session-th img{width:100%;height:100%;object-fit:cover;}
+.pd-session-badge{position:absolute;bottom:5px;right:5px;width:22px;height:22px;border-radius:50%;background:rgba(26,24,40,0.65);color:white;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;}
+.pd-session-badge.done{background:var(--grad);}
+.pd-session-lock-overlay{position:absolute;inset:0;background:rgba(250,248,255,0.72);display:flex;align-items:center;justify-content:center;font-size:20px;}
 .pd-session-body{flex:1;min-width:0;}
 .pd-session-title{font-size:13px;font-weight:700;color:var(--ink);}
 .pd-session-meta{font-size:11px;color:var(--ink-l);margin-top:1px;}
@@ -276,6 +278,12 @@ body{font-family:'League Spartan',sans-serif;background:var(--ivory);color:var(-
 .diet-locked-ic{font-size:44px;margin-bottom:16px;}
 .diet-locked-t{font-family:'League Spartan',sans-serif;font-size:19px;font-weight:800;color:var(--ink);margin-bottom:8px;}
 .diet-locked-p{font-size:13px;color:var(--ink-m);line-height:1.6;margin-bottom:20px;}
+.diet-preview-wrap{position:relative;pointer-events:none;user-select:none;filter:blur(3px);opacity:.55;}
+.diet-upgrade-card{margin:16px 20px 24px;background:var(--grad);border-radius:18px;padding:22px 20px;text-align:center;box-shadow:var(--sh-m);}
+.diet-upgrade-ic{font-size:32px;margin-bottom:8px;}
+.diet-upgrade-t{font-family:'League Spartan',sans-serif;font-size:16px;font-weight:800;color:white;margin-bottom:6px;}
+.diet-upgrade-p{font-size:12.5px;color:rgba(255,255,255,0.9);line-height:1.5;margin-bottom:16px;}
+.diet-upgrade-btn{width:100%;background:white;color:var(--purple);border:none;padding:14px;border-radius:12px;font-size:14px;font-weight:800;cursor:pointer;font-family:'League Spartan',sans-serif;}
 .diet-summary-card{margin:0 20px 20px;background:white;border-radius:18px;padding:18px 20px;box-shadow:var(--sh);border:1px solid var(--border);}
 .diet-summary-t{font-size:12px;color:var(--ink-m);font-weight:600;margin-bottom:14px;}
 .diet-summary-obj{font-size:12px;color:var(--purple-m);font-weight:700;margin-bottom:14px;}
@@ -821,7 +829,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="wk-today-card" id="wkTodayCard"></div>
 </div>
 <div class="scroll">
-<div class="sec" style="padding-top:20px;"><h2>Tes <em>parcours</em></h2><div class="sec-sub">Une ligne directrice claire, séance après séance</div></div>
+<div class="sec" style="padding-top:20px;"><h2>Tes <em>programmes</em></h2><div class="sec-sub">Une ligne directrice claire, séance après séance</div></div>
 <div class="prog-section"><div class="prog-row" id="progRow"></div></div>
 <div class="explore-divider"><span class="explore-divider-t">Explorer librement</span><span class="explore-divider-line"></span></div>
 <div class="mv-filters" id="mvFilters"></div>
@@ -1829,11 +1837,43 @@ async function renderDietPlan(){
   if(!wrap)return;
   const isImmersion=userProfile.subscriptionPlan==='immersion';
   if(!isImmersion){
-    wrap.innerHTML=`<div class="diet-locked-wrap">
-      <div class="diet-locked-ic">🔒🥗</div>
-      <div class="diet-locked-t">Plan alimentaire personnalisé</div>
-      <div class="diet-locked-p">Ton menu sur-mesure (petit-déj, déjeuner, dîner) calculé selon ton dosha, ton régime et tes objectifs — réservé au Plan Immersion.</div>
-      <button class="btn-ch" onclick="go('offers')">Voir les offres →</button>
+    wrap.innerHTML=`
+    <div class="diet-preview-wrap">
+      <div class="sec" style="padding-top:20px;"><h2>Ton <em>résumé</em> du jour</h2></div>
+      <div class="diet-summary-card">
+        <div class="diet-summary-t">Profil Vata · Flexitarienne · Sans gluten · Sans lait de vache</div>
+        <div class="diet-summary-obj">Perte de masse grasse · Maintien musculaire · Soutien hormonal · Anti-inflammatoire</div>
+        <div class="diet-summary-row">
+          <div class="diet-summary-item"><div class="diet-summary-v">2100</div><div class="diet-summary-l">kcal/jour</div></div>
+          <div class="diet-summary-item"><div class="diet-summary-v">100g</div><div class="diet-summary-l">Protéines</div></div>
+          <div class="diet-summary-item"><div class="diet-summary-v">270g</div><div class="diet-summary-l">Glucides</div></div>
+          <div class="diet-summary-item"><div class="diet-summary-v">70g</div><div class="diet-summary-l">Lipides</div></div>
+        </div>
+      </div>
+      <div class="sec" style="padding-top:4px;"><h2>Petit-<em>déjeuner</em></h2></div>
+      <div class="diet-meal-card">
+        <div class="diet-meal-head"><div class="diet-meal-macros">
+          <span class="diet-macro-pill">550 kcal</span><span class="diet-macro-pill">P 25g</span><span class="diet-macro-pill">G 70g</span><span class="diet-macro-pill">L 18g</span>
+        </div></div>
+        <div class="plan-option-t">Option 1</div>
+        <div class="plan-list">Un exemple de recette adaptée à ton profil et à tes objectifs, avec les quantités précises</div>
+      </div>
+      <div class="sec" style="padding-top:4px;"><h2>Ton <em>déjeuner</em></h2></div>
+      <div class="diet-meal-card">
+        <div class="diet-meal-head"><div class="diet-meal-macros">
+          <span class="diet-macro-pill">750 kcal</span><span class="diet-macro-pill">P 40g</span><span class="diet-macro-pill">G 95g</span><span class="diet-macro-pill">L 24g</span>
+        </div></div>
+        <div class="plan-option-t">Option 1</div>
+        <div class="plan-list">Un exemple de recette adaptée à ton profil et à tes objectifs, avec les quantités précises</div>
+      </div>
+      <div class="sec" style="padding-top:4px;"><h2>Ton <em>programme du mois</em></h2></div>
+      <div class="diet-info-card"><div class="diet-info-t">Les aliments & épices du mois</div><div class="plan-line">Une sélection d'aliments et d'épices choisis chaque mois selon ton dosha et la saison</div></div>
+    </div>
+    <div class="diet-upgrade-card">
+      <div class="diet-upgrade-ic">🥗</div>
+      <div class="diet-upgrade-t">Débloque ton plan alimentaire complet</div>
+      <div class="diet-upgrade-p">Menu sur-mesure (petit-déj, déjeuner, dîner, collation), calculé selon ton dosha, ton régime et tes objectifs, avec un programme Ayurvédique qui change chaque mois.</div>
+      <button class="diet-upgrade-btn" onclick="go('offers')">Passer au Plan Immersion</button>
     </div>`;
     return;
   }
@@ -2830,7 +2870,10 @@ function renderPrograms(){
   row.innerHTML=PROGRAMS.map(p=>{
     const prog=getProgramProgress(p.id);
     const pct=prog.total?Math.round(prog.completed/prog.total*100):0;
-    const coverInner=p.cover_image?`<img src="${p.cover_image}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'">`:'';
+    const firstYtId=prog.videos&&prog.videos[0]?prog.videos[0].ytId:null;
+    const fallbackThumb=firstYtId?`https://img.youtube.com/vi/${firstYtId}/mqdefault.jpg`:null;
+    const coverSrc=p.cover_image||fallbackThumb;
+    const coverInner=coverSrc?`<img src="${coverSrc}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'">`:'';
     if(!p.active){
       return `<div class="prog-card soon">
         <div class="prog-cover ${p.category}">${coverInner}<span class="prog-soon-badge">Bientôt</span></div>
@@ -2887,12 +2930,12 @@ function renderProgramDetail(){
       const numClass=done?'done':(unlocked?'':'locked');
       if(!unlocked){
         weeksHtml.push(`<div class="pd-session locked" onclick="toast('🔒 Termine la séance précédente pour débloquer celle-ci')">
-          <div class="pd-session-num locked">${v.session_number||globalI+1}</div>
+          <div class="pd-session-th"><img src="https://img.youtube.com/vi/${v.ytId}/mqdefault.jpg" onerror="this.style.display='none'"><div class="pd-session-lock-overlay">🔒</div></div>
           <div class="pd-session-body"><div class="pd-session-title">${v.title}</div><div class="pd-session-meta">🔒 Verrouillée</div></div>
         </div>`);
       } else {
         weeksHtml.push(`<div class="pd-session" onclick="openVD('${v.id}')">
-          <div class="pd-session-num ${numClass}">${done?'✓':(v.session_number||globalI+1)}</div>
+          <div class="pd-session-th"><img src="https://img.youtube.com/vi/${v.ytId}/mqdefault.jpg" onerror="this.style.display='none'"><div class="pd-session-badge ${numClass}">${done?'✓':(v.session_number||globalI+1)}</div></div>
           <div class="pd-session-body"><div class="pd-session-title">${v.title}</div><div class="pd-session-meta">${v.dur||''}${done?' · Complétée':''}</div></div>
           <span class="pd-session-arr">›</span>
         </div>`);

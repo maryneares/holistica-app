@@ -2036,10 +2036,12 @@ function go(id){
   // Garde-fou : impossible d'accéder aux écrans du contenu sans abonnement actif,
   // même en forçant la navigation (ex: via la console). Le profil, les offres,
   // la confidentialité et la déconnexion restent accessibles pour gérer son compte.
-  if(PROTECTED_SCREENS.includes(id) && currentUser && !isDevAccount() && userProfile.subscriptionStatus!=='active'){
-    id='offers';
-    toast('🔒 Abonne-toi pour accéder à ton espace Holistica');
-  }
+  // ⚠️ TEMPORAIRE — désactivé pour la période de tests Google Play.
+  // Pour remettre le verrou : décommente les 3 lignes ci-dessous.
+  // if(PROTECTED_SCREENS.includes(id) && currentUser && !isDevAccount() && userProfile.subscriptionStatus!=='active'){
+  //   id='offers';
+  //   toast('🔒 Abonne-toi pour accéder à ton espace Holistica');
+  // }
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   document.querySelectorAll('.ni').forEach(n=>n.classList.remove('act'));

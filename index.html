@@ -1178,7 +1178,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <p style="margin-bottom:14px;">Holistica Club collecte les données suivantes dans le cadre de ton utilisation de l'application : ton prénom, âge, taille, poids, niveau d'activité, informations sur ton cycle menstruel, ton profil Ayurvédique (dosha), ainsi que des données de bien-être quotidiennes (humeur, sommeil, niveau de stress) et ta progression (points, séances complétées, série).</p>
 <p style="margin-bottom:14px;"><strong>Pourquoi on collecte ces données :</strong> uniquement pour te fournir des recommandations personnalisées (routine dosha, calcul de récupération, suivi de cycle) et sauvegarder ta progression d'une session à l'autre.</p>
 <p style="margin-bottom:14px;"><strong>Hébergement :</strong> tes données sont stockées de façon sécurisée via Supabase, avec un accès strictement limité à ton propre compte (sécurité au niveau des lignes). Aucune donnée n'est vendue ni partagée avec des tiers à des fins publicitaires.</p>
-<p style="margin-bottom:14px;"><strong>Tes droits :</strong> conformément au RGPD, tu peux à tout moment consulter, corriger ou supprimer définitivement tes données depuis l'onglet Profil, ou en nous contactant à privacy@holisticaclub.app.</p>
+<p style="margin-bottom:14px;"><strong>Tes droits :</strong> conformément au RGPD, tu peux à tout moment consulter, corriger ou supprimer définitivement tes données depuis l'onglet Profil, ou en nous contactant à info@maryneares.fr.</p>
 <p style="margin-bottom:14px;"><strong>Conservation :</strong> tes données sont conservées tant que ton compte est actif. En cas de suppression de compte, elles sont effacées sous 30 jours maximum.</p>
 <p style="margin-bottom:14px;"><strong>Cookies :</strong> l'application utilise uniquement des identifiants techniques nécessaires à l'authentification (aucun cookie publicitaire ou de tracking tiers).</p>
 </div>
@@ -1200,7 +1200,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <p style="margin-bottom:14px;"><strong>4. Propriété intellectuelle.</strong> Les contenus (textes, vidéos, recettes, visuels) sont la propriété de Holistica Club et ne peuvent être reproduits sans autorisation.</p>
 <p style="margin-bottom:14px;"><strong>5. Responsabilité.</strong> Les conseils proposés sont d'ordre général. Consulte un professionnel de santé avant tout changement important d'alimentation ou d'activité physique, notamment en cas de grossesse ou de condition médicale particulière.</p>
 <p style="margin-bottom:14px;"><strong>6. Résiliation.</strong> Tu peux supprimer ton compte à tout moment depuis l'onglet Profil. Holistica Club se réserve le droit de suspendre un compte en cas d'usage abusif.</p>
-<p style="margin-bottom:14px;"><strong>7. Contact.</strong> Pour toute question, écris-nous à contact@holisticaclub.app.</p>
+<p style="margin-bottom:14px;"><strong>7. Contact.</strong> Pour toute question, écris-nous à info@maryneares.fr.</p>
 </div>
 </div>
 </div>
@@ -1215,7 +1215,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <div style="font-size:13px;color:var(--ink-m);line-height:1.7;margin-top:12px;">
 <p style="margin-bottom:14px;"><strong>Dernière mise à jour :</strong> juillet 2026</p>
 <p style="margin-bottom:14px;"><strong>Éditeur du site.</strong> Holistica Club est édité par une entreprise individuelle immatriculée sous le numéro SIREN 103 960 605.</p>
-<p style="margin-bottom:14px;"><strong>Contact.</strong> contact@holisticaclub.app</p>
+<p style="margin-bottom:14px;"><strong>Contact.</strong> info@maryneares.fr</p>
 <p style="margin-bottom:14px;"><strong>Hébergement du site.</strong> Netlify, Inc. — 44 Montgomery Street, Suite 300, San Francisco, California 94104, États-Unis. <a href="https://www.netlify.com" target="_blank" rel="noopener" style="color:var(--purple-m);">www.netlify.com</a></p>
 <p style="margin-bottom:14px;"><strong>Hébergement des données.</strong> Les données utilisateur (base de données, authentification) sont hébergées par Supabase Inc., dans l'Union Européenne (région [À CONFIRMER dans les paramètres de ton projet Supabase]).</p>
 <p style="margin-bottom:14px;"><strong>Paiements.</strong> Les paiements par abonnement sont traités par Stripe Payments Europe, Ltd., conformément aux normes de sécurité PCI-DSS. Holistica Club ne stocke aucune donnée bancaire.</p>
@@ -1555,13 +1555,14 @@ async function loadProfileAndEnter(){
     lastCelebratedLevel=profile.last_celebrated_level??(Math.floor(xp/100)+1);
     ensureReferralCode();
     applyPendingReferral();
-    if(!isDevAccount() && userProfile.subscriptionStatus!=='active'){
-      // Profil complet mais pas (ou plus) d'abonnement actif : on bloque l'accès et on affiche les offres
-      go('offers');
-      document.getElementById('bnav').style.display='none';
-      saveProfile();
-      return;
-    }
+    // ⚠️ TEMPORAIRE — verrou d'abonnement désactivé pour la période de tests Google Play.
+    // Pour remettre le verrou : décommente les 5 lignes ci-dessous et supprime ce commentaire.
+    // if(!isDevAccount() && userProfile.subscriptionStatus!=='active'){
+    //   go('offers');
+    //   document.getElementById('bnav').style.display='none';
+    //   saveProfile();
+    //   return;
+    // }
     go('dashboard');enterApp();addXP(0);checkBadges(true);
     saveProfile();
   } else {
@@ -1656,7 +1657,9 @@ const PROTECTED_SCREENS=['dashboard','mouvement','recettes','naturo','challenge'
 const WHATSAPP_GROUP_LINK='https://chat.whatsapp.com/BmQ0hxeccsU9iwspW5UQim?s=cl&p=i&mlu=4&amv=2';
 
 function renderChallenge(){
-  const isImmersion=userProfile.subscriptionPlan==='immersion';
+  // ⚠️ TEMPORAIRE — pour remettre le verrou, remplace la ligne du dessous par :
+  // const isImmersion=userProfile.subscriptionPlan==='immersion';
+  const isImmersion=true;
   const communityCard=document.getElementById('chCommunityCard');
   const upgradeCard=document.getElementById('chUpgradeCard');
   if(!communityCard||!upgradeCard)return;
@@ -1910,7 +1913,9 @@ function pickMealIdeas(mealType,doshaKey,dietType,week){
 async function renderDietPlan(){
   const wrap=document.getElementById('dietScroll');
   if(!wrap)return;
-  const isImmersion=userProfile.subscriptionPlan==='immersion';
+  // ⚠️ TEMPORAIRE — pour remettre le verrou, remplace la ligne du dessous par :
+  // const isImmersion=userProfile.subscriptionPlan==='immersion';
+  const isImmersion=true;
   if(!isImmersion){
     wrap.innerHTML=`
     <div class="diet-preview-wrap">

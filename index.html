@@ -295,6 +295,17 @@ body{font-family:'League Spartan',sans-serif;background:var(--ivory);color:var(-
 .food-hist-bar-wrap{flex:1;width:100%;display:flex;align-items:flex-end;}
 .food-hist-bar{width:100%;background:var(--grad);border-radius:4px 4px 0 0;min-height:2px;}
 .food-hist-lbl{font-size:9px;color:var(--ink-l);margin-top:4px;}
+.food-add-btn{background:var(--lav-pale);color:var(--purple);border:none;font-size:11px;font-weight:700;padding:6px 12px;border-radius:20px;cursor:pointer;font-family:'League Spartan',sans-serif;}
+.cf-row{display:flex;gap:8px;margin-bottom:8px;}
+.cf-field{flex:1;}
+.cf-field label{font-size:10.5px;font-weight:700;color:var(--ink-l);display:block;margin-bottom:4px;}
+.off-search-row{display:flex;gap:8px;margin-bottom:8px;}
+.off-search-row input{flex:1;}
+.off-loading{font-size:11.5px;color:var(--ink-l);padding:8px 2px;}
+.off-result{padding:9px 10px;border-radius:10px;background:var(--lav-pale);margin-bottom:6px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:8px;}
+.off-result-n{font-size:12px;font-weight:600;color:var(--ink);flex:1;}
+.off-result-k{font-size:11px;color:var(--purple-m);font-weight:700;flex-shrink:0;}
+.cf-divider{font-size:11px;color:var(--ink-l);text-align:center;margin:12px 0 10px;position:relative;}
 .referral-card{background:white;border-radius:20px;padding:22px;text-align:center;box-shadow:var(--sh);border:1.5px solid var(--purple-l);}
 .referral-card-lbl{font-size:11px;font-weight:700;color:var(--ink-l);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;}
 .referral-code{font-family:'League Spartan',sans-serif;font-size:30px;font-weight:800;color:var(--purple);letter-spacing:2px;margin-bottom:6px;}
@@ -3802,6 +3813,89 @@ function addRecipeToday(){
   renderFoodJournal();
 }
 
+/* ═══ Recherche Open Food Facts (base de données gratuite, sans clé) ═══ */
+let _offResults=[];
+let _offBase=null; // {cal,p,g,l} pour 100g, une fois un produit sélectionné
+
+async function searchOpenFoodFacts(){
+  const q=document.getElementById('offSearchInput').value.trim();
+  if(!q){toast('Tape le nom d\'un aliment à rechercher');return;}
+  document.getElementById('offSearchResults').innerHTML='<div class="off-loading">Recherche en cours...</div>';
+  try{
+    const url='https://world.openfoodfacts.org/cgi/search.pl?search_terms='+encodeURIComponent(q)+'&search_simple=1&action=process&json=1&page_size=8&fields=product_name,nutriments';
+    const res=await fetch(url);
+    const data=await res.json();
+    _offResults=(data.products||[]).filter(p=>p.product_name&&p.nutriments);
+    if(!_offResults.length){
+      document.getElementById('offSearchResults').innerHTML='<div class="off-loading">Aucun résultat, essaie un autre terme ou entre les valeurs toi-même ci-dessous.</div>';
+      return;
+    }
+    document.getElementById('offSearchResults').innerHTML=_offResults.map((p,i)=>{
+      const kcal=Math.round(p.nutriments['energy-kcal_100g']||p.nutriments['energy-kcal']||0);
+      return `<div class="off-result" onclick="selectOffProduct(${i})">
+        <div class="off-result-n">${p.product_name}</div>
+        <div class="off-result-k">${kcal} kcal /100g</div>
+      </div>`;
+    }).join('');
+  }catch(e){
+    document.getElementById('offSearchResults').innerHTML='<div class="off-loading">Recherche indisponible pour l\'instant, entre les valeurs toi-même ci-dessous.</div>';
+  }
+}
+
+function selectOffProduct(i){
+  const p=_offResults[i];
+  if(!p)return;
+  const n=p.nutriments;
+  _offBase={
+    cal:Math.round(n['energy-kcal_100g']||n['energy-kcal']||0),
+    p:Math.round(n['proteins_100g']||0),
+    g:Math.round(n['carbohydrates_100g']||0),
+    l:Math.round(n['fat_100g']||0)
+  };
+  document.getElementById('cfName').value=p.product_name;
+  document.getElementById('cfQty').value=100;
+  document.getElementById('offSearchResults').innerHTML='';
+  document.getElementById('offSearchInput').value='';
+  rescaleCustomFood();
+  toast('Sélectionné · ajuste la quantité si besoin');
+}
+
+function rescaleCustomFood(){
+  if(!_offBase)return; // valeurs manuelles libres, pas de recalcul automatique
+  const qty=parseFloat(document.getElementById('cfQty').value)||0;
+  const ratio=qty/100;
+  document.getElementById('cfCal').value=Math.round(_offBase.cal*ratio);
+  document.getElementById('cfP').value=Math.round(_offBase.p*ratio);
+  document.getElementById('cfG').value=Math.round(_offBase.g*ratio);
+  document.getElementById('cfL').value=Math.round(_offBase.l*ratio);
+}
+
+function toggleCustomFoodForm(){
+  const f=document.getElementById('customFoodForm');
+  f.style.display=f.style.display==='none'?'block':'none';
+  if(f.style.display==='block'){_offBase=null;document.getElementById('cfName').focus();}
+}
+
+function addCustomFoodToday(){
+  const name=document.getElementById('cfName').value.trim();
+  const cal=parseInt(document.getElementById('cfCal').value)||0;
+  const p=parseInt(document.getElementById('cfP').value)||0;
+  const g=parseInt(document.getElementById('cfG').value)||0;
+  const l=parseInt(document.getElementById('cfL').value)||0;
+  if(!name){toast('⚠️ Donne un nom à cet aliment');return;}
+  if(!cal&&!p&&!g&&!l){toast('⚠️ Renseigne au moins une valeur (calories ou macros)');return;}
+  foodLog.push({
+    date:localDateStr(),
+    ts:new Date().toISOString(),
+    recipeId:null,
+    name,
+    cal,p,g,l
+  });
+  saveProfile();
+  toast(name+' ajouté à ton journal 🌿');
+  renderFoodJournal();
+}
+
 function removeFoodEntry(ts){
   foodLog=foodLog.filter(e=>e.ts!==ts);
   saveProfile();
@@ -3843,7 +3937,32 @@ function renderFoodJournal(){
       ${pill('Lipides (g)',sums.l,goalL)}
     </div>
     <div class="diet-info-card" style="margin-top:10px;">
-      <div class="diet-info-t">Aujourd'hui</div>
+      <div class="diet-info-t" style="display:flex;justify-content:space-between;align-items:center;">
+        <span>Aujourd'hui</span>
+        <button class="food-add-btn" onclick="toggleCustomFoodForm()">+ Ajouter un aliment</button>
+      </div>
+      <div id="customFoodForm" style="display:none;">
+        <div class="off-search-row">
+          <input type="text" id="offSearchInput" class="ob-input dt-input" placeholder="Rechercher un aliment (ex: yaourt nature, pomme...)" onkeydown="if(event.key==='Enter')searchOpenFoodFacts()">
+          <button class="food-add-btn" style="flex-shrink:0;" onclick="searchOpenFoodFacts()">🔍</button>
+        </div>
+        <div id="offSearchResults"></div>
+        <div class="cf-divider">ou entre les valeurs toi-même</div>
+        <input type="text" id="cfName" class="ob-input dt-input" placeholder="Nom de l'aliment (ex: Pomme, Sandwich...)" style="margin-bottom:8px;">
+        <div class="cf-row">
+          <div class="cf-field"><label>Quantité (g)</label><input type="number" id="cfQty" class="ob-input dt-input" placeholder="100" min="1" value="100" oninput="rescaleCustomFood()"></div>
+          <div class="cf-field"><label>Calories</label><input type="number" id="cfCal" class="ob-input dt-input" placeholder="0" min="0"></div>
+        </div>
+        <div class="cf-row">
+          <div class="cf-field"><label>Protéines (g)</label><input type="number" id="cfP" class="ob-input dt-input" placeholder="0" min="0"></div>
+          <div class="cf-field"><label>Glucides (g)</label><input type="number" id="cfG" class="ob-input dt-input" placeholder="0" min="0"></div>
+        </div>
+        <div class="cf-row">
+          <div class="cf-field"><label>Lipides (g)</label><input type="number" id="cfL" class="ob-input dt-input" placeholder="0" min="0"></div>
+          <div class="cf-field"></div>
+        </div>
+        <button class="btn-ob purple" style="margin-top:10px;" onclick="addCustomFoodToday()">Ajouter au journal</button>
+      </div>
       ${itemsHtml}
     </div>
     <div class="diet-info-card" style="margin-top:10px;">

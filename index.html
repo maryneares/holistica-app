@@ -275,6 +275,26 @@ body{font-family:'League Spartan',sans-serif;background:var(--ivory);color:var(-
 .pd-week-title:first-of-type{margin-top:16px;}
 /* Diététique */
 .diet-locked-wrap{padding:60px 24px;text-align:center;}
+.food-pill{margin-bottom:14px;}
+.food-pill:last-child{margin-bottom:0;}
+.food-pill-top{display:flex;justify-content:space-between;font-size:12px;font-weight:700;color:var(--ink);margin-bottom:5px;}
+.food-pill-bar{height:8px;border-radius:8px;background:var(--lav-pale);overflow:hidden;}
+.food-pill-fill{height:100%;background:var(--grad);border-radius:8px;transition:width .3s;}
+.food-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);}
+.food-item:last-child{border-bottom:none;}
+.food-item-body{flex:1;min-width:0;}
+.food-item-n{font-size:12.5px;font-weight:700;color:var(--ink);}
+.food-item-m{font-size:11px;color:var(--ink-l);margin-top:1px;}
+.food-item-del{background:var(--lav-pale);color:var(--ink-l);border:none;width:26px;height:26px;border-radius:50%;font-size:12px;cursor:pointer;flex-shrink:0;}
+.food-empty{font-size:12.5px;color:var(--ink-l);text-align:center;padding:14px 0;}
+.food-hist-toggle{display:flex;gap:8px;margin-bottom:14px;}
+.food-hist-btn{border:1.5px solid var(--border);background:white;color:var(--ink-m);font-size:12px;font-weight:700;padding:7px 14px;border-radius:20px;cursor:pointer;font-family:'League Spartan',sans-serif;}
+.food-hist-btn.active{background:var(--grad);color:white;border-color:transparent;}
+.food-hist-chart{display:flex;align-items:flex-end;gap:4px;height:100px;}
+.food-hist-col{flex:1;display:flex;flex-direction:column;align-items:center;height:100%;}
+.food-hist-bar-wrap{flex:1;width:100%;display:flex;align-items:flex-end;}
+.food-hist-bar{width:100%;background:var(--grad);border-radius:4px 4px 0 0;min-height:2px;}
+.food-hist-lbl{font-size:9px;color:var(--ink-l);margin-top:4px;}
 .referral-card{background:white;border-radius:20px;padding:22px;text-align:center;box-shadow:var(--sh);border:1.5px solid var(--purple-l);}
 .referral-card-lbl{font-size:11px;font-weight:700;color:var(--ink-l);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;}
 .referral-code{font-family:'League Spartan',sans-serif;font-size:30px;font-weight:800;color:var(--purple);letter-spacing:2px;margin-bottom:6px;}
@@ -1352,7 +1372,15 @@ document.addEventListener('DOMContentLoaded', function(){
 /* ═══════ SUPABASE ═══════ */
 const SUPABASE_URL='https://lsoddhgahdfcpmuydmbt.supabase.co';
 const SUPABASE_KEY='sb_publishable_GheUBnXhhcVRyqYchb-ZQg_5MFbhv_x';
-const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{
+  auth:{
+    persistSession:true,
+    autoRefreshToken:true,
+    detectSessionInUrl:true,
+    storage:window.localStorage,
+    storageKey:'holistica-auth'
+  }
+});
 
 // Capture immédiate d'un éventuel lien de parrainage (?ref=CODE) — stocké en
 // attendant que la personne crée son compte / se connecte, puis appliqué une
@@ -1430,7 +1458,7 @@ loadContent();
 
 /* ═══════ STATE ═══════ */
 let xp=0,sessions=0,streak=0,currentVid=null,completedVids=new Set(),triedRecipes=new Set(),unlockedBadges=new Set(),readDossiers=new Set(),naturoViewId=null,loginDates=new Set();
-let dailyCalGoal=2000,consumedCal=0,currentRC=null,sessionDates=[],wellnessLog=[],retakeDoshaMode=false;
+let dailyCalGoal=2000,currentRC=null,sessionDates=[],wellnessLog=[],retakeDoshaMode=false,foodLog=[];
 let userProfile={name:'',lastName:'',email:'',goal:'bien-être',age:30,weight:62,height:165,activity:'modérée',hasPeriod:true,menopause:false,dosha:'vata',lastPeriodStart:'',doshaV:33,doshaP:33,doshaK:34,cycleLength:28,birthDate:'',birthTime:'',birthPlace:'',subscriptionStatus:'inactive',subscriptionPlan:null,dietType:'flexitarien',allergies:'',referralCode:'',referredBy:null};
 let moodScore=0,sleepScore=8,stressScore=5;
 let activeMvFilter='Tout',activeRcFilter='Tout';
@@ -1576,6 +1604,7 @@ async function loadProfileAndEnter(){
     completedVids=new Set(profile.completed_videos||[]);
     sessionDates=profile.session_dates||[];
     wellnessLog=profile.wellness_log||[];
+    foodLog=profile.food_log||[];
     triedRecipes=new Set(profile.tried_recipes||[]);
     unlockedBadges=new Set(profile.badges_unlocked||[]);
     readDossiers=new Set(profile.read_dossiers||[]);
@@ -1625,7 +1654,7 @@ function saveProfile(){
       birth_date:userProfile.birthDate||null,birth_time:userProfile.birthTime||null,birth_place:userProfile.birthPlace,
       diet_type:userProfile.dietType,allergies:userProfile.allergies||null,
       xp,sessions,streak,mood_score:moodScore,sleep_score:sleepScore,stress_score:stressScore,
-      completed_videos:Array.from(completedVids),session_dates:sessionDates,wellness_log:wellnessLog,
+      completed_videos:Array.from(completedVids),session_dates:sessionDates,wellness_log:wellnessLog,food_log:foodLog,
       tried_recipes:Array.from(triedRecipes),badges_unlocked:Array.from(unlockedBadges),last_celebrated_level:lastCelebratedLevel,read_dossiers:Array.from(readDossiers),login_dates:Array.from(loginDates),referral_code:userProfile.referralCode||null,referred_by:userProfile.referredBy||null,updated_at:new Date().toISOString()
     });
     if(error){
@@ -1661,6 +1690,19 @@ sb.auth.onAuthStateChange((event,session)=>{
   if(event==='SIGNED_OUT'){
     profileLoaded=false;
     currentUser=null;
+  }
+});
+
+// Sur mobile (app installée notamment), le navigateur met en pause le JS
+// quand l'app passe en arrière-plan — le rafraîchissement automatique du
+// jeton peut donc ne pas se déclencher à temps. On force une vérification
+// dès que l'app redevient visible, pour éviter toute déconnexion silencieuse.
+document.addEventListener('visibilitychange',async()=>{
+  if(document.visibilityState==='visible'&&currentUser){
+    const {data,error}=await sb.auth.getSession();
+    if(error||!data.session){
+      console.log('[Auth] session invalide au retour au premier plan, tentative de restauration...');
+    }
   }
 });
 
@@ -1996,6 +2038,7 @@ async function renderDietPlan(){
   const totalP=plan.reduce((s,m)=>s+m.protein,0);
   const totalC=plan.reduce((s,m)=>s+m.carbs,0);
   const totalF=plan.reduce((s,m)=>s+m.fat,0);
+  window._dietTargets={kcal:totalKcal,p:totalP,g:totalC,l:totalF};
   const week=getISOWeek(new Date());
   const planMois=await getPlanAlimentaireMoisCourant(doshaKey);
 
@@ -2009,7 +2052,8 @@ async function renderDietPlan(){
       <div class="diet-summary-item"><div class="diet-summary-v">${totalC}g</div><div class="diet-summary-l">Glucides</div></div>
       <div class="diet-summary-item"><div class="diet-summary-v">${totalF}g</div><div class="diet-summary-l">Lipides</div></div>
     </div>
-  </div>`;
+  </div>
+  <div id="foodJournalWrap"></div>`;
 
   plan.forEach(meal=>{
     const ideas=pickMealIdeas(meal.id,doshaKey,userProfile.dietType||'flexitarien',week);
@@ -2061,6 +2105,7 @@ async function renderDietPlan(){
   <div style="height:24px;"></div>`;
 
   wrap.innerHTML=html;
+  renderFoodJournal();
 }
 
 function go(id){
@@ -2105,7 +2150,6 @@ function calcNutrition(){
   if(document.getElementById('dMacroG'))document.getElementById('dMacroG').textContent=carbG+'g';
   if(document.getElementById('dMacroL'))document.getElementById('dMacroL').textContent=fatG+'g';
 
-  updateRemainingCal();
   saveProfile();
 }
 
@@ -3723,21 +3767,119 @@ function openRC(id){
 }
 function closeRC(){document.getElementById('rcdetail').classList.remove('open');currentRC=null;}
 
-function updateRemainingCal(){
-  const el=document.getElementById('dRemain');
-  if(el)el.textContent=Math.max(0,Math.round(dailyCalGoal-consumedCal));
+/* ═══════ JOURNAL ALIMENTAIRE ═══════ */
+function todaysFoodEntries(){
+  const today=localDateStr();
+  return foodLog.filter(e=>e.date===today);
+}
+
+function sumFoodEntries(entries){
+  return entries.reduce((s,e)=>({
+    cal:s.cal+(e.cal||0), p:s.p+(e.p||0), g:s.g+(e.g||0), l:s.l+(e.l||0)
+  }),{cal:0,p:0,g:0,l:0});
 }
 
 function addRecipeToday(){
   if(!currentRC)return;
-  consumedCal+=Math.round(currentRC.cal*selectedServings);
-  updateRemainingCal();
+  const servings=selectedServings||1;
+  foodLog.push({
+    date:localDateStr(),
+    ts:new Date().toISOString(),
+    recipeId:currentRC.id,
+    name:currentRC.n,
+    cal:Math.round(currentRC.cal*servings),
+    p:Math.round((currentRC.p||0)*servings),
+    g:Math.round((currentRC.g||0)*servings),
+    l:Math.round((currentRC.l||0)*servings)
+  });
+  saveProfile();
   document.getElementById('rdBtn').textContent='✓ Ajouté au journal';
   document.getElementById('rdBtn').className='rd-btn added';
   triedRecipes.add(currentRC.id);
   addXP(5);
-  toast(currentRC.n+' ajoutée · +5 points 🌿');
+  toast(currentRC.n+' ajoutée à ton journal · +5 points 🌿');
   checkBadges();
+  renderFoodJournal();
+}
+
+function removeFoodEntry(ts){
+  foodLog=foodLog.filter(e=>e.ts!==ts);
+  saveProfile();
+  renderFoodJournal();
+  toast('Aliment retiré du journal');
+}
+
+function renderFoodJournal(){
+  const wrap=document.getElementById('foodJournalWrap');
+  if(!wrap)return;
+  const entries=todaysFoodEntries();
+  const sums=sumFoodEntries(entries);
+  const goalKcal=window._dietTargets?.kcal||dailyCalGoal;
+  const goalP=window._dietTargets?.p||0;
+  const goalG=window._dietTargets?.g||0;
+  const goalL=window._dietTargets?.l||0;
+
+  const pill=(label,val,goal)=>{
+    const pct=goal?Math.min(100,Math.round(val/goal*100)):0;
+    return `<div class="food-pill">
+      <div class="food-pill-top"><span>${label}</span><span>${val}${goal?' / '+goal:''}</span></div>
+      <div class="food-pill-bar"><div class="food-pill-fill" style="width:${pct}%;"></div></div>
+    </div>`;
+  };
+
+  const itemsHtml=entries.length
+    ? entries.map(e=>`<div class="food-item">
+        <div class="food-item-body"><div class="food-item-n">${e.name}</div><div class="food-item-m">${e.cal} kcal · P${e.p}g G${e.g}g L${e.l}g</div></div>
+        <button class="food-item-del" onclick="removeFoodEntry('${e.ts}')">✕</button>
+      </div>`).join('')
+    : `<div class="food-empty">Rien d'ajouté aujourd'hui — va dans Recettes pour commencer ton journal 🌿</div>`;
+
+  wrap.innerHTML=`
+    <div class="sec" style="padding-top:20px;"><h2>Ton <em>journal</em> du jour</h2></div>
+    <div class="diet-summary-card">
+      ${pill('Calories',sums.cal,goalKcal)}
+      ${pill('Protéines (g)',sums.p,goalP)}
+      ${pill('Glucides (g)',sums.g,goalG)}
+      ${pill('Lipides (g)',sums.l,goalL)}
+    </div>
+    <div class="diet-info-card" style="margin-top:10px;">
+      <div class="diet-info-t">Aujourd'hui</div>
+      ${itemsHtml}
+    </div>
+    <div class="diet-info-card" style="margin-top:10px;">
+      <div class="diet-info-t">Historique</div>
+      <div class="food-hist-toggle">
+        <button class="food-hist-btn active" id="foodHist7" onclick="renderFoodHistory(7)">7 jours</button>
+        <button class="food-hist-btn" id="foodHist30" onclick="renderFoodHistory(30)">30 jours</button>
+      </div>
+      <div id="foodHistChart"></div>
+    </div>
+  `;
+  renderFoodHistory(7);
+}
+
+function renderFoodHistory(days){
+  document.getElementById('foodHist7').classList.toggle('active',days===7);
+  document.getElementById('foodHist30').classList.toggle('active',days===30);
+  const today=new Date();
+  const byDay=[];
+  for(let i=days-1;i>=0;i--){
+    const d=new Date(today);
+    d.setDate(d.getDate()-i);
+    const key=localDateStr(d);
+    const entries=foodLog.filter(e=>e.date===key);
+    byDay.push({key,kcal:sumFoodEntries(entries).cal});
+  }
+  const maxKcal=Math.max(...byDay.map(d=>d.kcal),100);
+  const barsHtml=byDay.map(d=>{
+    const h=Math.round((d.kcal/maxKcal)*100);
+    const dayLbl=new Date(d.key).toLocaleDateString('fr-FR',{day:'2-digit',month: days>7?undefined:'2-digit'});
+    return `<div class="food-hist-col" title="${d.key} · ${d.kcal} kcal">
+      <div class="food-hist-bar-wrap"><div class="food-hist-bar" style="height:${Math.max(2,h)}%;"></div></div>
+      ${days<=7?`<div class="food-hist-lbl">${dayLbl}</div>`:''}
+    </div>`;
+  }).join('');
+  document.getElementById('foodHistChart').innerHTML=`<div class="food-hist-chart">${barsHtml}</div>`;
 }
 
 /* ═══════ CHECKOUT ═══════ */

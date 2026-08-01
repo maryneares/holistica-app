@@ -411,7 +411,9 @@ body{font-family:'League Spartan',sans-serif;background:var(--ivory);color:var(-
 /* Recipe grid */
 .rg{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 20px;}
 .rc-card{background:white;border-radius:16px;overflow:hidden;box-shadow:var(--sh);border:1px solid var(--border);cursor:pointer;}
-.rc-img{width:100%;height:100px;object-fit:cover;display:block;background:var(--lav-pale);}
+.rc-img{width:100%;height:100px;object-fit:cover;display:block;background:linear-gradient(100deg,var(--lav-pale) 30%,var(--ivory-d) 50%,var(--lav-pale) 70%);background-size:200% 100%;animation:rcShimmer 1.4s infinite;opacity:0;transition:opacity .3s;}
+.rc-img.loaded{animation:none;background:none;opacity:1;}
+@keyframes rcShimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
 .rc-kcal{position:absolute;top:6px;right:6px;background:var(--purple);color:white;font-size:9px;font-weight:700;padding:3px 7px;border-radius:50px;}
 .rc-img-w{position:relative;overflow:hidden;}
 .rc-body{padding:8px 10px;}
@@ -634,6 +636,7 @@ body{font-family:'League Spartan',sans-serif;background:var(--ivory);color:var(-
 .vd-ben-t{font-size:12px;font-weight:600;color:var(--ink);}
 .vd-bar{background:white;padding:12px 20px 30px;display:flex;gap:8px;border-top:1px solid var(--border);}
 .vd-btn{flex:1;background:var(--grad);color:white;border:none;padding:13px;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:'League Spartan',sans-serif;}
+.vd-btn-pending{background:var(--border);color:var(--ink-l);cursor:default;}
 
 /* Recipe detail */
 .rcdetail{position:fixed;inset:0;background:var(--ivory);z-index:200;display:none;flex-direction:column;overflow-y:auto;max-width:430px;margin:0 auto;}
@@ -1246,10 +1249,10 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Mentions <em>légales</em></div>
 <div style="font-size:13px;color:var(--ink-m);line-height:1.7;margin-top:12px;">
 <p style="margin-bottom:14px;"><strong>Dernière mise à jour :</strong> juillet 2026</p>
-<p style="margin-bottom:14px;"><strong>Éditeur du site.</strong> Holistica Club est édité par une entreprise individuelle immatriculée sous le numéro SIREN 103 960 605.</p>
+<p style="margin-bottom:14px;"><strong>Éditeur du site.</strong> Holistica Club — Maryne Arès, entreprise individuelle, SIRET : 103960605.</p>
 <p style="margin-bottom:14px;"><strong>Contact.</strong> info@maryneares.fr</p>
 <p style="margin-bottom:14px;"><strong>Hébergement du site.</strong> Netlify, Inc. — 44 Montgomery Street, Suite 300, San Francisco, California 94104, États-Unis. <a href="https://www.netlify.com" target="_blank" rel="noopener" style="color:var(--purple-m);">www.netlify.com</a></p>
-<p style="margin-bottom:14px;"><strong>Hébergement des données.</strong> Les données utilisateur (base de données, authentification) sont hébergées par Supabase Inc., dans l'Union Européenne (région [À CONFIRMER dans les paramètres de ton projet Supabase]).</p>
+<p style="margin-bottom:14px;"><strong>Hébergement des données.</strong> Les données utilisateur (base de données, authentification) sont hébergées par Supabase Inc., au sein de l'Union Européenne.</p>
 <p style="margin-bottom:14px;"><strong>Paiements.</strong> Les paiements par abonnement sont traités par Stripe Payments Europe, Ltd., conformément aux normes de sécurité PCI-DSS. Holistica Club ne stocke aucune donnée bancaire.</p>
 <p style="margin-bottom:14px;"><strong>Propriété intellectuelle.</strong> L'ensemble des contenus présents sur Holistica Club (textes, vidéos, recettes, visuels, logo) est protégé par le droit d'auteur. Toute reproduction, même partielle, est interdite sans autorisation préalable écrite.</p>
 <p style="margin-bottom:14px;"><strong>Litiges.</strong> Le présent site est soumis au droit français. En cas de litige, une solution amiable sera recherchée avant toute action judiciaire.</p>
@@ -1264,7 +1267,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <div style="text-align:center;margin-top:10px;">
 <div style="font-size:40px;margin-bottom:8px;">🎁</div>
 <div class="ob-title" style="color:white;font-size:22px;">Parraine tes <em style="color:#FFE8C0;">amies</em></div>
-<div style="font-size:13px;color:rgba(255,255,255,0.85);margin-top:6px;">Elle profite d'1 mois offert, tu en gagnes 1 aussi</div>
+<div style="font-size:13px;color:rgba(255,255,255,0.85);margin-top:6px;">Elle profite d'une réduction de bienvenue, tu gagnes 2 semaines offertes</div>
 </div>
 </div>
 <div class="scroll" style="padding:20px 20px 0;">
@@ -1288,7 +1291,7 @@ document.addEventListener('DOMContentLoaded', function(){
   <div class="diet-info-t">Comment ça marche</div>
   <div class="plan-line">1. Partage ton lien ou ton code à une amie</div>
   <div class="plan-line">2. Elle l'utilise en créant son compte et profite d'une réduction de bienvenue</div>
-  <div class="plan-line">3. Une fois son abonnement actif, tu reçois ton mois offert (Maryne te contactera directement pour l'appliquer)</div>
+  <div class="plan-line">3. Une fois son abonnement actif, tes 2 semaines offertes sont appliquées automatiquement sur ta prochaine facture — rien à faire de ton côté</div>
 </div>
 
 <div style="height:30px;"></div>
@@ -1328,7 +1331,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <!-- VIDEO DETAIL -->
 <div class="vdetail" id="vdetail">
 <button class="vd-back" onclick="closeVD()">←</button>
-<div class="vd-player" id="vdPlayerWrap"><iframe id="vdIframe" src="" allowfullscreen allow="autoplay;encrypted-media;fullscreen"></iframe><button class="vd-fs-btn" onclick="toggleVideoFullscreen()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M8 21H5a2 2 0 0 1-2-2v-3"/></svg> Plein écran</button></div>
+<div class="vd-player" id="vdPlayerWrap"><div id="vdIframe"></div><button class="vd-fs-btn" onclick="toggleVideoFullscreen()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M8 21H5a2 2 0 0 1-2-2v-3"/></svg> Plein écran</button></div>
 <div class="vd-title" id="vdTitle"></div>
 <div class="vd-stats"><div class="vd-stats-row"><div class="vds"><div class="vds-l">Durée</div><div class="vds-v" id="vdDur">—</div></div><div class="vds"><div class="vds-l">Catégorie</div><div class="vds-v" id="vdCat">—</div></div><div class="vds"><div class="vds-l">Dosha</div><div class="vds-v" id="vdDosha">—</div></div></div></div>
 <div class="vd-bens"><div class="vd-sec">Bénéfices</div><div id="vdBens"></div></div>
@@ -1357,7 +1360,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="rd-sec"><div class="rd-sec-t">Ingrédients</div><div id="rdIng"></div></div>
 <div class="rd-sec"><div class="rd-sec-t">Préparation</div><div id="rdSteps"></div></div>
 <div class="rd-sec" id="rdTipsWrap" style="display:none"><div class="rd-sec-t">Astuces</div><div id="rdTips"></div></div>
-<div class="rd-bar"><button class="rd-btn" id="rdBtn" onclick="addRecipeToday()">Ajouter à mon journal du jour</button></div>
+<div class="rd-bar"><button class="rd-btn" id="rdBtn" onclick="addRecipeToday()">Ajouter à ma journée</button></div>
 </div>
 
 <!-- NAV -->
@@ -1469,7 +1472,14 @@ loadContent();
 
 /* ═══════ STATE ═══════ */
 let xp=0,sessions=0,streak=0,currentVid=null,completedVids=new Set(),triedRecipes=new Set(),unlockedBadges=new Set(),readDossiers=new Set(),naturoViewId=null,loginDates=new Set();
-let dailyCalGoal=2000,currentRC=null,sessionDates=[],wellnessLog=[],retakeDoshaMode=false,foodLog=[];
+let referralCount=0,hadComeback=false;
+const _now=new Date();
+const _curMonthKey=_now.getFullYear()+'_'+(_now.getMonth()+1);
+const _curMonthPrefix=_now.getFullYear()+'-'+String(_now.getMonth()+1).padStart(2,'0');
+const _MONTH_NAMES_FR=['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+const _curMonthName=_MONTH_NAMES_FR[_now.getMonth()];
+let dailyCalGoal=2000,currentRC=null,sessionDates=[],wellnessLog=[],retakeDoshaMode=false,foodLog=[],videoStartDates={};
+let ytPlayer=null,ytProgressInterval=null,ytApiReady=false;
 let userProfile={name:'',lastName:'',email:'',goal:'bien-être',age:30,weight:62,height:165,activity:'modérée',hasPeriod:true,menopause:false,dosha:'vata',lastPeriodStart:'',doshaV:33,doshaP:33,doshaK:34,cycleLength:28,birthDate:'',birthTime:'',birthPlace:'',subscriptionStatus:'inactive',subscriptionPlan:null,dietType:'flexitarien',allergies:'',referralCode:'',referredBy:null};
 let moodScore=0,sleepScore=8,stressScore=5;
 let activeMvFilter='Tout',activeRcFilter='Tout';
@@ -1616,16 +1626,26 @@ async function loadProfileAndEnter(){
     sessionDates=profile.session_dates||[];
     wellnessLog=profile.wellness_log||[];
     foodLog=profile.food_log||[];
+    videoStartDates=profile.video_start_dates||{};
     triedRecipes=new Set(profile.tried_recipes||[]);
     unlockedBadges=new Set(profile.badges_unlocked||[]);
     readDossiers=new Set(profile.read_dossiers||[]);
     loginDates=new Set(profile.login_dates||[]);
+    // Détection d'un "retour" : y avait-il déjà une connexion avant aujourd'hui, avec un
+    // écart d'au moins 20 jours ? (avant d'ajouter la date du jour, pour comparer correctement)
+    if(loginDates.size>0){
+      const today=new Date(localDateStr());
+      const lastPrevious=[...loginDates].map(d=>new Date(d)).sort((a,b)=>b-a)[0];
+      const gapDays=Math.floor((today-lastPrevious)/86400000);
+      if(gapDays>=20)hadComeback=true;
+    }
     // Log du jour de connexion actuel (dédupliqué automatiquement par le Set) — sert de base au système de paliers tous les 15 jours actifs
     loginDates.add(localDateStr());
     streak=calcStreak();
     lastCelebratedLevel=profile.last_celebrated_level??(Math.floor(xp/100)+1);
     ensureReferralCode();
     applyPendingReferral();
+    refreshReferralCount();
     // ⚠️ TEMPORAIRE — verrou d'abonnement désactivé pour la période de tests Google Play.
     // Pour remettre le verrou : décommente les 5 lignes ci-dessous et supprime ce commentaire.
     // if(!isDevAccount() && userProfile.subscriptionStatus!=='active'){
@@ -1665,7 +1685,7 @@ function saveProfile(){
       birth_date:userProfile.birthDate||null,birth_time:userProfile.birthTime||null,birth_place:userProfile.birthPlace,
       diet_type:userProfile.dietType,allergies:userProfile.allergies||null,
       xp,sessions,streak,mood_score:moodScore,sleep_score:sleepScore,stress_score:stressScore,
-      completed_videos:Array.from(completedVids),session_dates:sessionDates,wellness_log:wellnessLog,food_log:foodLog,
+      completed_videos:Array.from(completedVids),session_dates:sessionDates,wellness_log:wellnessLog,food_log:foodLog,video_start_dates:videoStartDates,
       tried_recipes:Array.from(triedRecipes),badges_unlocked:Array.from(unlockedBadges),last_celebrated_level:lastCelebratedLevel,read_dossiers:Array.from(readDossiers),login_dates:Array.from(loginDates),referral_code:userProfile.referralCode||null,referred_by:userProfile.referredBy||null,updated_at:new Date().toISOString()
     });
     if(error){
@@ -2792,6 +2812,17 @@ const BADGES=[
   {id:'active_60',e:'🌻',n:'60 jours de connexion',d:'Palier débloqué tous les 15 jours d\'utilisation cumulés de l\'app',cond:()=>loginDates.size>=60},
   {id:'active_75',e:'🪷',n:'75 jours de connexion',d:'Palier débloqué tous les 15 jours d\'utilisation cumulés de l\'app',cond:()=>loginDates.size>=75},
   {id:'active_90',e:'✨',n:'90 jours de connexion',d:'Palier débloqué tous les 15 jours d\'utilisation cumulés de l\'app, une régularité exemplaire',cond:()=>loginDates.size>=90},
+
+  // ═══ Badge mensuel récurrent — se renouvelle chaque mois automatiquement ═══
+  {id:'monthly_'+_curMonthKey,e:'🌙',n:'Badge de '+_curMonthName,d:'3 séances complétées ce mois-ci · +50 points bonus. Un nouveau badge (et parfois une surprise) t\'attend chaque mois',cond:()=>sessionDates.filter(d=>d.startsWith(_curMonthPrefix)).length>=3},
+
+  // ═══ Badge de retour — se renouvelle chaque année ═══
+  {id:'comeback_'+new Date().getFullYear(),e:'🌸',n:'De retour parmi nous',d:'Tu es revenue après une pause — on est contentes de te retrouver',cond:()=>hadComeback},
+
+  // ═══ Badges de parrainage — paliers cumulatifs ═══
+  {id:'referral_1',e:'🤝',n:'Première marraine',d:'Une amie a rejoint Holistica Club grâce à toi',cond:()=>referralCount>=1},
+  {id:'referral_3',e:'💫',n:'Ambassadrice',d:'3 amies parrainées — tu fais rayonner Holistica Club',cond:()=>referralCount>=3},
+  {id:'referral_5',e:'👑',n:'Marraine d\'or',d:'5 amies parrainées, une vraie communauté autour de toi',cond:()=>referralCount>=5},
 ];
 
 function checkBadges(silent){
@@ -2800,6 +2831,10 @@ function checkBadges(silent){
       unlockedBadges.add(b.id);
       const isContentUnlock=CONTENT_BADGES.includes(b.id);
       if(!silent && isContentUnlock)showBadgeCelebration(b);
+      if(b.id.startsWith('monthly_')){
+        addXP(50); // Bonus automatique à chaque badge mensuel débloqué
+        if(!silent)toast('🌙 '+b.n+' débloqué · +50 points bonus !');
+      }
       saveProfile();
     }
   });
@@ -2924,6 +2959,9 @@ async function getConseilMenopauseDuMois(){
 async function renderCycle(){
   if(document.getElementById('cycleLenInput'))document.getElementById('cycleLenInput').value=userProfile.cycleLength;
 
+  // Le contenu "conseils ménopause du mois" ne s'affiche QUE pour les personnes ayant
+  // explicitement répondu "Non, ménopause" — pas pour "Non, autre raison", qui reste
+  // sur le message générique par défaut (modifiable à tout moment depuis le Profil).
   if(userProfile.menopause){
     document.getElementById('cycleSecTitle').innerHTML='Conseils <em>ménopause du mois</em>';
     const m=await getConseilMenopauseDuMois();
@@ -3086,19 +3124,46 @@ function renderProgramDetail(){
   // Regroupement des séances par semaine (selon sessions_per_week choisi dans l'admin)
   const perWeek=p.sessions_per_week||3;
   const weeksHtml=[];
+  const today=new Date(localDateStr());
   for(let i=0;i<prog.videos.length;i+=perWeek){
     const weekVideos=prog.videos.slice(i,i+perWeek);
     const weekNum=Math.floor(i/perWeek)+1;
-    weeksHtml.push(`<div class="pd-week-title">Semaine ${weekNum}</div>`);
+
+    // Déverrouillage de la SEMAINE : la semaine 1 est toujours ouverte. À partir de la
+    // semaine 2, il faut que 7 jours se soient écoulés depuis la première ouverture de
+    // la première vidéo de la semaine précédente.
+    let weekUnlocked=true;
+    let daysRemaining=0;
+    if(weekNum>1){
+      const prevWeekFirstVideo=prog.videos[i-perWeek];
+      const startDate=prevWeekFirstVideo?videoStartDates[prevWeekFirstVideo.id]:null;
+      if(!startDate){
+        weekUnlocked=false;
+        daysRemaining=7;
+      } else {
+        const daysSince=Math.floor((today-new Date(startDate))/86400000);
+        weekUnlocked=daysSince>=7;
+        daysRemaining=Math.max(0,7-daysSince);
+      }
+    }
+
+    weeksHtml.push(`<div class="pd-week-title">Semaine ${weekNum}${!weekUnlocked?' · 🔒 dans '+daysRemaining+' jour'+(daysRemaining>1?'s':''):''}</div>`);
     weekVideos.forEach((v,localI)=>{
       const globalI=i+localI;
       const done=completedVids.has(v.id);
-      const unlocked=globalI===0||completedVids.has(prog.videos[globalI-1].id);
+      const sequentialUnlocked=globalI===0||completedVids.has(prog.videos[globalI-1].id);
+      const unlocked=sequentialUnlocked&&weekUnlocked;
       const numClass=done?'done':(unlocked?'':'locked');
       if(!unlocked){
-        weeksHtml.push(`<div class="pd-session locked" onclick="toast('🔒 Termine la séance précédente pour débloquer celle-ci')">
+        const lockMsg=!weekUnlocked
+          ?'🔒 Disponible dans '+daysRemaining+' jour'+(daysRemaining>1?'s':'')
+          :'🔒 Verrouillée';
+        const lockToast=!weekUnlocked
+          ?'🔒 Cette semaine se débloque '+daysRemaining+' jour'+(daysRemaining>1?'s':'')+' après le début de la précédente'
+          :'🔒 Termine la séance précédente pour débloquer celle-ci';
+        weeksHtml.push(`<div class="pd-session locked" onclick="toast('${lockToast}')">
           <div class="pd-session-th"><img src="https://img.youtube.com/vi/${v.ytId}/mqdefault.jpg" onerror="this.style.display='none'"><div class="pd-session-lock-overlay">🔒</div></div>
-          <div class="pd-session-body"><div class="pd-session-title">${v.title}</div><div class="pd-session-meta">🔒 Verrouillée</div></div>
+          <div class="pd-session-body"><div class="pd-session-title">${v.title}</div><div class="pd-session-meta">${lockMsg}</div></div>
         </div>`);
       } else {
         weeksHtml.push(`<div class="pd-session" onclick="openVD('${v.id}')">
@@ -3137,23 +3202,80 @@ function renderMv(){
   }).join('')||'<div style="text-align:center;padding:40px 20px;color:var(--ink-l);">Aucune séance dans ce filtre</div>';
 }
 
-function openVD(id){
+function loadYouTubeApi(){
+  return new Promise(resolve=>{
+    if(ytApiReady||window.YT&&window.YT.Player){ytApiReady=true;resolve();return;}
+    window.onYouTubeIframeAPIReady=()=>{ytApiReady=true;resolve();};
+    const tag=document.createElement('script');
+    tag.src='https://www.youtube.com/iframe_api';
+    document.head.appendChild(tag);
+  });
+}
+
+async function openVD(id){
   const v=VIDEOS.find(x=>x.id===id);if(!v)return;
   if(isContentLocked(v)){const b=badgeById(v.unlock_badge);toast('🔒 Débloque le badge « '+(b?.n||'?')+' » pour accéder à cette séance');return;}
   currentVid=id;
-  document.getElementById('vdIframe').src=`https://www.youtube.com/embed/${v.ytId}?autoplay=1&rel=0&modestbranding=1`;
   document.getElementById('vdTitle').textContent=v.title;
   document.getElementById('vdDur').textContent=v.dur;
   document.getElementById('vdCat').textContent=v.cat;
   document.getElementById('vdDosha').textContent=v.dosha;
   document.getElementById('vdBens').innerHTML=v.bens.map((b,i)=>`<div class="vd-ben"><div class="vd-ben-ic">${['💪','🔥','🧘','🌿'][i]}</div><div class="vd-ben-t">${b}</div></div>`).join('');
   const done=completedVids.has(id);
-  document.getElementById('vdBtn').textContent=done?'✓ Séance complétée':'Séance terminée · +15 points →';
-  document.getElementById('vdBtn').className='vd-btn'+(done?' done':'');
+  const btn=document.getElementById('vdBtn');
+  if(done){
+    btn.textContent='✓ Séance complétée';
+    btn.className='vd-btn done';
+  } else {
+    btn.textContent='Regarde au moins 50% pour valider';
+    btn.className='vd-btn vd-btn-pending';
+  }
   document.getElementById('vdetail').classList.add('open');
+
+  // Enregistre la toute première fois où cette vidéo est ouverte — sert de départ
+  // au compteur de 7 jours pour le déverrouillage de la semaine suivante.
+  if(!videoStartDates[id]){
+    videoStartDates[id]=localDateStr();
+    saveProfile();
+  }
+
+  await loadYouTubeApi();
+  if(ytPlayer&&ytPlayer.destroy)ytPlayer.destroy();
+  ytPlayer=new YT.Player('vdIframe',{
+    videoId:v.ytId,
+    width:'100%',height:'100%',
+    playerVars:{autoplay:1,rel:0,modestbranding:1},
+    events:{
+      onStateChange:(e)=>{
+        if(e.data===YT.PlayerState.PLAYING)startWatchTracking();
+        else stopWatchTracking();
+      }
+    }
+  });
 }
+
+function startWatchTracking(){
+  stopWatchTracking();
+  ytProgressInterval=setInterval(()=>{
+    if(!ytPlayer||!ytPlayer.getCurrentTime||!currentVid)return;
+    const duration=ytPlayer.getDuration();
+    const current=ytPlayer.getCurrentTime();
+    if(!duration)return;
+    const ratio=current/duration;
+    if(ratio>=0.5&&!completedVids.has(currentVid)){
+      markVDone();
+    }
+  },3000);
+}
+
+function stopWatchTracking(){
+  if(ytProgressInterval){clearInterval(ytProgressInterval);ytProgressInterval=null;}
+}
+
 function closeVD(){
-  document.getElementById('vdIframe').src='';
+  stopWatchTracking();
+  if(ytPlayer&&ytPlayer.destroy){ytPlayer.destroy();ytPlayer=null;}
+  document.getElementById('vdIframe').innerHTML='';
   document.getElementById('vdetail').classList.remove('open');
   currentVid=null;
   if(document.fullscreenElement)document.exitFullscreen?.();
@@ -3191,6 +3313,15 @@ function calcStreak(){
 
 function markVDone(){
   if(!currentVid||completedVids.has(currentVid))return;
+  // Garde-fou : impossible de valider (même via clic manuel) sans avoir regardé au moins 50%.
+  if(ytPlayer&&ytPlayer.getDuration){
+    const duration=ytPlayer.getDuration();
+    const current=ytPlayer.getCurrentTime?ytPlayer.getCurrentTime():0;
+    if(duration&&(current/duration)<0.5){
+      toast('🎬 Regarde au moins 50% de la séance pour la valider');
+      return;
+    }
+  }
   completedVids.add(currentVid);sessions++;
   sessionDates.push(localDateStr());
   streak=calcStreak();
@@ -3699,9 +3830,9 @@ function renderRec(){
     const locked=isContentLocked(r);
     const badge=locked?badgeById(r.unlock_badge):null;
     if(locked){
-      return `<div class="rc-card rc-locked" onclick="toast('🔒 Débloque le badge « ${badge?.n||'?'} » pour accéder à cette recette')"><div class="rc-img-w"><img class="rc-img" src="${r.img}" onerror="this.style.background='var(--lav-pale)'"><div class="rc-lock-overlay">🔒</div><div class="rc-kcal">${r.cal} cal</div></div><div class="rc-body"><div class="rc-name">${r.n}</div><div class="rc-lock-hint">${badge?badge.e+' '+badge.n:'Contenu bonus'}</div><div class="rc-lock-hint" style="opacity:.7;font-weight:500;">${badgeUnlockHint(badge)}</div></div></div>`;
+      return `<div class="rc-card rc-locked" onclick="toast('🔒 Débloque le badge « ${badge?.n||'?'} » pour accéder à cette recette')"><div class="rc-img-w"><img class="rc-img" src="${r.img}" loading="lazy" onload="this.classList.add('loaded')" onerror="this.style.display='none'"><div class="rc-lock-overlay">🔒</div><div class="rc-kcal">${r.cal} cal</div></div><div class="rc-body"><div class="rc-name">${r.n}</div><div class="rc-lock-hint">${badge?badge.e+' '+badge.n:'Contenu bonus'}</div><div class="rc-lock-hint" style="opacity:.7;font-weight:500;">${badgeUnlockHint(badge)}</div></div></div>`;
     }
-    return `<div class="rc-card" onclick="openRC('${r.id}')"><div class="rc-img-w"><img class="rc-img" src="${r.img}" onerror="this.style.background='var(--lav-pale)'"><div class="rc-kcal">${r.cal} cal</div></div><div class="rc-body"><div class="rc-name">${r.n}</div><div class="rc-macros"><div class="rc-m"><span class="rc-m-ic">Prot.</span><div class="rc-m-v p">${r.p}g</div></div><div class="rc-m"><span class="rc-m-ic">Gluc.</span><div class="rc-m-v g">${r.g}g</div></div><div class="rc-m"><span class="rc-m-ic">Lip.</span><div class="rc-m-v l">${r.l}g</div></div></div></div></div>`;
+    return `<div class="rc-card" onclick="openRC('${r.id}')"><div class="rc-img-w"><img class="rc-img" src="${r.img}" loading="lazy" onload="this.classList.add('loaded')" onerror="this.style.display='none'"><div class="rc-kcal">${r.cal} cal</div></div><div class="rc-body"><div class="rc-name">${r.n}</div><div class="rc-macros"><div class="rc-m"><span class="rc-m-ic">Prot.</span><div class="rc-m-v p">${r.p}g</div></div><div class="rc-m"><span class="rc-m-ic">Gluc.</span><div class="rc-m-v g">${r.g}g</div></div><div class="rc-m"><span class="rc-m-ic">Lip.</span><div class="rc-m-v l">${r.l}g</div></div></div></div></div>`;
   }).join('');
 }
 
@@ -3772,7 +3903,7 @@ function openRC(id){
   } else {
     document.getElementById('rdTipsWrap').style.display='none';
   }
-  document.getElementById('rdBtn').textContent='Ajouter à mon journal du jour';
+  document.getElementById('rdBtn').textContent='Ajouter à ma journée';
   document.getElementById('rdBtn').className='rd-btn';
   document.getElementById('rcdetail').classList.add('open');
 }
@@ -3804,7 +3935,7 @@ function addRecipeToday(){
     l:Math.round((currentRC.l||0)*servings)
   });
   saveProfile();
-  document.getElementById('rdBtn').textContent='✓ Ajouté au journal';
+  document.getElementById('rdBtn').textContent='✓ Ajouté à ta journée';
   document.getElementById('rdBtn').className='rd-btn added';
   triedRecipes.add(currentRC.id);
   addXP(5);
@@ -4082,14 +4213,21 @@ function applyPendingReferral(){
   toast('🎁 Code de parrainage appliqué !');
 }
 
+async function refreshReferralCount(){
+  if(!userProfile.referralCode)return;
+  const {count}=await sb.from('profiles').select('id',{count:'exact',head:true}).eq('referred_by',userProfile.referralCode);
+  referralCount=count||0;
+  checkBadges();
+}
+
 async function renderReferralScreen(){
   const el=document.getElementById('referralScreen');
   if(!el)return;
   const link='https://app.holisticaclub.com/?ref='+userProfile.referralCode;
   document.getElementById('referralCode').textContent=userProfile.referralCode||'...';
   document.getElementById('referralLink').textContent=link;
-  const {count}=await sb.from('profiles').select('id',{count:'exact',head:true}).eq('referred_by',userProfile.referralCode);
-  document.getElementById('referralCount').textContent=count||0;
+  await refreshReferralCount();
+  document.getElementById('referralCount').textContent=referralCount;
 }
 
 function copyReferralLink(){
@@ -4099,7 +4237,7 @@ function copyReferralLink(){
 
 function shareReferralLink(){
   const link='https://app.holisticaclub.com/?ref='+userProfile.referralCode;
-  const text='Je te partage Holistica Club, l\'app bien-être Ayurvéda que j\'utilise 🌸 Avec mon lien tu as un mois offert en t\'abonnant : '+link;
+  const text='Je te partage Holistica Club, l\'app bien-être Ayurvéda que j\'utilise 🌸 Avec mon lien, on gagne chacune un avantage en t\'abonnant : '+link;
   if(navigator.share){
     navigator.share({text}).catch(()=>{});
   } else {

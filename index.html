@@ -4001,6 +4001,55 @@ function rescaleCustomFood(){
   document.getElementById('cfL').value=Math.round(_offBase.l*ratio);
 }
 
+/* ═══ Scan photo d'un repas via l'API Claude (vision) ═══ */
+function triggerFoodPhoto(){
+  document.getElementById('foodPhotoInput').click();
+}
+
+async function handleFoodPhoto(event){
+  const file=event.target.files[0];
+  if(!file)return;
+  event.target.value=''; // permet de reprendre la même photo une seconde fois si besoin
+
+  toast('📷 Analyse de la photo en cours...');
+  try{
+    const base64=await new Promise((resolve,reject)=>{
+      const reader=new FileReader();
+      reader.onload=()=>resolve(reader.result.split(',')[1]);
+      reader.onerror=reject;
+      reader.readAsDataURL(file);
+    });
+
+    const res=await fetch('/.netlify/functions/analyze-food-photo',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({imageBase64:base64,mediaType:file.type||'image/jpeg'})
+    });
+    const data=await res.json();
+
+    if(!res.ok||data.error){
+      toast(data.error==='no_food_detected'
+        ?'🤔 Aucun aliment reconnu sur cette photo — entre les valeurs toi-même'
+        :'❌ Analyse indisponible, entre les valeurs toi-même');
+      document.getElementById('customFoodForm').style.display='block';
+      return;
+    }
+
+    _offBase=null;
+    document.getElementById('customFoodForm').style.display='block';
+    document.getElementById('cfName').value=data.name||'';
+    document.getElementById('cfQty').value='';
+    document.getElementById('cfCal').value=data.cal||0;
+    document.getElementById('cfP').value=data.p||0;
+    document.getElementById('cfG').value=data.g||0;
+    document.getElementById('cfL').value=data.l||0;
+    toast('✨ Analysé ! Vérifie et ajuste si besoin avant de valider');
+  }catch(e){
+    toast('❌ Erreur lors de l\'analyse, entre les valeurs toi-même');
+    document.getElementById('customFoodForm').style.display='block';
+  }
+}
+
 function toggleCustomFoodForm(){
   const f=document.getElementById('customFoodForm');
   f.style.display=f.style.display==='none'?'block':'none';
@@ -4070,7 +4119,11 @@ function renderFoodJournal(){
     <div class="diet-info-card" style="margin-top:10px;">
       <div class="diet-info-t" style="display:flex;justify-content:space-between;align-items:center;">
         <span>Aujourd'hui</span>
-        <button class="food-add-btn" onclick="toggleCustomFoodForm()">+ Ajouter un aliment</button>
+        <div style="display:flex;gap:6px;">
+          <button class="food-add-btn" onclick="triggerFoodPhoto()">📷 Photo</button>
+          <button class="food-add-btn" onclick="toggleCustomFoodForm()">+ Ajouter un aliment</button>
+        </div>
+        <input type="file" id="foodPhotoInput" accept="image/*" capture="environment" style="display:none;" onchange="handleFoodPhoto(event)">
       </div>
       <div id="customFoodForm" style="display:none;">
         <div class="off-search-row">

@@ -1,8 +1,10 @@
 // netlify/functions/crm-import-contacts.js
 //
 // Reçoit une liste de contacts (déjà parsés côté CMS depuis le CSV)
-// et le nom d'une liste (existante ou nouvelle). Crée les contacts
-// s'ils n'existent pas encore (par email), et les rattache à la liste.
+// et le nom d'une liste (existante ou nouvelle). Traite les contacts
+// PAR LOTS (au lieu d'un par un) pour rester rapide même avec des
+// fichiers de plusieurs centaines/milliers de contacts, et éviter
+// le dépassement de temps limite d'exécution de la fonction.
 //
 // Variables d'environnement nécessaires (déjà présentes) :
 // SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY
@@ -19,6 +21,12 @@ const CORS_HEADERS = {
   'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type'
 };
+
+function chunk(arr, size) {
+  const out = [];
+  for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
+  return out;
+}
 
 exports.handler = async function (event) {
   if (event.httpMethod === 'OPTIONS') {
@@ -49,29 +57,53 @@ exports.handler = async function (event) {
       }
     }
 
-    let imported = 0, linked = 0, skipped = 0;
-
+    // Nettoie et dédoublonne les emails reçus
+    const seen = new Set();
+    const cleanContacts = [];
+    let skipped = 0;
     for (const c of contacts) {
       const email = (c.email || '').trim().toLowerCase();
-      if (!email || !email.includes('@')) { skipped++; continue; }
-
-      // Upsert du contact (créé s'il n'existe pas, ignoré sinon)
-      const { data: contact, error: upsertErr } = await supabase
-        .from('crm_contacts')
-        .upsert({ email, first_name: c.first_name || null, last_name: c.last_name || null, prenom: c.first_name || null, nom: c.last_name || null }, { onConflict: 'email', ignoreDuplicates: false })
-        .select('id')
-        .single();
-      if (upsertErr || !contact) { skipped++; continue; }
-      imported++;
-
-      // Rattache à la liste (ignore si déjà présent)
-      const { error: linkErr } = await supabase
-        .from('crm_list_contacts')
-        .upsert({ list_id: targetListId, contact_id: contact.id }, { onConflict: 'list_id,contact_id' });
-      if (!linkErr) linked++;
+      if (!email || !email.includes('@') || seen.has(email)) { skipped++; continue; }
+      seen.add(email);
+      cleanContacts.push({
+        email,
+        first_name: c.first_name || null,
+        last_name: c.last_name || null,
+        prenom: c.first_name || null,
+        nom: c.last_name || null
+      });
     }
 
-    return { headers: CORS_HEADERS, statusCode: 200, body: JSON.stringify({ success: true, listId: targetListId, imported, linked, skipped }) };
+    // ═══ Upsert des contacts PAR LOTS de 300 (au lieu d'un par un) ═══
+    const contactBatches = chunk(cleanContacts, 300);
+    let allContactIds = [];
+
+    for (const batch of contactBatches) {
+      const { data, error } = await supabase
+        .from('crm_contacts')
+        .upsert(batch, { onConflict: 'email', ignoreDuplicates: false })
+        .select('id');
+      if (error) throw error;
+      allContactIds = allContactIds.concat((data || []).map(c => c.id));
+    }
+
+    // ═══ Rattachement à la liste PAR LOTS également ═══
+    const links = allContactIds.map(contactId => ({ list_id: targetListId, contact_id: contactId }));
+    const linkBatches = chunk(links, 500);
+    let linked = 0;
+
+    for (const batch of linkBatches) {
+      const { error } = await supabase
+        .from('crm_list_contacts')
+        .upsert(batch, { onConflict: 'list_id,contact_id' });
+      if (!error) linked += batch.length;
+    }
+
+    return {
+      headers: CORS_HEADERS,
+      statusCode: 200,
+      body: JSON.stringify({ success: true, listId: targetListId, imported: allContactIds.length, linked, skipped })
+    };
   } catch (e) {
     console.error('Erreur crm-import-contacts:', e);
     return { headers: CORS_HEADERS, statusCode: 500, body: JSON.stringify({ error: e.message }) };

@@ -43,7 +43,7 @@ exports.handler = async function (event) {
       if (existing) {
         targetListId = existing.id;
       } else {
-        const { data: created, error: createErr } = await supabase.from('crm_lists').insert({ name: listName }).select('id').single();
+        const { data: created, error: createErr } = await supabase.from('crm_lists').insert({ name: listName, nom: listName }).select('id').single();
         if (createErr) throw createErr;
         targetListId = created.id;
       }
@@ -58,7 +58,7 @@ exports.handler = async function (event) {
       // Upsert du contact (créé s'il n'existe pas, ignoré sinon)
       const { data: contact, error: upsertErr } = await supabase
         .from('crm_contacts')
-        .upsert({ email, first_name: c.first_name || null, last_name: c.last_name || null }, { onConflict: 'email', ignoreDuplicates: false })
+        .upsert({ email, first_name: c.first_name || null, last_name: c.last_name || null, prenom: c.first_name || null, nom: c.last_name || null }, { onConflict: 'email', ignoreDuplicates: false })
         .select('id')
         .single();
       if (upsertErr || !contact) { skipped++; continue; }

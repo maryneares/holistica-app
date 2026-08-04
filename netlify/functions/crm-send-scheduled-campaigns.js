@@ -16,7 +16,7 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
-const FROM = 'Holistica Club <contact@holisticaclub.com>';
+const FROM = 'Holistica Club <info@maryneares.fr>';
 
 function chunk(arr, size) {
   const out = [];
@@ -206,11 +206,11 @@ exports.handler = async function () {
 
         const { data: rows, error: contactsErr } = await supabase
           .from('crm_list_contacts')
-          .select('crm_contacts(email,first_name)')
+          .select('crm_contacts(email,first_name,blocked)')
           .eq('list_id', campaign.list_id);
         if (contactsErr) throw contactsErr;
 
-        const contacts = (rows || []).map(r => r.crm_contacts).filter(c => c?.email);
+        const contacts = (rows || []).map(r => r.crm_contacts).filter(c => c?.email && !c.blocked);
         const batches = chunk(contacts, 100);
         let sentCount = 0;
 

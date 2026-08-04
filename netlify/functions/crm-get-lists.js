@@ -48,6 +48,18 @@ exports.handler = async function (event) {
       return { headers: CORS_HEADERS, statusCode: 200, body: JSON.stringify({ success: true }) };
     }
 
+    if (event.httpMethod === 'DELETE') {
+      const delListId = event.queryStringParameters?.listId;
+      if (!delListId) return { headers: CORS_HEADERS, statusCode: 400, body: JSON.stringify({ error: 'listId manquant' }) };
+      // Supprime d'abord les liaisons (au cas où la contrainte cascade ne serait pas active),
+      // puis la liste elle-même. Les contacts eux-mêmes (crm_contacts) ne sont PAS supprimés,
+      // seulement retirés de cette liste précise.
+      await supabase.from('crm_list_contacts').delete().eq('list_id', delListId);
+      const { error } = await supabase.from('crm_lists').delete().eq('id', delListId);
+      if (error) throw error;
+      return { headers: CORS_HEADERS, statusCode: 200, body: JSON.stringify({ success: true }) };
+    }
+
     const { data: lists, error } = await supabase.from('crm_lists').select('id,name,created_at').order('created_at', { ascending: false });
     if (error) throw error;
 

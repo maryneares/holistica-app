@@ -184,15 +184,25 @@ ${bodyRows}
 }
 /* ═══ Fin moteur de rendu ═══ */
 
+const CORS_HEADERS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type'
+};
+
 exports.handler = async function (event) {
+  if (event.httpMethod === 'OPTIONS') {
+    return { statusCode: 200, headers: CORS_HEADERS, body: '' };
+  }
+
   if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: 'Method not allowed' };
+    return { headers: CORS_HEADERS, statusCode: 405, body: 'Method not allowed' };
   }
 
   try {
     const { listId, subject, bodyHtml, blocks, headerTag, preheader, footerNote } = JSON.parse(event.body || '{}');
     if (!listId || !subject || (!bodyHtml && !blocks)) {
-      return { statusCode: 400, body: JSON.stringify({ error: 'listId, subject et (bodyHtml ou blocks) sont requis' }) };
+      return { headers: CORS_HEADERS, statusCode: 400, body: JSON.stringify({ error: 'listId, subject et (bodyHtml ou blocks) sont requis' }) };
     }
 
     const finalHtml = blocks ? blocksToEmailHtml(blocks, { headerTag, preheader, footerNote }) : bodyHtml;
@@ -205,7 +215,7 @@ exports.handler = async function (event) {
 
     const contacts = (rows || []).map(r => r.crm_contacts).filter(c => c?.email);
     if (!contacts.length) {
-      return { statusCode: 400, body: JSON.stringify({ error: 'Cette liste ne contient aucun contact' }) };
+      return { headers: CORS_HEADERS, statusCode: 400, body: JSON.stringify({ error: 'Cette liste ne contient aucun contact' }) };
     }
 
     const batches = chunk(contacts, 100);
@@ -247,9 +257,9 @@ exports.handler = async function (event) {
       sent_at: new Date().toISOString()
     });
 
-    return { statusCode: 200, body: JSON.stringify({ success: true, sentCount, totalContacts: contacts.length }) };
+    return { headers: CORS_HEADERS, statusCode: 200, body: JSON.stringify({ success: true, sentCount, totalContacts: contacts.length }) };
   } catch (e) {
     console.error('Erreur crm-send-campaign:', e);
-    return { statusCode: 500, body: JSON.stringify({ error: e.message }) };
+    return { headers: CORS_HEADERS, statusCode: 500, body: JSON.stringify({ error: e.message }) };
   }
 };

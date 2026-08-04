@@ -120,6 +120,8 @@ function blockToHtml(block) {
           <span class="body-font" style="color:#C890C8;font-size:12.5px;">Holistica Club</span>
         </p>
       </td></tr>`;
+    case 'raw_html':
+      return `<tr><td class="mobile-padding" style="padding:18px 48px 8px 48px;">${block.html || ''}</td></tr>`;
     default:
       return '';
   }

@@ -16,7 +16,7 @@ const supabase = createClient(
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
+  'Access-Control-Allow-Methods': 'GET, POST, PATCH, DELETE, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type'
 };
 
@@ -31,11 +31,21 @@ exports.handler = async function (event) {
     if (listId) {
       const { data, error } = await supabase
         .from('crm_list_contacts')
-        .select('crm_contacts(id,email,first_name,last_name)')
+        .select('added_at,crm_contacts(id,email,first_name,last_name,created_at,blocked)')
         .eq('list_id', listId);
       if (error) throw error;
-      const contacts = (data || []).map(row => row.crm_contacts);
+      const contacts = (data || []).map(row => ({ ...row.crm_contacts, added_at: row.added_at }));
       return { headers: CORS_HEADERS, statusCode: 200, body: JSON.stringify({ contacts }) };
+    }
+
+    if (event.httpMethod === 'PATCH') {
+      const { contactId, blocked } = JSON.parse(event.body || '{}');
+      if (!contactId || typeof blocked !== 'boolean') {
+        return { headers: CORS_HEADERS, statusCode: 400, body: JSON.stringify({ error: 'contactId et blocked (booléen) requis' }) };
+      }
+      const { error } = await supabase.from('crm_contacts').update({ blocked }).eq('id', contactId);
+      if (error) throw error;
+      return { headers: CORS_HEADERS, statusCode: 200, body: JSON.stringify({ success: true }) };
     }
 
     const { data: lists, error } = await supabase.from('crm_lists').select('id,name,created_at').order('created_at', { ascending: false });

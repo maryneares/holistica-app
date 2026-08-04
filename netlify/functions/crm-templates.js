@@ -13,18 +13,28 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
+const CORS_HEADERS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type'
+};
+
 exports.handler = async function (event) {
+  if (event.httpMethod === 'OPTIONS') {
+    return { statusCode: 200, headers: CORS_HEADERS, body: '' };
+  }
+
   try {
     if (event.httpMethod === 'GET') {
       const { data, error } = await supabase.from('crm_templates').select('*').order('created_at', { ascending: false });
       if (error) throw error;
-      return { statusCode: 200, body: JSON.stringify({ templates: data || [] }) };
+      return { headers: CORS_HEADERS, statusCode: 200, body: JSON.stringify({ templates: data || [] }) };
     }
 
     if (event.httpMethod === 'POST') {
       const { name, subject, bodyHtml, blocks, headerTag } = JSON.parse(event.body || '{}');
       if (!name || (!bodyHtml && !blocks)) {
-        return { statusCode: 400, body: JSON.stringify({ error: 'name et (bodyHtml ou blocks) sont requis' }) };
+        return { headers: CORS_HEADERS, statusCode: 400, body: JSON.stringify({ error: 'name et (bodyHtml ou blocks) sont requis' }) };
       }
       const { data, error } = await supabase.from('crm_templates').insert({
         name,
@@ -34,20 +44,20 @@ exports.handler = async function (event) {
         header_tag: headerTag || ''
       }).select('id').single();
       if (error) throw error;
-      return { statusCode: 200, body: JSON.stringify({ success: true, id: data.id }) };
+      return { headers: CORS_HEADERS, statusCode: 200, body: JSON.stringify({ success: true, id: data.id }) };
     }
 
     if (event.httpMethod === 'DELETE') {
       const id = event.queryStringParameters?.id;
-      if (!id) return { statusCode: 400, body: JSON.stringify({ error: 'id manquant' }) };
+      if (!id) return { headers: CORS_HEADERS, statusCode: 400, body: JSON.stringify({ error: 'id manquant' }) };
       const { error } = await supabase.from('crm_templates').delete().eq('id', id);
       if (error) throw error;
-      return { statusCode: 200, body: JSON.stringify({ success: true }) };
+      return { headers: CORS_HEADERS, statusCode: 200, body: JSON.stringify({ success: true }) };
     }
 
-    return { statusCode: 405, body: 'Method not allowed' };
+    return { headers: CORS_HEADERS, statusCode: 405, body: 'Method not allowed' };
   } catch (e) {
     console.error('Erreur crm-templates:', e);
-    return { statusCode: 500, body: JSON.stringify({ error: e.message }) };
+    return { headers: CORS_HEADERS, statusCode: 500, body: JSON.stringify({ error: e.message }) };
   }
 };

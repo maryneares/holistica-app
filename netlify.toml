@@ -8,5 +8,7 @@
 # Exécute automatiquement l'email de cycle de vie chaque jour à 8h UTC
 [functions."send-lifecycle-emails"]
   schedule = "0 8 * * *"
-  [[functions."crm-send-scheduled-campaigns"]]
+
+# Vérifie toutes les 15 minutes si une campagne CRM programmée doit partir
+[functions."crm-send-scheduled-campaigns"]
   schedule = "*/15 * * * *"

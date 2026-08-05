@@ -111,6 +111,20 @@ function blockToHtml(block) {
       return `<tr><td align="center" style="padding:28px 0 6px 0;">
         <div style="width:60px;height:2px;background-color:#C8BEED;border-radius:2px;font-size:0;line-height:0;">&nbsp;</div>
       </td></tr>`;
+    case 'columns_2':
+    case 'columns_3':
+    case 'columns_4': {
+      const n = block.type === 'columns_2' ? 2 : block.type === 'columns_3' ? 3 : 4;
+      const widthPct = Math.floor(100 / n);
+      let cellsHtml = '';
+      for (let i = 1; i <= n; i++) {
+        const img = block['col' + i + '_image'];
+        const txt = block['col' + i + '_text'] || '';
+        const isFirst = i === 1, isLast = i === n;
+        cellsHtml += `<td width="${widthPct}%" valign="top" style="padding:0 ${isLast?'0':'10'}px 0 ${isFirst?'0':'10'}px;">${img?`<img src="${img}" width="100%" style="display:block;border-radius:12px;margin-bottom:8px;">`:''}<p class="body-font" style="margin:0;color:#6B6580;font-size:13px;line-height:22px;">${txt}</p></td>`;
+      }
+      return `<tr><td class="mobile-padding" style="padding:18px 48px 8px 48px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>${cellsHtml}</tr></table></td></tr>`;
+    }
     case 'signature':
       return `<tr><td class="mobile-padding" style="padding:30px 48px 20px 48px;">
         <p class="body-font" style="margin:0;color:#6B6580;font-size:14.5px;line-height:24px;">
@@ -202,22 +216,32 @@ exports.handler = async function (event) {
   }
 
   try {
-    const { listId, subject, bodyHtml, blocks, headerTag, preheader, footerNote } = JSON.parse(event.body || '{}');
-    if (!listId || !subject || (!bodyHtml && !blocks)) {
-      return { headers: CORS_HEADERS, statusCode: 400, body: JSON.stringify({ error: 'listId, subject et (bodyHtml ou blocks) sont requis' }) };
+    const { listId, contactIds, subject, bodyHtml, blocks, headerTag, preheader, footerNote } = JSON.parse(event.body || '{}');
+    if ((!listId && !contactIds) || !subject || (!bodyHtml && !blocks)) {
+      return { headers: CORS_HEADERS, statusCode: 400, body: JSON.stringify({ error: 'listId ou contactIds, subject et (bodyHtml ou blocks) sont requis' }) };
     }
 
     const finalHtml = blocks ? blocksToEmailHtml(blocks, { headerTag, preheader, footerNote }) : bodyHtml;
 
-    const { data: rows, error } = await supabase
-      .from('crm_list_contacts')
-      .select('crm_contacts(email,first_name,blocked)')
-      .eq('list_id', listId);
-    if (error) throw error;
+    let contacts = [];
+    if (contactIds && contactIds.length) {
+      const { data, error } = await supabase
+        .from('crm_contacts')
+        .select('email,first_name,blocked')
+        .in('id', contactIds);
+      if (error) throw error;
+      contacts = (data || []).filter(c => c?.email && !c.blocked);
+    } else {
+      const { data: rows, error } = await supabase
+        .from('crm_list_contacts')
+        .select('crm_contacts(email,first_name,blocked)')
+        .eq('list_id', listId);
+      if (error) throw error;
+      contacts = (rows || []).map(r => r.crm_contacts).filter(c => c?.email && !c.blocked);
+    }
 
-    const contacts = (rows || []).map(r => r.crm_contacts).filter(c => c?.email && !c.blocked);
     if (!contacts.length) {
-      return { headers: CORS_HEADERS, statusCode: 400, body: JSON.stringify({ error: 'Cette liste ne contient aucun contact' }) };
+      return { headers: CORS_HEADERS, statusCode: 400, body: JSON.stringify({ error: 'Aucun destinataire valide trouvé' }) };
     }
 
     const batches = chunk(contacts, 100);
@@ -249,7 +273,8 @@ exports.handler = async function (event) {
     }
 
     await supabase.from('crm_campaigns').insert({
-      list_id: listId,
+      list_id: listId || null,
+      contact_ids: contactIds || null,
       subject,
       body_html: finalHtml,
       blocks: blocks || null,

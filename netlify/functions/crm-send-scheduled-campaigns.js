@@ -112,6 +112,20 @@ function blockToHtml(block) {
       return `<tr><td align="center" style="padding:28px 0 6px 0;">
         <div style="width:60px;height:2px;background-color:#C8BEED;border-radius:2px;font-size:0;line-height:0;">&nbsp;</div>
       </td></tr>`;
+    case 'columns_2':
+    case 'columns_3':
+    case 'columns_4': {
+      const n = block.type === 'columns_2' ? 2 : block.type === 'columns_3' ? 3 : 4;
+      const widthPct = Math.floor(100 / n);
+      let cellsHtml = '';
+      for (let i = 1; i <= n; i++) {
+        const img = block['col' + i + '_image'];
+        const txt = block['col' + i + '_text'] || '';
+        const isFirst = i === 1, isLast = i === n;
+        cellsHtml += `<td width="${widthPct}%" valign="top" style="padding:0 ${isLast?'0':'10'}px 0 ${isFirst?'0':'10'}px;">${img?`<img src="${img}" width="100%" style="display:block;border-radius:12px;margin-bottom:8px;">`:''}<p class="body-font" style="margin:0;color:#6B6580;font-size:13px;line-height:22px;">${txt}</p></td>`;
+      }
+      return `<tr><td class="mobile-padding" style="padding:18px 48px 8px 48px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>${cellsHtml}</tr></table></td></tr>`;
+    }
     case 'signature':
       return `<tr><td class="mobile-padding" style="padding:30px 48px 20px 48px;">
         <p class="body-font" style="margin:0;color:#6B6580;font-size:14.5px;line-height:24px;">
@@ -206,13 +220,22 @@ exports.handler = async function () {
           ? blocksToEmailHtml(campaign.blocks, { headerTag: campaign.header_tag })
           : campaign.body_html;
 
-        const { data: rows, error: contactsErr } = await supabase
-          .from('crm_list_contacts')
-          .select('crm_contacts(email,first_name,blocked)')
-          .eq('list_id', campaign.list_id);
-        if (contactsErr) throw contactsErr;
-
-        const contacts = (rows || []).map(r => r.crm_contacts).filter(c => c?.email && !c.blocked);
+        let contacts = [];
+        if (campaign.contact_ids && campaign.contact_ids.length) {
+          const { data, error: contactsErr } = await supabase
+            .from('crm_contacts')
+            .select('email,first_name,blocked')
+            .in('id', campaign.contact_ids);
+          if (contactsErr) throw contactsErr;
+          contacts = (data || []).filter(c => c?.email && !c.blocked);
+        } else {
+          const { data: rows, error: contactsErr } = await supabase
+            .from('crm_list_contacts')
+            .select('crm_contacts(email,first_name,blocked)')
+            .eq('list_id', campaign.list_id);
+          if (contactsErr) throw contactsErr;
+          contacts = (rows || []).map(r => r.crm_contacts).filter(c => c?.email && !c.blocked);
+        }
         const batches = chunk(contacts, 100);
         let sentCount = 0;
 

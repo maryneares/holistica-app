@@ -36,13 +36,14 @@ exports.handler = async function (event) {
     }
 
     if (event.httpMethod === 'POST') {
-      const { listId, subject, blocks, headerTag, scheduledAt } = JSON.parse(event.body || '{}');
-      if (!listId || !subject || !blocks) {
-        return { headers: CORS_HEADERS, statusCode: 400, body: JSON.stringify({ error: 'listId, subject et blocks sont requis' }) };
+      const { listId, contactIds, subject, blocks, headerTag, scheduledAt } = JSON.parse(event.body || '{}');
+      if ((!listId && !contactIds) || !subject || !blocks) {
+        return { headers: CORS_HEADERS, statusCode: 400, body: JSON.stringify({ error: 'listId ou contactIds, subject et blocks sont requis' }) };
       }
       const status = scheduledAt ? 'scheduled' : 'draft';
       const { data, error } = await supabase.from('crm_campaigns').insert({
-        list_id: listId,
+        list_id: listId || null,
+        contact_ids: contactIds || null,
         subject,
         blocks,
         header_tag: headerTag || '',

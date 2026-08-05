@@ -27,6 +27,35 @@ exports.handler = async function (event) {
 
   try {
     const listId = event.queryStringParameters?.listId;
+    const allContacts = event.queryStringParameters?.allContacts;
+
+    if (event.httpMethod === 'POST') {
+      const { createListName, addToListId, contactIds } = JSON.parse(event.body || '{}');
+
+      if (addToListId && contactIds?.length) {
+        const links = contactIds.map(contactId => ({ list_id: addToListId, contact_id: contactId }));
+        const { error } = await supabase.from('crm_list_contacts').upsert(links, { onConflict: 'list_id,contact_id' });
+        if (error) throw error;
+        return { headers: CORS_HEADERS, statusCode: 200, body: JSON.stringify({ success: true, added: links.length }) };
+      }
+
+      if (createListName) {
+        const { data, error } = await supabase.from('crm_lists').insert({ name: createListName, nom: createListName }).select('id').single();
+        if (error) throw error;
+        return { headers: CORS_HEADERS, statusCode: 200, body: JSON.stringify({ success: true, id: data.id }) };
+      }
+
+      return { headers: CORS_HEADERS, statusCode: 400, body: JSON.stringify({ error: 'createListName ou (addToListId + contactIds) requis' }) };
+    }
+
+    if (allContacts) {
+      const { data, error } = await supabase
+        .from('crm_contacts')
+        .select('id,email,first_name,last_name,blocked')
+        .order('email', { ascending: true });
+      if (error) throw error;
+      return { headers: CORS_HEADERS, statusCode: 200, body: JSON.stringify({ contacts: data || [] }) };
+    }
 
     if (listId) {
       const { data, error } = await supabase

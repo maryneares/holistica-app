@@ -311,6 +311,13 @@ body{font-family:'League Spartan',sans-serif;background:var(--ivory);color:var(-
 .food-hist-bar{width:100%;background:var(--grad);border-radius:4px 4px 0 0;min-height:2px;}
 .food-hist-lbl{font-size:9px;color:var(--ink-l);margin-top:4px;}
 .food-add-btn{background:var(--lav-pale);color:var(--purple);border:none;font-size:11px;font-weight:700;padding:6px 12px;border-radius:20px;cursor:pointer;font-family:'League Spartan',sans-serif;}
+.prog-stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
+.prog-stat-card{background:white;border:1px solid var(--border);border-radius:16px;padding:16px;text-align:center;}
+.prog-stat-v{font-family:'League Spartan',sans-serif;font-weight:800;font-size:26px;color:var(--purple);}
+.prog-stat-l{font-size:11.5px;color:var(--ink-l);margin-top:2px;}
+.prog-section-title{font-size:14px;font-weight:700;color:var(--ink);margin:20px 0 10px;}
+.prog-mood-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px;}
+.prog-mood-row:last-child{border-bottom:none;}
 .cf-row{display:flex;gap:8px;margin-bottom:8px;}
 .cf-field{flex:1;}
 .cf-field label{font-size:10.5px;font-weight:700;color:var(--ink-l);display:block;margin-bottom:4px;}
@@ -1059,6 +1066,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="pa" onclick="openEditInfo()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.5 3-6.5 7-6.5s7 3 7 6.5"/></svg></div><div class="pa-body"><div class="pa-t">Modifier mes informations</div><div class="pa-s">Nom, poids, taille, activité</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="go('doshaProfile')"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1.5 3 2.5 5 2.5 8a2.5 2.5 0 0 1-5 0c0-3 1-5 2.5-8z"/><path d="M5 10c2 1 4 3 5 6"/><path d="M19 10c-2 1-4 3-5 6"/><path d="M4 15c2.5 3 5 4 8 4s5.5-1 8-4"/></svg></div><div class="pa-body"><div class="pa-t">Mon profil ayurvédique</div><div class="pa-s" id="pfDoshaDetail">Vata dominant</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="openWellnessHistory()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V10M9 19V5M14 19v-7M19 19V8"/></svg></div><div class="pa-body"><div class="pa-t">Historique bien-être</div><div class="pa-s">Sommeil · Stress · Humeur</div></div><span class="pa-arr">›</span></div>
+<div class="pa" onclick="go('progressionScreen');renderProgression();"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18l5-6 4 3 5-8 4 5"/></svg></div><div class="pa-body"><div class="pa-t">Ma progression</div><div class="pa-s">Bilan mensuel de tes séances et de ton bien-être</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="go('badgesScreen');renderBadges();"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M8.5 13.5L7 22l5-3 5 3-1.5-8.5"/></svg></div><div class="pa-body"><div class="pa-t">Mes badges</div><div class="pa-s" id="pfBadgesDetail">0/9 débloqués</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="openCycleSettings()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg></div><div class="pa-body"><div class="pa-t">Durée & suivi de mon cycle</div><div class="pa-s">Dernières règles, durée, comprendre les phases</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="openAstro()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/><circle cx="12" cy="12" r="4"/></svg></div><div class="pa-body"><div class="pa-t">Mon thème astral</div><div class="pa-s" id="paAstroSub">Renseigne ta date de naissance</div></div><span class="pa-arr">›</span></div>
@@ -1135,6 +1143,36 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="sec" style="padding:16px 0 8px;"><h2>Ton profil <em id="dpName">Vata</em></h2></div>
 <div id="dpAnalysis"></div>
 <button class="btn-ob" style="margin-top:18px;" onclick="retakeDoshaQuiz()">Refaire le test</button>
+<button class="btn-ob" style="margin-top:10px;background:transparent;border:1.5px solid var(--purple-m);color:var(--purple-m);display:flex;align-items:center;justify-content:center;gap:8px;" onclick="shareDoshaProfile()">
+<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+Partager mon profil
+</button>
+<div style="height:30px;"></div>
+</div>
+</div>
+
+<!-- ═══ MA PROGRESSION ═══ -->
+<div id="progressionScreen" class="screen">
+<div class="ob-top" style="background:var(--ivory);padding:50px 20px 10px;">
+<button class="vd-back" onclick="go('profil')" style="position:static;">←</button>
+</div>
+<div class="scroll" style="padding:0 24px;">
+<div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Ma <em>progression</em></div>
+<div style="font-size:13px;color:var(--ink-l);margin-bottom:18px;">Ton bilan du mois en cours</div>
+
+<div class="prog-stats-grid">
+<div class="prog-stat-card"><div class="prog-stat-v" id="progSessions">0</div><div class="prog-stat-l">Séances ce mois-ci</div></div>
+<div class="prog-stat-card"><div class="prog-stat-v" id="progStreak">0</div><div class="prog-stat-l">Meilleure série (jours)</div></div>
+<div class="prog-stat-card"><div class="prog-stat-v" id="progXP">0</div><div class="prog-stat-l">XP total</div></div>
+<div class="prog-stat-card"><div class="prog-stat-v" id="progBadges">0</div><div class="prog-stat-l">Badges débloqués</div></div>
+</div>
+
+<div class="prog-section-title">Séances des 6 dernières semaines</div>
+<div id="progWeeklyChart"></div>
+
+<div class="prog-section-title">Ton bien-être ce mois-ci (moyenne)</div>
+<div id="progWellnessAvg"></div>
+
 <div style="height:30px;"></div>
 </div>
 </div>
@@ -1854,7 +1892,7 @@ window.addEventListener('load',async()=>{
 });
 
 /* ═══════ NAV ═══════ */
-const PROTECTED_SCREENS=['dashboard','mouvement','recettes','naturo','challenge','doshaProfile','editInfo','wellnessHistory','badgesScreen','cycleSettings','astroScreen','programDetail','dossierDetail','dietPlan','referralScreen','unsubscribeScreen'];
+const PROTECTED_SCREENS=['dashboard','mouvement','recettes','naturo','challenge','doshaProfile','editInfo','wellnessHistory','badgesScreen','cycleSettings','astroScreen','programDetail','dossierDetail','dietPlan','referralScreen','unsubscribeScreen','progressionScreen'];
 // À remplacer par le vrai lien d'invitation du groupe WhatsApp Holistica Club
 const WHATSAPP_GROUP_LINK='https://chat.whatsapp.com/BmQ0hxeccsU9iwspW5UQim?s=cl&p=i&mlu=4&amv=2';
 
@@ -3709,6 +3747,193 @@ function renderDoshaProfile(){
  }
  document.getElementById('dpAnalysis').innerHTML=html;
 }
+/* ═══════ MA PROGRESSION ═══════ */
+function renderProgression(){
+  const now=new Date();
+  const ym=now.toISOString().slice(0,7); // "2026-08"
+
+  // Séances ce mois-ci
+  const sessionsThisMonth=sessionDates.filter(d=>d.startsWith(ym)).length;
+  document.getElementById('progSessions').textContent=sessionsThisMonth;
+
+  // Meilleure série (calcul simple sur les dates de séances, tous mois confondus)
+  const sortedDates=[...new Set(sessionDates)].sort();
+  let bestStreak=0,curStreak=0,prevDate=null;
+  sortedDates.forEach(d=>{
+    const day=new Date(d);
+    if(prevDate){
+      const diff=Math.round((day-prevDate)/86400000);
+      curStreak=diff===1?curStreak+1:1;
+    } else curStreak=1;
+    bestStreak=Math.max(bestStreak,curStreak);
+    prevDate=day;
+  });
+  document.getElementById('progStreak').textContent=bestStreak;
+  document.getElementById('progXP').textContent=xp;
+  document.getElementById('progBadges').textContent=unlockedBadges.size;
+
+  // Graphique : nombre de séances par semaine, 6 dernières semaines
+  const weeks=[];
+  for(let i=5;i>=0;i--){
+    const weekEnd=new Date(now);weekEnd.setDate(weekEnd.getDate()-i*7);
+    const weekStart=new Date(weekEnd);weekStart.setDate(weekStart.getDate()-6);
+    const count=sessionDates.filter(d=>{
+      const dt=new Date(d);
+      return dt>=weekStart&&dt<=weekEnd;
+    }).length;
+    weeks.push({label:'S'+(6-i),count});
+  }
+  const maxCount=Math.max(...weeks.map(w=>w.count),1);
+  document.getElementById('progWeeklyChart').innerHTML=`<div class="food-hist-chart" style="height:110px;">
+    ${weeks.map(w=>`<div class="food-hist-col" title="${w.count} séance(s)">
+      <div class="food-hist-bar-wrap"><div class="food-hist-bar" style="height:${Math.max(3,Math.round((w.count/maxCount)*100))}%;"></div></div>
+      <div class="food-hist-lbl">${w.label}</div>
+    </div>`).join('')}
+  </div>`;
+
+  // Moyennes bien-être du mois en cours
+  const monthWellness=wellnessLog.filter(w=>w.date.startsWith(ym));
+  if(monthWellness.length){
+    const avg=(key)=>Math.round(monthWellness.reduce((s,w)=>s+(w[key]||0),0)/monthWellness.length);
+    document.getElementById('progWellnessAvg').innerHTML=`
+      <div class="prog-mood-row"><span>😊 Humeur moyenne</span><b>${avg('mood')}/10</b></div>
+      <div class="prog-mood-row"><span>😴 Sommeil moyen</span><b>${avg('sleep')}/10</b></div>
+      <div class="prog-mood-row"><span>😌 Stress moyen</span><b>${avg('stress')}/10</b></div>
+      <div style="font-size:11.5px;color:var(--ink-l);margin-top:6px;">Basé sur ${monthWellness.length} jour(s) suivi(s) ce mois-ci</div>
+    `;
+  } else {
+    document.getElementById('progWellnessAvg').innerHTML='<p style="font-size:13px;color:var(--ink-l);">Pas encore de suivi bien-être ce mois-ci — renseigne ton humeur du jour depuis le tableau de bord.</p>';
+  }
+}
+
+/* ═══════ PARTAGE SOCIAL DU PROFIL AYURVÉDIQUE ═══════ */
+async function shareDoshaProfile(){
+  toast('Génération de ton image...');
+  try{
+    const blob=await generateDoshaShareImage();
+    const fileName='mon-profil-dosha-holistica.png';
+    const file=new File([blob],fileName,{type:'image/png'});
+
+    if(navigator.canShare&&navigator.canShare({files:[file]})){
+      await navigator.share({
+        files:[file],
+        title:'Mon profil ayurvédique',
+        text:'Découvre ton profil ayurvédique sur Holistica Club 🌿'
+      });
+    } else {
+      // Repli : téléchargement direct de l'image si le partage natif n'est pas disponible
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement('a');
+      a.href=url;a.download=fileName;a.click();
+      URL.revokeObjectURL(url);
+      toast('Image téléchargée — tu peux la partager depuis ta galerie');
+    }
+  }catch(e){
+    if(e.name!=='AbortError'){
+      console.error('Erreur partage profil dosha:',e);
+      toast('Erreur lors de la génération de l\'image');
+    }
+  }
+}
+
+function generateDoshaShareImage(){
+  return new Promise((resolve)=>{
+    const W=1080,H=1350; // format story/portrait, adapté Instagram
+    const canvas=document.createElement('canvas');
+    canvas.width=W;canvas.height=H;
+    const ctx=canvas.getContext('2d');
+
+    // Fond dégradé violet (même famille que --grad-h)
+    const grad=ctx.createLinearGradient(0,0,W,H);
+    grad.addColorStop(0,'#5B4EA8');grad.addColorStop(0.35,'#7B6EC8');grad.addColorStop(0.65,'#A880C0');grad.addColorStop(1,'#F0D0E0');
+    ctx.fillStyle=grad;ctx.fillRect(0,0,W,H);
+
+    // Cercles décoratifs (ronds translucides, esprit "rings" de l'app)
+    ctx.globalAlpha=0.12;
+    [[860,140,220],[120,1180,260],[950,1250,140]].forEach(([x,y,r])=>{
+      ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fillStyle='white';ctx.fill();
+    });
+    ctx.globalAlpha=1;
+
+    // En-tête : logo texte Holistica Club
+    ctx.textAlign='center';
+    ctx.fillStyle='white';
+    ctx.font='600 34px Georgia, serif';
+    ctx.font='italic 600 40px Georgia, serif';
+    ctx.fillText('Holistica Club',W/2,150);
+
+    // Sous-titre
+    ctx.font='500 26px -apple-system, sans-serif';
+    ctx.fillStyle='rgba(255,255,255,0.85)';
+    ctx.fillText('Mon profil ayurvédique',W/2,200);
+
+    // Nom du dosha, gros
+    const name=userProfile.dosha.split('-').map(p=>p.charAt(0).toUpperCase()+p.slice(1)).join(' - ');
+    ctx.font='800 76px "League Spartan", -apple-system, sans-serif';
+    ctx.fillStyle='white';
+    wrapCenteredText(ctx,name,W/2,420,900,80);
+
+    // Barres Vata / Pitta / Kapha
+    const barY=620,barH=54,barW=760,barX=(W-barW)/2;
+    const doshas=[
+      {label:'Vata',val:userProfile.doshaV,color:'#8FA9D9'},
+      {label:'Pitta',val:userProfile.doshaP,color:'#F0A868'},
+      {label:'Kapha',val:userProfile.doshaK,color:'#8FCB9B'}
+    ];
+    doshas.forEach((d,i)=>{
+      const y=barY+i*130;
+      ctx.textAlign='left';
+      ctx.font='700 32px -apple-system, sans-serif';
+      ctx.fillStyle='white';
+      ctx.fillText(d.label,barX,y-16);
+      ctx.textAlign='right';
+      ctx.fillText(d.val+'%',barX+barW,y-16);
+      // piste
+      ctx.fillStyle='rgba(255,255,255,0.25)';
+      roundRect(ctx,barX,y,barW,barH,27);ctx.fill();
+      // valeur
+      ctx.fillStyle=d.color;
+      roundRect(ctx,barX,y,barW*(d.val/100),barH,27);ctx.fill();
+    });
+
+    // Bas de carte : call-to-action
+    ctx.textAlign='center';
+    ctx.font='500 28px -apple-system, sans-serif';
+    ctx.fillStyle='rgba(255,255,255,0.92)';
+    ctx.fillText('Découvre ton profil sur',W/2,H-140);
+    ctx.font='800 40px "League Spartan", -apple-system, sans-serif';
+    ctx.fillStyle='white';
+    ctx.fillText('Holistica Club 🌿',W/2,H-90);
+
+    canvas.toBlob(blob=>resolve(blob),'image/png',0.95);
+  });
+}
+
+function roundRect(ctx,x,y,w,h,r){
+  if(w<r*2)r=w/2;
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r);
+  ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r);
+  ctx.arcTo(x,y,x+w,y,r);
+  ctx.closePath();
+}
+
+function wrapCenteredText(ctx,text,x,y,maxWidth,lineHeight){
+  const words=text.split(' ');
+  let line='',lines=[];
+  for(const word of words){
+    const testLine=line?line+' '+word:word;
+    if(ctx.measureText(testLine).width>maxWidth&&line){
+      lines.push(line);line=word;
+    } else line=testLine;
+  }
+  lines.push(line);
+  const startY=y-((lines.length-1)*lineHeight)/2;
+  lines.forEach((l,i)=>ctx.fillText(l,x,startY+i*lineHeight));
+}
+
 function retakeDoshaQuiz(){
  retakeDoshaMode=true;
  doshaAnswers={};

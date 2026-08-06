@@ -60,6 +60,89 @@ function formBlockToHtml(block) {
   }
 }
 
+
+/* ═══ Moteur de rendu des blocs EMAIL (pour l'email de bienvenue) ═══ */
+function extractYouTubeId(url) {
+  if (!url) return '';
+  const m = url.match(/(?:youtu\.be\/|v=|\/embed\/)([a-zA-Z0-9_-]{11})/);
+  return m ? m[1] : url.trim();
+}
+function blockToHtml(block) {
+  switch (block.type) {
+    case 'eyebrow_title':
+      return `<tr><td class="mobile-padding" style="padding:40px 48px 4px 48px;">
+        ${block.eyebrow ? `<p style="margin:0 0 10px 0;color:#C890C8;font-size:12px;letter-spacing:2.5px;text-transform:uppercase;font-weight:600;">${block.eyebrow}</p>` : ''}
+        <h1 style="margin:0;color:#5B4EA8;font-size:28px;line-height:35px;font-weight:400;font-style:italic;font-family:Georgia,serif;">${block.title || ''}</h1>
+      </td></tr>`;
+    case 'paragraph':
+      return `<tr><td class="mobile-padding" style="padding:18px 48px 8px 48px;">
+        ${(block.text || '').split('\n').filter(l => l.trim()).map(line =>
+          `<p style="margin:0 0 14px 0;color:#6B6580;font-size:15px;line-height:26px;">${line}</p>`
+        ).join('')}
+      </td></tr>`;
+    case 'image': {
+      const img = `<img src="${block.imageUrl}" width="504" alt="${block.alt || ''}" style="display:block;width:100%;border-radius:18px;">`;
+      return `<tr><td class="mobile-padding" style="padding:18px 48px 8px 48px;">${block.link ? `<a href="${block.link}" target="_blank">${img}</a>` : img}</td></tr>`;
+    }
+    case 'video': {
+      const ytId = extractYouTubeId(block.videoUrl);
+      const thumb = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
+      return `<tr><td class="mobile-padding" style="padding:32px 48px 8px 48px;">
+        ${block.eyebrow ? `<p style="margin:0 0 8px 0;color:#C890C8;font-size:12px;letter-spacing:2.5px;text-transform:uppercase;font-weight:600;">${block.eyebrow}</p>` : ''}
+        ${block.text ? `<p style="margin:0 0 18px 0;color:#6B6580;font-size:14.5px;line-height:24px;">${block.text}</p>` : ''}
+      </td></tr>
+      <tr><td class="mobile-padding" style="padding:0 48px 22px 48px;"><a href="${block.videoUrl}" target="_blank"><img src="${thumb}" width="504" style="display:block;width:100%;border-radius:18px;"></a></td></tr>
+      <tr><td align="center" class="mobile-padding" style="padding:4px 48px 40px 48px;">
+        <table role="presentation" cellpadding="0" cellspacing="0"><tr><td align="center" style="border-radius:50px;background-color:#5B4EA8;">
+        <a href="${block.videoUrl}" target="_blank" style="display:inline-block;padding:15px 32px;color:#FFFFFF;font-size:13.5px;font-weight:600;text-decoration:none;border-radius:50px;">${block.buttonLabel || 'Je regarde la vidéo'}</a>
+        </td></tr></table></td></tr>`;
+    }
+    case 'button':
+      return `<tr><td align="center" class="mobile-padding" style="padding:20px 48px 20px 48px;">
+        <table role="presentation" cellpadding="0" cellspacing="0"><tr><td align="center" style="border-radius:50px;background-color:#5B4EA8;">
+        <a href="${block.link}" target="_blank" style="display:inline-block;padding:15px 32px;color:#FFFFFF;font-size:13.5px;font-weight:600;text-decoration:none;border-radius:50px;">${block.label || 'En savoir plus'}</a>
+        </td></tr></table></td></tr>`;
+    case 'columns_2': case 'columns_3': case 'columns_4': {
+      const n = block.type === 'columns_2' ? 2 : block.type === 'columns_3' ? 3 : 4;
+      const widthPct = Math.floor(100 / n);
+      let cellsHtml = '';
+      for (let i = 1; i <= n; i++) {
+        const img = block['col' + i + '_image'];
+        const txt = block['col' + i + '_text'] || '';
+        const isFirst = i === 1, isLast = i === n;
+        cellsHtml += `<td width="${widthPct}%" valign="top" style="padding:0 ${isLast?'0':'10'}px 0 ${isFirst?'0':'10'}px;">${img?`<img src="${img}" width="100%" style="display:block;border-radius:12px;margin-bottom:8px;">`:''}<p style="margin:0;color:#6B6580;font-size:13px;line-height:22px;">${txt}</p></td>`;
+      }
+      return `<tr><td class="mobile-padding" style="padding:18px 48px 8px 48px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>${cellsHtml}</tr></table></td></tr>`;
+    }
+    case 'raw_html':
+      return `<tr><td class="mobile-padding" style="padding:18px 48px 8px 48px;">${block.html || ''}</td></tr>`;
+    default: return '';
+  }
+}
+function blocksToEmailHtml(blocks, meta) {
+  meta = meta || {};
+  const headerTag = meta.headerTag || '';
+  const bodyRows = (blocks || []).map(blockToHtml).join('');
+  return `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>body{margin:0;padding:0;width:100%;background-color:#FAF8FF;}</style></head>
+  <body style="margin:0;padding:0;background-color:#FAF8FF;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#FAF8FF;">
+  <tr><td align="center" style="padding:32px 16px;">
+  <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:600px;max-width:600px;background-color:#FFFFFF;border-radius:24px;overflow:hidden;box-shadow:0 8px 30px rgba(91,78,168,0.08);">
+  <tr><td align="center" style="background-color:#5B4EA8;padding:30px 24px 24px 24px;">
+  <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 auto 10px auto;"><tr>
+  <td width="46" height="46" align="center" valign="middle" style="background-color:rgba(255,255,255,0.12);border:1px dashed rgba(255,255,255,0.5);border-radius:50%;font-size:18px;">🌸</td>
+  </tr></table>
+  <p style="margin:0;color:#FFFFFF;font-size:19px;letter-spacing:0.5px;font-style:italic;font-family:Georgia,serif;">Holistica Club</p>
+  ${headerTag ? `<p style="margin:6px 0 0 0;color:#C8BEED;font-size:11px;letter-spacing:2px;text-transform:uppercase;">${headerTag}</p>` : ''}
+  </td></tr>
+  ${bodyRows}
+  <tr><td align="center" style="background-color:#5B4EA8;padding:32px 24px;">
+  <p style="margin:0 0 6px 0;color:#C8BEED;font-size:11px;line-height:18px;">Holistica Club — Maryne Arès</p>
+  </td></tr>
+  </table></td></tr></table></body></html>`;
+}
+
 function renderFormPage(form) {
   const blocksHtml = (form.blocks || []).map(formBlockToHtml).join('');
   return `<!DOCTYPE html>
@@ -170,6 +253,32 @@ exports.handler = async function (event) {
           { list_id: form.target_list_id, contact_id: contact.id },
           { onConflict: 'list_id,contact_id' }
         );
+      }
+
+      // ═══ Automatisation : email de bienvenue immédiat ═══
+      if (form.send_welcome && form.welcome_blocks && form.welcome_subject) {
+        try {
+          const welcomeHtml = blocksToEmailHtml(form.welcome_blocks, { headerTag: form.welcome_header_tag });
+          const res = await fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              from: 'Maryne Ares - Holistica <info@maryneares.fr>',
+              to: [cleanEmail],
+              subject: form.welcome_subject,
+              html: welcomeHtml
+                .replace(/\{\{prenom\}\}/g, first_name || '')
+                .replace(/\{\{unsubscribe\}\}/g, `https://app.holisticaclub.com/.netlify/functions/crm-unsubscribe?id=${contact.id}`)
+            })
+          });
+          if (!res.ok) console.error('Erreur envoi email de bienvenue:', await res.text());
+        } catch (welcomeErr) {
+          console.error('Erreur email de bienvenue:', welcomeErr);
+          // On ne bloque jamais l'inscription si l'email de bienvenue échoue
+        }
       }
 
       return { headers: CORS_HEADERS, statusCode: 200, body: JSON.stringify({ success: true }) };

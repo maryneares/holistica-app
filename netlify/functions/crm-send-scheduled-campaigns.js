@@ -16,7 +16,7 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
-const FROM = 'Holistica Club <info@maryneares.fr>';
+const FROM = 'Maryne Ares - Holistica <info@maryneares.fr>';
 
 function chunk(arr, size) {
   const out = [];
@@ -224,14 +224,14 @@ exports.handler = async function () {
         if (campaign.contact_ids && campaign.contact_ids.length) {
           const { data, error: contactsErr } = await supabase
             .from('crm_contacts')
-            .select('email,first_name,blocked')
+            .select('id,email,first_name,blocked')
             .in('id', campaign.contact_ids);
           if (contactsErr) throw contactsErr;
           contacts = (data || []).filter(c => c?.email && !c.blocked);
         } else {
           const { data: rows, error: contactsErr } = await supabase
             .from('crm_list_contacts')
-            .select('crm_contacts(email,first_name,blocked)')
+            .select('crm_contacts(id,email,first_name,blocked)')
             .eq('list_id', campaign.list_id);
           if (contactsErr) throw contactsErr;
           contacts = (rows || []).map(r => r.crm_contacts).filter(c => c?.email && !c.blocked);
@@ -244,7 +244,9 @@ exports.handler = async function () {
             from: FROM,
             to: [c.email],
             subject: campaign.subject,
-            html: finalHtml.replace(/\{\{prenom\}\}/g, c.first_name || '')
+            html: finalHtml
+              .replace(/\{\{prenom\}\}/g, c.first_name || '')
+              .replace(/\{\{unsubscribe\}\}/g, `https://app.holisticaclub.com/.netlify/functions/crm-unsubscribe?id=${c.id}`)
           }));
           const res = await fetch('https://api.resend.com/emails/batch', {
             method: 'POST',
@@ -254,7 +256,21 @@ exports.handler = async function () {
             },
             body: JSON.stringify(emails)
           });
-          if (res.ok) sentCount += batch.length;
+          if (res.ok) {
+            const resendData = await res.json();
+            const resendIds = (resendData.data || []).map(d => d.id);
+            sentCount += batch.length;
+            const recipientRows = batch.map((c, i) => ({
+              campaign_id: campaign.id,
+              contact_id: c.id || null,
+              email: c.email,
+              resend_email_id: resendIds[i] || null,
+              status: 'sent'
+            })).filter(r => r.resend_email_id);
+            if (recipientRows.length) {
+              await supabase.from('crm_campaign_recipients').insert(recipientRows);
+            }
+          }
         }
 
         await supabase.from('crm_campaigns').update({

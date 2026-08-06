@@ -66,6 +66,10 @@ body{font-family:'League Spartan',sans-serif;background:var(--ivory);color:var(-
 .si-tagline{font-size:14px;color:rgba(255,255,255,0.7);margin-top:8px;}
 .si-form{position:relative;z-index:2;padding:0 24px 40px;display:flex;flex-direction:column;gap:12px;}
 .si-input{background:rgba(255,255,255,0.18);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.25);border-radius:16px;padding:16px 18px;font-size:15px;color:white;font-family:'League Spartan',sans-serif;outline:none;width:100%;}
+.si-pwd-wrap{position:relative;}
+.si-pwd-wrap .si-input{padding-right:48px;}
+.si-pwd-toggle{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;padding:4px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.75);}
+.si-pwd-toggle svg{width:20px;height:20px;}
 .si-input::placeholder{color:rgba(255,255,255,0.5);}
 .si-forgot{text-align:right;font-size:12px;color:rgba(255,255,255,0.6);cursor:pointer;margin-top:-4px;}
 .btn-w{background:white;color:var(--purple);border:none;padding:17px;border-radius:16px;font-size:16px;font-weight:700;cursor:pointer;font-family:'League Spartan',sans-serif;box-shadow:0 6px 28px rgba(0,0,0,0.12);transition:transform .15s;text-align:center;}
@@ -732,7 +736,7 @@ document.addEventListener('DOMContentLoaded', function(){
 </div>
 <div class="si-form">
 <input class="si-input" id="siEmail" type="email" placeholder="e-mail">
-<input class="si-input" id="siPassword" type="password" placeholder="mot de passe">
+<div class="si-pwd-wrap"><input class="si-input" id="siPassword" type="password" placeholder="mot de passe"><button type="button" class="si-pwd-toggle" onclick="togglePwdVisibility('siPassword',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
 <div class="si-forgot" onclick="handleForgotPassword()">Mot de passe oublié ?</div>
 <button class="btn-w" id="siLoginBtn" onclick="handleSignIn()">Se connecter</button>
 <div class="si-div">ou</div>
@@ -753,7 +757,7 @@ document.addEventListener('DOMContentLoaded', function(){
 </div>
 <div class="si-form">
 <input class="si-input" id="suEmail" type="email" placeholder="e-mail">
-<input class="si-input" id="suPassword" type="password" placeholder="mot de passe (6 car. min)">
+<div class="si-pwd-wrap"><input class="si-input" id="suPassword" type="password" placeholder="mot de passe (6 car. min)"><button type="button" class="si-pwd-toggle" onclick="togglePwdVisibility('suPassword',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
 <button class="btn-w" id="suSignupBtn" onclick="handleSignUp()">Créer mon compte</button>
 <div class="si-div">ou</div>
 <button class="btn-glass" onclick="signInWithOAuth('google')" style="display:flex;align-items:center;justify-content:center;gap:10px;"><svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/></svg>Continuer avec Google</button>
@@ -780,8 +784,8 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="si-tagline">Choisis un mot de passe pour ton compte</div>
 </div>
 <div class="si-form">
-<input class="si-input" id="rpPassword" type="password" placeholder="Nouveau mot de passe (6 car. min)">
-<input class="si-input" id="rpPassword2" type="password" placeholder="Confirme le mot de passe">
+<div class="si-pwd-wrap"><input class="si-input" id="rpPassword" type="password" placeholder="Nouveau mot de passe (6 car. min)"><button type="button" class="si-pwd-toggle" onclick="togglePwdVisibility('rpPassword',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
+<div class="si-pwd-wrap"><input class="si-input" id="rpPassword2" type="password" placeholder="Confirme le mot de passe"><button type="button" class="si-pwd-toggle" onclick="togglePwdVisibility('rpPassword2',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
 <button class="btn-w" id="rpBtn" onclick="confirmNewPassword()">Valider le nouveau mot de passe</button>
 </div>
 </div>
@@ -1059,6 +1063,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="pa" onclick="openCycleSettings()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg></div><div class="pa-body"><div class="pa-t">Durée & suivi de mon cycle</div><div class="pa-s">Dernières règles, durée, comprendre les phases</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="openAstro()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/><circle cx="12" cy="12" r="4"/></svg></div><div class="pa-body"><div class="pa-t">Mon thème astral</div><div class="pa-s" id="paAstroSub">Renseigne ta date de naissance</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="go('offers')"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6L17 7M7 17l-1.4 1.4"/><circle cx="12" cy="12" r="3"/></svg></div><div class="pa-body"><div class="pa-t">Mon abonnement</div><div class="pa-s" id="pfSubscription">—</div></div><span class="pa-arr">›</span></div>
+<div class="pa" onclick="showWalkthrough()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ink-l)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg></div><div class="pa-body"><div class="pa-t">Revoir le tutoriel</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="go('unsubscribeScreen');renderUnsubscribeReasons();"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ink-l)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg></div><div class="pa-body"><div class="pa-t" style="color:var(--ink-l);">Me désabonner</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="go('referralScreen');renderReferralScreen();" style="background:linear-gradient(135deg,rgba(123,110,200,0.08),rgba(200,144,200,0.08));border-color:var(--purple-l);"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="pa-body"><div class="pa-t"> Parraine tes amies</div><div class="pa-s">Offre-leur un mois, gagne le tien</div></div><span class="pa-arr">›</span></div>
 </div>
@@ -1404,6 +1409,20 @@ document.addEventListener('DOMContentLoaded', function(){
 
 <div class="toast" id="toast"></div>
 
+<!-- ═══ TUTORIEL DE BIENVENUE (WALKTHROUGH) ═══ -->
+<div id="walkthroughOverlay" style="display:none;position:fixed;inset:0;z-index:9999;background:var(--grad-h);flex-direction:column;">
+  <button onclick="wtSkip()" style="position:absolute;top:20px;right:20px;z-index:2;background:rgba(255,255,255,0.2);border:none;color:white;font-size:13px;font-weight:700;padding:8px 16px;border-radius:20px;font-family:'League Spartan',sans-serif;cursor:pointer;">Passer</button>
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 28px;text-align:center;">
+    <div id="wtIcon" style="font-size:64px;margin-bottom:20px;"></div>
+    <div id="wtTitle" style="font-family:'League Spartan',sans-serif;font-weight:800;font-size:26px;color:white;margin-bottom:12px;line-height:1.2;"></div>
+    <div id="wtDesc" style="font-size:15px;color:rgba(255,255,255,0.88);line-height:1.5;max-width:340px;"></div>
+  </div>
+  <div style="padding:0 28px 40px;flex-shrink:0;">
+    <div id="wtDots" style="display:flex;justify-content:center;gap:8px;margin-bottom:22px;"></div>
+    <button class="btn-w" id="wtNextBtn" onclick="wtNext()">Suivant</button>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 /* ═══════ SUPABASE ═══════ */
@@ -1509,6 +1528,61 @@ let activeMvFilter='Tout',activeRcFilter='Tout';
 
 /* ═══════ AUTH & SYNC ═══════ */
 let profileLoaded=false;
+
+function togglePwdVisibility(inputId,btn){
+  const input=document.getElementById(inputId);
+  const isHidden=input.type==='password';
+  input.type=isHidden?'text':'password';
+  btn.innerHTML=isHidden
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a18.5 18.5 0 0 1 5.06-5.94M9.9 4.24A10.94 10.94 0 0 1 12 4c7 0 11 7 11 7a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>';
+}
+
+/* ═══ TUTORIEL DE BIENVENUE (WALKTHROUGH) ═══ */
+const WT_STEPS=[
+  {icon:'🌸',title:'Bienvenue sur Holistica Club',desc:"On va faire un tour rapide de l'application pour que tu trouves tout facilement — ça prend 30 secondes."},
+  {icon:'🌿',title:'Ton profil ayurvédique',desc:"Ton profil dosha (Vata, Pitta, Kapha) personnalise tes recommandations : alimentation, routines et conseils au quotidien, rien que pour toi."},
+  {icon:'🧘‍♀️',title:'Tes séances vidéo',desc:"Yoga, pilates, méditation et respiration : des programmes progressifs organisés semaine par semaine, à ton rythme."},
+  {icon:'🥗',title:'Ton alimentation personnalisée',desc:"Retrouve un plan alimentaire adapté à ton profil, avec tes macros et un journal pour suivre tes repas au jour le jour."},
+  {icon:'✨',title:"C'est parti !",desc:"Tu es prête à explorer Holistica Club. Tu peux revenir sur ce tutoriel à tout moment depuis ton profil."}
+];
+let wtIndex=0;
+
+function showWalkthrough(){
+  wtIndex=0;
+  document.getElementById('walkthroughOverlay').style.display='flex';
+  renderWtStep();
+}
+
+function renderWtStep(){
+  const step=WT_STEPS[wtIndex];
+  document.getElementById('wtIcon').textContent=step.icon;
+  document.getElementById('wtTitle').textContent=step.title;
+  document.getElementById('wtDesc').textContent=step.desc;
+  document.getElementById('wtDots').innerHTML=WT_STEPS.map((_,i)=>
+    `<div style="width:${i===wtIndex?'20px':'7px'};height:7px;border-radius:4px;background:${i===wtIndex?'white':'rgba(255,255,255,0.35)'};transition:all .25s;"></div>`
+  ).join('');
+  document.getElementById('wtNextBtn').textContent=wtIndex===WT_STEPS.length-1?"C'est parti !":'Suivant';
+}
+
+function wtNext(){
+  if(wtIndex<WT_STEPS.length-1){
+    wtIndex++;
+    renderWtStep();
+  } else {
+    wtFinish();
+  }
+}
+
+function wtSkip(){
+  wtFinish();
+}
+
+function wtFinish(){
+  document.getElementById('walkthroughOverlay').style.display='none';
+  userProfile.hasSeenWalkthrough=true;
+  saveProfile();
+}
 
 async function handleSignIn(){
  const email=document.getElementById('siEmail').value.trim();
@@ -1637,7 +1711,7 @@ async function loadProfileAndEnter(){
  // seulement quand il est confirmé qu'aucun profil n'existe (voir plus bas).
  }
  if(profile){
- userProfile={name:profile.name||'',lastName:profile.last_name||'',email:profile.email||'',goal:profile.goal||'bien-être',age:profile.age||30,weight:profile.weight||62,height:profile.height||165,activity:profile.activity||'modérée',hasPeriod:profile.has_period,menopause:profile.menopause,dosha:profile.dosha||'vata',lastPeriodStart:profile.last_period_start||'',doshaV:profile.dosha_v??33,doshaP:profile.dosha_p??33,doshaK:profile.dosha_k??34,cycleLength:profile.cycle_length||28,birthDate:profile.birth_date||'',birthTime:profile.birth_time||'',birthPlace:profile.birth_place||'',subscriptionStatus:profile.subscription_status||'inactive',subscriptionPlan:profile.subscription_plan||null,dietType:profile.diet_type||'flexitarien',allergies:profile.allergies||'',referralCode:profile.referral_code||'',referredBy:profile.referred_by||null};
+ userProfile={name:profile.name||'',lastName:profile.last_name||'',email:profile.email||'',goal:profile.goal||'bien-être',age:profile.age||30,weight:profile.weight||62,height:profile.height||165,activity:profile.activity||'modérée',hasPeriod:profile.has_period,menopause:profile.menopause,dosha:profile.dosha||'vata',lastPeriodStart:profile.last_period_start||'',doshaV:profile.dosha_v??33,doshaP:profile.dosha_p??33,doshaK:profile.dosha_k??34,cycleLength:profile.cycle_length||28,birthDate:profile.birth_date||'',birthTime:profile.birth_time||'',birthPlace:profile.birth_place||'',subscriptionStatus:profile.subscription_status||'inactive',subscriptionPlan:profile.subscription_plan||null,dietType:profile.diet_type||'flexitarien',allergies:profile.allergies||'',referralCode:profile.referral_code||'',referredBy:profile.referred_by||null,hasSeenWalkthrough:profile.has_seen_walkthrough||false};
  if(isDevAccount()){
  // Accès complet en mémoire uniquement pour tester (n'écrase jamais la vraie valeur en base)
  userProfile.subscriptionStatus='active';
@@ -1678,6 +1752,7 @@ async function loadProfileAndEnter(){
  // return;
  // }
  go('dashboard');enterApp();addXP(0);checkBadges(true);
+ if(!userProfile.hasSeenWalkthrough)setTimeout(showWalkthrough,600);
  saveProfile();
  } else {
  // Réinitialisation complète avant de démarrer : sans ça, un précédent essai
@@ -1709,7 +1784,7 @@ function saveProfile(){
  diet_type:userProfile.dietType,allergies:userProfile.allergies||null,
  xp,sessions,streak,mood_score:moodScore,sleep_score:sleepScore,stress_score:stressScore,
  completed_videos:Array.from(completedVids),session_dates:sessionDates,wellness_log:wellnessLog,food_log:foodLog,video_start_dates:videoStartDates,
- tried_recipes:Array.from(triedRecipes),badges_unlocked:Array.from(unlockedBadges),last_celebrated_level:lastCelebratedLevel,read_dossiers:Array.from(readDossiers),login_dates:Array.from(loginDates),referral_code:userProfile.referralCode||null,referred_by:userProfile.referredBy||null,updated_at:new Date().toISOString()
+ tried_recipes:Array.from(triedRecipes),badges_unlocked:Array.from(unlockedBadges),last_celebrated_level:lastCelebratedLevel,read_dossiers:Array.from(readDossiers),login_dates:Array.from(loginDates),referral_code:userProfile.referralCode||null,referred_by:userProfile.referredBy||null,has_seen_walkthrough:userProfile.hasSeenWalkthrough||false,updated_at:new Date().toISOString()
  });
  if(error){
  console.error('Erreur sauvegarde profil :',error);

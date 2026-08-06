@@ -268,7 +268,9 @@ exports.handler = async function (event) {
         from: FROM,
         to: [c.email],
         subject,
-        html: finalHtml.replace(/\{\{prenom\}\}/g, c.first_name || '')
+        html: finalHtml
+          .replace(/\{\{prenom\}\}/g, c.first_name || '')
+          .replace(/\{\{unsubscribe\}\}/g, `https://app.holisticaclub.com/.netlify/functions/crm-unsubscribe?id=${c.id}`)
       }));
 
       const res = await fetch('https://api.resend.com/emails/batch', {

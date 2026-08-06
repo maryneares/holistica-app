@@ -15,7 +15,7 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
-const FROM = 'Holistica Club <info@maryneares.fr>';
+const FROM = 'Maryne Ares - Holistica <info@maryneares.fr>';
 
 function chunk(arr, size) {
   const out = [];
@@ -227,14 +227,14 @@ exports.handler = async function (event) {
     if (contactIds && contactIds.length) {
       const { data, error } = await supabase
         .from('crm_contacts')
-        .select('email,first_name,blocked')
+        .select('id,email,first_name,blocked')
         .in('id', contactIds);
       if (error) throw error;
       contacts = (data || []).filter(c => c?.email && !c.blocked);
     } else {
       const { data: rows, error } = await supabase
         .from('crm_list_contacts')
-        .select('crm_contacts(email,first_name,blocked)')
+        .select('crm_contacts(id,email,first_name,blocked)')
         .eq('list_id', listId);
       if (error) throw error;
       contacts = (rows || []).map(r => r.crm_contacts).filter(c => c?.email && !c.blocked);
@@ -243,6 +243,22 @@ exports.handler = async function (event) {
     if (!contacts.length) {
       return { headers: CORS_HEADERS, statusCode: 400, body: JSON.stringify({ error: 'Aucun destinataire valide trouvé' }) };
     }
+
+    // Crée la campagne EN AMONT pour avoir un id auquel rattacher chaque
+    // destinataire (nécessaire pour le suivi de délivrabilité ensuite).
+    const { data: campaignRow, error: campaignErr } = await supabase.from('crm_campaigns').insert({
+      list_id: listId || null,
+      contact_ids: contactIds || null,
+      subject,
+      body_html: finalHtml,
+      blocks: blocks || null,
+      header_tag: headerTag || '',
+      status: 'sent',
+      recipients_count: 0,
+      sent_at: new Date().toISOString()
+    }).select('id').single();
+    if (campaignErr) throw campaignErr;
+    const campaignId = campaignRow.id;
 
     const batches = chunk(contacts, 100);
     let sentCount = 0;
@@ -265,24 +281,28 @@ exports.handler = async function (event) {
       });
 
       if (res.ok) {
+        const resendData = await res.json();
+        const resendIds = (resendData.data || []).map(d => d.id);
         sentCount += batch.length;
+
+        // Enregistre chaque destinataire pour le suivi de délivrabilité
+        const recipientRows = batch.map((c, i) => ({
+          campaign_id: campaignId,
+          contact_id: c.id || null,
+          email: c.email,
+          resend_email_id: resendIds[i] || null,
+          status: 'sent'
+        })).filter(r => r.resend_email_id);
+        if (recipientRows.length) {
+          await supabase.from('crm_campaign_recipients').insert(recipientRows);
+        }
       } else {
         const err = await res.text();
         console.error('Erreur envoi lot Resend:', err);
       }
     }
 
-    await supabase.from('crm_campaigns').insert({
-      list_id: listId || null,
-      contact_ids: contactIds || null,
-      subject,
-      body_html: finalHtml,
-      blocks: blocks || null,
-      header_tag: headerTag || '',
-      status: 'sent',
-      recipients_count: sentCount,
-      sent_at: new Date().toISOString()
-    });
+    await supabase.from('crm_campaigns').update({ recipients_count: sentCount }).eq('id', campaignId);
 
     return { headers: CORS_HEADERS, statusCode: 200, body: JSON.stringify({ success: true, sentCount, totalContacts: contacts.length }) };
   } catch (e) {

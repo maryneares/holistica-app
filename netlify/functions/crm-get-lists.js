@@ -99,7 +99,10 @@ exports.handler = async function (event) {
       results.push({ ...l, contactCount: count || 0 });
     }
 
-    return { headers: CORS_HEADERS, statusCode: 200, body: JSON.stringify({ lists: results }) };
+    const { count: totalContacts } = await supabase.from('crm_contacts').select('*', { count: 'exact', head: true });
+    const { count: totalBlocked } = await supabase.from('crm_contacts').select('*', { count: 'exact', head: true }).eq('blocked', true);
+
+    return { headers: CORS_HEADERS, statusCode: 200, body: JSON.stringify({ lists: results, totalContacts: totalContacts || 0, totalBlocked: totalBlocked || 0 }) };
   } catch (e) {
     console.error('Erreur crm-get-lists:', e);
     return { headers: CORS_HEADERS, statusCode: 500, body: JSON.stringify({ error: e.message }) };

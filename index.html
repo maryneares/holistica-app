@@ -1230,32 +1230,56 @@ Partager mon profil
 </div>
 <div class="scroll" style="padding:0 24px;">
 <div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Mon thème <em>astral</em></div>
+<div class="f-row-app"><label>Prénom</label><input type="text" id="astroPrenom" class="ob-input dt-input" placeholder="Ton prénom"></div>
 <div class="f-row-app"><label>Date de naissance</label><input type="date" id="astroDate" class="ob-input dt-input"></div>
-<div class="f-row-app"><label>Heure de naissance (si connue)</label><input type="time" id="astroTime" class="ob-input dt-input"></div>
-<div class="f-row-app"><label>Lieu de naissance</label><input type="text" id="astroPlace" class="ob-input dt-input" placeholder="Ville, Pays"></div>
-<button class="btn-ob" style="margin-top:6px;" onclick="calculateAstro()">Calculer mon thème</button>
+<div class="f-row-app"><label>Heure de naissance (pour l'Ascendant)</label><input type="time" id="astroTime" class="ob-input dt-input"></div>
+<div class="f-row-app" style="position:relative;">
+<label>Ville de naissance</label>
+<input type="text" id="astroPlace" class="ob-input dt-input" placeholder="Commence à taper..." oninput="searchBirthCity(this.value)" autocomplete="off">
+<div id="astroCitySuggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:white;border:1px solid var(--border);border-radius:12px;margin-top:4px;max-height:220px;overflow-y:auto;z-index:10;box-shadow:0 8px 24px rgba(0,0,0,0.1);"></div>
+</div>
+<button class="btn-ob" style="margin-top:6px;" onclick="calculateAstro()" id="astroCalcBtn">Calculer mon thème</button>
 
 <div id="astroResult" style="display:none;margin-top:24px;">
+
+<div class="dosha-explain" style="margin-bottom:16px;background:var(--lav-pale);padding:14px;border-radius:14px;">
+Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) représente ta personnalité profonde, ton identité intérieure. Ta <b>Lune</b> révèle tes émotions, tes besoins affectifs et ta vie intérieure. Ton <b>Ascendant</b> — le signe qui se levait à l'Est au moment exact de ta naissance — est la façon dont les autres te perçoivent au premier abord, ton comportement spontané. Il nécessite ton heure et ton lieu de naissance précis pour être calculé correctement.
+</div>
+
 <div class="sec" style="padding:0 0 8px;"><h2>Ton signe <em>solaire</em></h2></div>
 <div class="dosha-analysis-block">
-<div class="dab-title"><span id="astroSunEmoji">♈</span> <span id="astroSunSign">Bélier</span></div>
-<div class="dab-sub">Élément</div><div class="dab-text" id="astroSunElement">Feu</div>
-<div class="dab-sub">Traits dominants</div><div class="dab-text" id="astroSunTraits">—</div>
-<div class="dab-sub">Planète maîtresse</div><div class="dab-text" id="astroSunPlanet">—</div>
+<div class="dab-title"><span id="astroSunEmoji">♈</span> <span id="astroSunSign">Bélier</span> <span id="astroSunDegree" style="font-size:12px;color:var(--ink-l);font-weight:400;"></span></div>
+<div class="dab-text" id="astroSunText">—</div>
+</div>
+
+<div class="sec" style="padding:16px 0 8px;"><h2>Ta <em>Lune</em></h2></div>
+<div class="dosha-analysis-block">
+<div class="dab-title"><span id="astroMoonEmoji">♈</span> <span id="astroMoonSign">Bélier</span> <span id="astroMoonDegree" style="font-size:12px;color:var(--ink-l);font-weight:400;"></span></div>
+<div class="dab-text" id="astroMoonText">—</div>
 </div>
 
 <div id="astroAscBlock" style="display:none;">
-<div class="sec" style="padding:16px 0 8px;"><h2>Ton <em>ascendant</em> (estimation)</h2></div>
-<div class="dosha-explain" style="margin-bottom:10px;font-size:11px;">Estimation simplifiée basée sur ton heure de naissance. Pour un calcul d'ascendant exact au degré près, il faudrait un logiciel d'astrologie professionnel utilisant ta position géographique précise.</div>
+<div class="sec" style="padding:16px 0 8px;"><h2>Ton <em>Ascendant</em></h2></div>
 <div class="dosha-analysis-block">
-<div class="dab-title"><span id="astroAscEmoji">♈</span> Ascendant <span id="astroAscSign">Bélier</span></div>
-<div class="dab-text" id="astroAscTraits">—</div>
+<div class="dab-title"><span id="astroAscEmoji">♈</span> Ascendant <span id="astroAscSign">Bélier</span> <span id="astroAscDegree" style="font-size:12px;color:var(--ink-l);font-weight:400;"></span></div>
+<div class="dab-text" id="astroAscText">—</div>
 </div>
 </div>
 
+<div id="astroNoTimeNote" style="display:none;" class="dosha-explain" style="margin:12px 0;">Renseigne ton heure et ta ville de naissance pour débloquer ton Ascendant et tes maisons astrologiques précises.</div>
+
+<div id="astroRetroBlock" style="display:none;">
+<div class="sec" style="padding:16px 0 8px;"><h2>Planètes <em>rétrogrades</em> à ta naissance</h2></div>
+<div class="dosha-explain" id="astroRetroText"></div>
+</div>
+
 <div class="sec" style="padding:16px 0 8px;"><h2>Les 12 <em>maisons</em></h2></div>
-<div class="dosha-explain" style="margin-bottom:12px;">Les maisons astrologiques représentent les 12 domaines de vie que traverse le thème natal. Voici leur signification générale, elles nécessitent l'heure et le lieu exacts pour être positionnées précisément sur ton thème.</div>
+<div class="dosha-explain" style="margin-bottom:12px;">Les maisons astrologiques représentent les 12 domaines de vie que traverse ton thème natal.</div>
 <div id="astroHouses"></div>
+
+<div class="sec" style="padding:16px 0 8px;"><h2>Climat <em>astral du mois</em></h2></div>
+<div class="dosha-explain" style="margin-bottom:12px;">L'ambiance astrologique collective en ce moment — mouvements planétaires, phases de lune et portails énergétiques à connaître, indépendamment de ton thème personnel.</div>
+<div id="astralClimateBlock"></div>
 
 <div class="sec" style="padding:16px 0 8px;"><h2><em id="yearZodiacName">2026</em>, ton année</h2></div>
 <div class="dosha-analysis-block" id="yearZodiacCard"></div>
@@ -1450,13 +1474,14 @@ Partager mon profil
 <!-- ═══ TUTORIEL DE BIENVENUE (WALKTHROUGH) ═══ -->
 <div id="walkthroughOverlay" style="display:none;position:fixed;inset:0;z-index:9999;background:var(--grad-h);flex-direction:column;">
   <button onclick="wtSkip()" style="position:absolute;top:20px;right:20px;z-index:2;background:rgba(255,255,255,0.2);border:none;color:white;font-size:13px;font-weight:700;padding:8px 16px;border-radius:20px;font-family:'League Spartan',sans-serif;cursor:pointer;">Passer</button>
-  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 28px;text-align:center;">
-    <div id="wtIcon" style="font-size:64px;margin-bottom:20px;"></div>
-    <div id="wtTitle" style="font-family:'League Spartan',sans-serif;font-weight:800;font-size:26px;color:white;margin-bottom:12px;line-height:1.2;"></div>
-    <div id="wtDesc" style="font-size:15px;color:rgba(255,255,255,0.88);line-height:1.5;max-width:340px;"></div>
+  <div id="wtScrollArea" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:50px 28px 20px;text-align:center;">
+    <div id="wtIcon" style="width:36px;height:36px;margin-bottom:10px;color:white;flex-shrink:0;"></div>
+    <div id="wtTitle" style="font-family:'League Spartan',sans-serif;font-weight:800;font-size:21px;color:white;margin-bottom:8px;line-height:1.2;flex-shrink:0;"></div>
+    <div id="wtDesc" style="font-size:13.5px;color:rgba(255,255,255,0.9);line-height:1.5;max-width:360px;margin-bottom:16px;flex-shrink:0;"></div>
+    <img id="wtImg" src="" style="max-width:190px;max-height:30vh;width:auto;border-radius:20px;box-shadow:0 12px 40px rgba(0,0,0,0.25);flex-shrink:0;object-fit:cover;">
   </div>
-  <div style="padding:0 28px 40px;flex-shrink:0;">
-    <div id="wtDots" style="display:flex;justify-content:center;gap:8px;margin-bottom:22px;"></div>
+  <div style="padding:14px 28px 30px;flex-shrink:0;">
+    <div id="wtDots" style="display:flex;justify-content:center;gap:6px;margin-bottom:18px;flex-wrap:wrap;"></div>
     <button class="btn-w" id="wtNextBtn" onclick="wtNext()">Suivant</button>
   </div>
 </div>
@@ -1577,12 +1602,32 @@ function togglePwdVisibility(inputId,btn){
 }
 
 /* ═══ TUTORIEL DE BIENVENUE (WALKTHROUGH) ═══ */
+const WT_ICONS={
+  home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11.5l8-7.5 8 7.5"/><path d="M6 10v9.5a1 1 0 0 0 1 1h3.5v-6.5h3v6.5H17a1 1 0 0 0 1-1V10"/></svg>',
+  play:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l6 3.5-6 3.5z"/></svg>',
+  bowl:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18a9 8 0 0 1-18 0z"/><path d="M7 12V6M12 12V4M17 12V6"/></svg>',
+  leaf:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21c9 0 14-5 14-14V4h-3C7 4 3 9 3 18v3z"/><path d="M5 21C10 16 14 12 19 8"/></svg>',
+  people:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-4 3-6.5 6.5-6.5S15.5 16 15.5 20"/><circle cx="17.5" cy="9" r="2.6"/><path d="M15 13.6c2.7.3 4.5 2.3 4.5 5.4"/></svg>',
+  apple:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8.5c-2.5-2.5-6.5-1.5-7.5 2C3.5 14.5 6 20 9.5 20c1.2 0 1.8-.6 2.5-.6s1.3.6 2.5.6c3.2 0 6-4.8 6-8.5 0-3-2.5-5-5.5-4-.8.3-1.6.8-2 1.5"/><path d="M11.5 8c0-2 1-3.5 3-4"/></svg>',
+  user:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4.5 20c0-4.5 3.4-7 7.5-7s7.5 2.5 7.5 7"/></svg>',
+  pulse:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2-7 4 14 2-7h6"/></svg>',
+  moon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></svg>',
+  award:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M8.5 13.5L7 22l5-3 5 3-1.5-8.5"/></svg>',
+  sparkle:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg>'
+};
+
 const WT_STEPS=[
-  {icon:'🌸',title:'Bienvenue sur Holistica Club',desc:"On va faire un tour rapide de l'application pour que tu trouves tout facilement — ça prend 30 secondes."},
-  {icon:'🌿',title:'Ton profil ayurvédique',desc:"Ton profil dosha (Vata, Pitta, Kapha) personnalise tes recommandations : alimentation, routines et conseils au quotidien, rien que pour toi."},
-  {icon:'🧘‍♀️',title:'Tes séances vidéo',desc:"Yoga, pilates, méditation et respiration : des programmes progressifs organisés semaine par semaine, à ton rythme."},
-  {icon:'🥗',title:'Ton alimentation personnalisée',desc:"Retrouve un plan alimentaire adapté à ton profil, avec tes macros et un journal pour suivre tes repas au jour le jour."},
-  {icon:'✨',title:"C'est parti !",desc:"Tu es prête à explorer Holistica Club. Tu peux revenir sur ce tutoriel à tout moment depuis ton profil."}
+  {icon:'sparkle',img:'',title:'Bienvenue sur Holistica Club',desc:"On te fait découvrir chaque partie de l'application pour que tu trouves tout facilement dès le premier jour."},
+  {icon:'home',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a6b3d52ca4077.20955655_IMG_1254.PNG',title:'Ton écran d\'accueil',desc:"C'est l'onglet du milieu, en bas de ton écran. Tu y retrouves chaque jour : ton message du jour selon ton profil ayurvédique et la phase de la lune, ton cycle (jours avant tes prochaines règles, ta phase actuelle et ton niveau d'énergie), ta routine bien-être ayurvédique adaptée à ton profil et ton cycle, et ton humeur du jour à renseigner pour suivre ton stress et ton bien-être, avec une moyenne calculée sur le mois."},
+  {icon:'play',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a6b3d243c03f5.97813414_Screenshot2026-07-28at14.42.41.png',title:'Tes séances',desc:"C'est l'onglet tout à gauche. Suis une ligne directrice pour progresser en yoga, pilates ou méditation, ou pioche librement dans la bibliothèque complète des cours. Certains se débloquent avec ton ancienneté et tes connexions régulières — tu gagnes des points et des badges au fil du temps."},
+  {icon:'bowl',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a6b3db50db989.92116283_IMG_1261.PNG',title:'Tes recettes',desc:"C'est le deuxième onglet en partant de la gauche. Retrouve des recettes classées par thème selon ton profil ayurvédique : végétarien, boissons, anti-inflammatoire, petit-déjeuner, et bien plus. Certaines se débloquent aussi selon ton assiduité."},
+  {icon:'leaf',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a6b3d32851aa3.79038288_Screenshot2026-07-28at14.42.25.png',title:'Tes dossiers bien-être',desc:"Juste à côté du bouton Accueil. Chaque semaine, retrouve un dossier complet : soin des cheveux, de la peau, produits ménagers naturels, naturopathie, nutrition, aromathérapie, respiration, et bien d'autres sujets."},
+  {icon:'people',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a75937b502736.96000489_IMG_2240.jpg',title:'Communauté & challenges',desc:"À droite du bouton Accueil. Avec l'offre Immersion, rejoins le groupe WhatsApp pour échanger avec d'autres femmes et Maryne : un cours de yoga en visio chaque mois (avec correction et partage d'écran), une conférence mensuelle, et un nouveau challenge chaque mois pour avancer ensemble."},
+  {icon:'apple',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a759382331f63.37573717_IMG_2241.jpg',title:'Ta diététique',desc:"Deuxième onglet à droite du bouton Accueil. Ton plan alimentaire est calculé selon tes propres paramètres, anti-inflammatoire, sans gluten et sans lactose, et évolue chaque mois avec les saisons. 4 parties : ton plan alimentaire, ton journal quotidien (macros et calories), tes conseils ayurvédiques du moment, et les aliments de saison avec ta liste de courses."},
+  {icon:'user',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a75955383bfe9.60451086_IMG_22422.jpg',title:'Ton profil',desc:"Dernier onglet à droite. Modifie tes informations personnelles, gère ton abonnement, et retrouve ton profil ayurvédique déterminé lors de ton test."},
+  {icon:'pulse',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a7593a90abc39.64516789_IMG_2246.jpg',title:'Ton historique bien-être',desc:"Chaque routine remplie depuis l'accueil vient nourrir ton historique — un aperçu clair de ton évolution jour après jour."},
+  {icon:'moon',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a7593b4ea23b5.66768804_IMG_2248.jpg',title:'Ton thème astral',desc:"Comprends l'énergie du moment : pleine lune, planète en rétrograde, ton signe, ta personnalité, ton année — de quoi éclairer tes prises de décision."},
+  {icon:'award',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a7593af5412f5.54951503_IMG_2247.jpg',title:'Tes badges & récompenses',desc:"Débloque progressivement de nouvelles recettes, de nouveaux cours et séances, et de nouveaux dossiers naturopathie au fil de ta progression."}
 ];
 let wtIndex=0;
 
@@ -1594,13 +1639,17 @@ function showWalkthrough(){
 
 function renderWtStep(){
   const step=WT_STEPS[wtIndex];
-  document.getElementById('wtIcon').textContent=step.icon;
+  const imgEl=document.getElementById('wtImg');
+  if(step.img){imgEl.src=step.img;imgEl.style.display='block';}
+  else imgEl.style.display='none';
+  document.getElementById('wtIcon').innerHTML=WT_ICONS[step.icon]||'';
   document.getElementById('wtTitle').textContent=step.title;
   document.getElementById('wtDesc').textContent=step.desc;
   document.getElementById('wtDots').innerHTML=WT_STEPS.map((_,i)=>
     `<div style="width:${i===wtIndex?'20px':'7px'};height:7px;border-radius:4px;background:${i===wtIndex?'white':'rgba(255,255,255,0.35)'};transition:all .25s;"></div>`
   ).join('');
   document.getElementById('wtNextBtn').textContent=wtIndex===WT_STEPS.length-1?"C'est parti !":'Suivant';
+  document.getElementById('wtScrollArea').scrollTop=0;
 }
 
 function wtNext(){
@@ -1619,6 +1668,7 @@ function wtSkip(){
 function wtFinish(){
   document.getElementById('walkthroughOverlay').style.display='none';
   userProfile.hasSeenWalkthrough=true;
+  localStorage.setItem('holistica_wt_seen_'+(userProfile.email||''),'1');
   saveProfile();
 }
 
@@ -1790,7 +1840,8 @@ async function loadProfileAndEnter(){
  // return;
  // }
  go('dashboard');enterApp();addXP(0);checkBadges(true);
- if(!userProfile.hasSeenWalkthrough)setTimeout(showWalkthrough,600);
+ const wtAlreadySeenLocally=localStorage.getItem('holistica_wt_seen_'+(userProfile.email||''))==='1';
+ if(!userProfile.hasSeenWalkthrough&&!wtAlreadySeenLocally)setTimeout(showWalkthrough,600);
  saveProfile();
  } else {
  // Réinitialisation complète avant de démarrer : sans ça, un précédent essai
@@ -3946,19 +3997,57 @@ function retakeDoshaQuiz(){
 
 /* ═══════ ASTROLOGIE ═══════ */
 const ZODIAC=[
- {n:'Capricorne',e:'♑',elem:'Terre',planet:'Saturne',from:[12,22],to:[1,19],traits:'Ambitieuse, disciplinée, persévérante et réservée. Sait se fixer des objectifs à long terme et les tenir avec rigueur.'},
- {n:'Verseau',e:'♒',elem:'Air',planet:'Uranus',from:[1,20],to:[2,18],traits:'Indépendante, originale, humaniste et avant-gardiste. Aime penser différemment et défendre ses idéaux.'},
- {n:'Poissons',e:'♓',elem:'Eau',planet:'Neptune',from:[2,19],to:[3,20],traits:'Rêveuse, empathique, artiste et intuitive. Très sensible à l\'énergie des autres et à son environnement.'},
- {n:'Bélier',e:'♈',elem:'Feu',planet:'Mars',from:[3,21],to:[4,19],traits:'Franche, dynamique, impulsive et pionnière. Aime foncer et prendre des initiatives sans attendre.'},
- {n:'Taureau',e:'♉',elem:'Terre',planet:'Vénus',from:[4,20],to:[5,20],traits:'Sensuelle, stable, patiente et attachée au confort. Apprécie la beauté, la nature et la sécurité matérielle.'},
- {n:'Gémeaux',e:'♊',elem:'Air',planet:'Mercure',from:[5,21],to:[6,20],traits:'Curieuse, communicative, adaptable et vive d\'esprit. Aime apprendre, échanger et explorer plusieurs sujets à la fois.'},
- {n:'Cancer',e:'♋',elem:'Eau',planet:'Lune',from:[6,21],to:[7,22],traits:'Sensible, protectrice, intuitive et attachée à sa famille et son foyer. Grande mémoire émotionnelle.'},
- {n:'Lion',e:'♌',elem:'Feu',planet:'Soleil',from:[7,23],to:[8,22],traits:'Généreuse, fière, charismatique, aime briller et être reconnue. Grand cœur et sens du spectacle.'},
- {n:'Vierge',e:'♍',elem:'Terre',planet:'Mercure',from:[8,23],to:[9,22],traits:'Perfectionniste, analytique, serviable et minutieuse. Aime organiser, améliorer et prendre soin des détails.'},
- {n:'Balance',e:'♎',elem:'Air',planet:'Vénus',from:[9,23],to:[10,22],traits:'Diplomate, esthète, cherche l\'harmonie et l\'équilibre dans toutes ses relations.'},
- {n:'Scorpion',e:'♏',elem:'Eau',planet:'Pluton',from:[10,23],to:[11,21],traits:'Intense, mystérieuse, passionnée et déterminée. Grande force de transformation et de résilience.'},
- {n:'Sagittaire',e:'♐',elem:'Feu',planet:'Jupiter',from:[11,22],to:[12,21],traits:'Aventurière, optimiste, aime la liberté, les voyages et les grandes idées philosophiques.'},
+ {n:'Capricorne',e:'♑',elem:'Terre',planet:'Saturne',from:[12,22],to:[1,19],traits:'Ambitieuse, disciplinée, persévérante et réservée. Sait se fixer des objectifs à long terme et les tenir avec rigueur.',
+  sunText:"Le Soleil en Capricorne donne une nature profondément ambitieuse et disciplinée. Tu avances pas à pas vers tes objectifs, avec une patience et une endurance qui impressionnent souvent ton entourage. Tu prends tes responsabilités au sérieux et tu préfères la solidité aux promesses en l'air. Derrière cette réserve apparente se cache une grande loyauté envers ceux en qui tu as confiance.",
+  moonText:"Avec la Lune en Capricorne, tes émotions sont vécues de façon pudique et maîtrisée. Tu as besoin de structure et de sécurité pour te sentir bien intérieurement, et tu montres rarement tes vulnérabilités au premier venu. Ton sens du devoir peut parfois primer sur tes besoins personnels — apprendre à te reposer sans culpabiliser est un vrai chemin de croissance pour toi.",
+  ascText:"Avec cet Ascendant, tu donnes une première impression de sérieux, de maturité et de retenue, même jeune. Les autres te perçoivent comme quelqu'un de fiable et compétent, sur qui on peut s'appuyer. Tu prends le temps d'observer une situation avant de t'engager, ce qui peut parfois te faire paraître distante alors que tu es simplement prudente."},
+ {n:'Verseau',e:'♒',elem:'Air',planet:'Uranus',from:[1,20],to:[2,18],traits:'Indépendante, originale, humaniste et avant-gardiste. Aime penser différemment et défendre ses idéaux.',
+  sunText:"Le Soleil en Verseau façonne un esprit libre, original et tourné vers le collectif. Tu penses différemment des autres, et c'est précisément ce qui fait ta valeur : tu apportes des idées neuves là où beaucoup restent dans le conformisme. Ton sens de la justice et ton humanisme te poussent naturellement vers des causes qui dépassent ton seul intérêt personnel.",
+  moonText:"La Lune en Verseau donne une vie émotionnelle vécue avec une certaine distance, presque comme un observateur de ses propres ressentis. Tu as besoin de liberté et d'espace, y compris dans tes relations les plus proches, et l'imprévisible ne te fait pas peur. Tes amitiés comptent souvent autant que tes liens familiaux, car elles nourrissent ton besoin d'appartenir à un groupe qui te ressemble.",
+  ascText:"Avec cet Ascendant, tu dégages d'emblée une image originale, parfois un peu décalée, qui intrigue plus qu'elle ne rassure au premier abord. On te perçoit comme quelqu'un d'indépendant, difficile à cerner complètement, et cela te va très bien : tu n'as jamais cherché à rentrer dans un moule."},
+ {n:'Poissons',e:'♓',elem:'Eau',planet:'Neptune',from:[2,19],to:[3,20],traits:'Rêveuse, empathique, artiste et intuitive. Très sensible à l\'énergie des autres et à son environnement.',
+  sunText:"Le Soleil en Poissons donne une sensibilité et une intuition hors du commun. Tu ressens les atmosphères et les émotions des autres presque comme les tiennes, ce qui fait de toi quelqu'un de profondément empathique. Ton imagination est une vraie ressource, que ce soit dans la créativité ou dans ta capacité à envisager les choses autrement que par la seule logique.",
+  moonText:"Avec la Lune en Poissons, tes émotions sont fluides, changeantes, parfois difficiles à mettre en mots tellement elles sont vastes. Tu absorbes facilement l'énergie de ton environnement, ce qui te rend précieuse pour les autres mais peut aussi t'épuiser si tu ne prends pas le temps de te retirer régulièrement pour te ressourcer seule.",
+  ascText:"Avec cet Ascendant, tu donnes une impression douce, rêveuse et légèrement mystérieuse dès le premier contact. Les gens te trouvent facilement accessible sur le plan émotionnel, presque comme si tu comprenais instinctivement ce qu'ils traversent, même sans qu'ils aient besoin de tout expliquer."},
+ {n:'Bélier',e:'♈',elem:'Feu',planet:'Mars',from:[3,21],to:[4,19],traits:'Franche, dynamique, impulsive et pionnière. Aime foncer et prendre des initiatives sans attendre.',
+  sunText:"Le Soleil en Bélier donne une énergie vive, directe et pleine d'initiative. Tu n'aimes pas attendre : quand une idée te vient, tu préfères agir tout de suite plutôt que de trop réfléchir. Cette spontanéité fait de toi une pionnière naturelle, toujours prête à se lancer la première là où d'autres hésitent encore.",
+  moonText:"Avec la Lune en Bélier, tes émotions sont vives et immédiates — tu ressens intensément, et ça se voit. La colère peut monter vite, mais elle redescend tout aussi rapidement, sans rancune. Tu as besoin d'action pour te sentir bien : rester passive face à une contrariété n'est vraiment pas ton fort.",
+  ascText:"Avec cet Ascendant, tu donnes une première impression d'énergie et de franchise immédiate. On te perçoit comme quelqu'un de direct, parfois impatient, qui n'a pas peur de prendre les devants. Ta présence est difficile à ignorer, même dans un groupe où tu ne cherches pas particulièrement à te faire remarquer."},
+ {n:'Taureau',e:'♉',elem:'Terre',planet:'Vénus',from:[4,20],to:[5,20],traits:'Sensuelle, stable, patiente et attachée au confort. Apprécie la beauté, la nature et la sécurité matérielle.',
+  sunText:"Le Soleil en Taureau donne une nature stable, sensorielle et profondément attachée au concret. Tu apprécies les plaisirs simples de la vie — un bon repas, une texture agréable, un environnement harmonieux — et tu as besoin de sécurité matérielle pour te sentir pleinement toi-même. Ta patience et ta persévérance te permettent de construire des choses qui durent.",
+  moonText:"Avec la Lune en Taureau, tu as besoin de stabilité et de routines rassurantes pour te sentir émotionnellement en sécurité. Le changement brusque te déstabilise ; tu préfères avancer à ton rythme, sans être bousculée. Le contact physique et les plaisirs sensoriels (une bonne odeur, une texture douce) t'apaisent particulièrement.",
+  ascText:"Avec cet Ascendant, tu dégages une présence calme, posée et rassurante. Les autres te perçoivent comme quelqu'un de fiable, ancrée, peu sujette à la précipitation. Ta façon d'être, tranquille et sans esbroufe, met naturellement les gens à l'aise en ta présence."},
+ {n:'Gémeaux',e:'♊',elem:'Air',planet:'Mercure',from:[5,21],to:[6,20],traits:'Curieuse, communicative, adaptable et vive d\'esprit. Aime apprendre, échanger et explorer plusieurs sujets à la fois.',
+  sunText:"Le Soleil en Gémeaux donne un esprit vif, curieux et avide d'apprendre. Tu aimes jongler entre plusieurs sujets, plusieurs idées, plusieurs projets à la fois, et l'ennui est probablement ton pire ennemi. Ta facilité à communiquer et à t'adapter fait de toi quelqu'un à l'aise dans presque toutes les situations sociales.",
+  moonText:"Avec la Lune en Gémeaux, tu as besoin de parler pour comprendre ce que tu ressens — mettre des mots sur tes émotions t'aide à les apprivoiser. Tes humeurs peuvent changer rapidement, au gré des idées et des rencontres qui traversent ta journée. La stimulation intellectuelle est presque aussi nécessaire à ton équilibre que le repos.",
+  ascText:"Avec cet Ascendant, tu donnes immédiatement une impression de vivacité et de curiosité. On te perçoit comme quelqu'un de facile à aborder, bavarde, pleine de questions et d'anecdotes. Ta gestuelle et ton regard trahissent souvent une pensée qui va déjà plus vite que la conversation en cours."},
+ {n:'Cancer',e:'♋',elem:'Eau',planet:'Lune',from:[6,21],to:[7,22],traits:'Sensible, protectrice, intuitive et attachée à sa famille et son foyer. Grande mémoire émotionnelle.',
+  sunText:"Le Soleil en Cancer donne une identité profondément liée à l'affectif, à la famille et au sentiment d'appartenance. Tu as un instinct protecteur naturel envers les personnes que tu aimes, et ton foyer — au sens propre comme au sens figuré — est un pilier essentiel de ton équilibre. Ta mémoire émotionnelle est remarquable : tu n'oublies ni les blessures, ni les gestes de tendresse.",
+  moonText:"Avec la Lune en Cancer (son domicile), tes émotions sont particulièrement intenses et ton intuition très développée. Tu ressens les besoins des autres presque avant qu'ils ne les expriment, et prendre soin de ton entourage te procure un vrai sentiment de sécurité intérieure. Il t'arrive de te replier sur toi-même quand tu te sens vulnérable, comme pour te protéger.",
+  ascText:"Avec cet Ascendant, tu donnes une image douce et chaleureuse, presque maternelle, dès le premier contact. Les gens se sentent naturellement en confiance avec toi et ont tendance à se confier facilement. Tu peux aussi paraître réservée ou sur la retenue tant que la confiance ne s'est pas installée."},
+ {n:'Lion',e:'♌',elem:'Feu',planet:'Soleil',from:[7,23],to:[8,22],traits:'Généreuse, fière, charismatique, aime briller et être reconnue. Grand cœur et sens du spectacle.',
+  sunText:"Le Soleil en Lion donne un rayonnement naturel et un vrai besoin de créer, d'exprimer et d'être reconnue pour qui tu es. Tu as un grand cœur, souvent plus généreux qu'on ne l'imagine derrière ta fierté, et un sens inné du spectacle qui attire naturellement l'attention. Ta loyauté envers les personnes que tu aimes est indéfectible.",
+  moonText:"Avec la Lune en Lion, tu as besoin d'être vue, valorisée et appréciée pour te sentir bien émotionnellement. Tes réactions sont chaleureuses et généreuses, parfois théâtrales, jamais mesquines. Un manque de reconnaissance te touche plus que tu ne le laisses paraître, même si ta fierté t'empêche souvent de l'admettre.",
+  ascText:"Avec cet Ascendant, tu dégages une présence naturellement charismatique, difficile à manquer dans une pièce. On te perçoit comme quelqu'un de confiant, chaleureux, parfois un brin théâtral — mais toujours avec une générosité sincère qui transparaît derrière l'assurance."},
+ {n:'Vierge',e:'♍',elem:'Terre',planet:'Mercure',from:[8,23],to:[9,22],traits:'Perfectionniste, analytique, serviable et minutieuse. Aime organiser, améliorer et prendre soin des détails.',
+  sunText:"Le Soleil en Vierge donne un esprit analytique, précis et profondément serviable. Tu remarques les détails que d'autres laissent filer, et tu as un vrai talent pour organiser, améliorer et perfectionner ce qui t'entoure. Ton sens pratique et ton envie d'être utile font de toi quelqu'un sur qui on peut vraiment compter.",
+  moonText:"Avec la Lune en Vierge, tu as besoin d'ordre et d'utilité pour te sentir émotionnellement stable. Tu exprimes souvent ton affection par des gestes concrets plutôt que par de grandes déclarations — rendre service est ta façon d'aimer. Le perfectionnisme peut parfois se retourner contre toi sous forme d'autocritique excessive.",
+  ascText:"Avec cet Ascendant, tu donnes une impression de sérieux, de discrétion et de sens pratique. On te perçoit comme quelqu'un d'observatrice, un peu réservée au premier abord, mais dont l'attention aux détails et le souci de bien faire inspirent naturellement confiance."},
+ {n:'Balance',e:'♎',elem:'Air',planet:'Vénus',from:[9,23],to:[10,22],traits:'Diplomate, esthète, cherche l\'harmonie et l\'équilibre dans toutes ses relations.',
+  sunText:"Le Soleil en Balance donne un besoin profond d'harmonie, d'équité et de relations équilibrées. Tu as un vrai sens esthétique et une capacité naturelle à voir les différents points de vue d'une situation, ce qui fait de toi une excellente médiatrice. Être seule trop longtemps te pèse : tu t'épanouis pleinement dans l'échange avec l'autre.",
+  moonText:"Avec la Lune en Balance, tu as besoin d'harmonie relationnelle pour te sentir bien émotionnellement — les conflits et les ambiances tendues te pèsent particulièrement. Tu cherches instinctivement le compromis, parfois au détriment de tes propres besoins. Apprendre à affirmer une préférence sans crainte de déplaire est un vrai apprentissage pour toi.",
+  ascText:"Avec cet Ascendant, tu dégages naturellement une image charmante, posée et agréable. Les autres te perçoivent comme quelqu'un de sociable et de diplomate, avec qui les échanges sont fluides. Tu as souvent un sens esthétique visible jusque dans ta façon de te présenter."},
+ {n:'Scorpion',e:'♏',elem:'Eau',planet:'Pluton',from:[10,23],to:[11,21],traits:'Intense, mystérieuse, passionnée et déterminée. Grande force de transformation et de résilience.',
+  sunText:"Le Soleil en Scorpion donne une intensité et une profondeur peu communes. Tu ne fais rien à moitié : quand tu t'engages dans quelque chose ou quelqu'un, c'est avec une détermination totale. Ta capacité à te transformer et à rebondir après les épreuves est l'une de tes plus grandes forces, même si le chemin pour y arriver n'est jamais facile.",
+  moonText:"Avec la Lune en Scorpion, tes émotions sont vécues intensément, souvent en profondeur et loin des regards. Tu as un instinct très fin pour percevoir ce qui se cache derrière les apparences, chez toi comme chez les autres. La confiance se mérite avec toi, mais une fois accordée, elle est d'une loyauté rare.",
+  ascText:"Avec cet Ascendant, tu donnes une impression de mystère et de profondeur, même sans le vouloir. On te perçoit comme quelqu'un d'intense, dont le regard semble voir au-delà des apparences. Cette aura magnétique peut intimider avant même que tu n'aies dit un mot."},
+ {n:'Sagittaire',e:'♐',elem:'Feu',planet:'Jupiter',from:[11,22],to:[12,21],traits:'Aventurière, optimiste, aime la liberté, les voyages et les grandes idées philosophiques.',
+  sunText:"Le Soleil en Sagittaire donne un optimisme contagieux et une soif d'horizons plus larges — géographiques, intellectuels ou spirituels. Tu as besoin de liberté et d'espace pour t'épanouir, et tu détestes qu'on t'enferme dans un cadre trop rigide. Ta franchise, parfois abrupte, vient d'un besoin sincère de vérité plutôt que d'un manque de tact.",
+  moonText:"Avec la Lune en Sagittaire, tu as besoin d'espace et de mouvement pour te sentir émotionnellement libre. Rester coincée dans une routine étouffante ou une relation trop possessive te pèse rapidement. Tu relativises facilement les difficultés grâce à ton optimisme naturel, qui t'aide à rebondir plus vite que la moyenne.",
+  ascText:"Avec cet Ascendant, tu donnes une impression enjouée, franche et pleine d'énergie positive. On te perçoit comme quelqu'un d'ouvert, curieux des autres cultures et des grandes idées, avec qui la conversation part facilement loin. Ta spontanéité peut parfois être prise pour de l'impatience."}
 ];
+const SIGN_DATA={};
+ZODIAC.forEach(z=>SIGN_DATA[z.n]=z);
 function getSunSign(month,day){
  return ZODIAC.find(z=>{
  const [fm,fd]=z.from,[tm,td]=z.to;
@@ -3967,6 +4056,34 @@ function getSunSign(month,day){
  return (month===fm&&day>=fd)||(month>fm&&month<tm)||(month===tm&&day<=td);
  });
 }
+const HOUSE_STYLE_BY_SIGN={
+ 'Bélier':"avec fougue, spontanéité et un vrai besoin de prendre les devants",
+ 'Taureau':"avec patience, à un rythme posé, en cherchant la stabilité avant tout",
+ 'Gémeaux':"avec curiosité, en multipliant les échanges et les points de vue",
+ 'Cancer':"avec sensibilité, en y mettant beaucoup d'affectif et de mémoire",
+ 'Lion':"avec panache, en cherchant à y rayonner et à être reconnue",
+ 'Vierge':"avec méthode, en y apportant précision et sens du détail",
+ 'Balance':"avec diplomatie, en cherchant l'équilibre et l'harmonie",
+ 'Scorpion':"avec intensité, en y investissant une énergie profonde et déterminée",
+ 'Sagittaire':"avec optimisme, en gardant toujours un besoin d'espace et de liberté",
+ 'Capricorne':"avec sérieux, en structurant les choses sur le long terme",
+ 'Verseau':"avec originalité, en y apportant une touche différente des autres",
+ 'Poissons':"avec intuition, en s'y adaptant de façon fluide et sensible"
+};
+const HOUSE_NAMES=[
+ 'Identité — la façon dont tu te présentes au monde et ton énergie spontanée',
+ 'Ressources — ton rapport à l\'argent, aux biens matériels et à ta valeur personnelle',
+ 'Entourage proche — frères, sœurs, échanges du quotidien et petits déplacements',
+ 'Foyer — ta famille, tes racines et ton besoin de sécurité intérieure',
+ 'Créativité — l\'amour, les loisirs, les enfants et ce qui te fait vibrer',
+ 'Quotidien — ton travail au jour le jour, tes habitudes et ta santé',
+ 'Relations — le couple, les associations et les engagements à deux',
+ 'Transformations — les passages profonds, les partages financiers et la sexualité',
+ 'Horizons — les voyages, les études supérieures et la quête de sens',
+ 'Vocation — ta réussite sociale, ta carrière et ton image publique',
+ 'Communauté — tes amitiés, tes projets collectifs et tes espoirs pour l\'avenir',
+ 'Intériorité — ton monde intérieur, ton besoin de retrait et ta spiritualité'
+];
 const HOUSES=[
  'Maison 1, Identité : la façon dont tu te présentes au monde, ton apparence et ta personnalité.',
  'Maison 2, Ressources : l\'argent, les biens matériels et ton rapport à la valeur des choses.',
@@ -3989,48 +4106,245 @@ function openAstro(){
  if(userProfile.birthDate)renderAstroResult();
  go('astroScreen');
 }
-function calculateAstro(){
- const dateVal=document.getElementById('astroDate').value;
- if(!dateVal){toast('Renseigne au moins ta date de naissance');return;}
- userProfile.birthDate=dateVal;
- userProfile.birthTime=document.getElementById('astroTime').value||'';
- userProfile.birthPlace=document.getElementById('astroPlace').value.trim();
- saveProfile();
- renderAstroResult();
- document.getElementById('astroResult').style.display='block';
- const sub=document.getElementById('paAstroSub');
- if(sub){
- const d=new Date(dateVal+'T00:00:00');
- const sign=getSunSign(d.getMonth()+1,d.getDate());
- if(sign)sub.textContent=sign.e+' '+sign.n;
- }
- toast('Thème calculé ✓');
-}
-function renderAstroResult(){
- const d=new Date(userProfile.birthDate+'T00:00:00');
- const sign=getSunSign(d.getMonth()+1,d.getDate());
- if(!sign)return;
- document.getElementById('astroSunEmoji').textContent=sign.e;
- document.getElementById('astroSunSign').textContent=sign.n;
- document.getElementById('astroSunElement').textContent=sign.elem;
- document.getElementById('astroSunTraits').textContent=sign.traits;
- document.getElementById('astroSunPlanet').textContent=sign.planet;
+/* ═══════ RECHERCHE DE VILLE DE NAISSANCE ═══════ */
+let astroCitySelected=null;
+let astroCitySearchTimeout=null;
 
- const ascBlock=document.getElementById('astroAscBlock');
- if(userProfile.birthTime){
- const [h]=userProfile.birthTime.split(':').map(Number);
- const sunIdx=ZODIAC.indexOf(sign);
- const shift=Math.floor((((h-6)+24)%24)/2);
- const ascSign=ZODIAC[(sunIdx+shift)%12];
- document.getElementById('astroAscEmoji').textContent=ascSign.e;
- document.getElementById('astroAscSign').textContent=ascSign.n;
- document.getElementById('astroAscTraits').textContent=ascSign.traits;
- ascBlock.style.display='block';
- } else {
- ascBlock.style.display='none';
- }
- document.getElementById('astroHouses').innerHTML=HOUSES.map(h=>`<div class="phase-explain-card"><div class="pe-body"><div class="pe-s">${h}</div></div></div>`).join('');
- renderYearEnergy(sign);
+function searchBirthCity(query){
+  astroCitySelected=null;
+  clearTimeout(astroCitySearchTimeout);
+  const box=document.getElementById('astroCitySuggestions');
+  if(!query||query.length<2){box.style.display='none';return;}
+  astroCitySearchTimeout=setTimeout(async()=>{
+    try{
+      const res=await fetch('https://app.holisticaclub.com/.netlify/functions/geocode-city?q='+encodeURIComponent(query));
+      const data=await res.json();
+      const cities=data.cities||[];
+      if(!cities.length){box.style.display='none';return;}
+      box.innerHTML=cities.map((c,i)=>`<div style="padding:12px 14px;font-size:13.5px;cursor:pointer;border-bottom:1px solid var(--border);" onclick="selectBirthCity(${i})">${c.name}<span style="color:var(--ink-l);font-size:12px;"> — ${c.region?c.region+', ':''}${c.country}</span></div>`).join('');
+      box.style.display='block';
+      window._astroCityResults=cities;
+    }catch(e){
+      box.style.display='none';
+    }
+  },350);
+}
+
+function selectBirthCity(idx){
+  const c=window._astroCityResults[idx];
+  astroCitySelected=c;
+  document.getElementById('astroPlace').value=c.name+', '+c.country;
+  document.getElementById('astroCitySuggestions').style.display='none';
+}
+
+/* ═══════ CALCUL DU THÈME ASTRAL ═══════ */
+async function calculateAstro(){
+  const dateVal=document.getElementById('astroDate').value;
+  if(!dateVal){toast('Renseigne au moins ta date de naissance');return;}
+
+  userProfile.name=document.getElementById('astroPrenom').value.trim()||userProfile.name;
+  userProfile.birthDate=dateVal;
+  userProfile.birthTime=document.getElementById('astroTime').value||'';
+  userProfile.birthPlace=document.getElementById('astroPlace').value.trim();
+  if(astroCitySelected){
+    userProfile.birthLat=astroCitySelected.lat;
+    userProfile.birthLon=astroCitySelected.lon;
+  }
+  saveProfile();
+
+  const btn=document.getElementById('astroCalcBtn');
+  btn.disabled=true;btn.textContent='Calcul en cours...';
+
+  try{
+    const [y,m,d]=dateVal.split('-').map(Number);
+    const [h,min]=userProfile.birthTime?userProfile.birthTime.split(':').map(Number):[undefined,undefined];
+    const payload={
+      year:y,month:m,day:d,
+      hour:userProfile.birthLat!==undefined?h:undefined,
+      minute:userProfile.birthLat!==undefined?min:undefined,
+      latitude:userProfile.birthLat!==undefined?userProfile.birthLat:48.8566,
+      longitude:userProfile.birthLon!==undefined?userProfile.birthLon:2.3522
+    };
+    // Sans heure ET lieu précis, on calcule quand même Soleil/Lune (peu sensibles
+    // à l'heure) mais on ne peut pas afficher un Ascendant fiable.
+    if(userProfile.birthLat===undefined||!userProfile.birthTime){
+      payload.hour=undefined;payload.minute=undefined;
+    }
+
+    const res=await fetch('https://app.holisticaclub.com/.netlify/functions/astro-calculate',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload)
+    });
+    const data=await res.json();
+    if(!res.ok||data.error)throw new Error(data.error||'Erreur de calcul');
+
+    window._astroData=data;
+    renderAstroResult();
+    document.getElementById('astroResult').style.display='block';
+    const sub=document.getElementById('paAstroSub');
+    if(sub){
+      const emoji=SIGN_DATA[data.sun.sign]?.e||'✨';
+      sub.textContent=emoji+' '+data.sun.sign;
+    }
+    toast('Thème calculé ✓');
+  }catch(e){
+    console.error(e);
+    toast('Erreur lors du calcul — réessaie dans un instant');
+  }finally{
+    btn.disabled=false;btn.textContent='Calculer mon thème';
+  }
+}
+
+/* ═══════ CLIMAT ASTRAL MENSUEL (SEPT. 2026 → SEPT. 2027) ═══════ */
+const ASTRAL_CLIMATE=[
+ {ym:'2026-09',label:'Septembre 2026',intro:"Un mois de transition en douceur : la rentrée s'installe sur des bases solides avant que l'équinoxe ne rééquilibre les énergies.",
+  transits:[{d:'1 sept.',t:"Jupiter et Saturne forment un angle harmonieux : les projets lancés avec sérieux ont de bonnes chances de se concrétiser ce mois-ci."},{d:'10 sept.',t:"Mercure et Vénus changent de signe le même jour : l'ambiance mentale et relationnelle se renouvelle brusquement."},{d:'22 sept.',t:"Équinoxe d'automne, le Soleil entre en Balance : temps de rééquilibrage et de recherche d'harmonie."}],
+  newMoon:{d:'11 sept.',sign:'Vierge',t:"Nouvelle Lune propice à l'organisation, au tri et à la mise en place de nouvelles routines concrètes."},
+  fullMoon:{d:'26 sept.',sign:'Bélier',t:"Pleine Lune énergique qui clôt le mois avec un fort besoin d'affirmation individuelle."},
+  portals:[{d:'9 sept.',t:"Journée symbolique de clôture de cycle, propice au bilan."},{d:'22 sept.',t:"L'équinoxe marque un moment d'équilibre parfait entre jour et nuit, idéal pour harmoniser ses intentions."}]},
+ {ym:'2026-10',label:'Octobre 2026',intro:"Un mois qui bascule vers l'introspection et les révélations, porté par une rétrogradation importante.",
+  transits:[{d:'16 oct.',t:"Pluton reprend sa marche directe : les transformations qui stagnaient depuis des mois reprennent leur cours."},{d:'23 oct.',t:"Le Soleil entre en Scorpion : l'ambiance générale se fait plus intense, plus profonde."},{d:'24 oct.',t:"Mercure entame sa rétrogradation en Scorpion : c'est le moment de revisiter ce qui était resté caché plutôt que de foncer tête baissée."}],
+  newMoon:{d:'10 oct.',sign:'Balance/Vierge',t:"Nouvelle Lune qui invite à réorganiser ce qui a besoin d'être clarifié."},
+  fullMoon:{d:'26 oct.',sign:'Bélier',t:"Pleine Lune intense, en tension avec Mercure rétrograde : les vérités refoulées remontent facilement à la surface."},
+  portals:[{d:'10 oct.',t:"Journée d'alignement numérique qui coïncide avec la Nouvelle Lune, propice au réajustement de trajectoire."},{d:'26 oct.',t:"Une pleine lune de libération, parfaite pour couper avec les schémas de dépendance du passé."}]},
+ {ym:'2026-11',label:'Novembre 2026',intro:"Le mois du grand déblocage : après les tensions d'octobre, plusieurs planètes reprennent leur marche directe et l'énergie s'allège nettement.",
+  transits:[{d:'13-14 nov.',t:"Mercure et Vénus terminent leurs rétrogradations quasi simultanément : les malentendus se dissipent, les relations retrouvent de la fluidité."},{d:'21 nov.',t:"Le Soleil entre en Sagittaire : l'ambiance s'ouvre vers l'optimisme et l'envie de grand air."}],
+  newMoon:{d:'9 nov.',sign:'Scorpion',t:"Nouvelle Lune de régénération profonde, propice à un vrai nettoyage intérieur."},
+  fullMoon:{d:'24 nov.',sign:'Gémeaux',t:"Super Lune (particulièrement proche de la Terre) qui favorise les échanges, la parole et les clarifications importantes."},
+  portals:[{d:'11 nov.',t:"L'un des portails les plus marquants de l'année, propice à l'alignement avec ses intentions profondes."},{d:'24 nov.',t:"Cette super lune amplifie l'intuition, un bon moment pour clarifier ses priorités avant la fin d'année."}]},
+ {ym:'2026-12',label:'Décembre 2026',intro:"Un mois d'ancrage et de clôture, qui culmine avec une pleine lune particulièrement symbolique la veille de Noël.",
+  transits:[{d:'4 déc.',t:"Neptune reprend sa marche directe : plus de clarté après une période plus floue ou plus intuitive."},{d:'21 déc.',t:"Solstice d'hiver, le Soleil entre en Capricorne : nuit la plus longue de l'année, invitation à revenir à l'essentiel."}],
+  newMoon:{d:'9 déc.',sign:'Sagittaire',t:"Nouvelle Lune qui insuffle de l'optimisme et l'envie de nouveaux horizons."},
+  fullMoon:{d:'24 déc.',sign:'Cancer',t:"Super Lune tombant le soir de Noël, qui amplifie le besoin de racines, de famille et de foyer."},
+  portals:[{d:'12 déc.',t:"Portail de complétude, une bonne date pour préparer ses intentions de fin d'année."},{d:'21 déc.',t:"Le solstice marque un point de bascule entre l'ombre et la lumière, propice à l'introspection profonde."},{d:'24 déc.',t:"Cette pleine lune de Noël favorise le pardon et l'apaisement des mémoires familiales."}]},
+ {ym:'2027-01',label:'Janvier 2027',intro:"Un mois de renouveau structurel majeur, marqué par l'un des plus grands basculements de la décennie : le changement d'axe des Nœuds Lunaires.",
+  transits:[{d:'10 janv.',t:"Uranus redevient direct en Gémeaux : les projets technologiques ou liés à la communication débloquent."},{d:'16 janv.',t:"Les Nœuds Lunaires basculent sur l'axe Lion-Verseau : pour les 18 prochains mois, le thème collectif oscille entre expression individuelle et appartenance au groupe."},{d:'20 janv.',t:"Le Soleil entre en Verseau : élan collectif et envie de liberté."}],
+  newMoon:{d:'7 janv.',sign:'Capricorne',t:"Nouvelle Lune parfaite pour poser des bases concrètes et démarrer l'année avec méthode."},
+  fullMoon:{d:'22 janv.',sign:'Lion',t:"Pleine Lune flamboyante qui met en avant le besoin d'affirmation et de reconnaissance personnelle."},
+  portals:[{d:'1er janv.',t:"Le jour de l'an agit symboliquement comme une page blanche pour poser ses intentions."},{d:'11 janv.',t:"Premier grand portail numérique de l'année, propice à la clarté mentale."},{d:'16 janv.',t:"Le basculement des Nœuds ouvre une nouvelle direction collective invisible mais réelle."}]},
+ {ym:'2027-02',label:'Février 2027',intro:"Le rythme ralentit nettement ce mois-ci : deux planètes importantes reculent en même temps, invitant à lever le pied et à régler les dossiers en suspens.",
+  transits:[{d:'10 fév.',t:"Mars entame sa rétrogradation en Balance : les actions directes et les négociations s'enlisent, mieux vaut composer que forcer."},{d:'11 fév.',t:"Mercure recule en Poissons : la communication se fait plus floue ou plus intuitive, propice aux malentendus mais aussi à la créativité."},{d:'18 fév.',t:"Le Soleil entre en Poissons : grande sensibilité collective, besoin de compassion."}],
+  newMoon:{d:'6 fév.',sign:'Verseau',t:"Nouvelle Lune qui insuffle solidarité et vision d'avenir, avant le ralentissement à venir."},
+  fullMoon:{d:'20 fév.',sign:'Vierge',t:"Pleine Lune qui vient percer le flou ambiant en réclamant de la clarté et de l'organisation."},
+  portals:[{d:'2 fév.',t:"Journée de purification traditionnellement associée au retour de la lumière."},{d:'22 fév.',t:"Portail d'harmonisation des relations, renforcé par Mars encore rétrograde en Balance."}]},
+ {ym:'2027-03',label:'Mars 2027',intro:"Le mois de la libération : les freins de février se desserrent progressivement, jusqu'au grand portail de l'équinoxe qui relance une nouvelle année astrologique.",
+  transits:[{d:'1er mars',t:"Vénus entre en Verseau : envie de liberté relationnelle et d'élans plus collectifs."},{d:'3 mars',t:"Mercure redevient direct en Poissons."},{d:'16 mars',t:"Mars redevient direct en Balance : la communication et l'action retrouvent leur fluidité."},{d:'20 mars',t:"Équinoxe de printemps, le Soleil entre en Bélier : l'année astrologique redémarre officiellement, portée par une vague de vitalité."}],
+  newMoon:{d:'8 mars',sign:'Poissons',t:"Nouvelle Lune propice au pardon, à la méditation et à la clôture des anciens dossiers émotionnels."},
+  fullMoon:{d:'22 mars',sign:'Balance',t:"Pleine Lune qui met en lumière les tensions entre besoins individuels et compromis relationnels."},
+  portals:[{d:'3 mars',t:"Journée d'alignement de la communication, pile au retour direct de Mercure."},{d:'20 mars',t:"L'équinoxe de printemps est l'un des moments les plus puissants de l'année pour initier un changement de vie."}]},
+ {ym:'2027-04',label:'Avril 2027',intro:"Un mois qui accélère fort, porté par l'élan du printemps : période idéale pour concrétiser, malgré un coup de frein mental en toute fin de mois.",
+  transits:[{d:'1er avril',t:"Mars entre en Scorpion, son signe de prédilection : l'énergie devient stratégique et déterminée."},{d:'20 avril',t:"Le Soleil entre en Taureau : le rythme ralentit vers plus de stabilité et d'ancrage."},{d:'21 avril',t:"Mercure entame sa deuxième rétrogradation de l'année, en Taureau : mieux vaut vérifier deux fois avant de signer ou de dépenser."}],
+  newMoon:{d:'6 avril',sign:'Bélier',t:"Nouvelle Lune explosive, parfaite pour lancer un projet qui demande du courage."},
+  fullMoon:{d:'20 avril',sign:'Scorpion',t:"Pleine Lune magnétique et intense, propice aux prises de conscience profondes et aux lâcher-prise nécessaires."},
+  portals:[{d:'4 avril',t:"Journée d'ancrage, idéale pour poser des bases concrètes."},{d:'6 avril',t:"Cette nouvelle lune en Bélier est l'une des plus favorables de l'année pour oser un nouveau départ."}]},
+ {ym:'2027-05',label:'Mai 2027',intro:"Le mois cherche la stabilité matérielle, entre la fin d'une rétrogradation et une belle ouverture d'esprit en fin de mois.",
+  transits:[{d:'14 mai',t:"Mercure redevient direct : les questions financières et administratives se débloquent."},{d:'20 mai',t:"Le Soleil entre en Gémeaux : l'ambiance s'allège, place aux échanges et à la légèreté."},{d:'26 mai',t:"Mars entre en Sagittaire : soif de liberté et d'exploration."}],
+  newMoon:{d:'5 mai',sign:'Taureau',t:"Nouvelle Lune d'ancrage, propice au retour à la terre et à la patience."},
+  fullMoon:{d:'20 mai',sign:'Scorpion',t:"Pleine Lune qui met en lumière des vérités cachées, pour mieux s'en libérer par la parole."},
+  portals:[{d:'5 mai',t:"Portail de renouveau matériel qui coïncide avec la Nouvelle Lune."},{d:'22 mai',t:"Un bon moment pour clarifier des accords ou compromis après l'intensité de la pleine lune."}]},
+ {ym:'2027-06',label:'Juin 2027',intro:"La communication et la curiosité dominent ce mois-ci, avant que le solstice d'été ne recentre l'énergie sur la famille et la sécurité intérieure.",
+  transits:[{d:'10 juin',t:"Vénus entre en Lion : besoin de reconnaissance et de partage joyeux."},{d:'21 juin',t:"Solstice d'été, le Soleil (et Mercure) entrent en Cancer : jour le plus long de l'année, retour vers l'affectif et le foyer."}],
+  newMoon:{d:'4 juin',sign:'Gémeaux',t:"Nouvelle Lune propice à l'apprentissage et aux nouveaux échanges."},
+  fullMoon:{d:'19 juin',sign:'Sagittaire',t:"Pleine Lune idéaliste, propice aux grandes prises de conscience et aux bilans philosophiques."},
+  portals:[{d:'6 juin',t:"Portail d'harmonie familiale, porté par l'élan de la nouvelle lune récente."},{d:'21 juin',t:"Le solstice d'été est l'un des quatre grands piliers énergétiques de l'année, parfait pour se recentrer."}]},
+ {ym:'2027-07',label:'Juillet 2027',intro:"Un mois de forte guidance intuitive, qui prépare le terrain pour les grandes vagues d'énergie de la fin de l'été.",
+  transits:[{d:'4 juil.',t:"Mars entre en Capricorne : l'énergie devient stratégique, disciplinée et tournée vers le long terme."},{d:'23 juil.',t:"Le Soleil entre en Lion : l'ambiance s'illumine, place à la créativité et à la célébration."},{d:'26 juil.',t:"Mercure entame sa rétrogradation en Vierge : bon moment pour trier, réviser et peaufiner plutôt que se précipiter."}],
+  newMoon:{d:'4 juil.',sign:'Cancer',t:"Nouvelle Lune centrée sur la sécurité, le foyer et les racines."},
+  fullMoon:{d:'18 juil.',sign:'Capricorne',t:"Pleine Lune de maturité, propice aux bilans professionnels et structurels."},
+  portals:[{d:'7 juil.',t:"L'un des portails les plus spirituels de l'année, propice à la méditation profonde."},{d:'fin juillet',t:"Ouverture progressive d'une période de montée en puissance énergétique qui culmine début août."}]},
+ {ym:'2027-08',label:'Août 2027',intro:"Le mois le plus intense de l'année sur le plan symbolique, marqué par une éclipse solaire totale et l'ouverture du célèbre portail du Lion.",
+  transits:[{d:'2 août',t:"Éclipse solaire totale en Lion : un véritable reset collectif qui peut accélérer des changements majeurs, personnels comme publics."},{d:'19 août',t:"Mercure redevient direct : la parole et les échanges retrouvent leur fluidité après la période de rétrogradation."},{d:'23 août',t:"Le Soleil entre en Vierge : retour au pragmatisme et à l'organisation."}],
+  fullMoon:{d:'17 août',sign:'Verseau',t:"Pleine Lune qui met en lumière les causes collectives et le besoin de s'affirmer hors du regard du groupe."},
+  portals:[{d:'2 août',t:"Cette éclipse est l'événement astrologique majeur de l'année : les choix faits sous son influence résonneront plusieurs mois."},{d:'8 août',t:"Le célèbre portail du Lion, moment de forte intensité énergétique et de régénération intérieure."}]},
+ {ym:'2027-09',label:'Septembre 2027',intro:"Un mois d'ancrage et de stabilisation après l'intensité de l'été, qui culmine avec le grand portail de l'équinoxe.",
+  transits:[{d:'12 sept.',t:"Mars entre en Verseau : l'action devient plus collaborative et tournée vers les causes collectives."},{d:'23 sept.',t:"Équinoxe d'automne, le Soleil entre en Balance : recherche d'harmonie et de justesse dans les relations."}],
+  newMoon:{d:'11 sept.',sign:'Vierge',t:"Nouvelle Lune de tri et de réorganisation, parfaite pour de nouvelles routines de santé."},
+  fullMoon:{d:'25 sept.',sign:'Bélier',t:"Pleine Lune qui crée une tension entre indépendance et besoin de diplomatie — souvent une période de clarification importante."},
+  portals:[{d:'9 sept.',t:"Journée de clôture de cycle, propice au lâcher-prise."},{d:'23 sept.',t:"L'équinoxe d'automne est un moment sacré pour harmoniser ses polarités avant la fin de l'année."}]}
+];
+
+function getCurrentAstralClimate(){
+  const now=new Date();
+  const ym=now.toISOString().slice(0,7);
+  return ASTRAL_CLIMATE.find(m=>m.ym===ym)||ASTRAL_CLIMATE[0];
+}
+
+function renderAstralClimate(){
+  const month=getCurrentAstralClimate();
+  const el=document.getElementById('astralClimateBlock');
+  if(!el)return;
+  el.innerHTML=`
+    <div class="dosha-analysis-block" style="margin-bottom:12px;">
+      <div class="dab-title" style="font-size:16px;">${month.label}</div>
+      <div class="dab-text">${month.intro}</div>
+    </div>
+    <div class="pe-t" style="margin:14px 0 8px;font-weight:700;font-size:13px;">Les grands mouvements du mois</div>
+    ${month.transits.map(t=>`<div class="phase-explain-card"><div class="pe-body"><div class="pe-t">${t.d}</div><div class="pe-s">${t.t}</div></div></div>`).join('')}
+    ${month.newMoon?`<div class="pe-t" style="margin:14px 0 8px;font-weight:700;font-size:13px;">🌑 Nouvelle Lune — ${month.newMoon.d} en ${month.newMoon.sign}</div><div class="dosha-explain">${month.newMoon.t}</div>`:''}
+    ${month.fullMoon?`<div class="pe-t" style="margin:14px 0 8px;font-weight:700;font-size:13px;">🌕 Pleine Lune — ${month.fullMoon.d} en ${month.fullMoon.sign}</div><div class="dosha-explain">${month.fullMoon.t}</div>`:''}
+    <div class="pe-t" style="margin:14px 0 8px;font-weight:700;font-size:13px;">Portails énergétiques à retenir</div>
+    ${month.portals.map(p=>`<div class="phase-explain-card"><div class="pe-body"><div class="pe-t">${p.d}</div><div class="pe-s">${p.t}</div></div></div>`).join('')}
+  `;
+}
+
+function renderAstroResult(){
+  const data=window._astroData;
+  if(!data)return;
+  const d=new Date(userProfile.birthDate+'T00:00:00');
+
+  const sunInfo=SIGN_DATA[data.sun.sign];
+  document.getElementById('astroSunEmoji').textContent=sunInfo.e;
+  document.getElementById('astroSunSign').textContent=data.sun.sign;
+  document.getElementById('astroSunDegree').textContent=data.sun.degree+'°';
+  document.getElementById('astroSunText').textContent=sunInfo.sunText;
+
+  const moonInfo=SIGN_DATA[data.moon.sign];
+  document.getElementById('astroMoonEmoji').textContent=moonInfo.e;
+  document.getElementById('astroMoonSign').textContent=data.moon.sign;
+  document.getElementById('astroMoonDegree').textContent=data.moon.degree+'°';
+  document.getElementById('astroMoonText').textContent=moonInfo.moonText;
+
+  const ascBlock=document.getElementById('astroAscBlock');
+  const noTimeNote=document.getElementById('astroNoTimeNote');
+  if(data.hasExactTime&&data.ascendant){
+    const ascInfo=SIGN_DATA[data.ascendant.sign];
+    document.getElementById('astroAscEmoji').textContent=ascInfo.e;
+    document.getElementById('astroAscSign').textContent=data.ascendant.sign;
+    document.getElementById('astroAscDegree').textContent=data.ascendant.degree+'°';
+    document.getElementById('astroAscText').textContent=ascInfo.ascText;
+    ascBlock.style.display='block';
+    noTimeNote.style.display='none';
+  } else {
+    ascBlock.style.display='none';
+    noTimeNote.style.display='block';
+  }
+
+  const retroBlock=document.getElementById('astroRetroBlock');
+  if(data.retrogrades&&data.retrogrades.length){
+    const fr={Mercury:'Mercure',Venus:'Vénus',Mars:'Mars',Jupiter:'Jupiter',Saturn:'Saturne',Uranus:'Uranus',Neptune:'Neptune',Pluto:'Pluton'};
+    document.getElementById('astroRetroText').textContent=data.retrogrades.map(p=>fr[p]||p).join(', ')+' — au moment de ta naissance. Une planète rétrograde invite à vivre son énergie de façon plus intérieure et réfléchie plutôt que dans l\'action directe.';
+    retroBlock.style.display='block';
+  } else {
+    retroBlock.style.display='none';
+  }
+
+  if(data.houses){
+    document.getElementById('astroHouses').innerHTML=data.houses.map(h=>{
+      const [houseLabel,houseTheme]=HOUSE_NAMES[h.number-1].split(' — ');
+      const style=HOUSE_STYLE_BY_SIGN[h.sign]||'';
+      return `<div class="phase-explain-card"><div class="pe-body">
+        <div class="pe-t">Maison ${h.number} — ${houseLabel}</div>
+        <div class="pe-s" style="margin-bottom:4px;">${houseTheme}</div>
+        <div class="pe-s"><b>${h.sign}</b> en Maison ${h.number} : tu vis ce domaine ${style}.</div>
+      </div></div>`;
+    }).join('');
+  } else {
+    document.getElementById('astroHouses').innerHTML=HOUSE_NAMES.map((h,i)=>`<div class="phase-explain-card"><div class="pe-body"><div class="pe-t">Maison ${i+1}</div><div class="pe-s">${h}</div></div></div>`).join('');
+  }
+
+  renderYearEnergy(sunInfo);
+  renderAstralClimate();
 }
 
 /* ═══════ ANNÉE ZODIACALE (CHINOISE) & ÉNERGIE PAR TRIMESTRE ═══════ */

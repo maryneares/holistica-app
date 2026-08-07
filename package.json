@@ -2,7 +2,7 @@
   "name": "holistica-app",
   "version": "1.0.0",
   "dependencies": {
-    "circular-natal-horoscope-js": "^1.6.0"
+    "circular-natal-horoscope-js": "^1.6.0",
     "stripe": "^17.0.0",
     "@supabase/supabase-js": "^2.45.0"
   }

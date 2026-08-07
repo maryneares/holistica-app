@@ -24,7 +24,7 @@ exports.handler = async function (event) {
   }
 
   try {
-    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&featuretype=city&addressdetails=1&limit=8&accept-language=fr`;
+    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&addressdetails=1&limit=8&accept-language=fr`;
     const res = await fetch(url, {
       headers: { 'User-Agent': 'HolisticaClub/1.0 (contact@holisticaclub.com)' }
     });
@@ -32,10 +32,11 @@ exports.handler = async function (event) {
     const data = await res.json();
 
     const cities = data
-      .filter(d => ['city', 'town', 'village', 'municipality'].includes(d.type) || d.class === 'place')
+      .filter(d => ['city', 'town', 'village', 'municipality', 'suburb', 'city_district', 'hamlet'].includes(d.type) || d.class === 'place' || d.class === 'boundary')
       .map(d => ({
         name: d.display_name.split(',')[0],
         fullName: d.display_name,
+        region: d.address?.state || d.address?.county || '',
         lat: parseFloat(d.lat),
         lon: parseFloat(d.lon),
         country: d.address?.country || ''

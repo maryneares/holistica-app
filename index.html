@@ -52,10 +52,27 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 
 /* Section */
 .sec{padding:28px 20px 12px;display:flex;align-items:baseline;justify-content:space-between;}
-.sec h2{font-family:'League Spartan',sans-serif;font-size:19px;color:var(--ink);font-weight:700;letter-spacing:-.01em;}
-.sec-sub{font-size:11px;color:var(--ink-l);margin-top:2px;font-weight:500;}
+.journey-strip{display:flex;flex-direction:column;gap:8px;padding:0 20px;margin-bottom:6px;}
+.journey-progress-wrap{padding:0 20px;margin-bottom:14px;}
+.journey-progress-lbl{display:flex;justify-content:space-between;font-size:12.5px;font-weight:700;color:var(--ink-l);margin-bottom:6px;}
+.journey-progress-lbl b{color:var(--purple-m);}
+.journey-progress-bar{height:8px;background:var(--lav-pale);border-radius:50px;overflow:hidden;}
+.journey-progress-fill{height:100%;background:linear-gradient(90deg,var(--purple-m),var(--peach));border-radius:50px;transition:width .6s cubic-bezier(.34,1.56,.64,1);}
+.journey-step{display:flex;align-items:center;gap:12px;background:white;border-radius:14px;padding:12px 14px;box-shadow:var(--sh);border:1px solid var(--border);cursor:pointer;opacity:0;transform:translateY(10px);animation:journeyIn .45s cubic-bezier(.22,1,.36,1) forwards;transition:transform .15s ease,box-shadow .15s ease;}
+.journey-step:active{transform:scale(.98);}
+@keyframes journeyIn{to{opacity:1;transform:translateY(0);}}
+.journey-step.done{background:var(--purple-t,#F3EFFC);border-color:transparent;}
+.journey-num{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--lav-pale);color:var(--purple-m);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;transition:background .3s,transform .3s;}
+.journey-step.done .journey-num{background:var(--purple-m);color:white;animation:journeyPop .35s ease;}
+@keyframes journeyPop{0%{transform:scale(1);}40%{transform:scale(1.25);}100%{transform:scale(1);}}
+.journey-body{flex:1;min-width:0;}
+.journey-t{font-weight:700;font-size:15px;color:var(--ink);}
+.journey-s{font-size:13px;color:var(--ink-l);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.journey-arr{flex-shrink:0;color:var(--ink-l);font-size:20px;}
+.sec h2{font-family:'League Spartan',sans-serif;font-size:20px;color:var(--ink);font-weight:700;letter-spacing:-.01em;}
+.sec-sub{font-size:13.5px;color:var(--ink-l);margin-top:2px;font-weight:500;}
 .sec h2 em{font-style:normal;font-weight:800;background:var(--grad-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--purple-m);}
-.sec a{font-size:11px;color:var(--purple-m);font-weight:600;cursor:pointer;font-family:'League Spartan',sans-serif;}
+.sec a{font-size:13.5px;color:var(--purple-m);font-weight:600;cursor:pointer;font-family:'League Spartan',sans-serif;}
 
 /* Cards */
 .card{background:white;border-radius:18px;box-shadow:var(--sh);border:1px solid var(--border);}
@@ -71,21 +88,21 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .si-logo{width:80px;height:80px;object-fit:contain;filter:brightness(0) invert(1);opacity:.9;}
 .si-brand{font-family:'League Spartan',sans-serif;font-size:26px;font-weight:800;color:white;margin-top:10px;letter-spacing:-.01em;}
 .si-brand span{font-weight:400;opacity:.7;}
-.si-tagline{font-size:14px;color:rgba(255,255,255,0.7);margin-top:8px;}
+.si-tagline{font-size:16px;color:rgba(255,255,255,0.95);margin-top:8px;}
 .si-form{position:relative;z-index:2;padding:0 24px 40px;display:flex;flex-direction:column;gap:12px;}
-.si-input{background:rgba(255,255,255,0.18);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.25);border-radius:16px;padding:16px 18px;font-size:15px;color:white;font-family:'League Spartan',sans-serif;outline:none;width:100%;}
+.si-input{background:rgba(255,255,255,0.18);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.25);border-radius:16px;padding:16px 18px;font-size:17px;color:white;font-family:'League Spartan',sans-serif;outline:none;width:100%;}
 .si-pwd-wrap{position:relative;}
 .si-pwd-wrap .si-input{padding-right:48px;}
-.si-pwd-toggle{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;padding:4px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.75);}
+.si-pwd-toggle{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;padding:4px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.95);}
 .si-pwd-toggle svg{width:20px;height:20px;}
-.si-input::placeholder{color:rgba(255,255,255,0.5);}
-.si-forgot{text-align:right;font-size:12px;color:rgba(255,255,255,0.6);cursor:pointer;margin-top:-4px;}
-.btn-w{background:white;color:var(--purple);border:none;padding:17px;border-radius:16px;font-size:16px;font-weight:700;cursor:pointer;font-family:'League Spartan',sans-serif;box-shadow:0 6px 28px rgba(0,0,0,0.12);transition:transform .15s;text-align:center;}
+.si-input::placeholder{color:rgba(255,255,255,0.75);}
+.si-forgot{text-align:right;font-size:14.5px;color:rgba(255,255,255,0.96);text-shadow:0 1px 3px rgba(0,0,0,0.12);cursor:pointer;margin-top:-4px;}
+.btn-w{background:white;color:var(--purple);border:none;padding:17px;border-radius:16px;font-size:18px;font-weight:700;cursor:pointer;font-family:'League Spartan',sans-serif;box-shadow:0 6px 28px rgba(0,0,0,0.12);transition:transform .15s;text-align:center;}
 .btn-w:active{transform:scale(0.98);}
-.si-div{display:flex;align-items:center;gap:12px;color:rgba(255,255,255,0.35);font-size:12px;}
+.si-div{display:flex;align-items:center;gap:12px;color:rgba(255,255,255,0.6);font-size:14.5px;}
 .si-div::before,.si-div::after{content:'';flex:1;height:1px;background:rgba(255,255,255,0.2);}
-.btn-glass{background:rgba(255,255,255,0.12);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);color:white;padding:14px;border-radius:14px;font-size:14px;font-weight:500;cursor:pointer;font-family:'League Spartan',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;}
-.si-btm{text-align:center;margin-top:12px;font-size:13px;color:rgba(255,255,255,0.45);}
+.btn-glass{background:rgba(255,255,255,0.12);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);color:white;padding:14px;border-radius:14px;font-size:16px;font-weight:500;cursor:pointer;font-family:'League Spartan',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;}
+.si-btm{text-align:center;margin-top:12px;font-size:15.5px;color:rgba(255,255,255,0.7);}
 .si-btm a{color:white;font-weight:700;cursor:pointer;}
 .si-bubbles{position:absolute;bottom:0;left:0;right:0;height:80px;z-index:1;pointer-events:none;overflow:hidden;}
 .bubble{position:absolute;background:rgba(255,255,255,0.15);border-radius:50%;}
@@ -99,36 +116,36 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .ob-progress{height:4px;background:rgba(255,255,255,0.2);border-radius:2px;margin:0 4px;}
 .ob-fill{height:100%;background:white;border-radius:2px;transition:width .4s;}
 .ob-content{flex:1;overflow-y:auto;padding:0 24px;display:flex;flex-direction:column;position:relative;z-index:1;}
-.ob-part{font-size:12px;color:rgba(255,255,255,0.85);font-weight:800;text-align:center;margin-top:20px;letter-spacing:1px;text-transform:uppercase;}
-.ob-title{font-family:'League Spartan',sans-serif;font-weight:800;font-size:28px;color:white;text-align:center;margin:6px 0 6px;line-height:1.15;letter-spacing:-.01em;}
+.ob-part{font-size:14.5px;color:rgba(255,255,255,0.96);text-shadow:0 1px 3px rgba(0,0,0,0.12);font-weight:800;text-align:center;margin-top:20px;letter-spacing:1px;text-transform:uppercase;}
+.ob-title{font-family:'League Spartan',sans-serif;font-weight:800;font-size:28px;color:white;text-align:center;margin:6px 0 6px;line-height:1.4;letter-spacing:-.01em;}
 .ob-title.dt-title{color:var(--ink);}
 .ob-title.dt-title em{background:var(--grad-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--purple-m);}
 .ob-title em{font-style:normal;font-weight:800;color:var(--peach);}
-.ob-q{font-size:15px;color:rgba(255,255,255,0.85);text-align:center;font-weight:500;margin-bottom:20px;line-height:1.4;}
+.ob-q{font-size:17px;color:rgba(255,255,255,0.96);text-shadow:0 1px 3px rgba(0,0,0,0.12);text-align:center;font-weight:500;margin-bottom:20px;line-height:1.4;}
 .ob-opts{display:flex;flex-direction:column;gap:10px;padding-bottom:16px;}
-.ob-opt{background:rgba(255,255,255,0.14);backdrop-filter:blur(6px);border:1.5px solid rgba(255,255,255,0.25);border-radius:16px;padding:16px 18px;font-size:14px;font-weight:600;color:white;cursor:pointer;text-align:center;transition:all .2s;font-family:'League Spartan',sans-serif;}
+.ob-opt{background:rgba(255,255,255,0.14);backdrop-filter:blur(6px);border:1.5px solid rgba(255,255,255,0.25);border-radius:16px;padding:16px 18px;font-size:16px;font-weight:600;color:white;cursor:pointer;text-align:center;transition:all .2s;font-family:'League Spartan',sans-serif;}
 .ob-opt:active,.ob-opt.sel{background:white;border-color:white;color:var(--purple);box-shadow:0 4px 16px rgba(0,0,0,0.15);}
 .ob-slider-wrap{display:flex;flex-direction:column;align-items:center;padding:16px 0;flex:1;justify-content:center;}
 .ob-slider-val{font-family:'League Spartan',sans-serif;font-size:56px;font-weight:800;color:white;}
 .ob-slider{width:100%;accent-color:white;margin:14px 0;}
-.ob-slider-labels{display:flex;justify-content:space-between;width:100%;font-size:12px;color:rgba(255,255,255,0.7);}
-.ob-input{background:rgba(255,255,255,0.14);backdrop-filter:blur(6px);border:1.5px solid rgba(255,255,255,0.3);border-radius:14px;padding:14px 16px;font-size:15px;color:white;font-family:'League Spartan',sans-serif;outline:none;width:100%;margin-bottom:10px;color-scheme:dark;}
+.ob-slider-labels{display:flex;justify-content:space-between;width:100%;font-size:14.5px;color:rgba(255,255,255,0.95);}
+.ob-input{background:rgba(255,255,255,0.14);backdrop-filter:blur(6px);border:1.5px solid rgba(255,255,255,0.3);border-radius:14px;padding:14px 16px;font-size:17px;color:white;font-family:'League Spartan',sans-serif;outline:none;width:100%;margin-bottom:10px;color-scheme:dark;}
 .ob-input.dt-input{background:var(--ivory-d);border:1.5px solid var(--border);color:var(--ink);color-scheme:light;}
 .ob-input.dt-input:focus{border-color:var(--purple-m);background:white;}
 .ob-input.dt-input::placeholder{color:var(--ink-l);}
 .ob-input:focus{border-color:white;background:rgba(255,255,255,0.22);}
-.ob-input::placeholder{color:rgba(255,255,255,0.55);}
+.ob-input::placeholder{color:rgba(255,255,255,0.8);}
 .ob-bottom{padding:10px 24px 34px;flex-shrink:0;position:relative;z-index:1;}
-.btn-ob{width:100%;background:white;color:var(--purple);border:none;padding:16px;border-radius:16px;font-size:15px;font-weight:800;cursor:pointer;font-family:'League Spartan',sans-serif;transition:transform .15s;}
+.btn-ob{width:100%;background:white;color:var(--purple);border:none;padding:16px;border-radius:16px;font-size:17px;font-weight:800;cursor:pointer;font-family:'League Spartan',sans-serif;transition:transform .15s;}
 .btn-ob:active{transform:scale(0.98);}
 .btn-ob:disabled{opacity:.3;}
 .btn-ob.purple{background:var(--purple);color:white;}
 /* Dosha grid for quiz */
 .dosha-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;}
-.dg-col-h{font-size:11px;font-weight:700;text-align:center;padding:8px 4px;border-radius:10px;color:white;}
-.dg-item{font-size:11px;font-weight:600;color:white;padding:11px 6px;border-radius:12px;cursor:pointer;text-align:center;line-height:1.3;transition:all .15s;background:rgba(255,255,255,0.14);backdrop-filter:blur(4px);border:1.5px solid rgba(255,255,255,0.22);}
+.dg-col-h{font-size:13.5px;font-weight:700;text-align:center;padding:8px 4px;border-radius:10px;color:white;}
+.dg-item{font-size:13.5px;font-weight:600;color:white;padding:11px 6px;border-radius:12px;cursor:pointer;text-align:center;line-height:1.55;transition:all .15s;background:rgba(255,255,255,0.14);backdrop-filter:blur(4px);border:1.5px solid rgba(255,255,255,0.22);}
 .dg-item.sel{border-color:white;background:white;color:var(--purple);box-shadow:0 4px 14px rgba(0,0,0,0.15);font-weight:800;}
-.dosha-q-label{font-size:12px;font-weight:700;color:white;margin-bottom:7px;}
+.dosha-q-label{font-size:14.5px;font-weight:700;color:white;margin-bottom:7px;}
 
 /* ═══ DASHBOARD ═══ */
 #dashboard{background:var(--ivory);}
@@ -136,20 +153,20 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .d-top .blob{opacity:.06;background:white;}
 .dz{position:relative;z-index:1;}
 .d-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
-.d-greet{font-size:14px;font-weight:600;color:rgba(255,255,255,0.85);}
+.d-greet{font-size:16px;font-weight:600;color:rgba(255,255,255,0.96);text-shadow:0 1px 3px rgba(0,0,0,0.12);}
 .d-name{font-family:'League Spartan',sans-serif;font-size:27px;color:white;font-weight:800;letter-spacing:-.01em;}
 .d-name em{font-style:normal;font-weight:800;color:var(--peach);}
-.d-av{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,0.15);border:2px solid rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;overflow:hidden;font-family:'League Spartan',sans-serif;font-weight:800;font-size:16px;color:white;}
+.d-av{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,0.15);border:2px solid rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;overflow:hidden;font-family:'League Spartan',sans-serif;font-weight:800;font-size:18px;color:white;}
 .d-pill{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.3);padding:7px 13px;border-radius:50px;}
 .d-pill-dot{width:6px;height:6px;background:white;border-radius:50%;}
-.d-pill-txt{font-size:12px;color:white;font-weight:700;}
+.d-pill-txt{font-size:14.5px;color:white;font-weight:700;}
 
 /* Tracker cards row */
 .trk-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:14px 20px 0;}
 .trk-mini{background:white;border-radius:16px;padding:12px 8px;text-align:center;box-shadow:var(--sh);border:1px solid var(--border);}
 .trk-mini-ic{display:flex;justify-content:center;margin-bottom:4px;}
-.trk-mini-v{font-family:'League Spartan',sans-serif;font-size:20px;color:var(--ink);font-weight:800;}
-.trk-mini-l{font-size:9px;color:var(--ink-l);text-transform:uppercase;letter-spacing:.5px;margin-top:1px;}
+.trk-mini-v{font-family:'League Spartan',sans-serif;font-size:21px;color:var(--ink);font-weight:800;}
+.trk-mini-l{font-size:12px;color:var(--ink-l);text-transform:uppercase;letter-spacing:.5px;margin-top:1px;}
 
 /* Recovery & Hormonal */
 .duo-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 20px;}
@@ -158,63 +175,63 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .gauge-wrap{display:flex;justify-content:center;}
 .duo-val{font-family:'League Spartan',sans-serif;font-size:28px;color:var(--ink);font-weight:800;}
 .duo-val.purple{background:var(--grad-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--purple-m);}
-.duo-lbl{font-size:10px;color:var(--ink-l);text-transform:uppercase;letter-spacing:.5px;margin-top:2px;}
-.duo-sub{font-size:10px;color:var(--ink-l);margin-top:4px;font-style:italic;}
+.duo-lbl{font-size:12.5px;color:var(--ink-l);text-transform:uppercase;letter-spacing:.5px;margin-top:2px;}
+.duo-sub{font-size:12.5px;color:var(--ink-l);margin-top:4px;font-style:italic;}
 
 /* Cycle card */
 .cycle-card{margin:0 20px;background:var(--grad);border-radius:18px;padding:18px;position:relative;overflow:hidden;}
 .badges-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 .rc-locked,.mv-locked{opacity:.85;}
 .rc-lock-overlay{position:absolute;inset:0;background:rgba(26,24,40,0.45);display:flex;align-items:center;justify-content:center;font-size:26px;}
-.rc-lock-hint{font-size:11px;color:var(--purple-m);font-weight:700;margin-top:2px;}
+.rc-lock-hint{font-size:13.5px;color:var(--purple-m);font-weight:700;margin-top:2px;}
 .mv-lock-overlay{position:absolute;inset:0;background:rgba(26,24,40,0.45);display:flex;align-items:center;justify-content:center;font-size:24px;}
 .badge-card{background:white;border:1.5px solid var(--border);border-radius:16px;padding:16px 12px;text-align:center;transition:opacity .2s;}
 .badge-card.locked{opacity:.5;}
 .badge-card-e{font-size:32px;margin-bottom:6px;}
-.badge-card-n{font-family:'League Spartan',sans-serif;font-weight:800;font-size:13px;color:var(--ink);margin-bottom:4px;}
-.badge-card-d{font-size:11px;color:var(--ink-l);line-height:1.35;}
+.badge-card-n{font-family:'League Spartan',sans-serif;font-weight:800;font-size:15.5px;color:var(--ink);margin-bottom:4px;}
+.badge-card-d{font-size:13.5px;color:var(--ink-l);line-height:1.35;}
 .badge-celeb{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:rgba(26,24,40,0);pointer-events:none;transition:background .3s;}
 .badge-celeb.show{background:rgba(26,24,40,0.45);}
 .badge-celeb-card{background:white;border-radius:22px;padding:32px 28px;text-align:center;max-width:280px;box-shadow:var(--sh-m);transform:scale(.7) translateY(20px);opacity:0;transition:transform .4s cubic-bezier(.34,1.56,.64,1),opacity .3s;}
 .badge-celeb.show .badge-celeb-card{transform:scale(1) translateY(0);opacity:1;}
 .badge-celeb-e{font-size:52px;margin-bottom:10px;animation:badgeBounce 1.2s ease-in-out infinite;}
 @keyframes badgeBounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
-.badge-celeb-t{font-size:11px;font-weight:800;color:var(--purple-m);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;}
-.badge-celeb-n{font-family:'League Spartan',sans-serif;font-weight:800;font-size:19px;color:var(--ink);margin-bottom:6px;}
-.badge-celeb-d{font-size:12px;color:var(--ink-l);line-height:1.4;}
+.badge-celeb-t{font-size:13.5px;font-weight:800;color:var(--purple-m);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;}
+.badge-celeb-n{font-family:'League Spartan',sans-serif;font-weight:800;font-size:20px;color:var(--ink);margin-bottom:6px;}
+.badge-celeb-d{font-size:14.5px;color:var(--ink-l);line-height:1.4;}
 .cycle-card::after{content:'';position:absolute;bottom:-20px;right:-20px;width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,0.08);}
-.cycle-t{font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:4px;}
-.cycle-v{font-family:'League Spartan',sans-serif;font-size:18px;color:white;font-weight:700;}
-.cycle-phase{font-size:11px;color:rgba(255,255,255,0.7);margin-top:4px;}
+.cycle-t{font-size:14.5px;color:rgba(255,255,255,0.96);text-shadow:0 1px 3px rgba(0,0,0,0.12);margin-bottom:4px;}
+.cycle-v{font-family:'League Spartan',sans-serif;font-size:19px;color:white;font-weight:700;}
+.cycle-phase{font-size:13.5px;color:rgba(255,255,255,0.95);margin-top:4px;}
 .cycle-head{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1;margin-bottom:12px;}
-.cycle-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.22);padding:6px 13px;border-radius:50px;font-size:12px;font-weight:800;color:white;}
-.cycle-day{font-size:12px;font-weight:600;color:rgba(255,255,255,0.9);}
+.cycle-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.22);padding:6px 13px;border-radius:50px;font-size:14.5px;font-weight:800;color:white;}
+.cycle-day{font-size:14.5px;font-weight:600;color:rgba(255,255,255,0.9);}
 .cycle-bar{height:5px;background:rgba(255,255,255,0.2);border-radius:50px;margin-bottom:14px;position:relative;z-index:1;overflow:hidden;}
 .cycle-bar-fill{height:100%;background:white;border-radius:50px;transition:width .4s;}
-.cycle-msg-t{font-size:15px;font-weight:800;color:white;margin-bottom:6px;position:relative;z-index:1;}
-.cycle-msg{font-size:13px;font-weight:500;color:rgba(255,255,255,0.95);line-height:1.55;position:relative;z-index:1;}
-.cycle-energy{display:flex;align-items:center;gap:6px;margin-top:12px;font-size:12px;font-weight:600;color:rgba(255,255,255,0.9);position:relative;z-index:1;}
+.cycle-msg-t{font-size:17px;font-weight:800;color:white;margin-bottom:6px;position:relative;z-index:1;}
+.cycle-msg{font-size:15.5px;font-weight:500;color:rgba(255,255,255,0.95);line-height:1.55;position:relative;z-index:1;}
+.cycle-energy{display:flex;align-items:center;gap:6px;margin-top:12px;font-size:14.5px;font-weight:600;color:rgba(255,255,255,0.9);position:relative;z-index:1;}
 .cycle-energy-dot{width:6px;height:6px;border-radius:50%;background:white;}
 
 /* Mood */
 .mood-card{margin:0 20px;background:white;border-radius:18px;padding:14px 16px;box-shadow:var(--sh);border:1px solid var(--border);}
-.mood-q{font-size:13px;color:var(--ink-m);margin-bottom:10px;font-weight:500;}
+.mood-q{font-size:15.5px;color:var(--ink-m);margin-bottom:10px;font-weight:500;}
 .mood-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
 .mo{aspect-ratio:2.1;border-radius:14px;border:1.5px solid var(--border);background:var(--ivory);color:var(--ink-l);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;transition:all .15s;font-family:'League Spartan',sans-serif;}
 .mo.sel{background:var(--lav-pale);border-color:var(--purple-l);color:var(--purple-m);transform:scale(1.02);}
-.mo-l{font-size:11px;font-weight:600;color:inherit;}
+.mo-l{font-size:13.5px;font-weight:600;color:inherit;}
 
 /* Sleep & Stress quick */
 .quick-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 20px;}
 .quick-card{background:white;border-radius:16px;padding:12px;box-shadow:var(--sh);border:1px solid var(--border);}
-.quick-lbl{font-size:10px;color:var(--ink-l);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;}
+.quick-lbl{font-size:12.5px;color:var(--ink-l);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;}
 .quick-val{font-family:'League Spartan',sans-serif;font-size:22px;color:var(--ink);font-weight:800;}
-.quick-unit{font-size:11px;color:var(--ink-l);}
+.quick-unit{font-size:13.5px;color:var(--ink-l);}
 .quick-slider{width:100%;accent-color:var(--purple);margin-top:4px;}
 .sleep-time-row{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;}
 .sleep-time-box{background:var(--ivory);border-radius:10px;padding:6px 8px;border:1px solid var(--border);}
-.sleep-time-box label{display:block;font-size:9px;color:var(--ink-l);text-transform:uppercase;letter-spacing:.3px;margin-bottom:2px;font-weight:600;}
-.sleep-time-box input[type=time]{border:none;background:transparent;font-family:'League Spartan',sans-serif;font-weight:700;font-size:13px;color:var(--ink);width:100%;padding:0;}
+.sleep-time-box label{display:block;font-size:12px;color:var(--ink-l);text-transform:uppercase;letter-spacing:.3px;margin-bottom:2px;font-weight:600;}
+.sleep-time-box input[type=time]{border:none;background:transparent;font-family:'League Spartan',sans-serif;font-weight:700;font-size:15.5px;color:var(--ink);width:100%;padding:0;}
 
 /* Routine todo */
 .todo-wrap{margin:0 20px;background:var(--grad);border-radius:18px;padding:6px 16px;box-shadow:var(--sh);position:relative;overflow:hidden;}
@@ -223,18 +240,18 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .todo-i:last-child{border-bottom:none;}
 .tck{width:20px;height:20px;border-radius:50%;border:2px solid rgba(255,255,255,0.6);flex-shrink:0;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;}
 .tck.done{background:white;border-color:white;}
-.tck.done::after{content:'✓';color:var(--purple);font-size:10px;font-weight:700;}
+.tck.done::after{content:'✓';color:var(--purple);font-size:12.5px;font-weight:700;}
 .todo-body{flex:1;}
-.todo-t{font-size:12px;color:white;font-weight:600;}
-.todo-t.done{color:rgba(255,255,255,0.5);text-decoration:line-through;}
-.todo-s{font-size:10px;color:rgba(255,255,255,0.6);margin-top:1px;}
+.todo-t{font-size:14.5px;color:white;font-weight:600;}
+.todo-t.done{color:rgba(255,255,255,0.75);text-decoration:line-through;}
+.todo-s{font-size:12.5px;color:rgba(255,255,255,0.96);text-shadow:0 1px 3px rgba(0,0,0,0.12);margin-top:1px;}
 
 /* ═══ MOUVEMENT ═══ */
 #mouvement{background:var(--ivory);}
 .mv-top{background:var(--grad-h);padding:48px 20px 20px;flex-shrink:0;position:relative;overflow:hidden;}
 .mv-h1{font-family:'League Spartan',sans-serif;font-size:26px;color:white;font-weight:800;letter-spacing:-.01em;position:relative;z-index:1;}
 .mv-h1 em{font-style:normal;font-weight:800;color:var(--peach);}
-.mv-sub{font-size:12px;color:rgba(255,255,255,0.6);margin-top:3px;position:relative;z-index:1;}
+.mv-sub{font-size:14.5px;color:rgba(255,255,255,0.96);text-shadow:0 1px 3px rgba(0,0,0,0.12);margin-top:3px;position:relative;z-index:1;}
 .mv-filters{display:flex;gap:6px;padding:10px 20px;overflow-x:auto;scrollbar-width:none;flex-shrink:0;}
 .mv-filters::-webkit-scrollbar{display:none;}
 /* Parcours guidés */
@@ -248,47 +265,47 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .prog-cover.meditation{background:linear-gradient(135deg,#5B4EA8,#C890C8);}
 .prog-cover.yoga{background:linear-gradient(135deg,#C890C8,#F0B088);}
 .prog-cover.pranayama{background:linear-gradient(135deg,#7FBFA0,#7B6EC8);}
-.prog-soon-badge{position:absolute;top:8px;right:8px;background:rgba(26,24,40,0.55);color:white;font-size:9px;font-weight:800;padding:4px 9px;border-radius:50px;text-transform:uppercase;letter-spacing:.3px;}
+.prog-soon-badge{position:absolute;top:8px;right:8px;background:rgba(26,24,40,0.55);color:white;font-size:12px;font-weight:800;padding:4px 9px;border-radius:50px;text-transform:uppercase;letter-spacing:.3px;}
 .prog-body{padding:12px 14px;}
-.prog-name{font-size:13px;font-weight:700;color:var(--ink);line-height:1.3;margin-bottom:6px;min-height:34px;}
+.prog-name{font-size:15.5px;font-weight:700;color:var(--ink);line-height:1.55;margin-bottom:6px;min-height:34px;}
 .prog-progress-bar{height:5px;background:var(--ivory-d);border-radius:50px;overflow:hidden;margin-bottom:5px;}
 .prog-progress-fill{height:100%;background:var(--grad);border-radius:50px;}
-.prog-progress-lbl{font-size:10px;color:var(--ink-l);font-weight:600;}
+.prog-progress-lbl{font-size:12.5px;color:var(--ink-l);font-weight:600;}
 .explore-divider{display:flex;align-items:center;gap:10px;padding:24px 20px 4px;}
-.explore-divider-t{font-size:13px;font-weight:800;color:var(--ink-l);text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;}
+.explore-divider-t{font-size:15.5px;font-weight:800;color:var(--ink-l);text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;}
 .explore-divider-line{flex:1;height:1px;background:var(--border);}
 /* Écran détail parcours */
 .pd-top{background:var(--grad-h);padding:48px 20px 24px;flex-shrink:0;position:relative;overflow:hidden;}
-.pd-h1{font-family:'League Spartan',sans-serif;font-size:22px;color:white;font-weight:800;letter-spacing:-.01em;position:relative;z-index:1;line-height:1.2;}
-.pd-sub{font-size:12px;color:rgba(255,255,255,0.75);margin-top:6px;position:relative;z-index:1;}
+.pd-h1{font-family:'League Spartan',sans-serif;font-size:22px;color:white;font-weight:800;letter-spacing:-.01em;position:relative;z-index:1;line-height:1.45;}
+.pd-sub{font-size:14.5px;color:rgba(255,255,255,0.95);margin-top:6px;position:relative;z-index:1;}
 .pd-progress-wrap{margin-top:14px;position:relative;z-index:1;}
 .pd-progress-bar{height:7px;background:rgba(255,255,255,0.22);border-radius:50px;overflow:hidden;}
 .pd-progress-fill{height:100%;background:white;border-radius:50px;transition:width .4s;}
-.pd-progress-lbl{font-size:11px;color:rgba(255,255,255,0.85);font-weight:600;margin-top:6px;}
+.pd-progress-lbl{font-size:13.5px;color:rgba(255,255,255,0.96);text-shadow:0 1px 3px rgba(0,0,0,0.12);font-weight:600;margin-top:6px;}
 .pd-session{display:flex;align-items:center;gap:12px;background:white;border-radius:16px;padding:10px;margin:0 20px 10px;border:1px solid var(--border);box-shadow:var(--sh);cursor:pointer;}
 .pd-session.locked{opacity:.5;cursor:default;}
 .pd-session-th{width:96px;height:64px;border-radius:12px;flex-shrink:0;position:relative;overflow:hidden;background:var(--ivory-d);}
 .pd-session-th img{width:100%;height:100%;object-fit:cover;}
-.pd-session-badge{position:absolute;bottom:5px;right:5px;width:22px;height:22px;border-radius:50%;background:rgba(26,24,40,0.65);color:white;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;}
+.pd-session-badge{position:absolute;bottom:5px;right:5px;width:22px;height:22px;border-radius:50%;background:rgba(26,24,40,0.65);color:white;display:flex;align-items:center;justify-content:center;font-size:13.5px;font-weight:800;}
 .pd-session-badge.done{background:var(--grad);}
-.pd-session-lock-overlay{position:absolute;inset:0;background:rgba(250,248,255,0.72);display:flex;align-items:center;justify-content:center;font-size:20px;}
+.pd-session-lock-overlay{position:absolute;inset:0;background:rgba(250,248,255,0.72);display:flex;align-items:center;justify-content:center;font-size:21px;}
 .pd-session-body{flex:1;min-width:0;}
-.pd-session-title{font-size:13px;font-weight:700;color:var(--ink);}
-.pd-session-meta{font-size:11px;color:var(--ink-l);margin-top:1px;}
-.pd-session-arr{color:var(--purple-m);font-size:16px;flex-shrink:0;}
+.pd-session-title{font-size:15.5px;font-weight:700;color:var(--ink);}
+.pd-session-meta{font-size:13.5px;color:var(--ink-l);margin-top:1px;}
+.pd-session-arr{color:var(--purple-m);font-size:18px;flex-shrink:0;}
 .pd-intro-card{margin:16px 20px;background:white;border-radius:16px;padding:16px 18px;box-shadow:var(--sh);border:1px solid var(--border);}
-.pd-intro-text{font-size:13px;color:var(--ink-m);line-height:1.6;}
-.pd-intro-freq{font-size:11px;color:var(--purple-m);font-weight:700;margin-top:8px;}
+.pd-intro-text{font-size:15.5px;color:var(--ink-m);line-height:1.6;}
+.pd-intro-freq{font-size:13.5px;color:var(--purple-m);font-weight:700;margin-top:8px;}
 .pd-progress-card{margin:0 20px 8px;background:white;border-radius:16px;padding:14px 18px;box-shadow:var(--sh);border:1px solid var(--border);}
 .pd-progress-bar{height:8px;background:var(--ivory-d);border-radius:50px;overflow:hidden;}
 .pd-progress-fill{height:100%;background:var(--grad);border-radius:50px;transition:width .4s;}
-.pd-progress-lbl{font-size:11px;color:var(--ink-l);font-weight:600;margin-top:8px;}
-.pd-week-title{font-size:12px;font-weight:800;color:var(--ink-l);text-transform:uppercase;letter-spacing:.5px;margin:22px 20px 10px;}
+.pd-progress-lbl{font-size:13.5px;color:var(--ink-l);font-weight:600;margin-top:8px;}
+.pd-week-title{font-size:14.5px;font-weight:800;color:var(--ink-l);text-transform:uppercase;letter-spacing:.5px;margin:22px 20px 10px;}
 .pd-week-title:first-of-type{margin-top:16px;}
 /* Diététique */
 .diet-locked-wrap{padding:60px 24px;text-align:center;}
 .diet-tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px 20px 12px;}
-.diet-tab{background:white;color:var(--ink-m);border:1.5px solid var(--border);font-size:12.5px;font-weight:700;padding:16px 10px;border-radius:16px;cursor:pointer;font-family:'League Spartan',sans-serif;text-align:center;line-height:1.3;min-height:96px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;}
+.diet-tab{background:white;color:var(--ink-m);border:1.5px solid var(--border);font-size:15px;font-weight:700;padding:16px 10px;border-radius:16px;cursor:pointer;font-family:'League Spartan',sans-serif;text-align:center;line-height:1.55;min-height:96px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;}
 .diet-tab-ic{color:var(--purple-m);flex-shrink:0;}
 .diet-tab.active .diet-tab-ic{color:white;}
 .diet-tab.active{background:var(--grad);color:white;border-color:transparent;}
@@ -297,118 +314,121 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .diet-journal-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
 .diet-action-card{background:white;border:1.5px solid var(--border);border-radius:14px;padding:16px 10px;text-align:center;cursor:pointer;}
 .diet-action-ic{color:var(--purple-m);margin-bottom:6px;display:flex;align-items:center;justify-content:center;}
-.diet-action-t{font-size:12px;font-weight:700;color:var(--ink);line-height:1.3;}
+.diet-action-t{font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.55;}
 .food-pill{margin-bottom:14px;}
 .food-pill:last-child{margin-bottom:0;}
-.food-pill-top{display:flex;justify-content:space-between;font-size:12px;font-weight:700;color:var(--ink);margin-bottom:5px;}
+.food-pill-top{display:flex;justify-content:space-between;font-size:14.5px;font-weight:700;color:var(--ink);margin-bottom:5px;}
 .food-pill-bar{height:8px;border-radius:8px;background:var(--lav-pale);overflow:hidden;}
 .food-pill-fill{height:100%;background:var(--grad);border-radius:8px;transition:width .3s;}
 .food-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);}
 .food-item:last-child{border-bottom:none;}
 .food-item-body{flex:1;min-width:0;}
-.food-item-n{font-size:12.5px;font-weight:700;color:var(--ink);}
-.food-item-m{font-size:11px;color:var(--ink-l);margin-top:1px;}
-.food-item-del{background:var(--lav-pale);color:var(--ink-l);border:none;width:26px;height:26px;border-radius:50%;font-size:12px;cursor:pointer;flex-shrink:0;}
-.food-empty{font-size:12.5px;color:var(--ink-l);text-align:center;padding:14px 0;}
+.food-item-n{font-size:15px;font-weight:700;color:var(--ink);}
+.food-item-m{font-size:13.5px;color:var(--ink-l);margin-top:1px;}
+.food-item-del{background:var(--lav-pale);color:var(--ink-l);border:none;width:26px;height:26px;border-radius:50%;font-size:14.5px;cursor:pointer;flex-shrink:0;}
+.food-empty{font-size:15px;color:var(--ink-l);text-align:center;padding:14px 0;}
 .food-hist-toggle{display:flex;gap:8px;margin-bottom:14px;}
-.food-hist-btn{border:1.5px solid var(--border);background:white;color:var(--ink-m);font-size:12px;font-weight:700;padding:7px 14px;border-radius:20px;cursor:pointer;font-family:'League Spartan',sans-serif;}
+.food-hist-btn{border:1.5px solid var(--border);background:white;color:var(--ink-m);font-size:14.5px;font-weight:700;padding:7px 14px;border-radius:20px;cursor:pointer;font-family:'League Spartan',sans-serif;}
 .food-hist-btn.active{background:var(--grad);color:white;border-color:transparent;}
 .food-hist-chart{display:flex;align-items:flex-end;gap:4px;height:100px;}
 .food-hist-col{flex:1;display:flex;flex-direction:column;align-items:center;height:100%;}
 .food-hist-bar-wrap{flex:1;width:100%;display:flex;align-items:flex-end;}
 .food-hist-bar{width:100%;background:var(--grad);border-radius:4px 4px 0 0;min-height:2px;}
-.food-hist-lbl{font-size:9px;color:var(--ink-l);margin-top:4px;}
-.food-add-btn{background:var(--lav-pale);color:var(--purple);border:none;font-size:11px;font-weight:700;padding:6px 12px;border-radius:20px;cursor:pointer;font-family:'League Spartan',sans-serif;}
+.food-hist-lbl{font-size:12px;color:var(--ink-l);margin-top:4px;}
+.food-add-btn{background:var(--lav-pale);color:var(--purple);border:none;font-size:13.5px;font-weight:700;padding:6px 12px;border-radius:20px;cursor:pointer;font-family:'League Spartan',sans-serif;}
 .prog-stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
 .prog-stat-card{background:white;border:1px solid var(--border);border-radius:16px;padding:16px;text-align:center;}
 .prog-stat-v{font-family:'League Spartan',sans-serif;font-weight:800;font-size:26px;color:var(--purple);}
-.prog-stat-l{font-size:11.5px;color:var(--ink-l);margin-top:2px;}
-.prog-section-title{font-size:14px;font-weight:700;color:var(--ink);margin:20px 0 10px;}
-.prog-mood-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px;}
+.prog-stat-l{font-size:14px;color:var(--ink-l);margin-top:2px;}
+.prog-section-title{font-size:16px;font-weight:700;color:var(--ink);margin:20px 0 10px;}
+.prog-mood-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);font-size:15.5px;}
 .prog-mood-row:last-child{border-bottom:none;}
 .cf-row{display:flex;gap:8px;margin-bottom:8px;}
 .cf-field{flex:1;}
-.cf-field label{font-size:10.5px;font-weight:700;color:var(--ink-l);display:block;margin-bottom:4px;}
+.cf-field label{font-size:13px;font-weight:700;color:var(--ink-l);display:block;margin-bottom:4px;}
 .off-search-row{display:flex;gap:8px;margin-bottom:8px;}
+.food-quick-row{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px;}
+.food-quick-chip{background:white;border:1.5px solid var(--border);border-radius:50px;padding:7px 13px;font-size:14px;font-weight:600;color:var(--ink);cursor:pointer;font-family:'League Spartan',sans-serif;}
+.food-quick-chip:active{background:var(--lav-pale);border-color:var(--purple-m);}
 .off-search-row input{flex:1;}
-.off-loading{font-size:11.5px;color:var(--ink-l);padding:8px 2px;}
+.off-loading{font-size:14px;color:var(--ink-l);padding:8px 2px;}
 .off-result{padding:9px 10px;border-radius:10px;background:var(--lav-pale);margin-bottom:6px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:8px;}
-.off-result-n{font-size:12px;font-weight:600;color:var(--ink);flex:1;}
-.off-result-k{font-size:11px;color:var(--purple-m);font-weight:700;flex-shrink:0;}
-.cf-divider{font-size:11px;color:var(--ink-l);text-align:center;margin:12px 0 10px;position:relative;}
+.off-result-n{font-size:14.5px;font-weight:600;color:var(--ink);flex:1;}
+.off-result-k{font-size:13.5px;color:var(--purple-m);font-weight:700;flex-shrink:0;}
+.cf-divider{font-size:13.5px;color:var(--ink-l);text-align:center;margin:12px 0 10px;position:relative;}
 .referral-card{background:white;border-radius:20px;padding:22px;text-align:center;box-shadow:var(--sh);border:1.5px solid var(--purple-l);}
-.referral-card-lbl{font-size:11px;font-weight:700;color:var(--ink-l);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;}
+.referral-card-lbl{font-size:13.5px;font-weight:700;color:var(--ink-l);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;}
 .referral-code{font-family:'League Spartan',sans-serif;font-size:30px;font-weight:800;color:var(--purple);letter-spacing:2px;margin-bottom:6px;}
-.referral-link{font-size:11px;color:var(--ink-l);word-break:break-all;}
+.referral-link{font-size:13.5px;color:var(--ink-l);word-break:break-all;}
 .referral-stat-card{background:var(--lav-pale);border-radius:18px;padding:20px;text-align:center;margin-top:14px;}
 .referral-stat-v{font-family:'League Spartan',sans-serif;font-size:32px;font-weight:800;color:var(--purple);}
-.referral-stat-l{font-size:12px;color:var(--ink-m);font-weight:600;margin-top:2px;}
+.referral-stat-l{font-size:14.5px;color:var(--ink-m);font-weight:600;margin-top:2px;}
 .diet-locked-ic{font-size:44px;margin-bottom:16px;}
-.diet-locked-t{font-family:'League Spartan',sans-serif;font-size:19px;font-weight:800;color:var(--ink);margin-bottom:8px;}
-.diet-locked-p{font-size:13px;color:var(--ink-m);line-height:1.6;margin-bottom:20px;}
+.diet-locked-t{font-family:'League Spartan',sans-serif;font-size:20px;font-weight:800;color:var(--ink);margin-bottom:8px;}
+.diet-locked-p{font-size:15.5px;color:var(--ink-m);line-height:1.6;margin-bottom:20px;}
 .diet-preview-wrap{position:relative;pointer-events:none;user-select:none;filter:blur(3px);opacity:.55;}
 .diet-upgrade-card{margin:16px 20px 24px;background:var(--grad);border-radius:18px;padding:22px 20px;text-align:center;box-shadow:var(--sh-m);}
 .diet-upgrade-ic{font-size:32px;margin-bottom:8px;}
-.diet-upgrade-t{font-family:'League Spartan',sans-serif;font-size:16px;font-weight:800;color:white;margin-bottom:6px;}
-.diet-upgrade-p{font-size:12.5px;color:rgba(255,255,255,0.9);line-height:1.5;margin-bottom:16px;}
-.diet-upgrade-btn{width:100%;background:white;color:var(--purple);border:none;padding:14px;border-radius:12px;font-size:14px;font-weight:800;cursor:pointer;font-family:'League Spartan',sans-serif;}
+.diet-upgrade-t{font-family:'League Spartan',sans-serif;font-size:18px;font-weight:800;color:white;margin-bottom:6px;}
+.diet-upgrade-p{font-size:15px;color:rgba(255,255,255,0.9);line-height:1.5;margin-bottom:16px;}
+.diet-upgrade-btn{width:100%;background:white;color:var(--purple);border:none;padding:14px;border-radius:12px;font-size:16px;font-weight:800;cursor:pointer;font-family:'League Spartan',sans-serif;}
 .diet-summary-card{margin:0 20px 20px;background:white;border-radius:18px;padding:18px 20px;box-shadow:var(--sh);border:1px solid var(--border);}
-.diet-summary-t{font-size:12px;color:var(--ink-m);font-weight:600;margin-bottom:14px;}
-.diet-summary-obj{font-size:12px;color:var(--purple-m);font-weight:700;margin-bottom:14px;}
+.diet-summary-t{font-size:14.5px;color:var(--ink-m);font-weight:600;margin-bottom:14px;}
+.diet-summary-obj{font-size:14.5px;color:var(--purple-m);font-weight:700;margin-bottom:14px;}
 .diet-summary-row{display:flex;justify-content:space-between;}
 .diet-summary-item{text-align:center;flex:1;}
-.diet-summary-v{font-family:'League Spartan',sans-serif;font-size:20px;font-weight:800;background:var(--grad-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--purple-m);}
-.diet-summary-l{font-size:10px;color:var(--ink-l);margin-top:2px;font-weight:600;text-transform:uppercase;letter-spacing:.3px;}
+.diet-summary-v{font-family:'League Spartan',sans-serif;font-size:21px;font-weight:800;background:var(--grad-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--purple-m);}
+.diet-summary-l{font-size:12.5px;color:var(--ink-l);margin-top:2px;font-weight:600;text-transform:uppercase;letter-spacing:.3px;}
 .diet-meal-card{margin:0 20px 22px;background:white;border-radius:16px;padding:18px;box-shadow:var(--sh);border:1px solid var(--border);}
 .diet-meal-head{margin-bottom:12px;}
-.diet-meal-name{font-family:'League Spartan',sans-serif;font-size:17px;font-weight:800;color:var(--ink);margin-bottom:8px;}
+.diet-meal-name{font-family:'League Spartan',sans-serif;font-size:18px;font-weight:800;color:var(--ink);margin-bottom:8px;}
 .diet-meal-macros{display:flex;gap:6px;flex-wrap:wrap;}
-.diet-macro-pill{font-size:11px;font-weight:700;padding:4px 10px;border-radius:50px;background:var(--lav-pale);color:var(--purple-m);}
+.diet-macro-pill{font-size:13.5px;font-weight:700;padding:4px 10px;border-radius:50px;background:var(--lav-pale);color:var(--purple-m);}
 .diet-meal-idea{display:flex;gap:12px;padding:12px 0;border-top:1px solid var(--border);}
 .diet-meal-idea:first-of-type{border-top:none;padding-top:0;}
 .diet-meal-idea-img{width:52px;height:52px;border-radius:10px;object-fit:cover;flex-shrink:0;background:var(--ivory-d);}
 .diet-meal-idea-body{flex:1;min-width:0;}
-.diet-meal-idea-t{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:2px;}
-.diet-meal-idea-s{font-size:12px;color:var(--ink-m);line-height:1.5;}
-.diet-meal-empty{font-size:12px;color:var(--ink-l);font-style:italic;padding:6px 0;}
+.diet-meal-idea-t{font-size:15.5px;font-weight:700;color:var(--ink);margin-bottom:2px;}
+.diet-meal-idea-s{font-size:14.5px;color:var(--ink-m);line-height:1.5;}
+.diet-meal-empty{font-size:14.5px;color:var(--ink-l);font-style:italic;padding:6px 0;}
 .diet-info-card{margin:20px 20px 0;background:white;border-radius:16px;padding:18px;box-shadow:var(--sh);border:1px solid var(--border);}
-.diet-info-t{font-size:12px;font-weight:800;color:var(--purple);text-transform:uppercase;letter-spacing:.3px;margin-bottom:10px;}
-.diet-info-row{font-size:12px;color:var(--ink-m);line-height:1.5;margin-bottom:8px;}
+.diet-info-t{font-size:14.5px;font-weight:800;color:var(--purple);text-transform:uppercase;letter-spacing:.3px;margin-bottom:10px;}
+.diet-info-row{font-size:14.5px;color:var(--ink-m);line-height:1.5;margin-bottom:8px;}
 .diet-info-row b{color:var(--ink);}
-.plan-option-t{font-size:13px;font-weight:800;color:var(--ink);margin:14px 0 4px;}
+.plan-option-t{font-size:15.5px;font-weight:800;color:var(--ink);margin:14px 0 4px;}
 .plan-option-t:first-child{margin-top:0;}
-.plan-label{font-size:12.5px;font-weight:700;color:var(--purple-m);margin:8px 0 3px;}
+.plan-label{font-size:15px;font-weight:700;color:var(--purple-m);margin:8px 0 3px;}
 .plan-label:first-child{margin-top:0;}
-.plan-list{font-size:12px;color:var(--ink-m);line-height:1.6;margin-bottom:8px;}
-.plan-line{font-size:12px;color:var(--ink-m);line-height:1.6;margin-bottom:8px;}
+.plan-list{font-size:14.5px;color:var(--ink-m);line-height:1.6;margin-bottom:8px;}
+.plan-line{font-size:14.5px;color:var(--ink-m);line-height:1.6;margin-bottom:8px;}
 .plan-table{width:100%;border-collapse:collapse;margin-top:4px;}
-.plan-table td{font-size:12px;color:var(--ink-m);padding:7px 6px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5;}
+.plan-table td{font-size:14.5px;color:var(--ink-m);padding:7px 6px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5;}
 .plan-table td:first-child{font-weight:700;color:var(--ink);width:36%;white-space:nowrap;}
 .plan-table tr:last-child td{border-bottom:none;}
 .plan-holistica-card{margin:0 20px 10px;background:linear-gradient(135deg,var(--purple-l,#f3eefc),#fff);border-radius:16px;padding:16px 18px;box-shadow:var(--sh);border:1px solid var(--border);}
-.plan-holistica-t{font-size:11px;font-weight:800;color:var(--purple);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;}
-.plan-holistica-body{font-size:12.5px;font-weight:700;color:var(--ink);line-height:1.6;}
+.plan-holistica-t{font-size:13.5px;font-weight:800;color:var(--purple);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;}
+.plan-holistica-body{font-size:15px;font-weight:700;color:var(--ink);line-height:1.6;}
 .plan-divider{border:none;height:3px;border-radius:3px;background:var(--grad);margin:22px 20px 6px;}
-.diet-week-note{text-align:center;font-size:11px;color:var(--ink-l);margin:14px 20px 4px;font-style:italic;}
+.diet-week-note{text-align:center;font-size:13.5px;color:var(--ink-l);margin:14px 20px 4px;font-style:italic;}
 
 /* Weekly calendar */
 .wk-cal{margin:14px 20px 0;background:white;border-radius:18px;padding:14px;box-shadow:var(--sh);border:1px solid var(--border);flex-shrink:0;}
 .wk-cal-head{margin-bottom:10px;}
-.wk-cal-title{font-size:11px;font-weight:700;color:var(--ink-l);text-transform:uppercase;letter-spacing:.4px;}
+.wk-cal-title{font-size:13.5px;font-weight:700;color:var(--ink-l);text-transform:uppercase;letter-spacing:.4px;}
 .wk-cal-row{display:flex;justify-content:space-between;gap:4px;}
 .wk-day{display:flex;flex-direction:column;align-items:center;gap:5px;flex:1;cursor:pointer;}
-.wk-day-l{font-size:9px;color:var(--ink-l);font-weight:700;text-transform:uppercase;}
-.wk-day-c{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--ink-l);background:var(--ivory);border:1.5px solid var(--border);transition:all .15s;}
+.wk-day-l{font-size:12px;color:var(--ink-l);font-weight:700;text-transform:uppercase;}
+.wk-day-c{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14.5px;font-weight:700;color:var(--ink-l);background:var(--ivory);border:1.5px solid var(--border);transition:all .15s;}
 .wk-day.today .wk-day-c{border-color:var(--purple);color:var(--purple);box-shadow:0 0 0 3px rgba(91,78,168,0.12);}
 .wk-day.done .wk-day-c{background:var(--grad);border-color:transparent;color:white;}
 .wk-today-card{margin-top:12px;display:flex;align-items:center;gap:10px;background:var(--lav-pale);border-radius:14px;padding:8px;cursor:pointer;}
 .wk-today-th{width:52px;height:52px;border-radius:10px;object-fit:cover;flex-shrink:0;background:var(--border);}
 .wk-today-info{flex:1;min-width:0;}
-.wk-today-lbl{font-size:9px;color:var(--purple-m);font-weight:700;text-transform:uppercase;letter-spacing:.3px;margin-bottom:1px;}
-.wk-today-title{font-size:13px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.wk-today-cat{font-size:10px;color:var(--ink-l);margin-top:1px;}
-.wk-today-arr{color:var(--purple-m);flex-shrink:0;font-size:16px;}
-.mf{flex-shrink:0;padding:7px 14px;border-radius:50px;font-size:11px;font-weight:600;cursor:pointer;font-family:'League Spartan',sans-serif;transition:all .15s;border:none;}
+.wk-today-lbl{font-size:12px;color:var(--purple-m);font-weight:700;text-transform:uppercase;letter-spacing:.3px;margin-bottom:1px;}
+.wk-today-title{font-size:15.5px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.wk-today-cat{font-size:12.5px;color:var(--ink-l);margin-top:1px;}
+.wk-today-arr{color:var(--purple-m);flex-shrink:0;font-size:18px;}
+.mf{flex-shrink:0;padding:7px 14px;border-radius:50px;font-size:13.5px;font-weight:600;cursor:pointer;font-family:'League Spartan',sans-serif;transition:all .15s;border:none;}
 .mf.act{background:var(--grad);color:white;box-shadow:0 2px 10px rgba(91,78,168,0.3);}
 .mf.def{background:white;color:var(--ink-m);border:1px solid var(--border);}
 /* Video cards */
@@ -417,26 +437,26 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .mv-card:active{transform:scale(0.99);}
 .mv-th{width:110px;height:80px;flex-shrink:0;position:relative;background:var(--ivory-d);overflow:hidden;}
 .mv-th img{width:100%;height:100%;object-fit:cover;}
-.mv-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:28px;height:28px;background:var(--grad);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;color:white;}
+.mv-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:28px;height:28px;background:var(--grad);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12.5px;color:white;}
 .mv-info{padding:10px 12px;flex:1;min-width:0;}
-.mv-cat{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--purple-m);margin-bottom:2px;}
-.mv-title{font-size:13px;font-weight:600;color:var(--ink);line-height:1.25;margin-bottom:4px;}
+.mv-cat{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--purple-m);margin-bottom:2px;}
+.mv-title{font-size:15.5px;font-weight:600;color:var(--ink);line-height:1.5;margin-bottom:4px;}
 .mv-tags{display:flex;gap:4px;flex-wrap:wrap;}
-.mv-tag{font-size:9px;padding:2px 7px;border-radius:50px;background:var(--lav-pale);color:var(--purple-m);}
+.mv-tag{font-size:12px;padding:2px 7px;border-radius:50px;background:var(--lav-pale);color:var(--purple-m);}
 
 /* ═══ RECETTES ═══ */
 #recettes{background:var(--ivory);}
 .rc-top{background:var(--grad-h);padding:48px 20px 20px;flex-shrink:0;position:relative;overflow:hidden;}
 .rc-h1{font-family:'League Spartan',sans-serif;font-size:26px;color:white;font-weight:800;letter-spacing:-.01em;position:relative;z-index:1;}
 .rc-h1 em{font-style:normal;font-weight:800;color:var(--peach);}
-.rc-sub{font-size:12px;color:rgba(255,255,255,0.6);margin-top:3px;position:relative;z-index:1;}
+.rc-sub{font-size:14.5px;color:rgba(255,255,255,0.96);text-shadow:0 1px 3px rgba(0,0,0,0.12);margin-top:3px;position:relative;z-index:1;}
 .rc-srch{margin:12px 20px 0;background:white;border-radius:14px;padding:10px 14px;display:flex;align-items:center;gap:8px;box-shadow:var(--sh);border:1px solid var(--border);}
-.rc-srch input{flex:1;background:none;border:none;outline:none;font-size:13px;color:var(--ink);font-family:'League Spartan',sans-serif;}
+.rc-srch input{flex:1;background:none;border:none;outline:none;font-size:15.5px;color:var(--ink);font-family:'League Spartan',sans-serif;}
 .rc-srch input::placeholder{color:var(--ink-l);}
-.rc-badge{background:var(--purple-m);color:white;font-size:10px;font-weight:700;padding:3px 8px;border-radius:50px;}
+.rc-badge{background:var(--purple-m);color:white;font-size:12.5px;font-weight:700;padding:3px 8px;border-radius:50px;}
 .rc-filters{display:flex;gap:5px;padding:10px 20px;overflow-x:auto;scrollbar-width:none;}
 .rc-filters::-webkit-scrollbar{display:none;}
-.rf{flex-shrink:0;padding:6px 12px;border-radius:50px;font-size:10px;font-weight:600;cursor:pointer;font-family:'League Spartan',sans-serif;transition:all .15s;border:none;}
+.rf{flex-shrink:0;padding:6px 12px;border-radius:50px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:'League Spartan',sans-serif;transition:all .15s;border:none;}
 .rf.act{background:var(--grad);color:white;}.rf.def{background:white;color:var(--ink-m);border:1px solid var(--border);}
 /* Recipe grid */
 .rg{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 20px;}
@@ -444,14 +464,14 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .rc-img{width:100%;height:100px;object-fit:cover;display:block;background:linear-gradient(100deg,var(--lav-pale) 30%,var(--ivory-d) 50%,var(--lav-pale) 70%);background-size:200% 100%;animation:rcShimmer 1.4s infinite;opacity:0;transition:opacity .3s;}
 .rc-img.loaded{animation:none;background:none;opacity:1;}
 @keyframes rcShimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
-.rc-kcal{position:absolute;top:6px;right:6px;background:var(--purple);color:white;font-size:9px;font-weight:700;padding:3px 7px;border-radius:50px;}
+.rc-kcal{position:absolute;top:6px;right:6px;background:var(--purple);color:white;font-size:12px;font-weight:700;padding:3px 7px;border-radius:50px;}
 .rc-img-w{position:relative;overflow:hidden;}
 .rc-body{padding:8px 10px;}
-.rc-name{font-size:11px;font-weight:700;color:var(--ink);line-height:1.3;margin-bottom:6px;}
+.rc-name{font-size:13.5px;font-weight:700;color:var(--ink);line-height:1.55;margin-bottom:6px;}
 .rc-macros{display:flex;justify-content:space-between;}
 .rc-m{text-align:center;}
-.rc-m-ic{font-size:8px;font-weight:700;color:var(--ink-l);text-transform:uppercase;letter-spacing:.2px;display:block;margin-bottom:1px;}
-.rc-m-v{font-size:10px;font-weight:700;}
+.rc-m-ic{font-size:11px;font-weight:700;color:var(--ink-l);text-transform:uppercase;letter-spacing:.2px;display:block;margin-bottom:1px;}
+.rc-m-v{font-size:12.5px;font-weight:700;}
 .rc-m-v.p{color:#C86868;}.rc-m-v.g{color:#68A8C8;}.rc-m-v.l{color:#C8A848;}
 
 /* ═══ CHALLENGE ═══ */
@@ -462,96 +482,96 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .ch-hero{margin:0 20px 20px;background:var(--grad);border-radius:20px;padding:22px 20px;position:relative;overflow:hidden;}
 .ch-hero::after{content:'';position:absolute;bottom:-24px;right:-24px;width:90px;height:90px;border-radius:50%;background:rgba(255,255,255,0.1);}
 .ch-hero-ic{font-size:26px;margin-bottom:8px;position:relative;z-index:1;}
-.ch-hero-t{font-family:'League Spartan',sans-serif;font-size:17px;font-weight:800;color:white;margin-bottom:6px;position:relative;z-index:1;}
-.ch-hero-p{font-size:13px;color:rgba(255,255,255,0.9);line-height:1.55;position:relative;z-index:1;}
-.ch-feat-t{font-size:11px;font-weight:800;color:var(--ink-l);text-transform:uppercase;letter-spacing:.4px;margin:4px 20px 10px;}
+.ch-hero-t{font-family:'League Spartan',sans-serif;font-size:18px;font-weight:800;color:white;margin-bottom:6px;position:relative;z-index:1;}
+.ch-hero-p{font-size:15.5px;color:rgba(255,255,255,0.9);line-height:1.55;position:relative;z-index:1;}
+.ch-feat-t{font-size:13.5px;font-weight:800;color:var(--ink-l);text-transform:uppercase;letter-spacing:.4px;margin:4px 20px 10px;}
 .ch-feature-row{display:flex;align-items:center;gap:12px;background:white;border-radius:14px;padding:13px 14px;margin:0 20px 8px;box-shadow:var(--sh);border:1px solid var(--border);}
-.ch-feature-ic{width:38px;height:38px;border-radius:12px;background:var(--lav-pale);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.ch-feature-ic{width:38px;height:38px;border-radius:12px;background:var(--lav-pale);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
 .ch-feature-body{flex:1;min-width:0;}
-.ch-feature-t{font-size:12px;font-weight:700;color:var(--ink);margin-bottom:1px;}
-.ch-feature-s{font-size:11px;color:var(--ink-l);line-height:1.4;}
-.btn-ch{width:100%;background:var(--grad);color:white;border:none;padding:15px;border-radius:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:'League Spartan',sans-serif;}
+.ch-feature-t{font-size:14.5px;font-weight:700;color:var(--ink);margin-bottom:1px;}
+.ch-feature-s{font-size:13.5px;color:var(--ink-l);line-height:1.4;}
+.btn-ch{width:100%;background:var(--grad);color:white;border:none;padding:15px;border-radius:14px;font-size:16px;font-weight:700;cursor:pointer;font-family:'League Spartan',sans-serif;}
 .ch-cta-wrap{margin:18px 20px 0;}
 .ch-upgrade{margin:18px 20px 0;background:var(--lav-pale);border-radius:16px;padding:16px;text-align:center;}
-.ch-upgrade-t{font-size:14px;font-weight:700;color:var(--purple);margin-bottom:4px;}
-.ch-upgrade-p{font-size:12px;color:var(--ink-m);line-height:1.5;}
+.ch-upgrade-t{font-size:16px;font-weight:700;color:var(--purple);margin-bottom:4px;}
+.ch-upgrade-p{font-size:14.5px;color:var(--ink-m);line-height:1.5;}
 
 /* Offres */
 .offer-card{background:white;border-radius:20px;padding:22px;margin-bottom:16px;border:1.5px solid var(--border);position:relative;box-shadow:var(--sh);}
 .billing-toggle{display:flex;background:var(--lav-pale);border-radius:14px;padding:4px;margin-bottom:10px;}
-.bt-opt{flex:1;border:none;background:transparent;padding:11px 8px;border-radius:11px;font-size:13px;font-weight:700;color:var(--ink-m);cursor:pointer;font-family:'League Spartan',sans-serif;transition:all .2s;}
+.bt-opt{flex:1;border:none;background:transparent;padding:11px 8px;border-radius:11px;font-size:15.5px;font-weight:700;color:var(--ink-m);cursor:pointer;font-family:'League Spartan',sans-serif;transition:all .2s;}
 .bt-opt.active{background:white;color:var(--purple);box-shadow:var(--sh);}
-.bt-save{display:inline-block;background:var(--grad);color:white;font-size:9.5px;font-weight:800;padding:2px 6px;border-radius:20px;margin-left:5px;vertical-align:middle;}
-.trial-note{text-align:center;font-size:12px;color:var(--purple-m);font-weight:700;margin-bottom:18px;}
-.offer-price-sub{font-size:11.5px;font-weight:700;color:var(--purple-m);text-align:center;margin-top:-12px;margin-bottom:16px;}
+.bt-save{display:inline-block;background:var(--grad);color:white;font-size:12px;font-weight:800;padding:2px 6px;border-radius:20px;margin-left:5px;vertical-align:middle;}
+.trial-note{text-align:center;font-size:14.5px;color:var(--purple-m);font-weight:700;margin-bottom:18px;}
+.offer-price-sub{font-size:14px;font-weight:700;color:var(--purple-m);text-align:center;margin-top:-12px;margin-bottom:16px;}
 .offer-price-sub b{color:var(--purple);}
 .offer-card.hl .offer-price-sub{color:rgba(255,255,255,0.9);}
 .offer-card.hl .offer-price-sub b{color:white;}
 .offer-card.hl{background:var(--grad-warm);border:none;box-shadow:var(--sh-m);}
-.offer-badge{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--ink);color:white;font-size:10px;font-weight:700;padding:5px 14px;border-radius:50px;text-transform:uppercase;letter-spacing:.3px;}
-.offer-name{font-family:'League Spartan',sans-serif;font-size:16px;font-weight:700;color:var(--ink);text-align:center;margin-bottom:6px;}
+.offer-badge{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--ink);color:white;font-size:12.5px;font-weight:700;padding:5px 14px;border-radius:50px;text-transform:uppercase;letter-spacing:.3px;}
+.offer-name{font-family:'League Spartan',sans-serif;font-size:18px;font-weight:700;color:var(--ink);text-align:center;margin-bottom:6px;}
 .offer-card.hl .offer-name{color:white;}
 .offer-price{font-family:'League Spartan',sans-serif;font-size:34px;font-weight:800;color:var(--purple);text-align:center;margin-bottom:16px;}
-.offer-price span{font-size:14px;font-weight:600;color:var(--ink-l);}
+.offer-price span{font-size:16px;font-weight:600;color:var(--ink-l);}
 .offer-card.hl .offer-price{color:white;}
-.offer-card.hl .offer-price span{color:rgba(255,255,255,0.8);}
+.offer-card.hl .offer-price span{color:rgba(255,255,255,0.95);}
 .offer-list{list-style:none;margin-bottom:18px;}
-.offer-list li{font-size:13px;color:var(--ink-m);padding:8px 0 8px 24px;position:relative;border-bottom:1px solid var(--border);}
+.offer-list li{font-size:15.5px;color:var(--ink-m);padding:8px 0 8px 24px;position:relative;border-bottom:1px solid var(--border);}
 .offer-list li:last-child{border-bottom:none;}
 .offer-list li::before{content:'✓';position:absolute;left:0;color:var(--purple-m);font-weight:800;}
-.offer-card.hl .offer-list li{color:rgba(255,255,255,0.9);border-bottom-color:rgba(255,255,255,0.2);}
+.offer-card.hl .offer-list li{color:rgba(255,255,255,0.9);border-bottom-color:rgba(255,255,255,0.45);}
 .offer-card.hl .offer-list li::before{color:white;}
-.offer-or{text-align:center;font-size:11px;color:var(--ink-l);margin:12px 0;position:relative;}
+.offer-or{text-align:center;font-size:13.5px;color:var(--ink-l);margin:12px 0;position:relative;}
 .offer-or::before,.offer-or::after{content:'';position:absolute;top:50%;width:40%;height:1px;background:var(--border);}
 .offer-or::before{left:0;}
 .offer-or::after{right:0;}
-.offer-or.light{color:rgba(255,255,255,0.7);}
+.offer-or.light{color:rgba(255,255,255,0.95);}
 .offer-or.light::before,.offer-or.light::after{background:rgba(255,255,255,0.3);}
 
 /* Nouveaux écrans profil */
 .f-row-app{margin-bottom:12px;text-align:left;}
-.f-row-app label{display:block;font-size:11px;font-weight:700;color:var(--ink-l);text-transform:uppercase;letter-spacing:.3px;margin-bottom:5px;}
+.f-row-app label{display:block;font-size:13.5px;font-weight:700;color:var(--ink-l);text-transform:uppercase;letter-spacing:.3px;margin-bottom:5px;}
 .dosha-detail-card{background:white;border-radius:18px;padding:18px;box-shadow:var(--sh);border:1px solid var(--border);}
-.dosha-detail-row{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-m);padding:8px 0;border-bottom:1px solid var(--border);}
+.dosha-detail-row{display:flex;align-items:center;gap:8px;font-size:15.5px;color:var(--ink-m);padding:8px 0;border-bottom:1px solid var(--border);}
 .dosha-detail-row:last-child{border-bottom:none;}
 .dosha-detail-row b{margin-left:auto;color:var(--ink);font-weight:800;}
 .dd-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
 .dd-dot.v{background:#9B8ED8;}
 .dd-dot.p{background:var(--peach);}
 .dd-dot.k{background:#7FBFA0;}
-.dosha-explain{font-size:13px;color:var(--ink-m);line-height:1.6;background:var(--lav-pale);padding:16px;border-radius:14px;}
+.dosha-explain{font-size:15.5px;color:var(--ink-m);line-height:1.6;background:var(--lav-pale);padding:16px;border-radius:14px;}
 .dosha-analysis-block{background:white;border-radius:16px;padding:16px;margin-bottom:10px;box-shadow:var(--sh);border:1px solid var(--border);}
-.dab-title{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:800;color:var(--purple);margin-bottom:8px;text-transform:uppercase;letter-spacing:.3px;}
-.dab-text{font-size:13px;color:var(--ink-m);line-height:1.6;}
-.dab-sub{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:800;color:var(--purple-m);text-transform:uppercase;letter-spacing:.4px;margin:22px 0 6px;}
+.dab-title{display:flex;align-items:center;gap:8px;font-size:15.5px;font-weight:800;color:var(--purple);margin-bottom:8px;text-transform:uppercase;letter-spacing:.3px;}
+.dab-text{font-size:15.5px;color:var(--ink-m);line-height:1.6;}
+.dab-sub{display:flex;align-items:center;gap:6px;font-size:13.5px;font-weight:800;color:var(--purple-m);text-transform:uppercase;letter-spacing:.4px;margin:22px 0 6px;}
 .dab-sub:first-of-type{margin-top:14px;}
 .dab-sub svg{flex-shrink:0;}
 .dab-sub:first-child{margin-top:0;}
 .wellness-row{display:flex;align-items:center;justify-content:space-between;background:white;border-radius:14px;padding:12px 16px;margin-bottom:8px;box-shadow:var(--sh);border:1px solid var(--border);}
-.wellness-date{font-size:12px;font-weight:700;color:var(--ink);}
-.wellness-vals{display:flex;gap:14px;font-size:11px;color:var(--ink-l);margin-top:4px;}
-.wellness-score{font-family:'League Spartan',sans-serif;font-size:18px;font-weight:800;color:var(--purple-m);flex-shrink:0;}
-.wellness-score span{font-size:11px;font-weight:600;color:var(--ink-l);}
+.wellness-date{font-size:14.5px;font-weight:700;color:var(--ink);}
+.wellness-vals{display:flex;gap:14px;font-size:13.5px;color:var(--ink-l);margin-top:4px;}
+.wellness-score{font-family:'League Spartan',sans-serif;font-size:19px;font-weight:800;color:var(--purple-m);flex-shrink:0;}
+.wellness-score span{font-size:13.5px;font-weight:600;color:var(--ink-l);}
 .wellness-recap{background:var(--grad);border-radius:18px;padding:18px 20px;margin-bottom:18px;position:relative;overflow:hidden;}
 .wellness-recap::after{content:'';position:absolute;bottom:-20px;right:-20px;width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,0.1);}
-.wr-t{font-size:12px;font-weight:800;color:white;text-transform:uppercase;letter-spacing:.4px;margin-bottom:12px;position:relative;z-index:1;}
-.wr-row{display:flex;align-items:center;justify-content:space-between;font-size:13px;color:rgba(255,255,255,0.85);padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.18);position:relative;z-index:1;}
+.wr-t{font-size:14.5px;font-weight:800;color:white;text-transform:uppercase;letter-spacing:.4px;margin-bottom:12px;position:relative;z-index:1;}
+.wr-row{display:flex;align-items:center;justify-content:space-between;font-size:15.5px;color:rgba(255,255,255,0.96);text-shadow:0 1px 3px rgba(0,0,0,0.12);padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.18);position:relative;z-index:1;}
 .wr-row:last-child{border-bottom:none;}
-.wr-row b{font-family:'League Spartan',sans-serif;font-size:16px;font-weight:800;color:white;}
-.empty{font-size:13px;color:var(--ink-l);text-align:center;padding:40px 20px;line-height:1.6;}
+.wr-row b{font-family:'League Spartan',sans-serif;font-size:18px;font-weight:800;color:white;}
+.empty{font-size:15.5px;color:var(--ink-l);text-align:center;padding:40px 20px;line-height:1.6;}
 .wellness-vals span b{color:var(--purple-m);}
 .phase-explain-card{display:flex;gap:12px;background:white;border-radius:16px;padding:14px 16px;margin-bottom:10px;box-shadow:var(--sh);border:1px solid var(--border);}
 .pe-ic{width:36px;height:36px;border-radius:11px;background:var(--lav-pale);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.pe-t{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:3px;}
-.pe-s{font-size:12px;color:var(--ink-m);line-height:1.5;}
-.astro-widget{margin:18px 20px 18px;background:white;border-radius:16px;padding:14px 16px;box-shadow:var(--sh);border:1px solid var(--border);display:flex;gap:12px;}
-.astro-moon{font-size:28px;flex-shrink:0;}
+.pe-t{font-size:15.5px;font-weight:700;color:var(--ink);margin-bottom:3px;}
+.pe-s{font-size:14.5px;color:var(--ink-m);line-height:1.5;}
+.astro-widget{margin:14px 20px 14px;background:white;border-radius:14px;padding:12px 14px;box-shadow:var(--sh);border:1px solid var(--border);display:flex;gap:10px;}
+.astro-moon{font-size:22px;flex-shrink:0;}
 .astro-widget-body{flex:1;}
-.astro-widget-t{font-size:12px;font-weight:800;color:var(--ink);margin-bottom:2px;}
-.astro-widget-s{font-size:11px;color:var(--ink-l);line-height:1.4;}
-.astro-widget-context{font-size:10px;font-weight:700;color:var(--purple-m);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px;}
-.astro-widget-tip{font-size:13px;color:var(--ink-m);line-height:1.55;margin-bottom:10px;}
-.astro-widget-sign{font-size:11px;color:var(--purple-m);font-weight:700;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
+.astro-widget-t{font-size:12.5px;font-weight:800;color:var(--ink);margin-bottom:2px;}
+.astro-widget-s{font-size:11.5px;color:var(--ink-l);line-height:1.35;}
+.astro-widget-context{font-size:10.5px;font-weight:700;color:var(--purple-m);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;}
+.astro-widget-tip{font-size:13px;color:var(--ink-m);line-height:1.45;margin-bottom:8px;}
+.astro-widget-sign{font-size:11.5px;color:var(--purple-m);font-weight:700;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);}
 .btn-ob.purple{background:white;color:var(--purple);}
 
 /* ═══ PROFIL ═══ */
@@ -559,73 +579,73 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .pf-top{background:var(--grad-h);padding:48px 20px 24px;text-align:center;flex-shrink:0;position:relative;overflow:hidden;}
 .pf-av{width:70px;height:70px;border-radius:20px;background:rgba(255,255,255,0.15);border:2px solid rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;font-family:'League Spartan',sans-serif;font-weight:800;font-size:26px;color:white;margin:0 auto 10px;position:relative;z-index:1;}
 .pf-name{font-family:'League Spartan',sans-serif;font-size:24px;font-weight:800;color:white;margin-bottom:3px;position:relative;z-index:1;}
-.pf-dosha{font-size:13px;font-weight:600;color:rgba(255,255,255,0.85);margin-bottom:8px;position:relative;z-index:1;}
+.pf-dosha{font-size:15.5px;font-weight:600;color:rgba(255,255,255,0.96);text-shadow:0 1px 3px rgba(0,0,0,0.12);margin-bottom:8px;position:relative;z-index:1;}
 .dosha-bar{display:flex;width:100%;height:8px;border-radius:50px;overflow:hidden;margin-bottom:5px;position:relative;z-index:1;background:rgba(255,255,255,0.15);}
 .dosha-bar-v{background:#9B8ED8;height:100%;}
 .dosha-bar-p{background:var(--peach);height:100%;}
 .dosha-bar-k{background:#7FBFA0;height:100%;}
-.dosha-bar-lbl{font-size:10px;color:rgba(255,255,255,0.65);margin-bottom:14px;position:relative;z-index:1;letter-spacing:.2px;}
+.dosha-bar-lbl{font-size:12.5px;color:rgba(255,255,255,0.9);margin-bottom:14px;position:relative;z-index:1;letter-spacing:.2px;}
 .pf-xp-t{background:rgba(255,255,255,0.2);border-radius:50px;height:5px;max-width:160px;margin:0 auto 4px;position:relative;z-index:1;}
 .pf-xp-f{height:100%;background:white;border-radius:50px;}
-.pf-xp-l{font-size:11px;font-weight:600;color:rgba(255,255,255,0.7);position:relative;z-index:1;}
+.pf-xp-l{font-size:13.5px;font-weight:600;color:rgba(255,255,255,0.95);position:relative;z-index:1;}
 /* Profile stats */
 .pf-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:14px 20px 0;}
 .pfs{background:white;border-radius:16px;padding:12px 8px;text-align:center;box-shadow:var(--sh);border:1px solid var(--border);}
-.pfs-v{font-family:'League Spartan',sans-serif;font-size:20px;color:var(--ink);font-weight:800;}
-.pfs-l{font-size:9px;color:var(--ink-l);text-transform:uppercase;letter-spacing:.5px;margin-top:2px;}
+.pfs-v{font-family:'League Spartan',sans-serif;font-size:21px;color:var(--ink);font-weight:800;}
+.pfs-l{font-size:12px;color:var(--ink-l);text-transform:uppercase;letter-spacing:.5px;margin-top:2px;}
 /* Profile actions */
 .pf-acts{padding:14px 20px 0;display:flex;flex-direction:column;gap:8px;}
 .pa{background:white;border-radius:16px;padding:13px 14px;display:flex;align-items:center;gap:12px;cursor:pointer;box-shadow:var(--sh);border:1px solid var(--border);}
 .cycle-len-row{cursor:default;}
 .cycle-len-input{display:flex;align-items:center;gap:5px;background:var(--ivory);border-radius:10px;padding:6px 10px;flex-shrink:0;}
-.cycle-len-input input{width:32px;border:none;background:transparent;font-family:'League Spartan',sans-serif;font-weight:800;font-size:15px;color:var(--purple);text-align:center;}
+.cycle-len-input input{width:32px;border:none;background:transparent;font-family:'League Spartan',sans-serif;font-weight:800;font-size:17px;color:var(--purple);text-align:center;}
 .cycle-len-input input:focus{outline:none;}
-.cycle-len-input span{font-size:10px;color:var(--ink-l);}
-.pa-ic{width:38px;height:38px;border-radius:12px;background:var(--lav-pale);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
-.pa-body{flex:1;}.pa-t{font-size:12px;font-weight:700;color:var(--ink);margin-bottom:1px;}.pa-s{font-size:10px;color:var(--ink-l);}
-.pa-arr{color:var(--lavender);font-size:16px;}
+.cycle-len-input span{font-size:12.5px;color:var(--ink-l);}
+.pa-ic{width:38px;height:38px;border-radius:12px;background:var(--lav-pale);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.pa-body{flex:1;}.pa-t{font-size:14.5px;font-weight:700;color:var(--ink);margin-bottom:1px;}.pa-s{font-size:12.5px;color:var(--ink-l);}
+.pa-arr{color:var(--lavender);font-size:18px;}
 /* Metabolism card */
 .meta-card{margin:0 20px;background:white;border-radius:18px;padding:16px;box-shadow:var(--sh);border:1px solid var(--border);}
 .dos-card{margin:16px 20px;background:white;border-radius:20px;overflow:hidden;box-shadow:var(--sh-m);border:1px solid var(--border);}
 .dos-img{width:100%;height:160px;object-fit:cover;background:var(--lav-pale);display:block;}
 .dos-body{padding:18px;}
-.dos-cat{display:inline-block;background:var(--lav-pale);color:var(--purple-m);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;padding:4px 10px;border-radius:20px;margin-bottom:10px;}
-.dos-title{font-family:'League Spartan',sans-serif;font-weight:800;font-size:19px;color:var(--ink);margin-bottom:8px;line-height:1.2;}
-.dos-intro{font-size:13px;color:var(--ink-m);line-height:1.55;margin-bottom:14px;}
+.dos-cat{display:inline-block;background:var(--lav-pale);color:var(--purple-m);font-size:12.5px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;padding:4px 10px;border-radius:20px;margin-bottom:10px;}
+.dos-title{font-family:'League Spartan',sans-serif;font-weight:800;font-size:20px;color:var(--ink);margin-bottom:8px;line-height:1.45;}
+.dos-intro{font-size:15.5px;color:var(--ink-m);line-height:1.55;margin-bottom:14px;}
 .dos-p{margin-bottom:12px;}
 .dos-p:last-child{margin-bottom:0;}
-.dos-subhead{font-family:'League Spartan',sans-serif;font-weight:800;font-size:15px;color:var(--purple);margin:18px 0 8px;}
+.dos-subhead{font-family:'League Spartan',sans-serif;font-weight:800;font-size:17px;color:var(--purple);margin:18px 0 8px;}
 .dos-subhead:first-child{margin-top:0;}
 .dos-tips{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;}
-.dos-tip{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--ink-m);line-height:1.5;}
+.dos-tip{display:flex;gap:10px;align-items:flex-start;font-size:15.5px;color:var(--ink-m);line-height:1.5;}
 .dos-tip-dot{width:6px;height:6px;border-radius:50%;background:var(--purple-m);flex-shrink:0;margin-top:6px;}
-.dos-empty{text-align:center;padding:60px 30px;color:var(--ink-l);font-size:13px;}
-.dos-archive-t{font-size:13px;font-weight:800;color:var(--ink-l);text-transform:uppercase;letter-spacing:.3px;margin:24px 20px 10px;}
+.dos-empty{text-align:center;padding:60px 30px;color:var(--ink-l);font-size:15.5px;}
+.dos-archive-t{font-size:15.5px;font-weight:800;color:var(--ink-l);text-transform:uppercase;letter-spacing:.3px;margin:24px 20px 10px;}
 .dos-archive-item{margin:0 20px 10px;background:white;border-radius:14px;padding:12px 14px;border:1px solid var(--border);display:flex;align-items:center;gap:10px;cursor:pointer;}
 .dos-archive-e{width:34px;height:34px;border-radius:10px;background:var(--lav-pale);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .dos-mini{margin:0 20px 10px;background:white;border-radius:14px;padding:12px 14px;border:1px solid var(--border);display:flex;align-items:center;gap:10px;cursor:pointer;}
 .dos-mini-ic{display:flex;flex-shrink:0;width:28px;height:28px;align-items:center;justify-content:center;background:var(--lav-pale);border-radius:9px;}
 .dos-mini-body{flex:1;min-width:0;}
-.dos-mini-title{font-size:13px;font-weight:700;color:var(--ink);}
-.dos-mini-days{font-size:11px;color:var(--purple-m);font-weight:700;margin-top:1px;}
+.dos-mini-title{font-size:15.5px;font-weight:700;color:var(--ink);}
+.dos-mini-days{font-size:13.5px;color:var(--purple-m);font-weight:700;margin-top:1px;}
 .dos-mini-locked{opacity:.5;cursor:pointer;background:var(--ivory-d);}
 .dos-mini-locked .dos-mini-days{color:var(--ink-l);}
-.dos-mini-locked .dos-mini-ic{background:var(--border);font-size:13px;}
+.dos-mini-locked .dos-mini-ic{background:var(--border);font-size:15.5px;}
 .dos-archive-body{flex:1;min-width:0;}
-.dos-archive-title{font-size:13px;font-weight:700;color:var(--ink);}
-.dos-archive-date{font-size:11px;color:var(--ink-l);}
-.meta-t{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:4px;}
+.dos-archive-title{font-size:15.5px;font-weight:700;color:var(--ink);}
+.dos-archive-date{font-size:13.5px;color:var(--ink-l);}
+.meta-t{font-size:16px;font-weight:700;color:var(--ink);margin-bottom:4px;}
 .meta-v{font-family:'League Spartan',sans-serif;font-size:32px;font-weight:800;background:var(--grad-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--purple-m);}
-.meta-unit{font-size:14px;color:var(--ink-l);}
-.meta-note{font-size:11px;color:var(--ink-l);margin-top:6px;line-height:1.5;font-style:italic;}
+.meta-unit{font-size:16px;color:var(--ink-l);}
+.meta-note{font-size:13.5px;color:var(--ink-l);margin-top:6px;line-height:1.5;font-style:italic;}
 .meta-duo{display:flex;align-items:center;}
 .meta-duo-col{flex:1;min-width:0;}
-.meta-duo-col .meta-t{font-size:12px;margin-bottom:4px;}
+.meta-duo-col .meta-t{font-size:14.5px;margin-bottom:4px;}
 .meta-duo-col .meta-v{font-size:24px;display:block;}
-.meta-duo-col .meta-unit{font-size:11px;margin-left:2px;}
-.meta-duo-note{font-size:10px;color:var(--ink-l);margin-top:3px;line-height:1.3;}
+.meta-duo-col .meta-unit{font-size:13.5px;margin-left:2px;}
+.meta-duo-note{font-size:12.5px;color:var(--ink-l);margin-top:3px;line-height:1.55;}
 .meta-duo-sep{width:1px;align-self:stretch;background:var(--border);margin:2px 16px;}
-.meta-macro-lbl{font-size:11px;font-weight:700;color:var(--ink-l);text-transform:uppercase;letter-spacing:.3px;margin-top:16px;padding-top:14px;border-top:1px solid var(--border);}
+.meta-macro-lbl{font-size:13.5px;font-weight:700;color:var(--ink-l);text-transform:uppercase;letter-spacing:.3px;margin-top:16px;padding-top:14px;border-top:1px solid var(--border);}
 
 /* ═══ BOTTOM NAV ═══ */
 .bnav{position:fixed;left:0;right:0;bottom:0;max-width:430px;margin:0 auto;z-index:100;flex-shrink:0;background:rgba(250,248,255,0.97);backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;align-items:center;padding:4px 4px calc(env(safe-area-inset-bottom) + 10px);gap:1px;}
@@ -633,39 +653,39 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .bnav-spacer{width:46px;flex-shrink:0;}
 .ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;cursor:pointer;padding:5px 1px;border-radius:10px;transition:all .15s;color:var(--purple-l);}
 .ni-ic{display:flex;transition:transform .15s;}
-.ni-l{font-size:7px;color:var(--ink-l);font-weight:600;letter-spacing:.2px;text-transform:uppercase;line-height:1;font-family:'League Spartan',sans-serif;}
+.ni-l{font-size:10px;color:var(--ink-l);font-weight:600;letter-spacing:.2px;text-transform:uppercase;line-height:1.25;font-family:'League Spartan',sans-serif;}
 .ni.act{background:var(--lav-pale);color:var(--purple);}
 .ni.act .ni-l{color:var(--purple);font-weight:800;}
 .ni.act .ni-ic{transform:scale(1.1);}
-.ni-ctr{position:absolute;left:50%;top:-13px;transform:translateX(-50%);width:42px;height:42px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;flex-shrink:0;font-size:18px;box-shadow:0 4px 14px rgba(91,78,168,0.4);}
+.ni-ctr{position:absolute;left:50%;top:-13px;transform:translateX(-50%);width:42px;height:42px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;flex-shrink:0;font-size:19px;box-shadow:0 4px 14px rgba(91,78,168,0.4);}
 
 /* ═══ TOAST ═══ */
-.toast{position:fixed;bottom:86px;left:50%;transform:translateX(-50%) translateY(8px);background:var(--purple);color:white;padding:8px 16px;border-radius:50px;font-size:12px;font-weight:600;opacity:0;transition:all .3s;z-index:400;white-space:nowrap;box-shadow:0 4px 20px rgba(91,78,168,0.4);}
+.toast{position:fixed;bottom:86px;left:50%;transform:translateX(-50%) translateY(8px);background:var(--purple);color:white;padding:8px 16px;border-radius:50px;font-size:14.5px;font-weight:600;opacity:0;transition:all .3s;z-index:400;white-space:nowrap;box-shadow:0 4px 20px rgba(91,78,168,0.4);}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
 /* Video detail modal */
 .vdetail{position:fixed;inset:0;background:var(--ivory);z-index:200;display:none;flex-direction:column;overflow-y:auto;max-width:430px;margin:0 auto;}
 .vdetail.open{display:flex;}
-.vd-back{position:absolute;top:calc(env(safe-area-inset-top) + 26px);left:14px;z-index:10;width:38px;height:38px;background:rgba(0,0,0,0.4);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;border:none;color:white;}
+.vd-back{position:absolute;top:calc(env(safe-area-inset-top) + 26px);left:14px;z-index:10;width:38px;height:38px;background:rgba(0,0,0,0.4);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;border:none;color:white;}
 .vd-player{width:100%;height:220px;background:#000;position:relative;}
 .vd-player:fullscreen,.vd-player:-webkit-full-screen{height:100vh;width:100vw;}
 .vd-player:fullscreen iframe,.vd-player:-webkit-full-screen iframe{width:100%;height:100%;}
-.vd-fs-btn{position:absolute;bottom:10px;right:10px;display:flex;align-items:center;gap:6px;background:rgba(0,0,0,0.65);backdrop-filter:blur(6px);color:white;border:1px solid rgba(255,255,255,0.25);padding:8px 13px;border-radius:50px;font-size:12px;font-weight:700;cursor:pointer;font-family:'League Spartan',sans-serif;z-index:2;}
+.vd-fs-btn{position:absolute;bottom:10px;right:10px;display:flex;align-items:center;gap:6px;background:rgba(0,0,0,0.65);backdrop-filter:blur(6px);color:white;border:1px solid rgba(255,255,255,0.25);padding:8px 13px;border-radius:50px;font-size:14.5px;font-weight:700;cursor:pointer;font-family:'League Spartan',sans-serif;z-index:2;}
 .vd-player iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
-.vd-title{font-family:'League Spartan',sans-serif;font-size:22px;font-weight:800;color:var(--ink);padding:16px 20px 0;line-height:1.2;}
+.vd-title{font-family:'League Spartan',sans-serif;font-size:22px;font-weight:800;color:var(--ink);padding:16px 20px 0;line-height:1.45;}
 .vd-stats{background:var(--lav-pale);border-radius:18px 18px 0 0;margin-top:12px;padding:14px;}
 .vd-stats-row{display:grid;grid-template-columns:1fr 1fr 1fr;}
 .vds{text-align:center;border-right:1px solid rgba(91,78,168,0.1);}
 .vds:last-child{border-right:none;}
-.vds-l{font-size:10px;color:var(--ink-l);margin-bottom:2px;}
-.vds-v{font-size:15px;font-weight:800;color:var(--ink);}
+.vds-l{font-size:12.5px;color:var(--ink-l);margin-bottom:2px;}
+.vds-v{font-size:17px;font-weight:800;color:var(--ink);}
 .vd-bens{background:white;padding:16px 20px;flex:1;}
-.vd-sec{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:10px;}
+.vd-sec{font-size:17px;font-weight:700;color:var(--ink);margin-bottom:10px;}
 .vd-ben{background:var(--ivory);border-radius:12px;padding:10px;display:flex;align-items:center;gap:10px;margin-bottom:6px;}
-.vd-ben-ic{width:36px;height:36px;border-radius:10px;background:var(--lav-pale);display:flex;align-items:center;justify-content:center;font-size:16px;}
-.vd-ben-t{font-size:12px;font-weight:600;color:var(--ink);}
+.vd-ben-ic{width:36px;height:36px;border-radius:10px;background:var(--lav-pale);display:flex;align-items:center;justify-content:center;font-size:18px;}
+.vd-ben-t{font-size:14.5px;font-weight:600;color:var(--ink);}
 .vd-bar{background:white;padding:12px 20px 30px;display:flex;gap:8px;border-top:1px solid var(--border);}
-.vd-btn{flex:1;background:var(--grad);color:white;border:none;padding:13px;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:'League Spartan',sans-serif;}
+.vd-btn{flex:1;background:var(--grad);color:white;border:none;padding:13px;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;font-family:'League Spartan',sans-serif;}
 .vd-btn-pending{background:var(--border);color:var(--ink-l);cursor:default;}
 
 /* Recipe detail */
@@ -673,27 +693,27 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .rcdetail.open{display:flex;}
 .rd-img-w{width:100%;height:240px;background:var(--border);position:relative;flex-shrink:0;}
 .rd-img-w img{width:100%;height:100%;object-fit:cover;display:block;}
-.rd-title{padding:16px 20px 4px;font-size:20px;font-weight:800;color:var(--ink);line-height:1.25;}
-.rd-meta{padding:0 20px 10px;font-size:12px;color:var(--ink-l);}
+.rd-title{padding:16px 20px 4px;font-size:21px;font-weight:800;color:var(--ink);line-height:1.5;}
+.rd-meta{padding:0 20px 10px;font-size:14.5px;color:var(--ink-l);}
 .rd-macro-card{background:var(--lav-pale);margin:8px 20px 4px;border-radius:18px;padding:18px;display:flex;align-items:center;gap:18px;}
 .rd-servings{display:flex;gap:8px;padding:12px 20px 4px;}
-.rd-serv-btn{flex:1;background:white;border:1.5px solid var(--border);color:var(--ink-m);padding:10px 4px;border-radius:12px;font-family:'League Spartan',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all .15s;}
+.rd-serv-btn{flex:1;background:white;border:1.5px solid var(--border);color:var(--ink-m);padding:10px 4px;border-radius:12px;font-family:'League Spartan',sans-serif;font-weight:700;font-size:15.5px;cursor:pointer;transition:all .15s;}
 .rd-serv-btn.sel{background:var(--grad);border-color:transparent;color:white;box-shadow:0 2px 10px rgba(91,78,168,0.3);}
 .rd-macro-ring{flex-shrink:0;}
 .rd-macro-stats{display:flex;flex:1;justify-content:space-between;}
 .rd-macro-stat{text-align:center;}
-.rd-macro-pct{font-size:13px;font-weight:800;}
-.rd-macro-g{font-size:14px;font-weight:800;color:var(--ink);margin-top:1px;}
-.rd-macro-l{font-size:9px;color:var(--ink-l);font-weight:600;text-transform:uppercase;letter-spacing:.3px;margin-top:1px;}
+.rd-macro-pct{font-size:15.5px;font-weight:800;}
+.rd-macro-g{font-size:16px;font-weight:800;color:var(--ink);margin-top:1px;}
+.rd-macro-l{font-size:12px;color:var(--ink-l);font-weight:600;text-transform:uppercase;letter-spacing:.3px;margin-top:1px;}
 .rd-sec{padding:16px 20px 8px;}
-.rd-sec-t{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:10px;}
-.rd-ing-i{display:flex;align-items:center;gap:8px;padding:6px 0;font-size:13px;color:var(--ink-m);border-bottom:1px solid var(--border);}
+.rd-sec-t{font-size:17px;font-weight:700;color:var(--ink);margin-bottom:10px;}
+.rd-ing-i{display:flex;align-items:center;gap:8px;padding:6px 0;font-size:15.5px;color:var(--ink-m);border-bottom:1px solid var(--border);}
 .rd-ing-dot{width:5px;height:5px;border-radius:50%;background:var(--purple-m);flex-shrink:0;}
-.rd-step{display:flex;gap:10px;padding:8px 0;font-size:13px;color:var(--ink-m);line-height:1.4;}
-.rd-step-n{width:22px;height:22px;border-radius:50%;background:var(--purple);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.rd-tip{background:var(--rose-pale);border-radius:12px;padding:10px 12px;font-size:12px;color:var(--ink-m);margin-bottom:6px;}
+.rd-step{display:flex;gap:10px;padding:8px 0;font-size:15.5px;color:var(--ink-m);line-height:1.4;}
+.rd-step-n{width:22px;height:22px;border-radius:50%;background:var(--purple);color:white;font-size:13.5px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.rd-tip{background:var(--rose-pale);border-radius:12px;padding:10px 12px;font-size:14.5px;color:var(--ink-m);margin-bottom:6px;}
 .rd-bar{background:white;padding:12px 20px 30px;border-top:1px solid var(--border);}
-.rd-btn{width:100%;background:var(--grad);color:white;border:none;padding:14px;border-radius:14px;font-size:15px;font-weight:700;cursor:pointer;font-family:'League Spartan',sans-serif;}
+.rd-btn{width:100%;background:var(--grad);color:white;border:none;padding:14px;border-radius:14px;font-size:17px;font-weight:700;cursor:pointer;font-family:'League Spartan',sans-serif;}
 .rd-btn.added{background:var(--ink-l);}
 .vd-btn.done{background:var(--lav-pale);color:var(--purple);}
 </style>
@@ -721,7 +741,7 @@ document.addEventListener('DOMContentLoaded', function(){
  chargerGA();
  } else if(consentement === null){
  var banniere = document.createElement('div');
- banniere.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#2A2438;color:#fff;padding:16px;z-index:9999;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:center;font-size:14px;';
+ banniere.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#2A2438;color:#fff;padding:16px;z-index:9999;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:center;font-size:16px;';
  banniere.innerHTML = '<span>Nous utilisons des cookies pour mesurer l\'audience du site.</span>' +
  '<button id="hc-accept" style="background:#7B6EC8;color:#fff;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;">Accepter</button>' +
  '<button id="hc-refuse" style="background:transparent;color:#fff;border:1px solid #fff;padding:8px 16px;border-radius:6px;cursor:pointer;">Refuser</button>';
@@ -818,6 +838,13 @@ document.addEventListener('DOMContentLoaded', function(){
 </div>
 </div>
 <div class="scroll">
+<!-- Mon parcours du jour : fil conducteur, avant tout le reste -->
+<div class="sec"><h2>Mon <em>parcours du jour</em></h2></div>
+<div class="journey-progress-wrap">
+<div class="journey-progress-lbl"><span>Aujourd'hui</span><b id="journeyProgressLbl">0/5</b></div>
+<div class="journey-progress-bar"><div class="journey-progress-fill" id="journeyProgressFill" style="width:0%"></div></div>
+</div>
+<div class="journey-strip" id="journeyStrip"></div>
 <!-- Ta phrase du jour : premier contenu, juste après le message de bienvenue -->
 <div class="astro-widget" id="astroWidget"></div>
 <!-- Métabolisme & apport du jour -->
@@ -838,11 +865,11 @@ document.addEventListener('DOMContentLoaded', function(){
 </div>
 <div class="meta-macro-lbl">Répartition conseillée pour la journée</div>
 <div class="rc-macros" style="margin-top:6px;">
-<div class="rc-m"><span class="rc-m-ic">Prot.</span><div class="rc-m-v p" id="dMacroP" style="font-size:15px;">0g</div></div>
-<div class="rc-m"><span class="rc-m-ic">Gluc.</span><div class="rc-m-v g" id="dMacroG" style="font-size:15px;">0g</div></div>
-<div class="rc-m"><span class="rc-m-ic">Lip.</span><div class="rc-m-v l" id="dMacroL" style="font-size:15px;">0g</div></div>
+<div class="rc-m"><span class="rc-m-ic">Prot.</span><div class="rc-m-v p" id="dMacroP" style="font-size:17px;">0g</div></div>
+<div class="rc-m"><span class="rc-m-ic">Gluc.</span><div class="rc-m-v g" id="dMacroG" style="font-size:17px;">0g</div></div>
+<div class="rc-m"><span class="rc-m-ic">Lip.</span><div class="rc-m-v l" id="dMacroL" style="font-size:17px;">0g</div></div>
 </div>
-<div class="meta-note" style="margin-top:10px;">Pensé pour un poids sain, une masse grasse maîtrisée, une masse musculaire bien développée, et un métabolisme et un équilibre hormonal sains.</div>
+<div class="meta-note" style="margin-top:10px;">Pensé pour un poids sain, une masse grasse faible, une bonne masse musculaire et un équilibre hormonal stable.</div>
 </div>
 <!-- Recovery & Hormonal -->
 <div class="sec"><h2>Ton équilibre <em>du jour</em></h2></div>
@@ -860,21 +887,21 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="cycle-energy" id="cycleEnergy"></div>
 </div>
 <!-- Mood -->
-<div class="sec"><h2>Comment tu te <em>sens</em> ?</h2></div>
+<div class="sec" id="secMood"><h2>Comment tu te <em>sens</em> ?</h2></div>
 <div class="mood-card">
 <div class="mood-q">Mon humeur aujourd'hui...</div>
 <div class="mood-grid">
 <button class="mo" onclick="setMood(this,'En forme',5)">
-<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="9" cy="10" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="1" fill="currentColor" stroke="none"/><path d="M8 14c1.3 2 2.7 3 4 3s2.7-1 4-3"/><path d="M4.5 4.5l1.2 1.2M19.5 4.5l-1.2 1.2"/></svg>
+<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="9" cy="10" r="1.3" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="1.3" fill="currentColor" stroke="none"/><path d="M8 14.5c1.2 1.8 2.5 2.7 4 2.7s2.8-.9 4-2.7"/></svg>
 <span class="mo-l">En forme</span></button>
 <button class="mo" onclick="setMood(this,'Normal',3)">
-<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="9" cy="10" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="1" fill="currentColor" stroke="none"/><path d="M8.5 15h7"/></svg>
+<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="9" cy="10" r="1.3" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="1.3" fill="currentColor" stroke="none"/><path d="M8.5 15h7"/></svg>
 <span class="mo-l">Normal</span></button>
 <button class="mo" onclick="setMood(this,'Un peu fatiguée',2)">
-<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.2 10h2M13.8 10h2"/><path d="M8 16c1.3-1.3 2.7-2 4-2s2.7.7 4 2"/></svg>
+<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M7.7 10h2.6M13.7 10h2.6"/><path d="M8.5 16c1.1-1.1 2.2-1.7 3.5-1.7s2.4.6 3.5 1.7"/></svg>
 <span class="mo-l">Un peu fatiguée</span></button>
 <button class="mo" onclick="setMood(this,'Très fatiguée',1)">
-<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 10.5c.5-.5 1.5-.5 2 0M14 10.5c.5-.5 1.5-.5 2 0"/><path d="M8 17c1.3-2 2.7-3 4-3s2.7 1 4 3"/><path d="M16 5.5h2.5L16.5 8H19"/></svg>
+<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M7.6 10.3c.6-.6 1.6-.6 2.2 0M14.2 10.3c.6-.6 1.6-.6 2.2 0"/><path d="M8 17.2c1.2-2.2 2.5-3.2 4-3.2s2.8 1 4 3.2"/></svg>
 <span class="mo-l">Très fatiguée</span></button>
 </div>
 </div>
@@ -887,10 +914,10 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="sleep-time-box"><label>Réveil</label><input type="time" id="sleepEnd" value="07:00" oninput="calcSleepHours()"></div>
 </div>
 </div>
-<div class="quick-card"><div class="quick-lbl"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--ink-l)" stroke-width="2" stroke-linecap="round" style="vertical-align:-1px;margin-right:3px;"><circle cx="12" cy="8" r="4"/><path d="M6 21c0-3.5 2.5-6 6-6s6 2.5 6 6"/></svg>Stress aujourd'hui</div><div class="quick-val" id="dStress">5<span class="quick-unit">/10</span></div><input type="range" class="quick-slider" min="1" max="10" value="5" oninput="document.getElementById('dStress').innerHTML=this.value+'<span class=quick-unit>/10</span>';calcRecovery()"></div>
+<div class="quick-card"><div class="quick-lbl"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--ink-l)" stroke-width="2" stroke-linecap="round" style="vertical-align:-1px;margin-right:3px;"><circle cx="12" cy="8" r="4"/><path d="M6 21c0-3.5 2.5-6 6-6s6 2.5 6 6"/></svg>Stress aujourd'hui</div><div class="quick-val" id="dStress">5<span class="quick-unit">/10</span></div><input type="range" class="quick-slider" id="stressSlider" min="1" max="10" value="5" oninput="stressScore=parseFloat(this.value);document.getElementById('dStress').innerHTML=this.value+'<span class=quick-unit>/10</span>';calcRecovery()"></div>
 </div>
 <!-- Routine -->
-<div class="sec" style="display:block;"><h2>Routine <em>du jour</em></h2><div class="sec-sub">Selon ton profil ayurvédique</div></div>
+<div class="sec" id="secRoutine" style="display:block;"><h2>Routine <em>du jour</em></h2><div class="sec-sub">Selon ton profil ayurvédique</div></div>
 <div class="todo-wrap" id="todoWrap"></div>
 </div>
 </div>
@@ -977,7 +1004,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="d-pill" style="margin-top:10px;"><div class="d-pill-dot"></div><div class="d-pill-txt"><span id="dRecipesTried">0</span> recette(s) essayée(s)</div></div>
 </div>
 <div class="rc-srch">
-<span style="color:var(--ink-l);font-size:13px"></span>
+<span style="color:var(--ink-l);font-size:15.5px"></span>
 <input placeholder="Rechercher..." id="rcSrch" oninput="renderRec()">
 <div class="rc-badge" id="rcCount">50</div>
 </div>
@@ -1014,7 +1041,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <button class="vd-back" onclick="go('challenge')" style="position:fixed;top:16px;left:16px;z-index:5;">←</button>
 <div class="scroll" style="padding:0 20px;">
 <div class="ob-title" style="text-align:center;margin-top:60px;font-size:24px;">Choisis ton <em>accompagnement</em></div>
-<div style="font-size:13px;color:var(--ink-l);text-align:center;margin-bottom:18px;">Deux formules pour avancer à ton rythme</div>
+<div style="font-size:15.5px;color:var(--ink-l);text-align:center;margin-bottom:18px;">Deux formules pour avancer à ton rythme</div>
 
 <div class="billing-toggle">
  <button class="bt-opt active" id="btMonthly" onclick="setBillingPeriod('monthly')">Mensuel</button>
@@ -1166,7 +1193,7 @@ Partager mon profil
 </div>
 <div class="scroll" style="padding:0 24px;">
 <div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Ma <em>progression</em></div>
-<div style="font-size:13px;color:var(--ink-l);margin-bottom:18px;">Ton bilan du mois en cours</div>
+<div style="font-size:15.5px;color:var(--ink-l);margin-bottom:18px;">Ton bilan du mois en cours</div>
 
 <div class="prog-stats-grid">
 <div class="prog-stat-card"><div class="prog-stat-v" id="progSessions">0</div><div class="prog-stat-l">Séances ce mois-ci</div></div>
@@ -1192,7 +1219,7 @@ Partager mon profil
 </div>
 <div class="scroll" style="padding:0 24px;">
 <div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Historique <em>bien-être</em></div>
-<div style="font-size:13px;color:var(--ink-l);margin-bottom:16px;">Tes 14 derniers jours suivis</div>
+<div style="font-size:15.5px;color:var(--ink-l);margin-bottom:16px;">Tes 14 derniers jours suivis</div>
 <div id="wellnessList"></div>
 <div style="height:30px;"></div>
 </div>
@@ -1205,7 +1232,7 @@ Partager mon profil
 </div>
 <div class="scroll" style="padding:0 24px;">
 <div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Mes <em>badges</em></div>
-<div style="font-size:13px;color:var(--ink-l);margin-bottom:16px;"><span id="badgesCount">0/9</span> débloqués — continue pour tous les obtenir</div>
+<div style="font-size:15.5px;color:var(--ink-l);margin-bottom:16px;"><span id="badgesCount">0/9</span> débloqués — continue pour tous les obtenir</div>
 <div class="badges-grid" id="badgesGrid"></div>
 <div style="height:30px;"></div>
 </div>
@@ -1219,7 +1246,7 @@ Partager mon profil
 <div class="scroll" style="padding:0 24px;">
 <div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Mon <em>cycle</em></div>
 <div class="f-row-app"><label>Premier jour de tes dernières règles</label><input type="date" id="csLastPeriod" class="ob-input dt-input"></div>
-<div class="f-row-app"><label>Durée moyenne de ton cycle</label><div class="cycle-len-input" style="width:100%;justify-content:center;"><input type="number" id="csCycleLength" min="21" max="45" value="28" style="width:50px;font-size:18px;"><span>jours</span></div></div>
+<div class="f-row-app"><label>Durée moyenne de ton cycle</label><div class="cycle-len-input" style="width:100%;justify-content:center;"><input type="number" id="csCycleLength" min="21" max="45" value="28" style="width:50px;font-size:19px;"><span>jours</span></div></div>
 <button class="btn-ob" style="margin-top:6px;" onclick="saveCycleSettings()">Enregistrer</button>
 
 <div class="sec" style="padding:26px 0 10px;"><h2>Comprendre <em>mon cycle</em></h2></div>
@@ -1238,6 +1265,7 @@ Partager mon profil
 </div>
 <div class="scroll" style="padding:0 24px;">
 <div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Mon thème <em>astral</em></div>
+<div class="astro-widget" id="astroWidgetProfile" style="margin:14px 0 18px;"></div>
 <div class="f-row-app"><label>Prénom</label><input type="text" id="astroPrenom" class="ob-input dt-input" placeholder="Ton prénom"></div>
 <div class="f-row-app"><label>Date de naissance</label><input type="date" id="astroDate" class="ob-input dt-input"></div>
 <div class="f-row-app"><label>Heure de naissance (pour l'Ascendant)</label><input type="time" id="astroTime" class="ob-input dt-input"></div>
@@ -1256,20 +1284,20 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 
 <div class="sec" style="padding:0 0 8px;"><h2>Ton signe <em>solaire</em></h2></div>
 <div class="dosha-analysis-block">
-<div class="dab-title"><span id="astroSunEmoji">♈</span> <span id="astroSunSign">Bélier</span> <span id="astroSunDegree" style="font-size:12px;color:var(--ink-l);font-weight:400;"></span></div>
+<div class="dab-title"><span id="astroSunEmoji">♈</span> <span id="astroSunSign">Bélier</span> <span id="astroSunDegree" style="font-size:14.5px;color:var(--ink-l);font-weight:400;"></span></div>
 <div class="dab-text" id="astroSunText">—</div>
 </div>
 
 <div class="sec" style="padding:16px 0 8px;"><h2>Ta <em>Lune</em></h2></div>
 <div class="dosha-analysis-block">
-<div class="dab-title"><span id="astroMoonEmoji">♈</span> <span id="astroMoonSign">Bélier</span> <span id="astroMoonDegree" style="font-size:12px;color:var(--ink-l);font-weight:400;"></span></div>
+<div class="dab-title"><span id="astroMoonEmoji">♈</span> <span id="astroMoonSign">Bélier</span> <span id="astroMoonDegree" style="font-size:14.5px;color:var(--ink-l);font-weight:400;"></span></div>
 <div class="dab-text" id="astroMoonText">—</div>
 </div>
 
 <div id="astroAscBlock" style="display:none;">
 <div class="sec" style="padding:16px 0 8px;"><h2>Ton <em>Ascendant</em></h2></div>
 <div class="dosha-analysis-block">
-<div class="dab-title"><span id="astroAscEmoji">♈</span> Ascendant <span id="astroAscSign">Bélier</span> <span id="astroAscDegree" style="font-size:12px;color:var(--ink-l);font-weight:400;"></span></div>
+<div class="dab-title"><span id="astroAscEmoji">♈</span> Ascendant <span id="astroAscSign">Bélier</span> <span id="astroAscDegree" style="font-size:14.5px;color:var(--ink-l);font-weight:400;"></span></div>
 <div class="dab-text" id="astroAscText">—</div>
 </div>
 </div>
@@ -1306,7 +1334,7 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 </div>
 <div class="scroll" style="padding:0 24px;">
 <div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Politique de <em>confidentialité</em></div>
-<div style="font-size:13px;color:var(--ink-m);line-height:1.7;margin-top:12px;">
+<div style="font-size:15.5px;color:var(--ink-m);line-height:1.7;margin-top:12px;">
 <p style="margin-bottom:14px;"><strong>Dernière mise à jour :</strong> juillet 2026</p>
 <p style="margin-bottom:14px;">Holistica Club collecte les données suivantes dans le cadre de ton utilisation de l'application : ton prénom, âge, taille, poids, niveau d'activité, informations sur ton cycle menstruel, ton profil Ayurvédique (dosha), ainsi que des données de bien-être quotidiennes (humeur, sommeil, niveau de stress) et ta progression (points, séances complétées, série).</p>
 <p style="margin-bottom:14px;"><strong>Pourquoi on collecte ces données :</strong> uniquement pour te fournir des recommandations personnalisées (routine dosha, calcul de récupération, suivi de cycle) et sauvegarder ta progression d'une session à l'autre.</p>
@@ -1325,7 +1353,7 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 </div>
 <div class="scroll" style="padding:0 24px;">
 <div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Conditions <em>d'utilisation</em></div>
-<div style="font-size:13px;color:var(--ink-m);line-height:1.7;margin-top:12px;">
+<div style="font-size:15.5px;color:var(--ink-m);line-height:1.7;margin-top:12px;">
 <p style="margin-bottom:14px;"><strong>Dernière mise à jour :</strong> juillet 2026</p>
 <p style="margin-bottom:14px;"><strong>1. Objet.</strong> Holistica Club propose des contenus de bien-être (routines, séances de mouvement, recettes) à visée informative et de mieux-être. L'application ne fournit pas de diagnostic médical et ne remplace pas l'avis d'un professionnel de santé.</p>
 <p style="margin-bottom:14px;"><strong>2. Compte utilisateur.</strong> Tu es responsable de la confidentialité de tes identifiants de connexion. Les informations fournies lors de l'inscription doivent être exactes.</p>
@@ -1345,7 +1373,7 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 </div>
 <div class="scroll" style="padding:0 24px;">
 <div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Mentions <em>légales</em></div>
-<div style="font-size:13px;color:var(--ink-m);line-height:1.7;margin-top:12px;">
+<div style="font-size:15.5px;color:var(--ink-m);line-height:1.7;margin-top:12px;">
 <p style="margin-bottom:14px;"><strong>Dernière mise à jour :</strong> juillet 2026</p>
 <p style="margin-bottom:14px;"><strong>Éditeur du site.</strong> Holistica Club — Maryne Arès, entreprise individuelle, SIRET : 103960605.</p>
 <p style="margin-bottom:14px;"><strong>Contact.</strong> info@maryneares.fr</p>
@@ -1365,7 +1393,7 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 <div style="text-align:center;margin-top:10px;">
 <div style="font-size:40px;margin-bottom:8px;"></div>
 <div class="ob-title" style="color:white;font-size:22px;">Parraine tes <em style="color:#FFE8C0;">amies</em></div>
-<div style="font-size:13px;color:rgba(255,255,255,0.85);margin-top:6px;">Elle profite d'une réduction de bienvenue, tu gagnes 2 semaines offertes</div>
+<div style="font-size:15.5px;color:rgba(255,255,255,0.96);text-shadow:0 1px 3px rgba(0,0,0,0.12);margin-top:6px;">Elle profite d'une réduction de bienvenue, tu gagnes 2 semaines offertes</div>
 </div>
 </div>
 <div class="scroll" style="padding:20px 20px 0;">
@@ -1404,22 +1432,22 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 <div class="scroll" style="padding:0 24px;">
 <div id="unsubStep1">
  <div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">On est triste de te voir <em>partir</em> 💔</div>
- <div style="font-size:13px;color:var(--ink-m);margin:10px 0 20px;">Avant tout, dis-nous pourquoi — ça nous aide à améliorer Holistica Club.</div>
+ <div style="font-size:15.5px;color:var(--ink-m);margin:10px 0 20px;">Avant tout, dis-nous pourquoi — ça nous aide à améliorer Holistica Club.</div>
  <div id="unsubReasons"></div>
 </div>
 
 <div id="unsubStep2" style="display:none;">
  <div style="font-size:40px;text-align:center;margin:20px 0 12px;"></div>
- <div class="ob-title dt-title" style="text-align:center;font-size:20px;">Et si on te proposait <em>-50%</em> ?</div>
- <div style="font-size:13px;color:var(--ink-m);text-align:center;margin:12px 0 24px;line-height:1.6;">Reste avec nous encore un mois, à moitié prix, sans engagement. Applicable automatiquement sur ta prochaine facture.</div>
+ <div class="ob-title dt-title" style="text-align:center;font-size:21px;">Et si on te proposait <em>-50%</em> ?</div>
+ <div style="font-size:15.5px;color:var(--ink-m);text-align:center;margin:12px 0 24px;line-height:1.6;">Reste avec nous encore un mois, à moitié prix, sans engagement. Applicable automatiquement sur ta prochaine facture.</div>
  <button class="btn-ob purple" onclick="acceptRetentionOffer()">Profiter de -50% le mois prochain</button>
  <button class="btn-ob" style="margin-top:10px;background:white;color:var(--ink-m);border:1.5px solid var(--border);" onclick="confirmCancellation()">Non merci, je résilie quand même</button>
 </div>
 
 <div id="unsubStep3" style="display:none;text-align:center;padding:40px 0;">
  <div style="font-size:40px;margin-bottom:12px;" id="unsubFinalIcon"></div>
- <div class="ob-title dt-title" style="font-size:19px;" id="unsubFinalTitle"></div>
- <div style="font-size:13px;color:var(--ink-m);margin-top:10px;line-height:1.6;" id="unsubFinalBody"></div>
+ <div class="ob-title dt-title" style="font-size:20px;" id="unsubFinalTitle"></div>
+ <div style="font-size:15.5px;color:var(--ink-m);margin-top:10px;line-height:1.6;" id="unsubFinalBody"></div>
 </div>
 
 <div style="height:30px;"></div>
@@ -1465,14 +1493,14 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 <nav class="bnav" id="bnav" style="display:none">
 <div class="bnav-half">
 <button class="ni" id="ni-mouvement" onclick="go('mouvement')"><span class="ni-ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2"/><path d="M12 7.3v4.2"/><path d="M9.3 9c0 1.5.9 2.5 2.7 2.5s2.7-1 2.7-2.5"/><path d="M12 11.5c-1.4 0-2.2 1-2.6 2.3-.3 1.1-.9 1.9-1.9 2.5-1.3.8-2 1.6-1.8 2.5.2.7 1 1 2.1.7 1.6-.5 2.6-1 4.2-1 1.6 0 2.6.5 4.2 1 1.1.3 1.9 0 2.1-.7.2-.9-.5-1.7-1.8-2.5-1-.6-1.6-1.4-1.9-2.5-.4-1.3-1.2-2.3-2.6-2.3z"/></svg></span><span class="ni-l">Séances</span></button>
-<button class="ni" id="ni-recettes" onclick="go('recettes')"><span class="ni-ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3v5.5M6 3v5.5M6 8.5c0 1.5-.4 2-.75 2M6 8.5c0-1.5.4-2 .75-2M5.25 10.5V21"/><circle cx="13.5" cy="12" r="7.5"/><circle cx="13.5" cy="12" r="4"/><path d="M19.5 3c1.2.3 1.5 2 1.5 3.5S20.7 9.7 19.5 10"/></svg></span><span class="ni-l">Recettes</span></button>
+<button class="ni" id="ni-recettes" onclick="go('recettes')"><span class="ni-ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v6c0 1.1.9 2 2 2h3a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M20 2a4 4 0 0 0-4 4v5c0 1.1.9 2 2 2h2M18 13v9"/></svg></span><span class="ni-l">Recettes</span></button>
 <button class="ni" id="ni-naturo" onclick="go('naturo')"><span class="ni-ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4C11 4 4 11 4 20c9 0 16-7 16-16z"/><path d="M8 20c0-6 4-10 10-12"/></svg></span><span class="ni-l">Naturo</span></button>
 </div>
 <div class="bnav-spacer"></div>
 <button class="ni-ctr" id="ni-dashboard" onclick="go('dashboard')"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11.5l8-7.5 8 7.5"/><path d="M6 10v9.5a1 1 0 0 0 1 1h3.5v-6.5h3v6.5H17a1 1 0 0 0 1-1V10"/></svg></button>
 <div class="bnav-half">
 <button class="ni" id="ni-challenge" onclick="go('challenge')"><span class="ni-ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10v4a5 5 0 0 1-10 0V4z"/><path d="M7 5H4v2a3 3 0 0 0 3 3M17 5h3v2a3 3 0 0 1-3 3"/><path d="M12 13v3"/><path d="M9 20h6M10 17h4v3h-4z"/></svg></span><span class="ni-l">Challenge</span></button>
-<button class="ni" id="ni-dietPlan" onclick="go('dietPlan')"><span class="ni-ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1.5 3 2.5 5 2.5 8a2.5 2.5 0 0 1-5 0c0-3 1-5 2.5-8z"/><path d="M5 10c2 1 4 3 5 6"/><path d="M19 10c-2 1-4 3-5 6"/><path d="M4 15c2.5 3 5 4 8 4s5.5-1 8-4"/></svg></span><span class="ni-l">Diététique</span></button>
+<button class="ni" id="ni-dietPlan" onclick="go('dietPlan')"><span class="ni-ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7.5c1-1.8 2.8-2.3 4-1.8"/><path d="M12 7.5c-4 0-6.5 3-6.5 6.8 0 3.6 2.4 6.7 5 6.7.9 0 1.2-.4 1.5-.4s.6.4 1.5.4c2.6 0 5-3.1 5-6.7 0-3.8-2.5-6.8-6.5-6.8z"/></svg></span><span class="ni-l">Diététique</span></button>
 <button class="ni" id="ni-profil" onclick="go('profil')"><span class="ni-ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.5 3-6.5 7-6.5s7 3 7 6.5"/></svg></span><span class="ni-l">Profil</span></button>
 </div>
 </nav>
@@ -1481,11 +1509,11 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 
 <!-- ═══ TUTORIEL DE BIENVENUE (WALKTHROUGH) ═══ -->
 <div id="walkthroughOverlay" style="display:none;position:fixed;inset:0;z-index:9999;background:var(--grad-h);flex-direction:column;">
-  <button onclick="wtSkip()" style="position:absolute;top:20px;right:20px;z-index:2;background:rgba(255,255,255,0.2);border:none;color:white;font-size:13px;font-weight:700;padding:8px 16px;border-radius:20px;font-family:'League Spartan',sans-serif;cursor:pointer;">Passer</button>
+  <button onclick="wtSkip()" style="position:absolute;top:20px;right:20px;z-index:2;background:rgba(255,255,255,0.2);border:none;color:white;font-size:15.5px;font-weight:700;padding:8px 16px;border-radius:20px;font-family:'League Spartan',sans-serif;cursor:pointer;">Passer</button>
   <div id="wtScrollArea" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:50px 28px 20px;text-align:center;">
     <div id="wtIcon" style="width:36px;height:36px;margin-bottom:10px;color:white;flex-shrink:0;"></div>
-    <div id="wtTitle" style="font-family:'League Spartan',sans-serif;font-weight:800;font-size:21px;color:white;margin-bottom:8px;line-height:1.2;flex-shrink:0;"></div>
-    <div id="wtDesc" style="font-size:13.5px;color:rgba(255,255,255,0.9);line-height:1.5;max-width:360px;margin-bottom:16px;flex-shrink:0;"></div>
+    <div id="wtTitle" style="font-family:'League Spartan',sans-serif;font-weight:800;font-size:21px;color:white;margin-bottom:8px;line-height:1.45;flex-shrink:0;"></div>
+    <div id="wtDesc" style="font-size:15.5px;color:rgba(255,255,255,0.9);line-height:1.5;max-width:360px;margin-bottom:16px;flex-shrink:0;"></div>
     <img id="wtImg" src="" style="max-width:190px;max-height:30vh;width:auto;border-radius:20px;box-shadow:0 12px 40px rgba(0,0,0,0.25);flex-shrink:0;object-fit:cover;">
   </div>
   <div style="padding:14px 28px 30px;flex-shrink:0;">
@@ -2357,9 +2385,10 @@ function renderAddFoodPanelHtml(){
  </div>
  <div class="diet-info-card">
  <div class="off-search-row">
- <input type="text" id="offSearchInput" class="ob-input dt-input" placeholder="Rechercher un aliment (ex: yaourt nature, pomme...)" onkeydown="if(event.key==='Enter')searchOpenFoodFacts()">
+ <input type="text" id="offSearchInput" class="ob-input dt-input" placeholder="Rechercher un aliment (ex: yaourt nature, pomme...)" oninput="onFoodSearchInput()" onkeydown="if(event.key==='Enter')searchOpenFoodFacts()">
  <button class="food-add-btn" style="flex-shrink:0;" onclick="searchOpenFoodFacts()">🔍</button>
  </div>
+ <div id="offQuickPicks" class="food-quick-row"></div>
  <div id="offSearchResults"></div>
  <div class="cf-divider">ou entre les valeurs toi-même</div>
  <input type="text" id="cfName" class="ob-input dt-input" placeholder="Nom de l'aliment (ex: Pomme, Sandwich...)" style="margin-bottom:8px;">
@@ -2499,7 +2528,7 @@ function renderNaturo(){
  <div class="dos-title">${viewing.title}</div>
  <div class="dos-intro" style="margin-bottom:14px;">${excerpt}</div>
  <button class="btn-w" onclick="openDossierDetail('${viewing.id}')" style="width:100%;"> Lire le dossier</button>
- ${isRead?'<div style="text-align:center;font-size:11px;color:var(--purple-m);font-weight:700;margin-top:10px;">✓ Dossier lu</div>':''}
+ ${isRead?'<div style="text-align:center;font-size:13.5px;color:var(--purple-m);font-weight:700;margin-top:10px;">✓ Dossier lu</div>':''}
  </div>
  </div>`;
 
@@ -2655,14 +2684,14 @@ function renderOB(){
  } else if(s.type==='choice'){
  html+='<div class="ob-opts">'+s.opts.map((o,i)=>'<div class="ob-opt" onclick="selectOBOpt(this,'+i+')">'+o+'</div>').join('')+'</div>';
  } else if(s.type==='date'){
- html+='<div style="font-size:13px;color:rgba(255,255,255,0.8);text-align:center;margin-bottom:20px;">'+s.subtitle+'</div>';
+ html+='<div style="font-size:15.5px;color:rgba(255,255,255,0.95);text-align:center;margin-bottom:20px;">'+s.subtitle+'</div>';
  const today=localDateStr();
  html+='<input type="date" class="ob-input" id="obLastPeriod" max="'+today+'" style="text-align:center;">';
  } else if(s.type==='dosha'){
  if(doshaPage===0){
- html+='<div style="font-size:13px;color:rgba(255,255,255,0.8);text-align:center;margin-bottom:16px;">'+s.subtitle+'</div>';
+ html+='<div style="font-size:15.5px;color:rgba(255,255,255,0.95);text-align:center;margin-bottom:16px;">'+s.subtitle+'</div>';
  }
- html+='<div style="text-align:center;font-size:11px;color:rgba(255,255,255,0.7);margin-bottom:14px;">Page '+(doshaPage+1)+' / '+doshaPageCount+'</div>';
+ html+='<div style="text-align:center;font-size:13.5px;color:rgba(255,255,255,0.95);margin-bottom:14px;">Page '+(doshaPage+1)+' / '+doshaPageCount+'</div>';
  const startIdx=doshaPage*DOSHA_PER_PAGE;
  const pageQs=DOSHA_QUESTIONS.slice(startIdx,startIdx+DOSHA_PER_PAGE);
  html+='<div>';
@@ -2843,12 +2872,13 @@ function getDoshaWeights(){
  ].sort((a,b)=>b.v-a.v);
 }
 
-function renderAstroWidget(){
- const el=document.getElementById('astroWidget');
+function renderAstroWidget(targetId){
+ targetId=targetId||'astroWidget';
+ const el=document.getElementById(targetId);
  if(!el)return;
  // Lien cliquable posé en priorité, avant tout calcul, pour garantir qu'il fonctionne toujours
  el.style.cursor='pointer';
- el.onclick=()=>openAstro();
+ el.onclick=()=>{ if(targetId!=='astroWidget')return; openAstro(); };
 
  const moon=getMoonPhase(new Date());
  const weights=getDoshaWeights();
@@ -2866,7 +2896,7 @@ function renderAstroWidget(){
 
  // Conseil croisé : dosha (+ secondaire si profil mixte) + cycle + saison + âge
  let tip=(cycle&&CYCLE_DOSHA_TIP[primary]&&CYCLE_DOSHA_TIP[primary][cycle.phase])
- ? CYCLE_DOSHA_TIP[primary][cycle.phase].replace(/^[^\s]+\s/,'')
+ ? CYCLE_DOSHA_TIP[primary][cycle.phase]
  : `Profil ${doshaLabel} : ${DOSHA_TODAY_TIP[primary]||DOSHA_TODAY_TIP.vata}`;
  if(isMixed){
  const secLabel=secondary.k.charAt(0).toUpperCase()+secondary.k.slice(1);
@@ -2892,12 +2922,61 @@ function renderAstroWidget(){
 
 function refreshDash(){
  document.getElementById('dSleep').innerHTML=sleepScore+'<span class="quick-unit">h</span>';
- calcRecovery();
+ const stressSlider=document.getElementById('stressSlider');
+ if(stressSlider)stressSlider.value=stressScore;
+ const dStressEl=document.getElementById('dStress');
+ if(dStressEl)dStressEl.innerHTML=stressScore+'<span class="quick-unit">/10</span>';
+ updateRecoveryGauges();
  renderCycle();
  buildRoutine();
  calcNutrition();
  updateSessionsMonth();
  renderAstroWidget();
+ renderJourneyStrip();
+}
+
+function scrollToSection(id){
+ const el=document.getElementById(id);
+ if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function renderJourneyStrip(){
+ const wrap=document.getElementById('journeyStrip');
+ if(!wrap)return;
+ const today=localDateStr();
+
+ // 1) Routine : faite si au moins une case a été cochée aujourd'hui dans la liste actuelle
+ const routineDone=!!document.querySelector('#todoWrap .tck.done');
+
+ // 2) Séance du jour : réutilise la logique déjà existante de l'onglet Séances
+ const todayIdx=(new Date().getDay()+6)%7;
+ const todayVid=typeof weekdayVideo==='function'?weekdayVideo(todayIdx):null;
+ const seanceDone=todayVid?completedVids.has(todayVid.id):false;
+
+ // 3) Bien-être : un check-in a-t-il déjà été enregistré aujourd'hui ?
+ const bienEtreDone=wellnessLog.some(w=>w.date===today);
+
+ // 4) Repas : au moins un aliment ajouté au journal aujourd'hui ?
+ const repasDone=foodLog.some(f=>f.date===today);
+
+ const steps=[
+ {n:1,done:routineDone,t:'Routine du jour',s:'Selon ton profil ayurvédique',onclick:"scrollToSection('secRoutine')"},
+ {n:2,done:seanceDone,t:'Séance du jour',s:todayVid?todayVid.title:'Aucune séance disponible',onclick:todayVid?`openVD('${todayVid.id}')`:''},
+ {n:3,done:bienEtreDone,t:'Ton bien-être',s:'Humeur, sommeil, stress',onclick:"scrollToSection('secMood')"},
+ {n:4,done:repasDone,t:'Tes repas',s:'Journal alimentaire du jour',onclick:"go('dietPlan')"},
+ {n:5,done:false,t:'Ton astrologie du jour',s:'Ton thème, ta lune, ton signe',onclick:"go('profil');setTimeout(openAstro,50)"},
+ ];
+ wrap.innerHTML=steps.map((st,i)=>`
+ <div class="journey-step ${st.done?'done':''}" style="animation-delay:${i*70}ms" onclick="${st.onclick}">
+ <div class="journey-num">${st.done?'✓':st.n}</div>
+ <div class="journey-body"><div class="journey-t">${st.t}</div><div class="journey-s">${st.s}</div></div>
+ <span class="journey-arr">›</span>
+ </div>`).join('');
+ const doneCount=steps.filter(s=>s.done).length;
+ const progFill=document.getElementById('journeyProgressFill');
+ const progLbl=document.getElementById('journeyProgressLbl');
+ if(progFill)progFill.style.width=Math.round((doneCount/steps.length)*100)+'%';
+ if(progLbl)progLbl.textContent=doneCount+'/'+steps.length;
 }
 
 function setMood(btn,label,score){
@@ -2932,16 +3011,20 @@ function calcSleepHours(){
  calcRecovery();
 }
 
-function calcRecovery(){
- const stress=parseFloat(document.querySelector('#dashboard .quick-slider')?.value||5);
- stressScore=stress;
- const recov=Math.round(((sleepScore/12)*40)+((10-stress)/10*30)+(moodScore/5*30));
+function updateRecoveryGauges(){
+ const recov=Math.round(((sleepScore/12)*40)+((10-stressScore)/10*30)+(moodScore/5*30));
  document.getElementById('dRecovGauge').innerHTML=gaugeSVG(recov,'var(--purple-m)');
- const hormo=Math.round(((sleepScore/12)*35)+((10-stress)/10*35)+(moodScore/5*30));
+ const hormo=Math.round(((sleepScore/12)*35)+((10-stressScore)/10*35)+(moodScore/5*30));
  document.getElementById('dHormoGauge').innerHTML=gaugeSVG(hormo,'var(--peach)');
+}
+// Appelée uniquement suite à une vraie action de la personne (slider, sommeil, humeur) —
+// c'est ce qui marque réellement l'étape "Ton bien-être" comme faite dans le parcours du jour.
+function calcRecovery(){
+ updateRecoveryGauges();
  logWellnessToday();
  saveProfile();
  checkBadges();
+ renderJourneyStrip();
 }
 
 function logWellnessToday(){
@@ -2958,22 +3041,22 @@ function logWellnessToday(){
 
 const CYCLE_DOSHA_TIP={
  vata:{
- Menstruelle:' Vata + phase menstruelle : ton énergie déjà changeante est amplifiée. Repose-toi sans culpabiliser, cherche la chaleur et le calme.',
- Folliculaire:' Vata + phase folliculaire : profite de ce regain d\'énergie pour structurer tes idées, sans perdre ta routine stable.',
- Ovulation:' Vata + ovulation : bon moment pour te sociabiliser, garde quand même des temps d\'ancrage dans la journée.',
- Lutéale:' Vata + phase lutéale : l\'anxiété peut monter. Mise sur la régularité, le chaud et des rituels apaisants ce soir.'
+ Menstruelle:' Ton énergie déjà changeante est amplifiée. Repose-toi sans culpabiliser, cherche la chaleur et le calme.',
+ Folliculaire:' Profite de ce regain d\'énergie pour structurer tes idées, sans perdre ta routine stable.',
+ Ovulation:' Bon moment pour te sociabiliser, garde quand même des temps d\'ancrage dans la journée.',
+ Lutéale:' L\'anxiété peut monter. Mise sur la régularité, le chaud et des rituels apaisants ce soir.'
  },
  pitta:{
- Menstruelle:' Pitta + phase menstruelle : lâche prise sur le contrôle, accorde-toi de la douceur et évite les excès aujourd\'hui.',
- Folliculaire:' Pitta + phase folliculaire : ta concentration est à son meilleur, avance sur tes projets ambitieux.',
- Ovulation:' Pitta + ovulation : ta confiance est à son pic, canalise-la sans tomber dans l\'impatience.',
- Lutéale:' Pitta + phase lutéale : l\'irritabilité peut pointer. Privilégie la fraîcheur et des activités calmes.'
+ Menstruelle:' Lâche prise sur le contrôle, accorde-toi de la douceur et évite les excès aujourd\'hui.',
+ Folliculaire:' Ta concentration est à son meilleur, avance sur tes projets ambitieux.',
+ Ovulation:' Ta confiance est à son pic, canalise-la sans tomber dans l\'impatience.',
+ Lutéale:' L\'irritabilité peut pointer. Privilégie la fraîcheur et des activités calmes.'
  },
  kapha:{
- Menstruelle:' Kapha + phase menstruelle : accepte de ralentir, ton corps a besoin de repos même si tu résistes.',
- Folliculaire:' Kapha + phase folliculaire : bouge et stimule-toi, c\'est le bon moment pour te motiver.',
- Ovulation:' Kapha + ovulation : ton énergie sociale est là, profites-en pour sortir de ta routine.',
- Lutéale:' Kapha + phase lutéale : la léthargie peut s\'installer, garde un mouvement doux mais régulier.'
+ Menstruelle:' Accepte de ralentir, ton corps a besoin de repos même si tu résistes.',
+ Folliculaire:' Bouge et stimule-toi, c\'est le bon moment pour te motiver.',
+ Ovulation:' Ton énergie sociale est là, profites-en pour sortir de ta routine.',
+ Lutéale:' La léthargie peut s\'installer, garde un mouvement doux mais régulier.'
  }
 };
 
@@ -3252,7 +3335,7 @@ function weekdayVideo(i){return VIDEOS.length?VIDEOS[i%VIDEOS.length]:null;}
 function renderMvCalendar(){
  if(!VIDEOS.length){
  document.getElementById('wkCalRow').innerHTML='';
- document.getElementById('wkTodayCard').innerHTML='<div style="padding:16px;color:var(--ink-l);font-size:13px;">Chargement des séances...</div>';
+ document.getElementById('wkTodayCard').innerHTML='<div style="padding:16px;color:var(--ink-l);font-size:15.5px;">Chargement des séances...</div>';
  return;
  }
  const today=new Date();
@@ -3310,7 +3393,7 @@ function renderPrograms(){
  const row=document.getElementById('progRow');
  if(!row)return;
  if(!PROGRAMS.length){
- row.innerHTML='<div style="color:var(--ink-l);font-size:12px;padding:10px 0;">Chargement des parcours...</div>';
+ row.innerHTML='<div style="color:var(--ink-l);font-size:14.5px;padding:10px 0;">Chargement des parcours...</div>';
  return;
  }
  row.innerHTML=PROGRAMS.map(p=>{
@@ -3437,7 +3520,7 @@ function renderMv(){
  const locked=isContentLocked(v);
  if(locked){
  const badge=badgeById(v.unlock_badge);
- return `<div class="mv-card mv-locked" onclick="toast('🔒 Débloque le badge « ${badge?.n||'?'} » pour accéder à cette séance')"><div class="mv-th"><img src="https://img.youtube.com/vi/${v.ytId}/mqdefault.jpg" onerror="this.style.display='none'"><div class="mv-lock-overlay">🔒</div></div><div class="mv-info"><div class="mv-cat">${v.cat}</div><div class="mv-title">${v.title}</div><div class="mv-tags"><span class="mv-tag">${badge?badge.e+' '+badge.n:'Bonus'}</span></div><div style="font-size:10px;color:var(--ink-l);margin-top:3px;">${badgeUnlockHint(badge)}</div></div></div>`;
+ return `<div class="mv-card mv-locked" onclick="toast('🔒 Débloque le badge « ${badge?.n||'?'} » pour accéder à cette séance')"><div class="mv-th"><img src="https://img.youtube.com/vi/${v.ytId}/mqdefault.jpg" onerror="this.style.display='none'"><div class="mv-lock-overlay">🔒</div></div><div class="mv-info"><div class="mv-cat">${v.cat}</div><div class="mv-title">${v.title}</div><div class="mv-tags"><span class="mv-tag">${badge?badge.e+' '+badge.n:'Bonus'}</span></div><div style="font-size:12.5px;color:var(--ink-l);margin-top:3px;">${badgeUnlockHint(badge)}</div></div></div>`;
  }
  return `<div class="mv-card" onclick="openVD('${v.id}')"><div class="mv-th"><img src="https://img.youtube.com/vi/${v.ytId}/mqdefault.jpg" onerror="this.style.display='none'"><div class="mv-play">${done?'✓':'▶'}</div></div><div class="mv-info"><div class="mv-cat">${v.cat}</div><div class="mv-title">${v.title}</div><div class="mv-tags"><span class="mv-tag">⏱ ${v.dur}</span><span class="mv-tag"> ${v.dosha}</span><span class="mv-tag">${v.moment}</span>${done?'<span class="mv-tag" style="background:rgba(91,78,168,0.15);color:var(--purple);font-weight:700">✓ Fait</span>':''}</div></div></div>`;
  }).join('')||'<div style="text-align:center;padding:40px 20px;color:var(--ink-l);">Aucune séance dans ce filtre</div>';
@@ -3858,10 +3941,10 @@ function renderProgression(){
       <div class="prog-mood-row"><span>😊 Humeur moyenne</span><b>${avg('mood')}/10</b></div>
       <div class="prog-mood-row"><span>😴 Sommeil moyen</span><b>${avg('sleep')}/10</b></div>
       <div class="prog-mood-row"><span>😌 Stress moyen</span><b>${avg('stress')}/10</b></div>
-      <div style="font-size:11.5px;color:var(--ink-l);margin-top:6px;">Basé sur ${monthWellness.length} jour(s) suivi(s) ce mois-ci</div>
+      <div style="font-size:14px;color:var(--ink-l);margin-top:6px;">Basé sur ${monthWellness.length} jour(s) suivi(s) ce mois-ci</div>
     `;
   } else {
-    document.getElementById('progWellnessAvg').innerHTML='<p style="font-size:13px;color:var(--ink-l);">Pas encore de suivi bien-être ce mois-ci — renseigne ton humeur du jour depuis le tableau de bord.</p>';
+    document.getElementById('progWellnessAvg').innerHTML='<p style="font-size:15.5px;color:var(--ink-l);">Pas encore de suivi bien-être ce mois-ci — renseigne ton humeur du jour depuis le tableau de bord.</p>';
   }
 }
 
@@ -4112,6 +4195,7 @@ function openAstro(){
  document.getElementById('astroPlace').value=userProfile.birthPlace||'';
  document.getElementById('astroResult').style.display=userProfile.birthDate?'block':'none';
  if(userProfile.birthDate)renderAstroResult();
+ renderAstroWidget('astroWidgetProfile');
  go('astroScreen');
 }
 /* ═══════ RECHERCHE DE VILLE DE NAISSANCE ═══════ */
@@ -4129,7 +4213,7 @@ function searchBirthCity(query){
       const data=await res.json();
       const cities=data.cities||[];
       if(!cities.length){box.style.display='none';return;}
-      box.innerHTML=cities.map((c,i)=>`<div style="padding:12px 14px;font-size:13.5px;cursor:pointer;border-bottom:1px solid var(--border);" onclick="selectBirthCity(${i})">${c.name}<span style="color:var(--ink-l);font-size:12px;"> — ${c.region?c.region+', ':''}${c.country}</span></div>`).join('');
+      box.innerHTML=cities.map((c,i)=>`<div style="padding:12px 14px;font-size:15.5px;cursor:pointer;border-bottom:1px solid var(--border);" onclick="selectBirthCity(${i})">${c.name}<span style="color:var(--ink-l);font-size:14.5px;"> — ${c.region?c.region+', ':''}${c.country}</span></div>`).join('');
       box.style.display='block';
       window._astroCityResults=cities;
     }catch(e){
@@ -4284,14 +4368,14 @@ function renderAstralClimate(){
   if(!el)return;
   el.innerHTML=`
     <div class="dosha-analysis-block" style="margin-bottom:12px;">
-      <div class="dab-title" style="font-size:16px;">${month.label}</div>
+      <div class="dab-title" style="font-size:18px;">${month.label}</div>
       <div class="dab-text">${month.intro}</div>
     </div>
-    <div class="pe-t" style="margin:14px 0 8px;font-weight:700;font-size:13px;">Les grands mouvements du mois</div>
+    <div class="pe-t" style="margin:14px 0 8px;font-weight:700;font-size:15.5px;">Les grands mouvements du mois</div>
     ${month.transits.map(t=>`<div class="phase-explain-card"><div class="pe-body"><div class="pe-t">${t.d}</div><div class="pe-s">${t.t}</div></div></div>`).join('')}
-    ${month.newMoon?`<div class="pe-t" style="margin:14px 0 8px;font-weight:700;font-size:13px;">🌑 Nouvelle Lune — ${month.newMoon.d} en ${month.newMoon.sign}</div><div class="dosha-explain">${month.newMoon.t}</div>`:''}
-    ${month.fullMoon?`<div class="pe-t" style="margin:14px 0 8px;font-weight:700;font-size:13px;">🌕 Pleine Lune — ${month.fullMoon.d} en ${month.fullMoon.sign}</div><div class="dosha-explain">${month.fullMoon.t}</div>`:''}
-    <div class="pe-t" style="margin:14px 0 8px;font-weight:700;font-size:13px;">Portails énergétiques à retenir</div>
+    ${month.newMoon?`<div class="pe-t" style="margin:14px 0 8px;font-weight:700;font-size:15.5px;">🌑 Nouvelle Lune — ${month.newMoon.d} en ${month.newMoon.sign}</div><div class="dosha-explain">${month.newMoon.t}</div>`:''}
+    ${month.fullMoon?`<div class="pe-t" style="margin:14px 0 8px;font-weight:700;font-size:15.5px;">🌕 Pleine Lune — ${month.fullMoon.d} en ${month.fullMoon.sign}</div><div class="dosha-explain">${month.fullMoon.t}</div>`:''}
+    <div class="pe-t" style="margin:14px 0 8px;font-weight:700;font-size:15.5px;">Portails énergétiques à retenir</div>
     ${month.portals.map(p=>`<div class="phase-explain-card"><div class="pe-body"><div class="pe-t">${p.d}</div><div class="pe-s">${p.t}</div></div></div>`).join('')}
   `;
 }
@@ -4635,11 +4719,186 @@ function addRecipeToday(){
  renderFoodJournal();
 }
 
+/* ═══ Base Holistica : aliments simples et courants (valeurs pour 100g) ═══
+   Consultée en priorité lors d'une recherche, avant d'aller chercher des produits de marque
+   sur Open Food Facts. Résultat instantané, pas d'appel réseau, pas de doublons de marques. */
+const HOLISTICA_FOODS=[
+ // Fruits
+ {n:'Pomme',e:'🍎',cal:52,p:0.3,g:14,l:0.2},
+ {n:'Banane',e:'🍌',cal:89,p:1.1,g:23,l:0.3},
+ {n:'Orange',e:'🍊',cal:47,p:0.9,g:12,l:0.1},
+ {n:'Fraise',e:'🍓',cal:32,p:0.7,g:8,l:0.3},
+ {n:'Poire',e:'🍐',cal:57,p:0.4,g:15,l:0.1},
+ {n:'Raisin',e:'🍇',cal:69,p:0.7,g:18,l:0.2},
+ {n:'Kiwi',e:'🥝',cal:61,p:1.1,g:15,l:0.5},
+ {n:'Ananas',e:'🍍',cal:50,p:0.5,g:13,l:0.1},
+ {n:'Mangue',e:'🥭',cal:60,p:0.8,g:15,l:0.4},
+ {n:'Pastèque',e:'🍉',cal:30,p:0.6,g:8,l:0.2},
+ {n:'Melon',e:'🍈',cal:34,p:0.8,g:8,l:0.2},
+ {n:'Pêche',e:'🍑',cal:39,p:0.9,g:10,l:0.3},
+ {n:'Abricot',e:'🍑',cal:48,p:1.4,g:11,l:0.4},
+ {n:'Cerise',e:'🍒',cal:63,p:1.1,g:16,l:0.2},
+ {n:'Citron',e:'🍋',cal:29,p:1.1,g:9,l:0.3},
+ {n:'Pamplemousse',e:'🍊',cal:42,p:0.8,g:11,l:0.1},
+ {n:'Framboise',e:'🍇',cal:52,p:1.2,g:12,l:0.7},
+ {n:'Myrtille',e:'🫐',cal:57,p:0.7,g:14,l:0.3},
+ {n:'Avocat',e:'🥑',cal:160,p:2,g:9,l:15},
+ {n:'Figue',e:'🍈',cal:74,p:0.8,g:19,l:0.3},
+ {n:'Datte',e:'🌴',cal:282,p:2.5,g:75,l:0.4},
+ // Légumes
+ {n:'Brocoli',e:'🥦',cal:34,p:2.8,g:7,l:0.4},
+ {n:'Carotte',e:'🥕',cal:41,p:0.9,g:10,l:0.2},
+ {n:'Tomate',e:'🍅',cal:18,p:0.9,g:3.9,l:0.2},
+ {n:'Concombre',e:'🥒',cal:15,p:0.7,g:3.6,l:0.1},
+ {n:'Courgette',e:'🥒',cal:17,p:1.2,g:3.1,l:0.3},
+ {n:'Poivron',e:'🫑',cal:31,p:1,g:6,l:0.3},
+ {n:'Épinard',e:'🥬',cal:23,p:2.9,g:3.6,l:0.4},
+ {n:'Salade verte',e:'🥬',cal:15,p:1.4,g:2.9,l:0.2},
+ {n:'Chou-fleur',e:'🥦',cal:25,p:1.9,g:5,l:0.3},
+ {n:'Aubergine',e:'🍆',cal:25,p:1,g:6,l:0.2},
+ {n:'Oignon',e:'🧅',cal:40,p:1.1,g:9,l:0.1},
+ {n:'Ail',e:'🧄',cal:149,p:6.4,g:33,l:0.5},
+ {n:'Pomme de terre',e:'🥔',cal:77,p:2,g:17,l:0.1},
+ {n:'Patate douce',e:'🍠',cal:86,p:1.6,g:20,l:0.1},
+ {n:'Petit pois',e:'🟢',cal:81,p:5.4,g:14,l:0.4},
+ {n:'Haricot vert',e:'🫛',cal:31,p:1.8,g:7,l:0.1},
+ {n:'Champignon',e:'🍄',cal:22,p:3.1,g:3.3,l:0.3},
+ {n:'Betterave',e:'🟣',cal:43,p:1.6,g:10,l:0.2},
+ {n:'Radis',e:'🔴',cal:16,p:0.7,g:3.4,l:0.1},
+ {n:'Céleri',e:'🥬',cal:16,p:0.7,g:3,l:0.2},
+ // Protéines / viandes / poissons / œufs
+ {n:'Poulet (blanc)',e:'🍗',cal:120,p:22.5,g:0,l:2.6},
+ {n:'Bœuf haché 5%',e:'🥩',cal:137,p:21,g:0,l:5},
+ {n:'Steak haché 15%',e:'🥩',cal:215,p:19,g:0,l:15},
+ {n:'Bœuf (steak/filet)',e:'🥩',cal:145,p:21,g:0,l:6},
+ {n:'Dinde',e:'🍗',cal:135,p:24,g:0,l:3.2},
+ {n:'Porc (filet)',e:'🥩',cal:143,p:21,g:0,l:6},
+ {n:'Jambon blanc',e:'🍖',cal:107,p:20,g:1,l:2.5},
+ {n:'Saumon',e:'🐟',cal:208,p:20,g:0,l:13},
+ {n:'Thon',e:'🐟',cal:132,p:28,g:0,l:1},
+ {n:'Cabillaud',e:'🐟',cal:82,p:18,g:0,l:0.7},
+ {n:'Crevette',e:'🦐',cal:99,p:24,g:0.2,l:0.3},
+ {n:'Sardine (à l\'huile)',e:'🐟',cal:208,p:24.6,g:0,l:11.5},
+ {n:'Maquereau',e:'🐟',cal:205,p:19,g:0,l:14},
+ {n:'Œuf',e:'🥚',cal:155,p:13,g:1.1,l:11},
+ {n:'Tofu',e:'⬜',cal:76,p:8,g:1.9,l:4.8},
+ // Féculents / céréales / légumineuses
+ {n:'Riz blanc cuit',e:'🍚',cal:130,p:2.7,g:28,l:0.3},
+ {n:'Riz complet cuit',e:'🍚',cal:112,p:2.3,g:24,l:0.9},
+ {n:'Pâtes cuites',e:'🍝',cal:131,p:5,g:25,l:1.1},
+ {n:'Quinoa cuit',e:'🌾',cal:120,p:4.4,g:21,l:1.9},
+ {n:'Lentilles cuites',e:'🫘',cal:116,p:9,g:20,l:0.4},
+ {n:'Pois chiches cuits',e:'🫘',cal:164,p:8.9,g:27,l:2.6},
+ {n:'Haricots rouges cuits',e:'🫘',cal:127,p:8.7,g:23,l:0.5},
+ {n:'Haricots blancs cuits',e:'🫘',cal:139,p:9.7,g:25,l:0.5},
+ {n:'Flocons d\'avoine',e:'🌾',cal:389,p:17,g:66,l:7},
+ {n:'Pain complet',e:'🍞',cal:247,p:13,g:41,l:3.4},
+ {n:'Pain blanc',e:'🍞',cal:265,p:9,g:49,l:3.2},
+ {n:'Semoule cuite',e:'🌾',cal:112,p:3.8,g:23,l:0.2},
+ {n:'Pâtes de lentilles cuites',e:'🍝',cal:150,p:9,g:25,l:1},
+ // Produits laitiers
+ {n:'Lait demi-écrémé',e:'🥛',cal:46,p:3.3,g:4.8,l:1.6},
+ {n:'Yaourt nature',e:'🥣',cal:61,p:3.5,g:4.7,l:3.3},
+ {n:'Yaourt grec',e:'🥣',cal:97,p:9,g:4,l:5},
+ {n:'Fromage blanc 0%',e:'🥣',cal:45,p:8,g:4,l:0.2},
+ {n:'Yaourt de brebis',e:'🥣',cal:105,p:5.5,g:5,l:7},
+ {n:'Yaourt de chèvre',e:'🥣',cal:80,p:4,g:5,l:5},
+ {n:'Emmental',e:'🧀',cal:380,p:29,g:0,l:30},
+ {n:'Mozzarella',e:'🧀',cal:280,p:18,g:2.2,l:22},
+ {n:'Fromage de chèvre',e:'🧀',cal:264,p:21,g:0.5,l:21},
+ {n:'Beurre',e:'🧈',cal:717,p:0.9,g:0.1,l:81},
+ {n:'Crème fraîche',e:'🥛',cal:292,p:2.2,g:3.3,l:30},
+ // Oléagineux / matières grasses
+ {n:'Amande',e:'🌰',cal:579,p:21,g:22,l:50},
+ {n:'Noix',e:'🌰',cal:654,p:15,g:14,l:65},
+ {n:'Noisette',e:'🌰',cal:628,p:15,g:17,l:61},
+ {n:'Huile d\'olive',e:'🫒',cal:884,p:0,g:0,l:100},
+ {n:'Beurre de cacahuète',e:'🥜',cal:588,p:25,g:20,l:50},
+ {n:'Graines de chia',e:'🌱',cal:486,p:17,g:42,l:31},
+ {n:'Graines de courge',e:'🌱',cal:559,p:30,g:11,l:49},
+ {n:'Noix de cajou',e:'🌰',cal:553,p:18,g:30,l:44},
+ {n:'Pistache',e:'🌰',cal:560,p:20,g:28,l:45},
+ // Divers
+ {n:'Miel',e:'🍯',cal:304,p:0.3,g:82,l:0},
+ {n:'Sucre',e:'🧂',cal:400,p:0,g:100,l:0},
+ {n:'Chocolat noir 70%',e:'🍫',cal:598,p:7.8,g:46,l:43},
+];
+const HOLISTICA_FOODS_QUICK=['Pomme','Banane','Riz blanc cuit','Œuf','Poulet (blanc)','Avocat','Brocoli','Yaourt nature'];
+
+function normalizeFoodQuery(s){
+ return (s||'').toLowerCase().replace(/œ/g,'oe').replace(/æ/g,'ae').normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();
+}
+function searchHolisticaFoods(q){
+ const nq=normalizeFoodQuery(q);
+ if(!nq)return [];
+ return HOLISTICA_FOODS.filter(f=>normalizeFoodQuery(f.n).includes(nq)).slice(0,8);
+}
+function renderFoodQuickPicks(){
+ const wrap=document.getElementById('offQuickPicks');
+ if(!wrap)return;
+ wrap.innerHTML=HOLISTICA_FOODS_QUICK.map(n=>{
+ const f=HOLISTICA_FOODS.find(x=>x.n===n);
+ if(!f)return'';
+ return `<button class="food-quick-chip" onclick="selectHolisticaFood('${f.n.replace(/'/g,"\\'")}')">${f.e} ${f.n}</button>`;
+ }).join('');
+}
+function selectHolisticaFood(name){
+ const f=HOLISTICA_FOODS.find(x=>x.n===name);
+ if(!f)return;
+ _offBase={cal:f.cal,p:f.p,g:f.g,l:f.l};
+ document.getElementById('cfName').value=f.n;
+ document.getElementById('cfQty').value=100;
+ document.getElementById('offSearchResults').innerHTML='';
+ document.getElementById('offSearchInput').value='';
+ rescaleCustomFood();
+ toast('Sélectionné · ajuste la quantité si besoin');
+}
+
 /* ═══ Recherche Open Food Facts (base de données gratuite, sans clé) ═══ */
 let _offResults=[];
 let _offBase=null; // {cal,p,g,l} pour 100g, une fois un produit sélectionné
 
+function onFoodSearchInput(){
+ const q=document.getElementById('offSearchInput').value.trim();
+ const quickWrap=document.getElementById('offQuickPicks');
+ if(!q){
+ if(quickWrap)quickWrap.style.display='flex';
+ document.getElementById('offSearchResults').innerHTML='';
+ return;
+ }
+ if(quickWrap)quickWrap.style.display='none';
+ const localMatches=searchHolisticaFoods(q);
+ if(localMatches.length){
+ document.getElementById('offSearchResults').innerHTML=localMatches.map(f=>
+ `<div class="off-result" onclick="selectHolisticaFood('${f.n.replace(/'/g,"\\'")}')">
+ <div class="off-result-n">${f.e} ${f.n}</div>
+ <div class="off-result-k">${f.cal} kcal /100g</div>
+ </div>`
+ ).join('');
+ } else {
+ document.getElementById('offSearchResults').innerHTML='';
+ }
+}
+
 async function searchOpenFoodFacts(){
+ const q=document.getElementById('offSearchInput').value.trim();
+ if(!q){toast('Tape le nom d\'un aliment à rechercher');return;}
+ // 1) On regarde d'abord dans la base Holistica (aliments simples, instantané, pas de marques)
+ const localMatches=searchHolisticaFoods(q);
+ if(localMatches.length){
+ document.getElementById('offSearchResults').innerHTML=localMatches.map(f=>
+ `<div class="off-result" onclick="selectHolisticaFood('${f.n.replace(/'/g,"\\'")}')">
+ <div class="off-result-n">${f.e} ${f.n}</div>
+ <div class="off-result-k">${f.cal} kcal /100g</div>
+ </div>`
+ ).join('')+`<div class="off-loading" style="cursor:pointer;text-decoration:underline;" onclick="searchOpenFoodFactsForce()">Tu cherches un produit de marque précis ? Chercher aussi dans Open Food Facts →</div>`;
+ return;
+ }
+ // 2) Rien trouvé localement -> on cherche du côté des produits de marque
+ await searchOpenFoodFactsForce();
+}
+
+async function searchOpenFoodFactsForce(){
  const q=document.getElementById('offSearchInput').value.trim();
  if(!q){toast('Tape le nom d\'un aliment à rechercher');return;}
  document.getElementById('offSearchResults').innerHTML='<div class="off-loading">Recherche en cours...</div>';
@@ -4823,6 +5082,7 @@ function renderFoodJournal(){
  </div>
  `;
  renderFoodHistory(7);
+ renderFoodQuickPicks();
 }
 
 function renderFoodHistory(days){

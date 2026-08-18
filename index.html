@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-title" content="Holistica">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="format-detection" content="telephone=no">
-<meta name="description" content="Holistica Club — Yoga, pilates, méditation, profil Ayurvédique et plans alimentaires personnalisés selon ton dosha, dans une application de bien-être au quotidien.">
+<meta name="description" content="Holistica Club, Yoga, pilates, méditation, profil Ayurvédique et plans alimentaires personnalisés selon ton dosha, dans une application de bien-être au quotidien.">
 <title>Holistica Club</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#5B4EA8">
@@ -257,6 +257,19 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 /* Parcours guidés */
 .prog-section{padding:0 20px;margin-top:6px;}
 .prog-row{display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;}
+.routines-row{display:flex;gap:14px;overflow-x:auto;scrollbar-width:none;padding:0 20px 8px;}
+.routine-card{position:relative;flex-shrink:0;width:200px;height:260px;border-radius:22px;overflow:hidden;cursor:pointer;background:linear-gradient(160deg,#7B6EC8,#5B3E8E);box-shadow:var(--sh);}
+.routine-card-img{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.9;}
+.routine-img-yoga1{background:linear-gradient(160deg,#E8A857,#C9668A);}
+.routine-img-yoga2{background:linear-gradient(160deg,#5FA8A0,#3E6E8E);}
+.routine-img-yoga3{background:linear-gradient(160deg,#6B5B95,#3E2E5E);}
+.routine-card-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.75) 0%,rgba(0,0,0,.15) 55%,transparent 80%);}
+.routine-card-body{position:absolute;left:16px;right:16px;bottom:50px;z-index:2;}
+.routine-card-t{color:white;font-family:'League Spartan',sans-serif;font-weight:800;font-size:23px;line-height:27px;text-align:center;}
+.routine-card-s{color:rgba(255,255,255,.9);font-size:13px;margin-top:5px;text-align:center;}
+.routine-card-min{color:var(--peach);font-weight:700;}
+.routine-card-play{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.9);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;color:var(--purple-m);font-size:15px;z-index:2;font-weight:800;}
+.routine-card-play.done{background:white;color:var(--purple-m);}
 .prog-row::-webkit-scrollbar{display:none;}
 .prog-card{flex-shrink:0;width:200px;background:white;border-radius:18px;overflow:hidden;box-shadow:var(--sh);border:1px solid var(--border);cursor:pointer;}
 .prog-card.soon{opacity:.55;cursor:default;}
@@ -304,8 +317,14 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .pd-week-title:first-of-type{margin-top:16px;}
 /* Diététique */
 .diet-locked-wrap{padding:60px 24px;text-align:center;}
-.diet-tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px 20px 12px;}
-.diet-tab{background:white;color:var(--ink-m);border:1.5px solid var(--border);font-size:15px;font-weight:700;padding:16px 10px;border-radius:16px;cursor:pointer;font-family:'League Spartan',sans-serif;text-align:center;line-height:1.55;min-height:96px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;}
+.diet-tabs{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:14px 20px 12px;}
+.diet-tab{position:relative;overflow:hidden;background:white;color:var(--ink-m);border:1.5px solid var(--border);font-size:15px;font-weight:700;padding:18px 12px;border-radius:18px;cursor:pointer;font-family:'League Spartan',sans-serif;text-align:center;line-height:1.5;min-height:130px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;transition:transform .15s ease,box-shadow .15s ease;}
+.diet-tab:active{transform:scale(.97);}
+.diet-tab-ic{color:var(--purple-m);flex-shrink:0;position:relative;z-index:1;}
+.diet-tab span:not(.diet-tab-shine){position:relative;z-index:1;}
+.diet-tab-shine{position:absolute;top:0;left:-60%;width:45%;height:100%;background:linear-gradient(75deg,transparent 0%,rgba(255,255,255,0.55) 45%,rgba(255,255,255,0.85) 50%,rgba(255,255,255,0.55) 55%,transparent 100%);animation:dietShineSweep 3.2s ease-in-out infinite;pointer-events:none;}
+@keyframes dietShineSweep{0%{left:-60%;}35%{left:130%;}100%{left:130%;}}
+.diet-back-btn{display:flex;align-items:center;gap:6px;margin:16px 0 0 20px;background:none;border:none;color:var(--purple-m);font-family:'League Spartan',sans-serif;font-size:15px;font-weight:700;cursor:pointer;padding:8px 4px;}
 .diet-tab-ic{color:var(--purple-m);flex-shrink:0;}
 .diet-tab.active .diet-tab-ic{color:white;}
 .diet-tab.active{background:var(--grad);color:white;border-color:transparent;}
@@ -372,6 +391,11 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .diet-upgrade-t{font-family:'League Spartan',sans-serif;font-size:18px;font-weight:800;color:white;margin-bottom:6px;}
 .diet-upgrade-p{font-size:15px;color:rgba(255,255,255,0.9);line-height:1.5;margin-bottom:16px;}
 .diet-upgrade-btn{width:100%;background:white;color:var(--purple);border:none;padding:14px;border-radius:12px;font-size:16px;font-weight:800;cursor:pointer;font-family:'League Spartan',sans-serif;}
+.diet-tab-intro{margin:0 20px 18px;background:var(--lav-pale);border-radius:14px;padding:14px 16px;font-size:13.5px;color:var(--ink);line-height:22px;}
+.diet-home-guide{display:flex;flex-direction:column;gap:18px;padding:8px 20px 24px;}
+.diet-guide-item{background:white;border-radius:16px;padding:16px 18px;box-shadow:var(--sh);border:1px solid var(--border);}
+.diet-guide-t{font-family:'League Spartan',sans-serif;font-weight:800;font-size:15.5px;color:var(--purple-m);margin-bottom:6px;}
+.diet-guide-s{font-size:13.5px;color:var(--ink-m);line-height:22px;}
 .diet-summary-card{margin:0 20px 20px;background:white;border-radius:18px;padding:18px 20px;box-shadow:var(--sh);border:1px solid var(--border);}
 .diet-summary-t{font-size:14.5px;color:var(--ink-m);font-weight:600;margin-bottom:14px;}
 .diet-summary-obj{font-size:14.5px;color:var(--purple-m);font-weight:700;margin-bottom:14px;}
@@ -565,6 +589,11 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .pe-t{font-size:15.5px;font-weight:700;color:var(--ink);margin-bottom:3px;}
 .pe-s{font-size:14.5px;color:var(--ink-m);line-height:1.5;}
 .astro-widget{margin:14px 20px 14px;background:white;border-radius:14px;padding:12px 14px;box-shadow:var(--sh);border:1px solid var(--border);display:flex;gap:10px;}
+.astro-detail-sec{margin-bottom:20px;}
+.astro-detail-h{font-family:'League Spartan',sans-serif;font-weight:800;font-size:15px;color:var(--purple-m);margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px;}
+.astro-detail-card{background:white;border-radius:16px;padding:16px 18px;box-shadow:var(--sh);border:1px solid var(--border);}
+.astro-detail-sign{font-size:14.5px;font-weight:700;color:var(--ink);margin-bottom:6px;}
+.astro-detail-txt{font-size:13.5px;color:var(--ink-m);line-height:22px;}
 .astro-moon{font-size:22px;flex-shrink:0;}
 .astro-widget-body{flex:1;}
 .astro-widget-t{font-size:12.5px;font-weight:800;color:var(--ink);margin-bottom:2px;}
@@ -671,6 +700,29 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .vd-player:fullscreen,.vd-player:-webkit-full-screen{height:100vh;width:100vw;}
 .vd-player:fullscreen iframe,.vd-player:-webkit-full-screen iframe{width:100%;height:100%;}
 .vd-fs-btn{position:absolute;bottom:10px;right:10px;display:flex;align-items:center;gap:6px;background:rgba(0,0,0,0.65);backdrop-filter:blur(6px);color:white;border:1px solid rgba(255,255,255,0.25);padding:8px 13px;border-radius:50px;font-size:14.5px;font-weight:700;cursor:pointer;font-family:'League Spartan',sans-serif;z-index:2;}
+
+/* Lecteur routine plein écran, format vertical façon Reels/TikTok */
+.routine-player{position:fixed;inset:0;background:#000;z-index:500;display:none;flex-direction:column;}
+.routine-player.open{display:flex;}
+.rp-progress{position:absolute;top:0;left:0;right:0;height:4px;background:rgba(255,255,255,0.25);z-index:5;}
+.rp-progress-fill{height:100%;background:var(--purple-m);border-radius:0 3px 3px 0;transition:width .4s ease;}
+.rp-home{position:absolute;top:20px;left:16px;z-index:5;width:38px;height:38px;border-radius:50%;background:rgba(0,0,0,0.45);backdrop-filter:blur(6px);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.rp-title{position:absolute;top:22px;left:66px;right:16px;z-index:5;color:white;font-family:'League Spartan',sans-serif;font-weight:800;font-size:19px;text-shadow:0 2px 8px rgba(0,0,0,0.5);}
+.rp-stage{position:absolute;inset:0;overflow:hidden;}
+.rp-clip{position:absolute;inset:0;width:100%;height:100%;transition:transform .5s cubic-bezier(.22,1,.36,1);}
+.rp-clip iframe{width:100%;height:100%;border:0;object-fit:cover;}
+.rp-clip.slide-out{transform:translateY(-100%);}
+.rp-clip-next{transform:translateY(100%);}
+
+/* Écran de confirmation de fin / abandon, dans l'esprit de la capture de référence */
+.rp-exit-confirm{position:absolute;inset:0;background:linear-gradient(160deg,#6B4E8E,#8E5B7A);z-index:10;display:none;flex-direction:column;align-items:center;justify-content:center;padding:32px 28px;text-align:center;}
+.rp-exit-confirm.open{display:flex;}
+.rp-confirm-title{font-family:'League Spartan',sans-serif;font-weight:800;font-size:28px;color:var(--peach);margin-bottom:28px;}
+.rp-confirm-ring{position:relative;width:200px;height:200px;margin-bottom:28px;}
+.rp-confirm-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'League Spartan',sans-serif;font-weight:800;font-size:42px;color:var(--peach);}
+.rp-confirm-msg{color:rgba(255,255,255,0.92);font-size:16px;line-height:26px;margin-bottom:32px;max-width:320px;}
+.rp-confirm-btn-main{background:var(--peach);color:#2A1E1E;border:none;border-radius:50px;padding:16px 32px;font-family:'League Spartan',sans-serif;font-weight:800;font-size:17px;cursor:pointer;width:100%;max-width:320px;margin-bottom:14px;}
+.rp-confirm-btn-ghost{background:transparent;color:rgba(255,255,255,0.85);border:none;font-size:14.5px;text-decoration:underline;cursor:pointer;padding:8px;}
 .vd-player iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
 .vd-title{font-family:'League Spartan',sans-serif;font-size:22px;font-weight:800;color:var(--ink);padding:16px 20px 0;line-height:1.45;}
 .vd-stats{background:var(--lav-pale);border-radius:18px 18px 0 0;margin-top:12px;padding:14px;}
@@ -936,6 +988,8 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="wk-today-card" id="wkTodayCard"></div>
 </div>
 <div class="scroll">
+<div class="sec" style="padding-top:20px;"><h2>Tes <em>routines</em></h2><div class="sec-sub">Assemblées pour toi à partir de mouvements courts</div></div>
+<div class="routines-row" id="routinesWrap"></div>
 <div class="sec" style="padding-top:20px;"><h2>Tes <em>programmes</em></h2><div class="sec-sub">Une ligne directrice claire, séance après séance</div></div>
 <div class="prog-section"><div class="prog-row" id="progRow"></div></div>
 <div class="explore-divider"><span class="explore-divider-t">Explorer librement</span><span class="explore-divider-line"></span></div>
@@ -961,19 +1015,38 @@ document.addEventListener('DOMContentLoaded', function(){
 
 <!-- ═══ DIÉTÉTIQUE / PLAN NUTRITION ═══ -->
 <div id="dietPlan" class="screen">
-<div class="rc-top">
+<div class="rc-top" id="dietHomeHeader">
 <div class="blob b1"></div><div class="blob b2"></div>
 <div class="rc-h1">Ton plan <em>alimentaire</em></div>
 <div class="rc-sub">Personnalisé selon ton dosha, ton régime et tes objectifs</div>
 </div>
+<button class="diet-back-btn" id="dietBackBtn" onclick="closeDietTab()" style="display:none;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg><span>Retour</span></button>
 <div class="diet-tabs" id="dietTabsBar">
- <button class="diet-tab active" data-tab="Plan" onclick="switchDietTab('Plan')"><svg class="diet-tab-ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3v5.5M6 3v5.5M6 8.5c0 1.5-.4 2-.75 2M6 8.5c0-1.5.4-2 .75-2M5.25 10.5V21"/><circle cx="13.5" cy="12" r="7.5"/><circle cx="13.5" cy="12" r="4"/><path d="M19.5 3c1.2.3 1.5 2 1.5 3.5S20.7 9.7 19.5 10"/></svg><span>Ton plan alimentaire personnalisé</span></button>
- <button class="diet-tab" data-tab="Journal" onclick="switchDietTab('Journal')"><svg class="diet-tab-ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span>Ton journal quotidien</span></button>
- <button class="diet-tab" data-tab="Season" onclick="switchDietTab('Season')"><svg class="diet-tab-ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4C11 4 4 11 4 20c9 0 16-7 16-16z"/><path d="M8 20c0-6 4-10 10-12"/></svg><span>Mes aliments de saison</span></button>
- <button class="diet-tab" data-tab="Tips" onclick="switchDietTab('Tips')"><svg class="diet-tab-ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1.5 3 2.5 5 2.5 8a2.5 2.5 0 0 1-5 0c0-3 1-5 2.5-8z"/><path d="M5 10c2 1 4 3 5 6"/><path d="M19 10c-2 1-4 3-5 6"/><path d="M4 15c2.5 3 5 4 8 4s5.5-1 8-4"/></svg><span>Conseils santé et ayurvédiques</span></button>
+ <button class="diet-tab active" data-tab="Plan" onclick="switchDietTab('Plan')"><span class="diet-tab-shine"></span><svg class="diet-tab-ic" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3v5.5M6 3v5.5M6 8.5c0 1.5-.4 2-.75 2M6 8.5c0-1.5.4-2 .75-2M5.25 10.5V21"/><circle cx="13.5" cy="12" r="7.5"/><circle cx="13.5" cy="12" r="4"/><path d="M19.5 3c1.2.3 1.5 2 1.5 3.5S20.7 9.7 19.5 10"/></svg><span>Ton plan alimentaire personnalisé</span></button>
+ <button class="diet-tab" data-tab="Journal" onclick="switchDietTab('Journal')"><span class="diet-tab-shine"></span><svg class="diet-tab-ic" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span>Ton journal quotidien</span></button>
+ <button class="diet-tab" data-tab="Season" onclick="switchDietTab('Season')"><span class="diet-tab-shine"></span><svg class="diet-tab-ic" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4C11 4 4 11 4 20c9 0 16-7 16-16z"/><path d="M8 20c0-6 4-10 10-12"/></svg><span>Mes aliments de saison</span></button>
+ <button class="diet-tab" data-tab="Tips" onclick="switchDietTab('Tips')"><span class="diet-tab-shine"></span><svg class="diet-tab-ic" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1.5 3 2.5 5 2.5 8a2.5 2.5 0 0 1-5 0c0-3 1-5 2.5-8z"/><path d="M5 10c2 1 4 3 5 6"/><path d="M19 10c-2 1-4 3-5 6"/><path d="M4 15c2.5 3 5 4 8 4s5.5-1 8-4"/></svg><span>Conseils santé et ayurvédiques</span></button>
+</div>
+<div class="diet-home-guide" id="dietHomeGuide">
+ <div class="diet-guide-item">
+ <div class="diet-guide-t">Ton plan alimentaire personnalisé</div>
+ <div class="diet-guide-s">Ce plan est conçu selon tes besoins quotidiens personnalisés, et évolue au rythme des saisons. Tu as 3 options proposées pour suivre tes besoins, il change une fois toutes les 2 semaines.</div>
+ </div>
+ <div class="diet-guide-item">
+ <div class="diet-guide-t">Ton journal quotidien</div>
+ <div class="diet-guide-s">Suis ici, au jour le jour, ton total calorique et la répartition entre Protéines, Glucides et Lipides. Depuis l'onglet "Recettes", tu peux ajouter un plat directement à ta journée en un clic tout en bas de la fiche, il est automatiquement pris en compte et calculé. Tu peux aussi l'ajouter toi-même en tapant l'aliment ou en prenant ton plat en photo. Plus bas, retrouve ton suivi sur la semaine et sur 30 jours, pour voir si tu restes constante dans ta répartition.</div>
+ </div>
+ <div class="diet-guide-item">
+ <div class="diet-guide-t">Mes aliments de saison</div>
+ <div class="diet-guide-s">Chaque mois, retrouve ici la liste des fruits et légumes de saison, ainsi que des repères pour t'aider à identifier facilement les protéines, lipides, glucides et épices.</div>
+ </div>
+ <div class="diet-guide-item">
+ <div class="diet-guide-t">Conseils santé et ayurvédiques</div>
+ <div class="diet-guide-s">Un conseil adapté à ton profil, qui évolue selon le mois et la saison en cours.</div>
+ </div>
 </div>
 <input type="file" id="foodPhotoInput" accept="image/*" capture="environment" style="display:none;" onchange="handleFoodPhoto(event)">
-<div class="scroll" id="dietScroll">
+<div class="scroll" id="dietScroll" style="display:none;">
  <div class="diet-tab-panel active" id="dietPanelPlan"></div>
  <div class="diet-tab-panel" id="dietPanelJournal"></div>
  <div class="diet-tab-panel" id="dietPanelSeason"></div>
@@ -1079,6 +1152,13 @@ document.addEventListener('DOMContentLoaded', function(){
 </div>
 
 
+<div class="unsub-link-wrap" id="unsubLinkWrap" style="display:none;padding:20px 0 20px;">
+<div style="background:var(--ivory);border:1px solid var(--border);border-radius:14px;padding:16px 18px;text-align:center;">
+<div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:4px;">Mon abonnement</div>
+<div style="font-size:12.5px;color:var(--ink-l);margin-bottom:10px;">Gère ton abonnement actuel ci-dessous.</div>
+<a onclick="go('unsubscribeScreen');renderUnsubscribeReasons();" style="color:var(--ink-l);font-size:13px;text-decoration:underline;cursor:pointer;">Me désabonner</a>
+</div>
+</div>
 <div style="height:30px;"></div>
 </div>
 </div>
@@ -1107,8 +1187,6 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="pa" onclick="openAstro()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/><circle cx="12" cy="12" r="4"/></svg></div><div class="pa-body"><div class="pa-t">Mon thème astral</div><div class="pa-s" id="paAstroSub">Renseigne ta date de naissance</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="go('offers')"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6L17 7M7 17l-1.4 1.4"/><circle cx="12" cy="12" r="3"/></svg></div><div class="pa-body"><div class="pa-t">Mon abonnement</div><div class="pa-s" id="pfSubscription">—</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="showWalkthrough()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ink-l)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg></div><div class="pa-body"><div class="pa-t">Revoir le tutoriel</div></div><span class="pa-arr">›</span></div>
-<div class="pa" onclick="go('unsubscribeScreen');renderUnsubscribeReasons();"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ink-l)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg></div><div class="pa-body"><div class="pa-t" style="color:var(--ink-l);">Me désabonner</div></div><span class="pa-arr">›</span></div>
-<div class="pa" onclick="go('referralScreen');renderReferralScreen();" style="background:linear-gradient(135deg,rgba(123,110,200,0.08),rgba(200,144,200,0.08));border-color:var(--purple-l);"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="pa-body"><div class="pa-t"> Parraine tes amies</div><div class="pa-s">Offre-leur un mois, gagne le tien</div></div><span class="pa-arr">›</span></div>
 </div>
 <div class="sec"><h2>Confidentialité <em>& données</em></h2></div>
 <div class="pf-acts">
@@ -1232,7 +1310,8 @@ Partager mon profil
 </div>
 <div class="scroll" style="padding:0 24px;">
 <div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Mes <em>badges</em></div>
-<div style="font-size:15.5px;color:var(--ink-l);margin-bottom:16px;"><span id="badgesCount">0/9</span> débloqués — continue pour tous les obtenir</div>
+<div style="background:var(--lav-pale);border-radius:14px;padding:14px 16px;margin-bottom:14px;font-size:13.5px;color:var(--ink);line-height:22px;">🎁 Chaque badge débloqué te donne accès à du contenu bonus : recettes exclusives, séances supplémentaires ou points bonus. Continue ta régularité pour tous les obtenir !</div>
+<div style="font-size:15.5px;color:var(--ink-l);margin-bottom:16px;"><span id="badgesCount">0/9</span> débloqués, continue pour tous les obtenir</div>
 <div class="badges-grid" id="badgesGrid"></div>
 <div style="height:30px;"></div>
 </div>
@@ -1265,7 +1344,8 @@ Partager mon profil
 </div>
 <div class="scroll" style="padding:0 24px;">
 <div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Mon thème <em>astral</em></div>
-<div class="astro-widget" id="astroWidgetProfile" style="margin:14px 0 18px;"></div>
+<div id="astroDetailWrap"></div>
+<div class="ob-title dt-title" style="text-align:left;font-size:17px;margin-top:24px;">Calcule ton thème <em>natal</em></div>
 <div class="f-row-app"><label>Prénom</label><input type="text" id="astroPrenom" class="ob-input dt-input" placeholder="Ton prénom"></div>
 <div class="f-row-app"><label>Date de naissance</label><input type="date" id="astroDate" class="ob-input dt-input"></div>
 <div class="f-row-app"><label>Heure de naissance (pour l'Ascendant)</label><input type="time" id="astroTime" class="ob-input dt-input"></div>
@@ -1279,7 +1359,7 @@ Partager mon profil
 <div id="astroResult" style="display:none;margin-top:24px;">
 
 <div class="dosha-explain" style="margin-bottom:16px;background:var(--lav-pale);padding:14px;border-radius:14px;">
-Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) représente ta personnalité profonde, ton identité intérieure. Ta <b>Lune</b> révèle tes émotions, tes besoins affectifs et ta vie intérieure. Ton <b>Ascendant</b> — le signe qui se levait à l'Est au moment exact de ta naissance — est la façon dont les autres te perçoivent au premier abord, ton comportement spontané. Il nécessite ton heure et ton lieu de naissance précis pour être calculé correctement.
+Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) représente ta personnalité profonde, ton identité intérieure. Ta <b>Lune</b> révèle tes émotions, tes besoins affectifs et ta vie intérieure. Ton <b>Ascendant</b>, le signe qui se levait à l'Est au moment exact de ta naissance, est la façon dont les autres te perçoivent au premier abord, ton comportement spontané. Il nécessite ton heure et ton lieu de naissance précis pour être calculé correctement.
 </div>
 
 <div class="sec" style="padding:0 0 8px;"><h2>Ton signe <em>solaire</em></h2></div>
@@ -1314,7 +1394,7 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 <div id="astroHouses"></div>
 
 <div class="sec" style="padding:16px 0 8px;"><h2>Climat <em>astral du mois</em></h2></div>
-<div class="dosha-explain" style="margin-bottom:12px;">L'ambiance astrologique collective en ce moment — mouvements planétaires, phases de lune et portails énergétiques à connaître, indépendamment de ton thème personnel.</div>
+<div class="dosha-explain" style="margin-bottom:12px;">L'ambiance astrologique collective en ce moment, mouvements planétaires, phases de lune et portails énergétiques à connaître, indépendamment de ton thème personnel.</div>
 <div id="astralClimateBlock"></div>
 
 <div class="sec" style="padding:16px 0 8px;"><h2><em id="yearZodiacName">2026</em>, ton année</h2></div>
@@ -1375,9 +1455,9 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 <div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Mentions <em>légales</em></div>
 <div style="font-size:15.5px;color:var(--ink-m);line-height:1.7;margin-top:12px;">
 <p style="margin-bottom:14px;"><strong>Dernière mise à jour :</strong> juillet 2026</p>
-<p style="margin-bottom:14px;"><strong>Éditeur du site.</strong> Holistica Club — Maryne Arès, entreprise individuelle, SIRET : 103960605.</p>
+<p style="margin-bottom:14px;"><strong>Éditeur du site.</strong> Holistica Club, Maryne Arès, entreprise individuelle, SIRET : 103960605.</p>
 <p style="margin-bottom:14px;"><strong>Contact.</strong> info@maryneares.fr</p>
-<p style="margin-bottom:14px;"><strong>Hébergement du site.</strong> Netlify, Inc. — 44 Montgomery Street, Suite 300, San Francisco, California 94104, États-Unis. <a href="https://www.netlify.com" target="_blank" rel="noopener" style="color:var(--purple-m);">www.netlify.com</a></p>
+<p style="margin-bottom:14px;"><strong>Hébergement du site.</strong> Netlify, Inc., 44 Montgomery Street, Suite 300, San Francisco, California 94104, États-Unis. <a href="https://www.netlify.com" target="_blank" rel="noopener" style="color:var(--purple-m);">www.netlify.com</a></p>
 <p style="margin-bottom:14px;"><strong>Hébergement des données.</strong> Les données utilisateur (base de données, authentification) sont hébergées par Supabase Inc., au sein de l'Union Européenne.</p>
 <p style="margin-bottom:14px;"><strong>Paiements.</strong> Les paiements par abonnement sont traités par Stripe Payments Europe, Ltd., conformément aux normes de sécurité PCI-DSS. Holistica Club ne stocke aucune donnée bancaire.</p>
 <p style="margin-bottom:14px;"><strong>Propriété intellectuelle.</strong> L'ensemble des contenus présents sur Holistica Club (textes, vidéos, recettes, visuels, logo) est protégé par le droit d'auteur. Toute reproduction, même partielle, est interdite sans autorisation préalable écrite.</p>
@@ -1417,7 +1497,7 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
  <div class="diet-info-t">Comment ça marche</div>
  <div class="plan-line">1. Partage ton lien ou ton code à une amie</div>
  <div class="plan-line">2. Elle l'utilise en créant son compte et profite d'une réduction de bienvenue</div>
- <div class="plan-line">3. Une fois son abonnement actif, tes 2 semaines offertes sont appliquées automatiquement sur ta prochaine facture — rien à faire de ton côté</div>
+ <div class="plan-line">3. Une fois son abonnement actif, tes 2 semaines offertes sont appliquées automatiquement sur ta prochaine facture, rien à faire de ton côté</div>
 </div>
 
 <div style="height:30px;"></div>
@@ -1432,7 +1512,7 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 <div class="scroll" style="padding:0 24px;">
 <div id="unsubStep1">
  <div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">On est triste de te voir <em>partir</em> 💔</div>
- <div style="font-size:15.5px;color:var(--ink-m);margin:10px 0 20px;">Avant tout, dis-nous pourquoi — ça nous aide à améliorer Holistica Club.</div>
+ <div style="font-size:15.5px;color:var(--ink-m);margin:10px 0 20px;">Avant tout, dis-nous pourquoi, ça nous aide à améliorer Holistica Club.</div>
  <div id="unsubReasons"></div>
 </div>
 
@@ -1462,6 +1542,29 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 <div class="vd-stats"><div class="vd-stats-row"><div class="vds"><div class="vds-l">Durée</div><div class="vds-v" id="vdDur">—</div></div><div class="vds"><div class="vds-l">Catégorie</div><div class="vds-v" id="vdCat">—</div></div><div class="vds"><div class="vds-l">Dosha</div><div class="vds-v" id="vdDosha">—</div></div></div></div>
 <div class="vd-bens"><div class="vd-sec">Bénéfices</div><div id="vdBens"></div></div>
 <div class="vd-bar"><button class="vd-btn" id="vdBtn" onclick="markVDone()">Séance terminée · +15 points →</button></div>
+</div>
+
+<!-- LECTEUR ROUTINE PLEIN ÉCRAN (format vertical, façon Reels/TikTok) -->
+<div class="routine-player" id="routinePlayer">
+<div class="rp-progress"><div class="rp-progress-fill" id="rpProgressFill"></div></div>
+<button class="rp-home" onclick="attemptExitRoutine()">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
+</button>
+<div class="rp-title" id="rpTitle"></div>
+<div class="rp-stage" id="rpStage"></div>
+<div class="rp-exit-confirm" id="rpExitConfirm">
+<div class="rp-confirm-title" id="rpConfirmTitle">Fin de la séance</div>
+<div class="rp-confirm-ring">
+<svg width="200" height="200" viewBox="0 0 200 200">
+<circle cx="100" cy="100" r="88" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="10"/>
+<circle id="rpConfirmRing" cx="100" cy="100" r="88" fill="none" stroke="var(--peach)" stroke-width="10" stroke-linecap="round" transform="rotate(-90 100 100)" stroke-dasharray="553" stroke-dashoffset="553"/>
+</svg>
+<div class="rp-confirm-pct" id="rpConfirmPct">0%</div>
+</div>
+<div class="rp-confirm-msg" id="rpConfirmMsg"></div>
+<button class="rp-confirm-btn-main" id="rpConfirmMainBtn" onclick="confirmEndRoutine()">Terminer la séance</button>
+<button class="rp-confirm-btn-ghost" onclick="dismissExitConfirm()">Continuer la séance</button>
+</div>
 </div>
 
 <div class="rcdetail" id="rcdetail">
@@ -1537,7 +1640,7 @@ const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{
  }
 });
 
-// Capture immédiate d'un éventuel lien de parrainage (?ref=CODE) — stocké en
+// Capture immédiate d'un éventuel lien de parrainage (?ref=CODE), stocké en
 // attendant que la personne crée son compte / se connecte, puis appliqué une
 // seule fois via applyPendingReferral().
 (function captureReferralParam(){
@@ -1621,7 +1724,7 @@ const _MONTH_NAMES_FR=['Janvier','Février','Mars','Avril','Mai','Juin','Juillet
 const _curMonthName=_MONTH_NAMES_FR[_now.getMonth()];
 let dailyCalGoal=2000,currentRC=null,sessionDates=[],wellnessLog=[],retakeDoshaMode=false,foodLog=[],videoStartDates={};
 let ytPlayer=null,ytProgressInterval=null,ytApiReady=false;
-let userProfile={name:'',lastName:'',email:'',goal:'bien-être',age:30,weight:62,height:165,activity:'modérée',hasPeriod:true,menopause:false,dosha:'vata',lastPeriodStart:'',doshaV:33,doshaP:33,doshaK:34,cycleLength:28,birthDate:'',birthTime:'',birthPlace:'',subscriptionStatus:'inactive',subscriptionPlan:null,dietType:'flexitarien',allergies:'',referralCode:'',referredBy:null};
+let userProfile={name:'',lastName:'',email:'',goal:'bien-être',age:30,weight:62,height:165,activity:'modérée',hasPeriod:true,menopause:false,perimenopause:false,contraception:false,dosha:'vata',lastPeriodStart:'',doshaV:33,doshaP:33,doshaK:34,cycleLength:28,birthDate:'',birthTime:'',birthPlace:'',subscriptionStatus:'inactive',subscriptionPlan:null,dietType:'flexitarien',allergies:'',referralCode:'',referredBy:null};
 let moodScore=0,sleepScore=8,stressScore=5;
 let activeMvFilter='Tout',activeRcFilter='Tout';
 
@@ -1655,14 +1758,14 @@ const WT_ICONS={
 const WT_STEPS=[
   {icon:'sparkle',img:'',title:'Bienvenue sur Holistica Club',desc:"On te fait découvrir chaque partie de l'application pour que tu trouves tout facilement dès le premier jour."},
   {icon:'home',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a6b3d52ca4077.20955655_IMG_1254.PNG',title:'Ton écran d\'accueil',desc:"C'est l'onglet du milieu, en bas de ton écran. Tu y retrouves chaque jour : ton message du jour selon ton profil ayurvédique et la phase de la lune, ton cycle (jours avant tes prochaines règles, ta phase actuelle et ton niveau d'énergie), ta routine bien-être ayurvédique adaptée à ton profil et ton cycle, et ton humeur du jour à renseigner pour suivre ton stress et ton bien-être, avec une moyenne calculée sur le mois."},
-  {icon:'play',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a6b3d243c03f5.97813414_Screenshot2026-07-28at14.42.41.png',title:'Tes séances',desc:"C'est l'onglet tout à gauche. Suis une ligne directrice pour progresser en yoga, pilates ou méditation, ou pioche librement dans la bibliothèque complète des cours. Certains se débloquent avec ton ancienneté et tes connexions régulières — tu gagnes des points et des badges au fil du temps."},
+  {icon:'play',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a6b3d243c03f5.97813414_Screenshot2026-07-28at14.42.41.png',title:'Tes séances',desc:"C'est l'onglet tout à gauche. Suis une ligne directrice pour progresser en yoga, pilates ou méditation, ou pioche librement dans la bibliothèque complète des cours. Certains se débloquent avec ton ancienneté et tes connexions régulières, tu gagnes des points et des badges au fil du temps."},
   {icon:'bowl',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a6b3db50db989.92116283_IMG_1261.PNG',title:'Tes recettes',desc:"C'est le deuxième onglet en partant de la gauche. Retrouve des recettes classées par thème selon ton profil ayurvédique : végétarien, boissons, anti-inflammatoire, petit-déjeuner, et bien plus. Certaines se débloquent aussi selon ton assiduité."},
   {icon:'leaf',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a6b3d32851aa3.79038288_Screenshot2026-07-28at14.42.25.png',title:'Tes dossiers bien-être',desc:"Juste à côté du bouton Accueil. Chaque semaine, retrouve un dossier complet : soin des cheveux, de la peau, produits ménagers naturels, naturopathie, nutrition, aromathérapie, respiration, et bien d'autres sujets."},
   {icon:'people',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a75937b502736.96000489_IMG_2240.jpg',title:'Communauté & challenges',desc:"À droite du bouton Accueil. Avec l'offre Immersion, rejoins le groupe WhatsApp pour échanger avec d'autres femmes et Maryne : un cours de yoga en visio chaque mois (avec correction et partage d'écran), une conférence mensuelle, et un nouveau challenge chaque mois pour avancer ensemble."},
   {icon:'apple',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a759382331f63.37573717_IMG_2241.jpg',title:'Ta diététique',desc:"Deuxième onglet à droite du bouton Accueil. Ton plan alimentaire est calculé selon tes propres paramètres, anti-inflammatoire, sans gluten et sans lactose, et évolue chaque mois avec les saisons. 4 parties : ton plan alimentaire, ton journal quotidien (macros et calories), tes conseils ayurvédiques du moment, et les aliments de saison avec ta liste de courses."},
   {icon:'user',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a75955383bfe9.60451086_IMG_22422.jpg',title:'Ton profil',desc:"Dernier onglet à droite. Modifie tes informations personnelles, gère ton abonnement, et retrouve ton profil ayurvédique déterminé lors de ton test."},
-  {icon:'pulse',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a7593a90abc39.64516789_IMG_2246.jpg',title:'Ton historique bien-être',desc:"Chaque routine remplie depuis l'accueil vient nourrir ton historique — un aperçu clair de ton évolution jour après jour."},
-  {icon:'moon',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a7593b4ea23b5.66768804_IMG_2248.jpg',title:'Ton thème astral',desc:"Comprends l'énergie du moment : pleine lune, planète en rétrograde, ton signe, ta personnalité, ton année — de quoi éclairer tes prises de décision."},
+  {icon:'pulse',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a7593a90abc39.64516789_IMG_2246.jpg',title:'Ton historique bien-être',desc:"Chaque routine remplie depuis l'accueil vient nourrir ton historique, un aperçu clair de ton évolution jour après jour."},
+  {icon:'moon',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a7593b4ea23b5.66768804_IMG_2248.jpg',title:'Ton thème astral',desc:"Comprends l'énergie du moment : pleine lune, planète en rétrograde, ton signe, ta personnalité, ton année, de quoi éclairer tes prises de décision."},
   {icon:'award',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a7593af5412f5.54951503_IMG_2247.jpg',title:'Tes badges & récompenses',desc:"Débloque progressivement de nouvelles recettes, de nouveaux cours et séances, et de nouveaux dossiers naturopathie au fil de ta progression."}
 ];
 let wtIndex=0;
@@ -1789,7 +1892,7 @@ async function deleteAccount(){
  const nameToNotify=userProfile.name||'';
  const {error}=await sb.from('profiles').delete().eq('id',currentUser.id);
  if(error){toast('❌ Erreur : '+error.message);return;}
- // Envoi de la confirmation par email (best-effort — on ne bloque jamais la suppression si l'email échoue)
+ // Envoi de la confirmation par email (best-effort, on ne bloque jamais la suppression si l'email échoue)
  if(emailToNotify){
  fetch('/.netlify/functions/send-account-email',{
  method:'POST',
@@ -1835,7 +1938,7 @@ async function loadProfileAndEnter(){
  // seulement quand il est confirmé qu'aucun profil n'existe (voir plus bas).
  }
  if(profile){
- userProfile={name:profile.name||'',lastName:profile.last_name||'',email:profile.email||'',goal:profile.goal||'bien-être',age:profile.age||30,weight:profile.weight||62,height:profile.height||165,activity:profile.activity||'modérée',hasPeriod:profile.has_period,menopause:profile.menopause,dosha:profile.dosha||'vata',lastPeriodStart:profile.last_period_start||'',doshaV:profile.dosha_v??33,doshaP:profile.dosha_p??33,doshaK:profile.dosha_k??34,cycleLength:profile.cycle_length||28,birthDate:profile.birth_date||'',birthTime:profile.birth_time||'',birthPlace:profile.birth_place||'',subscriptionStatus:profile.subscription_status||'inactive',subscriptionPlan:profile.subscription_plan||null,dietType:profile.diet_type||'flexitarien',allergies:profile.allergies||'',referralCode:profile.referral_code||'',referredBy:profile.referred_by||null,hasSeenWalkthrough:profile.has_seen_walkthrough||false};
+ userProfile={name:profile.name||'',lastName:profile.last_name||'',email:profile.email||'',goal:profile.goal||'bien-être',age:profile.age||30,weight:profile.weight||62,height:profile.height||165,activity:profile.activity||'modérée',hasPeriod:profile.has_period,menopause:profile.menopause,perimenopause:profile.perimenopause||false,contraception:profile.contraception||false,dosha:profile.dosha||'vata',lastPeriodStart:profile.last_period_start||'',doshaV:profile.dosha_v??33,doshaP:profile.dosha_p??33,doshaK:profile.dosha_k??34,cycleLength:profile.cycle_length||28,birthDate:profile.birth_date||'',birthTime:profile.birth_time||'',birthPlace:profile.birth_place||'',subscriptionStatus:profile.subscription_status||'inactive',subscriptionPlan:profile.subscription_plan||null,dietType:profile.diet_type||'flexitarien',allergies:profile.allergies||'',referralCode:profile.referral_code||'',referredBy:profile.referred_by||null,hasSeenWalkthrough:profile.has_seen_walkthrough||false};
  if(isDevAccount()){
  // Accès complet en mémoire uniquement pour tester (n'écrase jamais la vraie valeur en base)
  userProfile.subscriptionStatus='active';
@@ -1860,14 +1963,14 @@ async function loadProfileAndEnter(){
  const gapDays=Math.floor((today-lastPrevious)/86400000);
  if(gapDays>=20)hadComeback=true;
  }
- // Log du jour de connexion actuel (dédupliqué automatiquement par le Set) — sert de base au système de paliers tous les 15 jours actifs
+ // Log du jour de connexion actuel (dédupliqué automatiquement par le Set), sert de base au système de paliers tous les 15 jours actifs
  loginDates.add(localDateStr());
  streak=calcStreak();
  lastCelebratedLevel=profile.last_celebrated_level??(Math.floor(xp/100)+1);
  ensureReferralCode();
  applyPendingReferral();
  refreshReferralCount();
- // TEMPORAIRE — verrou d'abonnement désactivé pour la période de tests Google Play.
+ // TEMPORAIRE, verrou d'abonnement désactivé pour la période de tests Google Play.
  // Pour remettre le verrou : décommente les 5 lignes ci-dessous et supprime ce commentaire.
  // if(!isDevAccount() && userProfile.subscriptionStatus!=='active'){
  // go('offers');
@@ -1902,7 +2005,7 @@ function saveProfile(){
  const {error}=await sb.from('profiles').upsert({
  id:currentUser.id,
  name:userProfile.name,age:userProfile.age,weight:userProfile.weight,height:userProfile.height,
- activity:userProfile.activity,has_period:userProfile.hasPeriod,menopause:userProfile.menopause,dosha:userProfile.dosha,
+ activity:userProfile.activity,has_period:userProfile.hasPeriod,menopause:userProfile.menopause,perimenopause:userProfile.perimenopause,contraception:userProfile.contraception,dosha:userProfile.dosha,
  last_period_start:userProfile.lastPeriodStart||null,dosha_v:userProfile.doshaV,dosha_p:userProfile.doshaP,dosha_k:userProfile.doshaK,cycle_length:userProfile.cycleLength,
  last_name:userProfile.lastName,email:userProfile.email,goal:userProfile.goal,
  birth_date:userProfile.birthDate||null,birth_time:userProfile.birthTime||null,birth_place:userProfile.birthPlace,
@@ -1919,7 +2022,7 @@ function saveProfile(){
  saveTimer=setTimeout(()=>{saveRetryCount=0;saveProfile();},2000);
  } else {
  saveRetryCount=0;
- toast('⚠️ Ta dernière modification n\'a pas pu être enregistrée — vérifie ta connexion');
+ toast('⚠️ Ta dernière modification n\'a pas pu être enregistrée, vérifie ta connexion');
  }
  } else {
  saveRetryCount=0;
@@ -1948,7 +2051,7 @@ sb.auth.onAuthStateChange((event,session)=>{
 });
 
 // Sur mobile (app installée notamment), le navigateur met en pause le JS
-// quand l'app passe en arrière-plan — le rafraîchissement automatique du
+// quand l'app passe en arrière-plan, le rafraîchissement automatique du
 // jeton peut donc ne pas se déclencher à temps. On force une vérification
 // dès que l'app redevient visible, pour éviter toute déconnexion silencieuse.
 document.addEventListener('visibilitychange',async()=>{
@@ -1984,7 +2087,7 @@ const PROTECTED_SCREENS=['dashboard','mouvement','recettes','naturo','challenge'
 const WHATSAPP_GROUP_LINK='https://chat.whatsapp.com/BmQ0hxeccsU9iwspW5UQim?s=cl&p=i&mlu=4&amv=2';
 
 function renderChallenge(){
- // TEMPORAIRE — pour remettre le verrou, remplace la ligne du dessous par :
+ // TEMPORAIRE, pour remettre le verrou, remplace la ligne du dessous par :
  // const isImmersion=userProfile.subscriptionPlan==='immersion';
  const isImmersion=true;
  const communityCard=document.getElementById('chCommunityCard');
@@ -2002,7 +2105,7 @@ function renderChallenge(){
  <div class="ch-hero">
  <div class="ch-hero-ic"></div>
  <div class="ch-hero-t">Bienvenue dans la communauté Holistica</div>
- <div class="ch-hero-p">${isImmersion?'Ton accès au groupe WhatsApp est actif — les challenges y sont organisés avec les autres filles.':'La communauté et les challenges WhatsApp sont réservés au Plan Immersion.'}</div>
+ <div class="ch-hero-p">${isImmersion?'Ton accès au groupe WhatsApp est actif, les challenges y sont organisés avec les autres filles.':'La communauté et les challenges WhatsApp sont réservés au Plan Immersion.'}</div>
  </div>
  <div class="ch-feat-t">Ce qui t'attend</div>
  ${features.map(f=>`<div class="ch-feature-row">
@@ -2245,12 +2348,26 @@ function switchDietTab(tab){
  document.querySelectorAll('.diet-tab-panel').forEach(p=>p.classList.remove('active'));
  const panel=document.getElementById('dietPanel'+tab);
  if(panel)panel.classList.add('active');
+ // Bascule en page pleine : cache la grille des 4 cartes + le guide, affiche le contenu + le retour
+ document.getElementById('dietHomeHeader').style.display='none';
+ document.getElementById('dietTabsBar').style.display='none';
+ document.getElementById('dietHomeGuide').style.display='none';
+ document.getElementById('dietScroll').style.display='block';
+ document.getElementById('dietBackBtn').style.display='flex';
+ document.getElementById('dietScroll').scrollTop=0;
+}
+function closeDietTab(){
+ document.getElementById('dietHomeHeader').style.display='block';
+ document.getElementById('dietTabsBar').style.display='grid';
+ document.getElementById('dietHomeGuide').style.display='flex';
+ document.getElementById('dietScroll').style.display='none';
+ document.getElementById('dietBackBtn').style.display='none';
 }
 
 async function renderDietPlan(){
  const wrap=document.getElementById('dietScroll');
  if(!wrap)return;
- // TEMPORAIRE — pour remettre le verrou, remplace la ligne du dessous par :
+ // TEMPORAIRE, pour remettre le verrou, remplace la ligne du dessous par :
  // const isImmersion=userProfile.subscriptionPlan==='immersion';
  const isImmersion=true;
  if(!isImmersion){
@@ -2308,7 +2425,7 @@ async function renderDietPlan(){
  const planMois=await getPlanAlimentaireMoisCourant(doshaKey);
  const restantes=renderPlanSectionsRestantesHtml(planMois);
 
- /* ═══ Onglet 1 — Plan alimentaire (petit-déj / déjeuner / dîner / collation uniquement) ═══ */
+ /* ═══ Onglet 1, Plan alimentaire (petit-déj / déjeuner / dîner / collation uniquement) ═══ */
  let planHtml='';
  plan.forEach(meal=>{
  const ideas=pickMealIdeas(meal.id,doshaKey,userProfile.dietType||'flexitarien',week);
@@ -2322,7 +2439,7 @@ async function renderDietPlan(){
  <div class="diet-meal-idea-body"><div class="diet-meal-idea-t">${idea.title}</div><div class="diet-meal-idea-s">${idea.ingredients||''}</div></div>
  </div>`).join('');
  } else {
- bodyHtml=`<div class="diet-meal-empty">Aucune idée de repas ajoutée pour l'instant — reviens bientôt</div>`;
+ bodyHtml=`<div class="diet-meal-empty">Aucune idée de repas ajoutée pour l'instant, reviens bientôt</div>`;
  }
  planHtml+=`<div class="sec" style="padding-top:4px;"><h2>${meal.labelHtml}</h2></div>
  <div class="diet-meal-card">
@@ -2356,16 +2473,16 @@ async function renderDietPlan(){
  <div class="diet-summary-obj">Perte de masse grasse · Maintien musculaire · Soutien hormonal · Anti-inflammatoire</div>
  </div>`+planHtml;
 
- /* ═══ Onglet 2 — Ton journal quotidien (macros + ajouter/scanner + suivi) ═══ */
+ /* ═══ Onglet 2, Ton journal quotidien (macros + ajouter/scanner + suivi) ═══ */
  document.getElementById('dietPanelJournal').innerHTML='<div id="foodJournalWrap"></div><div style="height:24px;"></div>';
  renderFoodJournal();
 
- /* ═══ Onglet 3 — Mes aliments de saison (légumes, aliments & épices du mois) ═══ */
+ /* ═══ Onglet 3, Mes aliments de saison (légumes, aliments & épices du mois) ═══ */
  document.getElementById('dietPanelSeason').innerHTML=`<div class="sec" style="padding-top:16px;"><h2>Mes aliments <em>de saison</em></h2></div>`+
  (restantes.season||'<div class="diet-meal-empty">Rien à afficher pour ce mois pour l\'instant.</div>')+
  `<div style="height:24px;"></div>`;
 
- /* ═══ Onglet 4 — Conseils santé et ayurvédiques (au réveil, épices, conseil du mois) ═══ */
+ /* ═══ Onglet 4, Conseils santé et ayurvédiques (au réveil, épices, conseil du mois) ═══ */
  document.getElementById('dietPanelTips').innerHTML=`<div class="sec" style="padding-top:16px;"><h2>Conseils <em>santé et ayurvédiques</em></h2></div>`+
  (restantes.tips||'<div class="diet-meal-empty">Rien à afficher pour ce mois pour l\'instant.</div>')+
  `<div style="height:24px;"></div>`;
@@ -2413,7 +2530,7 @@ function go(id){
  // Garde-fou : impossible d'accéder aux écrans du contenu sans abonnement actif,
  // même en forçant la navigation (ex: via la console). Le profil, les offres,
  // la confidentialité et la déconnexion restent accessibles pour gérer son compte.
- // TEMPORAIRE — désactivé pour la période de tests Google Play.
+ // TEMPORAIRE, désactivé pour la période de tests Google Play.
  // Pour remettre le verrou : décommente les 3 lignes ci-dessous.
  // if(PROTECTED_SCREENS.includes(id) && currentUser && !isDevAccount() && userProfile.subscriptionStatus!=='active'){
  // id='offers';
@@ -2468,7 +2585,7 @@ function openArchiveDossier(id){naturoViewId=id;renderNaturo();}
 
 // Met en forme le texte d'un dossier : respecte les retours à la ligne saisis dans l'admin
 // (une ligne = un paragraphe). Une ligne qui commence par un emoji est traitée automatiquement
-// comme un sous-titre (mise en gras/couleur) — pas besoin de taper ## devant.
+// comme un sous-titre (mise en gras/couleur), pas besoin de taper ## devant.
 // "## Sous-titre" reste aussi supporté pour les cas sans emoji.
 const EMOJI_START_RE=/^\s*(\p{Extended_Pictographic}(\uFE0F|\u200D\p{Extended_Pictographic})*)+/u;
 function formatDossierText(text){
@@ -2519,7 +2636,7 @@ function renderNaturo(){
  if(!isCurrent){
  html+='<div class="dos-archive-t" style="margin-top:16px;cursor:pointer;" onclick="backToCurrentDossier()">← Revenir au dossier de la semaine</div>';
  }
- // Aperçu compact : image, titre, un court extrait — la lecture complète se fait sur un écran dédié.
+ // Aperçu compact : image, titre, un court extrait, la lecture complète se fait sur un écran dédié.
  const plainExcerpt=(viewing.intro||'').replace(/\n+/g,' ').trim();
  const excerpt=plainExcerpt.length>140?plainExcerpt.slice(0,140).trim()+'…':plainExcerpt;
  html+=`<div class="dos-card">
@@ -2585,6 +2702,8 @@ function enterApp(){
  if(document.getElementById('pfSubscription')){
  const planLabels={equilibre:'Plan Équilibre · 29€/mois',immersion:'Plan Immersion · 49€/mois'};
  document.getElementById('pfSubscription').textContent=userProfile.subscriptionPlan?planLabels[userProfile.subscriptionPlan]||'Abonnement actif':'Aucun abonnement actif';
+ const unsubWrap=document.getElementById('unsubLinkWrap');
+ if(unsubWrap)unsubWrap.style.display=userProfile.subscriptionPlan?'block':'none';
  }
  const h=new Date().getHours();
  document.getElementById('dGreet').textContent=h<12?'Bonjour ☀️':h<18?'Bon après-midi 🌤️':'Bonsoir 🌙';
@@ -2596,7 +2715,7 @@ function enterApp(){
  const d=userProfile.dosha.split('-').map(p=>p.charAt(0).toUpperCase()+p.slice(1)).join('-');
  document.getElementById('dPill').textContent='Profil '+d+' · Été';
  document.getElementById('pfDosha').textContent='Dosha '+d+' · Holistica Club';
- document.getElementById('pfDoshaDetail').textContent='V '+userProfile.doshaV+'% · P '+userProfile.doshaP+'% · K '+userProfile.doshaK+'%';
+ document.getElementById('pfDoshaDetail').textContent='Vata '+userProfile.doshaV+'% · Pitta '+userProfile.doshaP+'% · Kapha '+userProfile.doshaK+'%';
  document.getElementById('doshaBarV').style.width=userProfile.doshaV+'%';
  document.getElementById('doshaBarP').style.width=userProfile.doshaP+'%';
  document.getElementById('doshaBarK').style.width=userProfile.doshaK+'%';
@@ -2617,7 +2736,7 @@ const OB_STEPS=[
  {type:'slider',part:'Ton Profil',title:'Quel âge as-tu ?',min:16,max:65,val:30,id:'obAge'},
  {type:'slider',part:'Ton Profil',title:'Ta taille ?',min:140,max:200,val:165,id:'obHeight',unit:'cm'},
  {type:'slider',part:'Ton Profil',title:'Ton poids actuel ?',min:40,max:150,val:62,id:'obWeight',unit:'kg'},
- {type:'choice',part:'Ton Profil',title:'As-tu tes menstruations ?',opts:['Oui','Non, ménopause','Non, autre raison']},
+ {type:'choice',part:'Ton Profil',title:'As-tu tes menstruations ?',opts:['Oui','Non, pilule ou autre contraception','Non, préménopause','Non, ménopause']},
  {type:'date',part:'Ton Profil',title:'Le premier jour de tes dernières règles ?',subtitle:'Pour suivre ton cycle et t\'accompagner phase par phase.'},
  {type:'choice',part:'Ton Profil',title:'Ton niveau d\'activité physique ?',opts:['Sédentaire','Modérée','Active','Très active']},
  {type:'choice',part:'Alimentation',title:'Ton régime alimentaire ?',opts:['Flexitarienne (viande & poisson)','Végétarienne','Végane']},
@@ -2762,7 +2881,9 @@ function obNext(){
  if(s.id==='obWeight') userProfile.weight=v;
  } else if(s.type==='choice' && obStep===4){
  userProfile.hasPeriod=obChoiceIdx===0;
- userProfile.menopause=obChoiceIdx===1;
+ userProfile.contraception=obChoiceIdx===1;
+ userProfile.perimenopause=obChoiceIdx===2;
+ userProfile.menopause=obChoiceIdx===3;
  } else if(s.type==='date'){
  userProfile.lastPeriodStart=document.getElementById('obLastPeriod')?.value||'';
  } else if(s.type==='choice' && OB_STEPS[obStep].title.includes('activité')){
@@ -2805,7 +2926,7 @@ function obNext(){
  const d=userProfile.dosha.split('-').map(p=>p.charAt(0).toUpperCase()+p.slice(1)).join('-');
  document.getElementById('dPill').textContent='Profil '+d+' · Été';
  document.getElementById('pfDosha').textContent='Dosha '+d+' · Holistica Club';
- document.getElementById('pfDoshaDetail').textContent='V '+userProfile.doshaV+'% · P '+userProfile.doshaP+'% · K '+userProfile.doshaK+'%';
+ document.getElementById('pfDoshaDetail').textContent='Vata '+userProfile.doshaV+'% · Pitta '+userProfile.doshaP+'% · Kapha '+userProfile.doshaK+'%';
  buildRoutine();
  return;
  }
@@ -2837,10 +2958,10 @@ setTimeout(()=>renderOB(),100);
 
 /* ═══════ DASHBOARD ═══════ */
 const DAILY_THEMES_BY_ELEMENT={
- Feu:['Ton énergie est en hausse aujourd\'hui, canalise-la dans un projet qui te tient à cœur.','Une occasion d\'affirmer tes idées se présente, ose prendre la parole.','Ta spontanéité est un atout aujourd\'hui, fais confiance à ton instinct.'],
- Terre:['Privilégie la stabilité aujourd\'hui, avance pas à pas sur tes objectifs.','Un moment idéal pour t\'ancrer et prendre soin de ton corps.','Ta patience sera récompensée, ne brusque rien aujourd\'hui.'],
- Air:['Les échanges et discussions sont favorisés, communique ce que tu ressens.','Ton esprit est vif, c\'est le bon jour pour apprendre ou planifier.','La journée invite à la légèreté, laisse circuler tes idées librement.'],
- Eau:['Ton intuition est particulièrement forte aujourd\'hui, écoute-la.','Prends un moment pour toi et pour tes émotions, elles ont des choses à te dire.','Les liens affectifs sont mis en lumière, un appel ou un message pourrait faire du bien.'],
+ Feu:['Ton énergie est en hausse aujourd\'hui, canalise-la dans un projet qui te tient à cœur, plutôt que de la disperser sur plusieurs fronts à la fois.','Une occasion d\'affirmer tes idées se présente, ose prendre la parole, même si la situation te semble un peu inconfortable au départ.','Ta spontanéité est un atout aujourd\'hui, fais confiance à ton instinct plutôt que de trop analyser chaque option.','C\'est un bon jour pour trancher une décision que tu repousses depuis un moment, le doute pèse souvent plus lourd que l\'erreur possible.','Ton audace est plus forte que d\'habitude, lance ce que tu remets à plus tard, tu regretteras surtout de ne pas avoir essayé.','Une conversation directe aujourd\'hui t\'évitera bien des détours plus tard, mieux vaut la franchise qu\'un non-dit qui s\'installe.','Ton leadership naturel peut faire la différence dans un groupe aujourd\'hui, n\'hésite pas à proposer une direction claire.','Si une occasion se présente, fonce plutôt que d\'attendre le moment parfait, il n\'existera probablement jamais.','Ta détermination du jour peut débloquer un projet en pause, un seul geste concret suffit parfois à relancer la machine.','Privilégie l\'action à la réflexion aujourd\'hui, tu y verras plus clair en avançant qu\'en pesant sans fin le pour et le contre.'],
+ Terre:['Privilégie la stabilité aujourd\'hui, avance pas à pas sur tes objectifs, sans chercher à tout accélérer d\'un coup.','Un moment idéal pour t\'ancrer et prendre soin de ton corps, même 10 minutes suffisent à faire la différence.','Ta patience sera récompensée, ne brusque rien aujourd\'hui, les choses se mettront en place à leur propre rythme.','Une décision pratique et réfléchie vaut mieux qu\'un choix précipité aujourd\'hui, prends le temps qu\'il te faut.','C\'est le bon jour pour organiser ce qui traîne, ton efficacité est à son maximum, avance sur ce que tu remets à plus tard.','Fais confiance à ton bon sens plutôt qu\'à tes doutes aujourd\'hui, ta première intuition est souvent la bonne.','Un choix financier ou matériel mérite ton attention aujourd\'hui, prends le temps de comparer avant de t\'engager.','Ta rigueur naturelle t\'aide à trier l\'essentiel du superflu en ce moment, fais le ménage dans ce qui n\'a plus lieu d\'être.','Prends le temps de vérifier les détails avant de t\'engager aujourd\'hui, une vérification de plus ne coûte jamais rien.','Un pas concret vaut mieux qu\'une grande promesse, avance simplement, sans te mettre la pression d\'un résultat immédiat.'],
+ Air:['Les échanges et discussions sont favorisés, communique ce que tu ressens, une conversation honnête peut débloquer bien des choses.','Ton esprit est vif, c\'est le bon jour pour apprendre ou planifier, ta capacité d\'absorption est particulièrement bonne.','La journée invite à la légèreté, laisse circuler tes idées librement, sans chercher à tout structurer immédiatement.','Une conversation que tu repousses gagnerait à avoir lieu aujourd\'hui, mieux vaut la provoquer que d\'attendre qu\'elle se fasse d\'elle-même.','Ta clarté d\'esprit t\'aide à trancher entre deux options aujourd\'hui, fais-toi confiance sur ce choix.','C\'est un bon jour pour demander un avis extérieur avant de décider, un regard neuf peut t\'éclairer autrement.','Prendre du recul t\'aidera à mieux voir ce qui compte vraiment aujourd\'hui, ne réagis pas à chaud si tu peux l\'éviter.','Un compromis intelligent est possible aujourd\'hui, ne campe pas sur tes positions, l\'échange peut t\'apporter plus que la victoire.','Ton réseau peut t\'apporter une réponse que tu cherches depuis un moment, n\'hésite pas à solliciter quelqu\'un aujourd\'hui.','Écrire ou parler à voix haute t\'aidera à clarifier ta décision du jour, mettre des mots dessus rend les choses plus concrètes.'],
+ Eau:['Ton intuition est particulièrement forte aujourd\'hui, écoute-la, même quand elle va à l\'encontre de la logique.','Prends un moment pour toi et pour tes émotions, elles ont des choses à te dire, ne les mets pas de côté aujourd\'hui.','Les liens affectifs sont mis en lumière, un appel ou un message pourrait faire du bien, à toi comme à la personne qui le reçoit.','Si une décision te semble floue, laisse ton ressenti trancher plutôt que ta tête, ton corps sait souvent avant ton mental.','Un choix qui te pèse depuis un moment mérite d\'être posé aujourd\'hui, le silence ne le fera pas disparaître.','Ta sensibilité du jour t\'aide à percevoir ce que les autres ne disent pas, fais confiance à ce que tu ressens.','Accorde-toi le droit de dire non à ce qui ne te convient plus, tu n\'as rien à justifier.','Une intuition récurrente mérite d\'être écoutée plutôt qu\'ignorée aujourd\'hui, elle revient pour une bonne raison.','Prends le temps de ressentir avant de répondre à une sollicitation, tu n\'es pas obligée de décider dans l\'instant.','Ce que tu évites depuis des jours demande probablement à être regardé en face, ce sera plus léger une fois fait.'],
 };
 const DOSHA_TODAY_TIP={vata:'ancre-toi et privilégie la régularité',pitta:'accorde-toi de la fraîcheur et du lâcher-prise',kapha:'bouge et stimule ton énergie',tridoshique:'reste à l\'écoute de ton équilibre du moment'};
 
@@ -2894,9 +3015,9 @@ function renderAstroWidget(targetId){
  context+=` · Jour ${cycle.cycleDay}, phase ${cycle.phase.toLowerCase()}`;
  }
 
- // Conseil croisé : dosha (+ secondaire si profil mixte) + cycle + saison + âge
+ // Conseil croisé : dosha (+ secondaire si profil mixte) + cycle + saison + âge — en rotation quotidienne
  let tip=(cycle&&CYCLE_DOSHA_TIP[primary]&&CYCLE_DOSHA_TIP[primary][cycle.phase])
- ? CYCLE_DOSHA_TIP[primary][cycle.phase]
+ ? pickDailyTip(CYCLE_DOSHA_TIP[primary][cycle.phase])
  : `Profil ${doshaLabel} : ${DOSHA_TODAY_TIP[primary]||DOSHA_TODAY_TIP.vata}`;
  if(isMixed){
  const secLabel=secondary.k.charAt(0).toUpperCase()+secondary.k.slice(1);
@@ -2913,11 +3034,80 @@ function renderAstroWidget(targetId){
  const sign=getSunSign(d.getMonth()+1,d.getDate());
  if(sign){
  const themes=DAILY_THEMES_BY_ELEMENT[sign.elem]||DAILY_THEMES_BY_ELEMENT.Feu;
- const dayIdx=new Date().getDate()%themes.length;
+ const dayIdx=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/86400000)%themes.length;
  signHtml=`<div class="astro-widget-sign">${sign.e} ${sign.n}, ${themes[dayIdx]}</div>`;
  }
  }
  el.innerHTML=`<div class="astro-moon">${moon.e}</div><div class="astro-widget-body"><div class="astro-widget-t">Ta phrase du jour</div><div class="astro-widget-context">${context}</div><div class="astro-widget-tip">${tip}</div>${signHtml}</div>`;
+}
+
+/* Contenu du mois : le signe que traverse le Soleil est un vrai repère astronomique (dates fixes,
+   pas une invention) — le thème associé reste une lecture symbolique classique. */
+const MONTHLY_ASTRO=[
+ {mois:'Janvier',txt:'Le Soleil traverse le Capricorne jusqu\'au 19, puis entre en Verseau. Un mois pour poser des bases solides avant de laisser place à des idées plus originales en fin de mois. Un bon mois pour clarifier tes intentions de l\'année sans te mettre la pression du résultat immédiat.'},
+ {mois:'Février',txt:'Le Soleil est en Verseau jusqu\'au 18, puis entre en Poissons. Un mois propice aux idées nouvelles et aux connexions, avant une bascule plus intuitive et sensible en fin de mois. Profite de la première quinzaine pour structurer tes idées, puis laisse-toi porter par ton intuition.'},
+ {mois:'Mars',txt:'Le Soleil est en Poissons jusqu\'au 19, puis entre en Bélier, marquant le début du cycle zodiacal. Un mois de transition entre douceur intérieure et élan de renouveau. C\'est un mois charnière, où prendre le temps de clore un cycle avant d\'en ouvrir un nouveau te fera du bien.'},
+ {mois:'Avril',txt:'Le Soleil est en Bélier jusqu\'au 19, puis entre en Taureau. Un mois qui démarre sur l\'impulsion et l\'initiative, avant de se poser sur des bases plus stables en fin de mois. Lance ce qui te tient à cœur en première partie de mois, puis consolide ce qui a émergé.'},
+ {mois:'Mai',txt:'Le Soleil est en Taureau jusqu\'au 20, puis entre en Gémeaux. Un mois pour ancrer ce qui compte vraiment, avant une ouverture plus curieuse et communicante en fin de mois. Un mois pour bâtir sur des bases solides avant de t\'ouvrir à de nouvelles rencontres et idées.'},
+ {mois:'Juin',txt:'Le Soleil est en Gémeaux jusqu\'au 20, puis entre en Cancer. Un mois d\'échanges et d\'idées, qui se termine sur un besoin plus marqué de cocon et d\'affectif. Profite des échanges de début de mois, puis accorde-toi plus de repli et de douceur en fin de mois.'},
+ {mois:'Juillet',txt:'Le Soleil est en Cancer jusqu\'au 22, puis entre en Lion. Un mois qui s\'ouvre sur la sensibilité et la famille, avant de laisser place à plus de rayonnement et d\'affirmation. Un mois pour nourrir tes proches et ton foyer, avant de retrouver l\'envie de te montrer davantage.'},
+ {mois:'Août',txt:'Le Soleil est en Lion jusqu\'au 22, puis entre en Vierge. Un mois pour oser te montrer et prendre ta place, avant un retour à plus de méthode et de précision. Ose te montrer et prendre ta place en première partie de mois, puis retrouve un rythme plus posé.'},
+ {mois:'Septembre',txt:'Le Soleil est en Vierge jusqu\'au 22, puis entre en Balance. Un mois propice à l\'organisation et au tri, qui glisse ensuite vers la recherche d\'équilibre et de lien. Un bon mois pour remettre de l\'ordre dans ton quotidien avant de te consacrer à tes relations.'},
+ {mois:'Octobre',txt:'Le Soleil est en Balance jusqu\'au 22, puis entre en Scorpion. Un mois pour chercher l\'harmonie dans tes relations, avant une période plus intense et transformatrice. Cherche l\'équilibre dans tes échanges en début de mois, une période plus intense peut suivre.'},
+ {mois:'Novembre',txt:'Le Soleil est en Scorpion jusqu\'au 21, puis entre en Sagittaire. Un mois profond et introspectif qui s\'ouvre ensuite sur plus de légèreté et d\'envie d\'horizon. Un mois pour aller au fond des choses, avant de retrouver le goût de l\'ailleurs et des projets plus légers.'},
+ {mois:'Décembre',txt:'Le Soleil est en Sagittaire jusqu\'au 20, puis entre en Capricorne. Un mois qui commence sur l\'envie d\'explorer, avant de se recentrer sur la structure en fin d\'année. Profite de l\'envie d\'explorer en début de mois, puis recentre-toi sur l\'essentiel pour la fin d\'année.'},
+];
+
+/* Contenu de la semaine : tendance générale en rotation, à défaut du calcul complet des transits
+   planétaires (qui nécessiterait d'étendre la fonction de calcul astrologique côté serveur). */
+const WEEKLY_ASTRO_THEMES=[
+ 'Une semaine pour poser une intention claire plutôt que de courir après mille choses à la fois, choisis 1 ou 2 priorités et tiens-t\'y.',
+ 'Le bon moment pour finir ce que tu as commencé, avant d\'ouvrir un nouveau chapitre, la satisfaction de clore vaut le détour.',
+ 'Une semaine plus sociale que d\'habitude, les échanges peuvent t\'apporter des réponses que tu ne trouverais pas seule.',
+ 'Privilégie la qualité à la quantité cette semaine, dans tes actions comme dans tes relations, mieux vaut peu mais bien fait.',
+ 'Une semaine pour faire le tri, mentalement et concrètement, avant d\'avancer plus légère vers ce qui compte vraiment.',
+ 'Le moment est bon pour prendre une décision que tu repousses depuis plusieurs jours, trancher t\'apportera du soulagement.',
+ 'Une semaine d\'introspection, ce que tu ressens en ce moment mérite d\'être écouté plutôt que mis de côté.',
+ 'Une énergie plus dynamique cette semaine, profite-en pour avancer sur ce qui te tient à cœur avant qu\'elle ne retombe.',
+ 'Une semaine pour ralentir un peu le rythme si tu le peux, ton corps et ton mental t\'en remercieront.',
+ 'Le bon moment pour renouer avec une personne ou un projet mis de côté, l\'élan est là si tu fais le premier pas.',
+ 'Une semaine idéale pour apprendre quelque chose de nouveau, ta curiosité est un vrai moteur en ce moment.',
+ 'Une semaine pour t\'accorder plus de douceur envers toi-même, tu en fais probablement déjà beaucoup.',
+];
+
+function renderAstroDetail(){
+ const wrap=document.getElementById('astroDetailWrap');
+ if(!wrap)return;
+ const today=new Date();
+ const moon=getMoonPhase(today);
+
+ // AUJOURD'HUI
+ let dayBlock;
+ if(userProfile.birthDate){
+ const d=new Date(userProfile.birthDate+'T00:00:00');
+ const sign=getSunSign(d.getMonth()+1,d.getDate());
+ if(sign){
+ const themes=DAILY_THEMES_BY_ELEMENT[sign.elem]||DAILY_THEMES_BY_ELEMENT.Feu;
+ const dayIdx=Math.floor((today-new Date(today.getFullYear(),0,0))/86400000)%themes.length;
+ dayBlock=`<div class="astro-detail-card"><div class="astro-detail-sign">${sign.e} ${sign.n} · ${moon.e} ${moon.n}</div><div class="astro-detail-txt">${themes[dayIdx]}</div></div>`;
+ }
+ }
+ if(!dayBlock)dayBlock=`<div class="astro-detail-card"><div class="astro-detail-txt">Renseigne ta date de naissance ci-dessous pour voir ton horoscope du jour personnalisé.</div></div>`;
+
+ // CETTE SEMAINE
+ const weekNum=Math.ceil((Math.floor((today-new Date(today.getFullYear(),0,1))/86400000)+new Date(today.getFullYear(),0,1).getDay()+1)/7);
+ const weekTxt=WEEKLY_ASTRO_THEMES[weekNum%WEEKLY_ASTRO_THEMES.length];
+ const weekBlock=`<div class="astro-detail-card"><div class="astro-detail-txt">${weekTxt}</div></div>`;
+
+ // CE MOIS
+ const monthInfo=MONTHLY_ASTRO[today.getMonth()];
+ const monthBlock=`<div class="astro-detail-card"><div class="astro-detail-sign">${monthInfo.mois}</div><div class="astro-detail-txt">${monthInfo.txt}</div></div>`;
+
+ wrap.innerHTML=`
+ <div class="astro-detail-sec"><div class="astro-detail-h">Aujourd'hui</div>${dayBlock}</div>
+ <div class="astro-detail-sec"><div class="astro-detail-h">Cette semaine</div>${weekBlock}</div>
+ <div class="astro-detail-sec"><div class="astro-detail-h">Ce mois</div>${monthBlock}</div>
+ `;
 }
 
 function refreshDash(){
@@ -2950,7 +3140,7 @@ function renderJourneyStrip(){
 
  // 2) Séance du jour : réutilise la logique déjà existante de l'onglet Séances
  const todayIdx=(new Date().getDay()+6)%7;
- const todayVid=typeof weekdayVideo==='function'?weekdayVideo(todayIdx):null;
+ const todayVid=typeof getTodaySession==='function'?getTodaySession(todayIdx):null;
  const seanceDone=todayVid?completedVids.has(todayVid.id):false;
 
  // 3) Bien-être : un check-in a-t-il déjà été enregistré aujourd'hui ?
@@ -3041,62 +3231,117 @@ function logWellnessToday(){
 
 const CYCLE_DOSHA_TIP={
  vata:{
- Menstruelle:' Ton énergie déjà changeante est amplifiée. Repose-toi sans culpabiliser, cherche la chaleur et le calme.',
- Folliculaire:' Profite de ce regain d\'énergie pour structurer tes idées, sans perdre ta routine stable.',
- Ovulation:' Bon moment pour te sociabiliser, garde quand même des temps d\'ancrage dans la journée.',
- Lutéale:' L\'anxiété peut monter. Mise sur la régularité, le chaud et des rituels apaisants ce soir.'
+ Menstruelle:[' Ton énergie déjà changeante est amplifiée. Repose-toi sans culpabiliser, cherche la chaleur et le calme, et évite de trop remplir ton agenda aujourd\'hui.',' Ton système nerveux est plus sensible que d\'habitude. Privilégie des activités douces, une boisson chaude, et repousse les décisions qui peuvent attendre demain.',' Ton corps te demande de ralentir. Accorde-toi un vrai temps de pause dans la journée, et laisse de côté ce qui n\'est pas essentiel.',' L\'énergie Vata est à son maximum ces jours-ci. Mise sur la régularité de tes repas et de ton sommeil pour te sentir plus stable.'],
+ Folliculaire:[' Profite de ce regain d\'énergie pour structurer tes idées, sans perdre ta routine stable, et commence par la tâche qui te tenait le plus à cœur.',' Ton mental s\'éclaircit progressivement. C\'est un bon moment pour planifier ta semaine et poser un cadre, sans pour autant tout vouloir faire d\'un coup.',' Ton énergie remonte doucement. Avance pas à pas sur tes projets, et accorde-toi malgré tout des pauses régulières pour ne pas t\'épuiser trop vite.',' C\'est le moment d\'apprendre quelque chose de nouveau ou de te lancer dans un projet qui te motive, sans négliger ton besoin de repères stables.'],
+ Ovulation:[' Bon moment pour te sociabiliser, garde quand même des temps d\'ancrage dans la journée pour ne pas te disperser.',' Ton énergie est plus disponible pour les autres. Profite-en pour une vraie conversation ou un moment partagé, sans oublier de revenir à toi le soir.',' C\'est une bonne période pour sortir de ta zone de confort. Garde tout de même une routine du soir stable pour ton sommeil.',' Ton énergie sociale est là, mais reste à l\'écoute de tes limites, un rythme trop soutenu pourrait te fatiguer plus vite que d\'habitude.'],
+ Lutéale:[' L\'anxiété peut monter. Mise sur la régularité, le chaud et des rituels apaisants ce soir, et évite de trop en faire aujourd\'hui.',' Ton mental peut s\'agiter facilement en ce moment. Un carnet pour poser tes pensées et une boisson chaude peuvent vraiment t\'aider.',' Cette phase peut fragiliser ton système nerveux. Accorde-toi de la douceur, et repousse ce qui peut attendre à un autre jour.',' Ton besoin de sécurité est plus fort en ce moment. Une routine stable, du chaud et du calme t\'aideront à traverser cette période sereinement.']
  },
  pitta:{
- Menstruelle:' Lâche prise sur le contrôle, accorde-toi de la douceur et évite les excès aujourd\'hui.',
- Folliculaire:' Ta concentration est à son meilleur, avance sur tes projets ambitieux.',
- Ovulation:' Ta confiance est à son pic, canalise-la sans tomber dans l\'impatience.',
- Lutéale:' L\'irritabilité peut pointer. Privilégie la fraîcheur et des activités calmes.'
+ Menstruelle:[' Lâche prise sur le contrôle, accorde-toi de la douceur et évite les excès aujourd\'hui, ton corps te remerciera demain.',' Ton besoin de tout maîtriser peut se relâcher un peu ces jours-ci, et c\'est très bien ainsi. Accepte de ralentir sans culpabiliser.',' C\'est le moment de descendre d\'un cran dans tes exigences envers toi-même, et de privilégier des activités calmes plutôt que productives.',' Ton feu intérieur a besoin de repos. Une pause à l\'ombre et une alimentation douce t\'aideront à traverser cette phase sans t\'épuiser.'],
+ Folliculaire:[' Ta concentration est à son meilleur, avance sur tes projets ambitieux, en gardant tout de même un œil sur ton rythme pour ne pas trop en faire.',' C\'est un excellent moment pour prendre des décisions importantes, à condition de ne pas négliger les pauses dans ta journée.',' Ton efficacité naturelle est à son pic. Priorise 2 ou 3 tâches clés plutôt que de vouloir tout accomplir en même temps.',' Ta clarté d\'esprit est précieuse en ce moment. Utilise-la pour avancer vite, sans oublier de célébrer ce que tu accomplis.'],
+ Ovulation:[' Ta confiance est à son pic, canalise-la sans tomber dans l\'impatience, surtout si les choses n\'avancent pas aussi vite que tu le voudrais.',' Ton charisme naturel est renforcé aujourd\'hui. C\'est un bon moment pour te montrer, tout en restant à l\'écoute des autres.',' Ton énergie est intense en ce moment. Canalise-la dans une activité qui te challenge, plutôt que dans l\'irritation face aux imprévus.',' Tu es dans une période de rayonnement. Profites-en pour avancer, sans pour autant vouloir tout contrôler autour de toi.'],
+ Lutéale:[' L\'irritabilité peut pointer. Privilégie la fraîcheur et des activités calmes, et évite les discussions à enjeu si tu peux les reporter.',' Ton seuil de tolérance peut être plus bas que d\'habitude. Accorde-toi des moments seule pour retrouver ton calme.',' Cette phase peut accentuer ton impatience naturelle. Une activité rafraîchissante et un rythme plus doux t\'aideront à traverser cette période.',' Ton feu intérieur peut s\'emballer facilement en ce moment. Mise sur la modération, dans ton alimentation comme dans ton emploi du temps.']
  },
  kapha:{
- Menstruelle:' Accepte de ralentir, ton corps a besoin de repos même si tu résistes.',
- Folliculaire:' Bouge et stimule-toi, c\'est le bon moment pour te motiver.',
- Ovulation:' Ton énergie sociale est là, profites-en pour sortir de ta routine.',
- Lutéale:' La léthargie peut s\'installer, garde un mouvement doux mais régulier.'
+ Menstruelle:[' Accepte de ralentir, ton corps a besoin de repos même si tu résistes, un jour de moins d\'activité ne changera rien à ta progression.',' Ton énergie naturellement posée peut sembler encore plus basse ces jours-ci. C\'est normal, accorde-toi ce temps de pause.',' Ton corps te demande de ralentir. Une activité très douce suffit aujourd\'hui, pas besoin d\'en faire plus.',' Cette phase invite au repos. Écoute ce besoin plutôt que de le combattre, tu retrouveras ton élan naturellement dans quelques jours.'],
+ Folliculaire:[' Bouge et stimule-toi, c\'est le bon moment pour te motiver, profite de cette énergie naissante pour sortir de ta routine.',' Ton énergie remonte progressivement. C\'est le moment idéal pour te lancer dans quelque chose de nouveau ou de stimulant.',' Ta motivation est plus facile à mobiliser en ce moment. Utilise-la pour initier un projet que tu remettais à plus tard.',' C\'est une bonne période pour rompre avec l\'inertie. Une activité dynamique dès le matin t\'aidera à garder cet élan toute la journée.'],
+ Ovulation:[' Ton énergie sociale est là, profites-en pour sortir de ta routine, voir du monde te fera du bien en ce moment.',' C\'est une bonne période pour t\'engager dans une activité de groupe ou une sortie qui te sort de ton quotidien.',' Ton dynamisme est à son maximum. Utilise cette énergie pour avancer sur ce qui te motive vraiment.',' Ton énergie est disponible pour les autres comme pour toi-même. Profite de cette période pour conjuguer les deux.'],
+ Lutéale:[' La léthargie peut s\'installer, garde un mouvement doux mais régulier pour ne pas t\'enliser complètement.',' Ton énergie peut sembler plus lourde en ce moment. Une marche quotidienne, même courte, t\'aidera à garder de l\'élan.',' Cette phase peut accentuer ta tendance naturelle à la sédentarité. Ne laisse pas passer plus d\'un jour sans bouger un minimum.',' Ton corps peut te sembler plus lent en ce moment. Un peu de mouvement chaque jour t\'évitera de sombrer dans l\'inertie.']
  }
 };
+function pickDailyTip(arrOrStr){
+ if(Array.isArray(arrOrStr)){
+ const dayIdx=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/86400000)%arrOrStr.length;
+ return arrOrStr[dayIdx];
+ }
+ return arrOrStr;
+}
 
-function buildRoutine(){
- const d=userProfile.dosha;
- const routines={
- vata:[' Abhyanga huile sésame chaude, 10 min',' Petit-déj chaud : bouillie d\'avoine, épices douces',' Yoga doux + postures d\'ancrage, 25 min',' Eau tiède + infusion gingembre/cannelle',' Méditation d\'ancrage, 10 min'],
- pitta:[' Auto-massage huile coco/tournesol, 5-10 min',' Petit-déj frais : fruits doux, infusion menthe',' Yoga doux + respiration rafraîchissante, 20 min',' Eau à température ambiante + infusion fraîche',' Méditation compassion & lâcher-prise, 10 min'],
- kapha:[' Massage stimulant huile moutarde/sésame, 5 min',' Petit-déj léger et épicé, infusion gingembre',' Yoga dynamique ou mouvement actif, 30 min',' Eau chaude citronnée + épices douces',' Méditation énergisante, 10 min'],
- 'vata-pitta':[' Abhyanga sésame + coco, 8 min',' Petit-déj chaud mais léger, épices fraîches',' Yoga fluide et modéré, 25 min',' Eau tiède + infusion fenouil/coriandre',' Méditation calme, 10 min'],
- 'vata-kapha':[' Abhyanga sésame chaude, 8 min',' Petit-déj chaud et stimulant, gingembre doux',' Yoga dynamique doux, 30 min',' Eau chaude gingembre/citron',' Méditation centrée sur l\'énergie, 10 min'],
- 'pitta-vata':[' Massage huile sésame-coco, 10 min',' Petit-déj chaud et apaisant, aliments doux',' Yoga lent avec longues respirations, 25 min',' Eau tiède + infusion réglisse/fenouil',' Méditation de relaxation profonde, 10 min'],
- 'pitta-kapha':[' Auto-massage léger, 5 min',' Petit-déj léger : fruits, céréales, épices douces',' Yoga actif mais non intense, 30 min',' Eau citronnée douce ou infusion menthe',' Méditation respiration consciente, 10 min'],
- 'kapha-vata':[' Massage tonifiant huile sésame, 7 min',' Petit-déj chaud et léger',' Yoga avec mouvement + étirements, 30 min',' Eau chaude gingembre',' Méditation d\'équilibre émotionnel, 10 min'],
- 'kapha-pitta':[' Massage léger huile coco/sésame, 5 min',' Petit-déj frais et léger',' Yoga dynamique modéré, 25 min',' Eau tiède avec citron ou coriandre',' Méditation calme et centrée, 10 min'],
- tridoshique:[' Abhyanga huile sésame équilibrante, 10 min',' Petit-déj chaud, simple et équilibré',' Yoga complet, 30 min',' Eau tiède + infusion équilibrante',' Méditation gratitude & présence, 10 min'],
- };
- const items=routines[d]||routines.vata;
+/* Détermine la catégorie de routine selon le statut de la personne (déjà répondu à l'inscription) :
+   active = réglée ou sous pilule (généralement 18-45 ans) / premenopause / menopause. */
+function getRoutineCategory(){
+ if(userProfile.menopause)return 'menopause';
+ if(userProfile.perimenopause)return 'premenopause';
+ return 'active';
+}
+let _routineCache={};
+async function fetchDailyRoutine(){
+ const categorie=getRoutineCategory();
+ const dosha=getProfileDoshaKey();
+ const mois=new Date().getMonth()+1;
+ const cacheKey=categorie+'-'+dosha+'-'+mois;
+ if(_routineCache[cacheKey])return _routineCache[cacheKey];
+ try{
+ const {data,error}=await sb.from('daily_routines').select('texte').eq('categorie',categorie).eq('dosha',dosha).eq('mois',mois).maybeSingle();
+ if(error||!data){
+ // Repli : essaie le mois précédent avant d'abandonner (certaines combinaisons peuvent manquer)
+ const moisPrec=mois===1?12:mois-1;
+ const {data:data2}=await sb.from('daily_routines').select('texte').eq('categorie',categorie).eq('dosha',dosha).eq('mois',moisPrec).maybeSingle();
+ if(!data2)throw new Error('routine indisponible');
+ _routineCache[cacheKey]=data2.texte;
+ return data2.texte;
+ }
+ _routineCache[cacheKey]=data.texte;
+ return data.texte;
+ }catch(e){
+ console.error('daily_routines indisponible, repli générique :',e);
+ return "1. Bois un grand verre d'eau tiède au réveil, avant même le café ou le thé.\n2. Quelques minutes de mouvement dynamique le matin pour lancer ton métabolisme.\n3. Expose-toi à la lumière du jour avant 9h si possible.\n4. Un repas nourrissant, sans le sauter, à heures régulières.\n5. Quelques minutes de respiration ou de méditation dans la journée (via l'onglet Séances).\n6. Vise environ 1,5L d'eau dans la journée.\n7. Coupe les écrans 1 heure avant de dormir.";
+ }
+}
+
+async function buildRoutine(){
+ const routineText=await fetchDailyRoutine();
+ const items=routineText.split('\n').map(l=>' '+l.replace(/^\d+\.\s*/,'').trim()).filter(Boolean);
  const weights=getDoshaWeights();
  const primary=weights[0].k,secondary=weights[1];
  const isMixed=(weights[0].v-secondary.v)<DOSHA_MIX_THRESHOLD;
  const cycle=getCurrentCycleInfo();
  const season=getSeason(new Date());
  if(cycle && CYCLE_DOSHA_TIP[primary] && CYCLE_DOSHA_TIP[primary][cycle.phase]){
- let tip=CYCLE_DOSHA_TIP[primary][cycle.phase];
+ let tip=pickDailyTip(CYCLE_DOSHA_TIP[primary][cycle.phase]);
  if(isMixed){
  const secLabel=secondary.k.charAt(0).toUpperCase()+secondary.k.slice(1);
  tip+=` (nuancé par ton ${secLabel} : ${DOSHA_TODAY_TIP[secondary.k]})`;
  }
  items.push(tip);
  }
+ if(cycle && cycle.phase==='Lutéale' && cycle.daysUntilNext<=7){
+ items.push(' Privilégie les bons gras (sardines, maquereau, avocat, graines) pour soutenir ton système hormonal, plutôt que de te tourner vers le sucre');
+ }
  if(SEASON_DOSHA_TIP[primary] && SEASON_DOSHA_TIP[primary][season]){
  items.push(` En ${season.toLowerCase()} : ${SEASON_DOSHA_TIP[primary][season]}`);
  }
  const ageNuance=getAgeNuance(userProfile.age).trim();
  if(ageNuance)items.push(' '+ageNuance);
- document.getElementById('todoWrap').innerHTML=items.map(t=>`<div class="todo-i"><div class="tck" onclick="toggleTodo(this)"></div><div class="todo-body"><div class="todo-t">${t}</div></div></div>`).join('');
+ const checkedToday=getRoutineChecks();
+ document.getElementById('todoWrap').innerHTML=items.map(t=>{
+ const done=checkedToday.includes(t);
+ const safeT=t.replace(/'/g,"\\'");
+ return `<div class="todo-i"><div class="tck${done?' done':''}" onclick="toggleTodo(this,'${safeT}')"></div><div class="todo-body"><div class="todo-t${done?' done':''}">${t}</div></div></div>`;
+ }).join('');
 }
 
-function toggleTodo(el){el.classList.toggle('done');el.nextElementSibling.querySelector('.todo-t').classList.toggle('done');if(el.classList.contains('done')){addXP(10);toast('+10 points ');}}
+function todayStr(){return new Date().toISOString().slice(0,10);}
+function getRoutineChecks(){
+ try{
+ const raw=JSON.parse(localStorage.getItem('holistica-routine-checks')||'{}');
+ return raw.date===todayStr()?raw.items:[];
+ }catch(e){return [];}
+}
+function saveRoutineChecks(items){
+ localStorage.setItem('holistica-routine-checks',JSON.stringify({date:todayStr(),items}));
+}
+function toggleTodo(el,text){
+ el.classList.toggle('done');
+ el.nextElementSibling.querySelector('.todo-t').classList.toggle('done');
+ const checked=getRoutineChecks();
+ const isDone=el.classList.contains('done');
+ const idx=checked.indexOf(text);
+ if(isDone&&idx===-1)checked.push(text);
+ if(!isDone&&idx!==-1)checked.splice(idx,1);
+ saveRoutineChecks(checked);
+ if(isDone){addXP(10);toast('+10 points ');}
+}
 const CONTENT_BADGES=['streak_7','streak_30','recipes_10','wellness_28','level_5','active_15','active_30','active_45','active_60','active_75','active_90'];
 function badgeById(id){return BADGES.find(b=>b.id===id);}
 function isContentLocked(item){
@@ -3137,15 +3382,15 @@ const BADGES=[
  {id:'active_75',e:'🪷',n:'75 jours de connexion',d:'Palier débloqué tous les 15 jours d\'utilisation cumulés de l\'app',cond:()=>loginDates.size>=75},
  {id:'active_90',e:'✨',n:'90 jours de connexion',d:'Palier débloqué tous les 15 jours d\'utilisation cumulés de l\'app, une régularité exemplaire',cond:()=>loginDates.size>=90},
 
- // ═══ Badge mensuel récurrent — se renouvelle chaque mois automatiquement ═══
+ // ═══ Badge mensuel récurrent, se renouvelle chaque mois automatiquement ═══
  {id:'monthly_'+_curMonthKey,e:'🌙',n:'Badge de '+_curMonthName,d:'3 séances complétées ce mois-ci · +50 points bonus. Un nouveau badge (et parfois une surprise) t\'attend chaque mois',cond:()=>sessionDates.filter(d=>d.startsWith(_curMonthPrefix)).length>=3},
 
- // ═══ Badge de retour — se renouvelle chaque année ═══
- {id:'comeback_'+new Date().getFullYear(),e:'🌸',n:'De retour parmi nous',d:'Tu es revenue après une pause — on est contentes de te retrouver',cond:()=>hadComeback},
+ // ═══ Badge de retour, se renouvelle chaque année ═══
+ {id:'comeback_'+new Date().getFullYear(),e:'🌸',n:'De retour parmi nous',d:'Tu es revenue après une pause, on est contentes de te retrouver',cond:()=>hadComeback},
 
- // ═══ Badges de parrainage — paliers cumulatifs ═══
+ // ═══ Badges de parrainage, paliers cumulatifs ═══
  {id:'referral_1',e:'🤝',n:'Première marraine',d:'Une amie a rejoint Holistica Club grâce à toi',cond:()=>referralCount>=1},
- {id:'referral_3',e:'💫',n:'Ambassadrice',d:'3 amies parrainées — tu fais rayonner Holistica Club',cond:()=>referralCount>=3},
+ {id:'referral_3',e:'💫',n:'Ambassadrice',d:'3 amies parrainées, tu fais rayonner Holistica Club',cond:()=>referralCount>=3},
  {id:'referral_5',e:'👑',n:'Marraine d\'or',d:'5 amies parrainées, une vraie communauté autour de toi',cond:()=>referralCount>=5},
 ];
 
@@ -3168,7 +3413,7 @@ function checkBadges(silent){
 function showBadgeCelebration(b){
  const el=document.createElement('div');
  el.className='badge-celeb';
- el.innerHTML=`<div class="badge-celeb-card"><div class="badge-celeb-e">${b.e}</div><div class="badge-celeb-t">Nouveau contenu débloqué !</div><div class="badge-celeb-n">${b.n}</div><div class="badge-celeb-d">${b.d} — de nouvelles recettes et séances bonus sont maintenant accessibles 🎉</div></div>`;
+ el.innerHTML=`<div class="badge-celeb-card"><div class="badge-celeb-e">${b.e}</div><div class="badge-celeb-t">Nouveau contenu débloqué !</div><div class="badge-celeb-n">${b.n}</div><div class="badge-celeb-d">${b.d}, de nouvelles recettes et séances bonus sont maintenant accessibles 🎉</div></div>`;
  document.body.appendChild(el);
  setTimeout(()=>el.classList.add('show'),20);
  setTimeout(()=>{el.classList.remove('show');setTimeout(()=>el.remove(),400);},3200);
@@ -3190,7 +3435,7 @@ function renderBadges(){
 }
 
 let lastCelebratedLevel=0;
-// Paliers tous les niveaux (100 pts) jusqu'au niveau 5, puis tous les 2 niveaux (200 pts) ensuite — pour garder un rythme motivant sans surcharger
+// Paliers tous les niveaux (100 pts) jusqu'au niveau 5, puis tous les 2 niveaux (200 pts) ensuite, pour garder un rythme motivant sans surcharger
 function isMilestoneLevel(level){
  if(level<=5)return true;
  return (level-5)%2===0;
@@ -3230,21 +3475,21 @@ function updateCycleLength(v){
 }
 function getCyclePhaseInfo(cycleDay,daysUntilNext,cycleLength){
  const ovDay=Math.max(11,cycleLength-14); // jour d'ovulation estimé (phase lutéale ~14j, constante)
- if(cycleDay===1)return{phase:'Menstruelle',emoji:'',energy:'Basse',title:'Jour 1, Début du cycle',text:'Ton cycle commence aujourd\'hui. C\'est une phase de renouvellement : ton corps élimine l\'ancienne muqueuse utérine. Ton énergie peut être plus basse, alors privilégie le repos, l\'écoute de toi et des activités douces.'};
- if(cycleDay<=3)return{phase:'Menstruelle',emoji:'',energy:'Basse',title:'Jour '+cycleDay+', Phase menstruelle',text:'Ton corps travaille activement. Accorde-toi plus de pauses, hydrate-toi bien et choisis des mouvements doux comme la marche, le yoga ou les étirements.'};
- if(cycleDay<=5)return{phase:'Menstruelle',emoji:'',energy:'Basse à moyenne',title:'Jour '+cycleDay+', Fin des règles',text:'Ton énergie revient progressivement. C\'est un bon moment pour reprendre doucement tes projets et remettre du mouvement dans ton quotidien.'};
- if(cycleDay<ovDay-2)return{phase:'Folliculaire',emoji:'',energy:'Moyenne à haute',title:'Jour '+cycleDay+', Phase folliculaire',text:'Tu entres dans ta phase folliculaire. Les hormones remontent progressivement et ton énergie augmente. Profite de cette période pour apprendre, créer, organiser et démarrer de nouveaux projets.'};
- if(cycleDay<ovDay)return{phase:'Folliculaire',emoji:'',energy:'Haute',title:'Jour '+cycleDay+', Avant l\'ovulation',text:'Ton corps se prépare à l\'ovulation. Ta concentration et ta motivation peuvent être plus élevées. C\'est un moment idéal pour avancer sur des tâches importantes et sociales.'};
- if(cycleDay<=ovDay+1)return{phase:'Ovulation',emoji:'',energy:'Très haute',title:'Jour '+cycleDay+', Ovulation',text:'Tu es dans ta phase d\'ovulation. C\'est une période associée à un pic hormonal qui peut favoriser l\'énergie, la confiance et les interactions sociales. Profite-en pour communiquer, collaborer et prendre des initiatives.'};
- if(cycleDay<=ovDay+3)return{phase:'Ovulation',emoji:'',energy:'Haute',title:'Jour '+cycleDay+', Après l\'ovulation',text:'Ton énergie reste souvent dynamique, mais commence à écouter ton rythme. Garde un équilibre entre activité et récupération.'};
+ if(cycleDay===1)return{phase:'Menstruelle',emoji:'',energy:'Basse',title:'Jour 1, Début du cycle',text:'Ton cycle commence aujourd\'hui. C\'est une phase de renouvellement : ton corps élimine l\'ancienne muqueuse utérine. Ton énergie peut être plus basse, alors privilégie le repos, l\'écoute de toi et des activités douces (marche lente, étirements). Crampes, fatigue ou maux de tête sont fréquents ces premiers jours, rien d\'anormal. Pense aux infusions de gingembre, d\'achillée millefeuille ou de feuilles de framboisier pour soulager les douleurs, et repose-toi, ralentis.'};
+ if(cycleDay<=3)return{phase:'Menstruelle',emoji:'',energy:'Basse',title:'Jour '+cycleDay+', Phase menstruelle',text:'Ton corps travaille activement. Accorde-toi plus de pauses, hydrate-toi bien et choisis des mouvements doux comme la marche, le yoga ou les étirements. Crampes, tension dans le bas du ventre ou fatigue peuvent encore être présentes. Continue les infusions de gingembre, d\'achillée millefeuille ou de feuilles de framboisier pour les douleurs, repose-toi, ralentis.'};
+ if(cycleDay<=5)return{phase:'Menstruelle',emoji:'',energy:'Basse à moyenne',title:'Jour '+cycleDay+', Fin des règles',text:'Ton énergie revient progressivement. C\'est un bon moment pour reprendre doucement tes projets, avec un mouvement un peu plus soutenu (marche active, yoga dynamique léger).'};
+ if(cycleDay<ovDay-2)return{phase:'Folliculaire',emoji:'',energy:'Moyenne à haute',title:'Jour '+cycleDay+', Phase folliculaire',text:'Tu entres dans ta phase folliculaire. Les hormones remontent progressivement et ton énergie augmente. Profite de cette période pour apprendre, créer, organiser et démarrer de nouveaux projets. Le yoga dynamique, le renforcement musculaire et le cardio conviennent bien à cette phase, une intensité plus haute est tout à fait envisageable.'};
+ if(cycleDay<ovDay)return{phase:'Folliculaire',emoji:'',energy:'Haute',title:'Jour '+cycleDay+', Avant l\'ovulation',text:'Ton corps se prépare à l\'ovulation. Ta concentration et ta motivation peuvent être plus élevées. C\'est un moment idéal pour avancer sur des tâches importantes et sociales, avec souvent moins de symptômes physiques que le reste du cycle. Le cardio et une intensité plus haute sont bien tolérés à ce moment du cycle.'};
+ if(cycleDay<=ovDay+1)return{phase:'Ovulation',emoji:'',energy:'Très haute',title:'Jour '+cycleDay+', Ovulation',text:'Tu es dans ta phase d\'ovulation. C\'est une période associée à un pic hormonal qui peut favoriser l\'énergie, la confiance et les interactions sociales. Profite-en pour communiquer, collaborer et prendre des initiatives. Une légère douleur d\'un côté du bas-ventre est possible autour de l\'ovulation, c\'est normal. Le cardio et une intensité plus haute sont bien tolérés aujourd\'hui.'};
+ if(cycleDay<=ovDay+3)return{phase:'Ovulation',emoji:'',energy:'Haute',title:'Jour '+cycleDay+', Après l\'ovulation',text:'Ton énergie reste souvent dynamique, mais commence à écouter ton rythme. Garde un équilibre entre activité et récupération. Le cardio et une intensité plus haute restent bien tolérés.'};
  // Phase lutéale : on cherche le message le plus proche du nombre de jours avant les prochaines règles
  const buckets=[
- {d:12,emoji:'',title:'Phase lutéale',text:'Après l\'ovulation, ton corps se prépare progressivement à un nouveau cycle. Ton énergie peut commencer à ralentir doucement : privilégie l\'organisation, la concentration et les activités qui demandent de la stabilité plutôt que de te disperser.'},
- {d:10,emoji:'',title:'10 jours avant les règles',text:'Ton corps entre dans une phase plus intérieure. Tu peux ressentir le besoin de ralentir légèrement. C\'est un bon moment pour finaliser tes projets, ranger, planifier et prendre soin de toi.'},
- {d:7,emoji:'',title:'7 jours avant les règles',text:'Tes hormones évoluent et ton énergie peut devenir plus variable. Adapte ton rythme : choisis des activités régulières, nourrissantes et évite de trop remplir ton agenda.'},
- {d:5,emoji:'',title:'5 jours avant les règles',text:'Ton corps se rapproche de la fin du cycle. Tu peux ressentir davantage de sensibilité ou de fatigue. Offre-toi plus de douceur : sommeil, alimentation équilibrée et moments calmes peuvent aider.'},
- {d:3,emoji:'',title:'3 jours avant les règles',text:'La phase prémenstruelle approche. Ton énergie peut être plus tournée vers l\'introspection. C\'est un bon moment pour ralentir, écouter tes besoins et éviter de trop te demander.'},
- {d:1,emoji:'🌑',title:'1 jour avant les règles',text:'Ton cycle touche à sa fin. Ton corps se prépare à repartir sur un nouveau cycle. Privilégie le repos, la récupération et les petits rituels qui te font du bien.'},
+ {d:12,emoji:'',title:'Phase lutéale',text:'Après l\'ovulation, ton corps se prépare progressivement à un nouveau cycle. Ton énergie peut commencer à ralentir doucement : privilégie des activités qui demandent de la stabilité plutôt que de te disperser, yoga, marche, activités créatives posées, et intègre un peu de renforcement musculaire.'},
+ {d:10,emoji:'',title:'10 jours avant les règles',text:'Ton corps entre dans une phase plus intérieure. Tu peux ressentir le besoin de ralentir légèrement, parfois des ballonnements ou une légère sensibilité des seins. Ce n\'est pas le moment de planifier : ralentis plutôt, et finis tranquillement tes projets en cours.'},
+ {d:7,emoji:'',title:'7 jours avant les règles',text:'Tes hormones évoluent et ton énergie peut devenir plus variable. C\'est tout à fait normal de te sentir plus sensible, ou même de remettre des choses en question, ce n\'est pas toi, c\'est ton cycle. Si possible, évite de prendre des décisions importantes ces jours-ci et attends d\'y voir plus clair.'},
+ {d:5,emoji:'',title:'5 jours avant les règles',text:'Ton corps se rapproche de la fin du cycle. Tu peux ressentir davantage de sensibilité ou de fatigue. Pense à ralentir, à lire, à faire des activités manuelles, et à prendre du temps pour toi. Privilégie un mouvement doux (marche, yoga) plutôt qu\'intense.'},
+ {d:3,emoji:'',title:'3 jours avant les règles',text:'La phase prémenstruelle approche. Tensions dans le bas du dos, sensibilité émotionnelle ou envie de sucre peuvent apparaître, c\'est le syndrome prémenstruel, pas un manque de volonté. Cette période est faite pour l\'introspection, le journaling, du temps pour toi.'},
+ {d:1,emoji:'🌑',title:'1 jour avant les règles',text:'Ton cycle touche à sa fin. Ton corps se prépare à repartir sur un nouveau cycle. Cette période est faite pour l\'introspection, le journaling, du temps pour toi. Privilégie le repos, la récupération et les petits rituels qui te font du bien.'},
  ];
  let best=buckets[0];
  buckets.forEach(b=>{if(Math.abs(daysUntilNext-b.d)<Math.abs(daysUntilNext-best.d))best=b;});
@@ -3280,22 +3525,32 @@ async function getConseilMenopauseDuMois(){
  return data;
 }
 
+function energyExtraNotes(){
+ const today=new Date();
+ const moon=getMoonEnergyNote(getMoonPhase(today).n);
+ const portal=getEnergyPortalNote(today);
+ const parts=[moon,portal].filter(Boolean);
+ return parts.length?'<div style="margin-top:6px;font-size:12px;color:var(--ink-l);line-height:1.5;">'+parts.join('<br>')+'</div>':'';
+}
+
 async function renderCycle(){
  if(document.getElementById('cycleLenInput'))document.getElementById('cycleLenInput').value=userProfile.cycleLength;
 
- // Le contenu "conseils ménopause du mois" ne s'affiche QUE pour les personnes ayant
- // explicitement répondu "Non, ménopause" — pas pour "Non, autre raison", qui reste
- // sur le message générique par défaut (modifiable à tout moment depuis le Profil).
+ // Trois profils sans cycle actif suivi, chacun avec son propre contenu :
+ // ménopause (conseils du mois en base + astuce complémentaire), préménopause (contenu dédié en
+ // rotation), contraception (pas d'hypothèse de cycle ni de ménopause, message neutre).
  if(userProfile.menopause){
  document.getElementById('cycleSecTitle').innerHTML='Conseils <em>ménopause du mois</em>';
  const m=await getConseilMenopauseDuMois();
+ const tip=await getMenopauseTip();
+ const safetyNote='<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:12.5px;color:var(--ink-l);">⚕️ Tout saignement après la ménopause doit être signalé à un médecin, même léger.</div>';
  if(!m){
  document.getElementById('cycleBadge').textContent='🍃 Ménopause';
  document.getElementById('cycleDayLbl').textContent='';
  document.getElementById('cycleBarFill').style.width='100%';
- document.getElementById('cycleMsgTitle').textContent='Conseils du mois indisponibles';
- document.getElementById('cycleMsgBody').textContent='Reviens un peu plus tard, le contenu de ce mois est en cours de préparation.';
- document.getElementById('cycleEnergy').innerHTML='';
+ document.getElementById('cycleMsgTitle').textContent=tip.title;
+ document.getElementById('cycleMsgBody').innerHTML=tip.text+safetyNote;
+ document.getElementById('cycleEnergy').innerHTML=energyExtraNotes();
  return;
  }
  document.getElementById('cycleBadge').textContent='🍃 '+m.saison;
@@ -3303,20 +3558,44 @@ async function renderCycle(){
  document.getElementById('cycleBarFill').style.width='100%';
  document.getElementById('cycleMsgTitle').textContent=m.axe_prioritaire;
  const routineTxt=(m.routine_plantes||[]).map(r=>r.label+' : '+r.content).join(' · ');
- document.getElementById('cycleMsgBody').textContent=routineTxt;
- document.getElementById('cycleEnergy').innerHTML='<span class="cycle-energy-dot"></span>Mouvement : '+m.mouvement;
+ document.getElementById('cycleMsgBody').innerHTML=routineTxt+'<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);"><b>'+tip.title+'</b><br>'+tip.text+'</div>'+safetyNote;
+ document.getElementById('cycleEnergy').innerHTML='<span class="cycle-energy-dot"></span>Mouvement : '+m.mouvement+energyExtraNotes();
+ return;
+ }
+
+ if(userProfile.perimenopause){
+ document.getElementById('cycleSecTitle').innerHTML='Ta <em>préménopause</em>';
+ const p=await getPerimenoInfo();
+ document.getElementById('cycleBadge').textContent='🌙 Préménopause';
+ document.getElementById('cycleDayLbl').textContent='';
+ document.getElementById('cycleBarFill').style.width='0%';
+ document.getElementById('cycleMsgTitle').textContent=p.title;
+ document.getElementById('cycleMsgBody').textContent=p.text;
+ document.getElementById('cycleEnergy').innerHTML='<span class="cycle-energy-dot"></span>Énergie estimée : '+p.energy+energyExtraNotes();
+ return;
+ }
+
+ if(userProfile.contraception){
+ document.getElementById('cycleSecTitle').innerHTML='Ton <em>équilibre</em>';
+ document.getElementById('cycleBadge').textContent='🌙 Sans cycle actif';
+ document.getElementById('cycleDayLbl').textContent='';
+ document.getElementById('cycleBarFill').style.width='0%';
+ document.getElementById('cycleMsgTitle').textContent='Suivi adapté à ton profil';
+ document.getElementById('cycleMsgBody').textContent='Sans cycle menstruel actif à suivre, les conseils restent adaptés à ton profil ayurvédique et à la saison.';
+ document.getElementById('cycleEnergy').innerHTML=energyExtraNotes();
  return;
  }
 
  document.getElementById('cycleSecTitle').innerHTML='Ton <em>cycle</em>';
  const c=getCurrentCycleInfo();
  if(!c){
+ document.getElementById('cycleSecTitle').innerHTML='Ton <em>équilibre</em>';
  document.getElementById('cycleBadge').textContent='🌙 Cycle';
  document.getElementById('cycleDayLbl').textContent='';
  document.getElementById('cycleBarFill').style.width='0%';
  document.getElementById('cycleMsgTitle').textContent='Suivi adapté à ton profil';
- document.getElementById('cycleMsgBody').textContent='Les conseils sont ajustés même sans cycle menstruel actif.';
- document.getElementById('cycleEnergy').innerHTML='';
+ document.getElementById('cycleMsgBody').textContent='Renseigne la date de tes dernières règles dans ton profil pour un suivi phase par phase.';
+ document.getElementById('cycleEnergy').innerHTML=energyExtraNotes();
  return;
  }
  document.getElementById('cycleBadge').textContent=c.emoji+' '+c.phase;
@@ -3328,9 +3607,224 @@ async function renderCycle(){
 }
 
 /* ═══════ MOUVEMENT ═══════ */
-const MV_FILTERS=['Tout','Yoga','Pilates','Renforcement','Méditation','Respiration','Yin','Vata','Pitta','Kapha','Matin','Soir','Été','Automne','Hiver','Printemps'];
+const MV_FILTERS=['Tout','Yoga','Pilates','Renforcement','Méditation','Respiration','Yin','Matin','Soir'];
 const WK_LABELS=['L','M','M','J','V','S','D'];
-function weekdayVideo(i){return VIDEOS.length?VIDEOS[i%VIDEOS.length]:null;}
+function weekdayVideo(i){
+ const freeVideos=VIDEOS.filter(v=>!v.program_id);
+ const pool=freeVideos.length?freeVideos:VIDEOS; // repli sur toute la bibliothèque si aucune vidéo libre
+ return pool.length?pool[i%pool.length]:null;
+}
+// Séance mise en avant : priorité à un parcours en cours (séquentiel, une vidéo par jour tant qu'il
+// reste des séances non complétées) ; sinon, pioche dans la bibliothèque libre (hors vidéos de parcours).
+function getTodaySession(todayIdx){
+ for(const p of PROGRAMS){
+ const prog=getProgramProgress(p.id);
+ if(prog.total&&prog.completed>0&&prog.completed<prog.total)return prog.videos[prog.completed];
+ }
+ return weekdayVideo(todayIdx);
+}
+
+/* ═══════ ROUTINES COMPOSÉES (mouvements courts assemblés automatiquement) ═══════ */
+// Catalogue des types de routine proposés. Chaque type cherche des clips filtrés par moment
+// et triés en priorité selon l'objectif visé, avec un bonus si le dosha du clip correspond au profil.
+const ROUTINE_TYPES=[
+ {id:'matin_reveil',titre:'Ta routine du matin',sous:'Réveiller le corps',moment:'matin',objectif:'energie',dureeMin:7,img:'yoga1'},
+ {id:'soir_ralentir',titre:'Ta routine du soir',sous:'Ralentir et relâcher',moment:'soir',objectif:'apaisement',dureeMin:9,img:'yoga3'},
+];
+let _movementClipsCache=null;
+async function fetchMovementClips(){
+ if(_movementClipsCache)return _movementClipsCache;
+ try{
+ const {data,error}=await sb.from('movement_clips').select('*');
+ if(error||!data||!data.length)throw error||new Error('vide');
+ _movementClipsCache=data;
+ return data;
+ }catch(e){
+ console.error('movement_clips indisponible :',e);
+ return [];
+ }
+}
+function buildRoutinePlaylist(clips,routineType,doshaKey){
+ const targetSec=routineType.dureeMin*60;
+ const scoreKey=routineType.objectif+'_score';
+ const pool=clips.filter(c=>c.moment===routineType.moment||c.moment==='tout_moment');
+ const dayOfYear=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/86400000);
+ const sorted=[...pool].sort((a,b)=>{
+ const scoreA=(a[scoreKey]||3)+(a.dosha_favorable===doshaKey?1.5:0)+((a.id.charCodeAt(a.id.length-1)+dayOfYear)%3)*0.3;
+ const scoreB=(b[scoreKey]||3)+(b.dosha_favorable===doshaKey?1.5:0)+((b.id.charCodeAt(b.id.length-1)+dayOfYear)%3)*0.3;
+ return scoreB-scoreA;
+ });
+ const playlist=[];
+ let totalSec=0;
+ for(const clip of sorted){
+ if(totalSec>=targetSec)break;
+ playlist.push(clip);
+ totalSec+=clip.duree_sec;
+ }
+ return playlist;
+}
+function getRoutineCompletionToday(){
+ try{
+ const raw=JSON.parse(localStorage.getItem('holistica-routines-done')||'{}');
+ return raw.date===todayStr()?(raw.ids||[]):[];
+ }catch(e){return [];}
+}
+function markRoutineCompletionToday(routineId){
+ const done=getRoutineCompletionToday();
+ if(!done.includes(routineId))done.push(routineId);
+ localStorage.setItem('holistica-routines-done',JSON.stringify({date:todayStr(),ids:done}));
+}
+const ROUTINE_CARD_PHOTOS=[
+ 'https://d1yei2z3i6k35z.cloudfront.net/125337/6a8411b5a4d4d1.52432292_Screenshot2026-08-18at10.02.06.png',
+ 'https://d1yei2z3i6k35z.cloudfront.net/125337/6a8411bd36a069.42615250_Screenshot2026-08-18at10.01.43.png',
+];
+async function renderRoutinesSection(){
+ const wrap=document.getElementById('routinesWrap');
+ if(!wrap)return;
+ const clips=await fetchMovementClips();
+ if(!clips.length){wrap.innerHTML='';return;}
+ const doshaKey=typeof getProfileDoshaKey==='function'?getProfileDoshaKey():userProfile.dosha;
+ const doneToday=getRoutineCompletionToday();
+ wrap.innerHTML=ROUTINE_TYPES.map(rt=>{
+ const playlist=buildRoutinePlaylist(clips,rt,doshaKey);
+ if(!playlist.length)return'';
+ const totalMin=Math.round(playlist.reduce((s,c)=>s+c.duree_sec,0)/60);
+ const isDone=doneToday.includes(rt.id);
+ const photo=ROUTINE_CARD_PHOTOS[Math.floor(Math.random()*ROUTINE_CARD_PHOTOS.length)];
+ return `<div class="routine-card" onclick='playRoutine(${JSON.stringify(playlist.map(c=>c.id))},"${rt.id}")'>
+ <div class="routine-card-img" style="background-image:url('${photo}');"></div>
+ <div class="routine-card-overlay"></div>
+ <div class="routine-card-body">
+ <div class="routine-card-t">${rt.titre}</div>
+ <div class="routine-card-s">${rt.sous} · <span class="routine-card-min">${totalMin} min</span></div>
+ </div>
+ <div class="routine-card-play${isDone?' done':''}">${isDone?'✓':'▶'}</div>
+ </div>`;
+ }).join('');
+}
+
+/* Lecteur séquentiel plein écran : enchaîne automatiquement les clips d'une routine, avec un
+   effet de défilement vers le bas (façon Reels/TikTok) à chaque passage au clip suivant. */
+let routineQueue=[];
+let routineIndex=0;
+const BUNNY_LIBRARY_ID='730425';
+async function playRoutine(clipIds,routineTypeId){
+ const clips=await fetchMovementClips();
+ routineQueue=clipIds.map(id=>clips.find(c=>c.id===id)).filter(Boolean);
+ routineIndex=0;
+ currentRoutineTypeId=routineTypeId||null;
+ if(!routineQueue.length)return;
+ document.getElementById('routinePlayer').classList.add('open');
+ setupRoutineSwipe();
+ openRoutineClip(false);
+}
+let currentRoutineTypeId=null;
+function closeRoutinePlayer(){
+ document.getElementById('routinePlayer').classList.remove('open');
+ document.getElementById('rpExitConfirm').classList.remove('open');
+ document.getElementById('rpStage').innerHTML='';
+ routineQueue=[];routineIndex=0;
+}
+const RP_RING_CIRC=553; // 2·π·88, le rayon du cercle SVG
+function showRoutineEndScreen(isNatural){
+ const pct=routineQueue.length?Math.round(((isNatural?routineQueue.length:routineIndex)/routineQueue.length)*100):0;
+ document.getElementById('rpConfirmPct').textContent=pct+'%';
+ document.getElementById('rpConfirmRing').style.strokeDashoffset=Math.round(RP_RING_CIRC*(1-pct/100));
+ let msg,title,mainLabel;
+ if(isNatural){
+ title='Séance terminée !';
+ msg='Bravo, tu es allée jusqu\'au bout de ta routine aujourd\'hui. Continue comme ça !';
+ mainLabel='Récupérer mes points →';
+ }else if(pct<20){
+ title='Fin de la séance';
+ msg=`Tu es sûre de vouloir arrêter ? Tu n'es même pas à ${pct}%, c'est juste l'échauffement. Ce n'est pas maintenant qu'on s'arrête.`;
+ mainLabel='Terminer la séance';
+ }else if(pct<50){
+ title='Fin de la séance';
+ msg=`Tu es à ${pct}% de ta routine. Encore un petit effort, tu es sur la bonne voie.`;
+ mainLabel='Terminer la séance';
+ }else if(pct<80){
+ title='Fin de la séance';
+ msg=`Tu es déjà à ${pct}% ! Tu es si proche, ne t'arrête pas maintenant.`;
+ mainLabel='Terminer la séance';
+ }else{
+ title='Fin de la séance';
+ msg=`Tu es à ${pct}%, il ne reste presque rien ! Termine en beauté.`;
+ mainLabel='Terminer la séance';
+ }
+ document.getElementById('rpConfirmTitle').textContent=title;
+ document.getElementById('rpConfirmMsg').textContent=msg;
+ document.getElementById('rpConfirmMainBtn').textContent=mainLabel;
+ document.getElementById('rpConfirmMainBtn').dataset.natural=isNatural?'1':'0';
+ document.getElementById('rpExitConfirm').classList.add('open');
+}
+function attemptExitRoutine(){
+ showRoutineEndScreen(false);
+}
+function dismissExitConfirm(){
+ document.getElementById('rpExitConfirm').classList.remove('open');
+}
+function confirmEndRoutine(){
+ toast('Séance enregistrée '); addXP(15); checkBadges();
+ if(currentRoutineTypeId)markRoutineCompletionToday(currentRoutineTypeId);
+ closeRoutinePlayer();
+ renderRoutinesSection();
+}
+// Écoute directement les messages envoyés par l'iframe Bunny (protocole player.js), sans dépendre
+// d'une librairie externe qui pourrait ne pas se charger correctement.
+let _bunnyEndedCallback=null;
+window.addEventListener('message',(event)=>{
+ if(!event.origin || !event.origin.includes('mediadelivery.net'))return;
+ let data=event.data;
+ try{ if(typeof data==='string')data=JSON.parse(data); }catch(e){ return; }
+ if(data && data.event==='ended' && _bunnyEndedCallback)_bunnyEndedCallback();
+});
+function bunnyIframeHtml(clip){
+ return `<iframe src="https://iframe.mediadelivery.net/embed/${BUNNY_LIBRARY_ID}/${clip.yt_id}?autoplay=true&loop=false&controls=false" loading="lazy" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;" allowfullscreen="true"></iframe>`;
+}
+function advanceRoutineManually(){
+ if(routineIndex<routineQueue.length-1){
+ routineIndex++;
+ openRoutineClip(true);
+ }else{
+ showRoutineEndScreen(true);
+ }
+}
+let _rpTouchStartY=null;
+function setupRoutineSwipe(){
+ const stage=document.getElementById('rpStage');
+ stage.ontouchstart=(e)=>{ _rpTouchStartY=e.touches[0].clientY; };
+ stage.ontouchend=(e)=>{
+ if(_rpTouchStartY===null)return;
+ const deltaY=_rpTouchStartY-e.changedTouches[0].clientY;
+ _rpTouchStartY=null;
+ if(deltaY>50)advanceRoutineManually(); // doigt qui remonte = clip suivant (comme un scroll vers le bas du contenu)
+ };
+}
+function openRoutineClip(animate){
+ const clip=routineQueue[routineIndex];
+ if(!clip)return;
+ document.getElementById('rpTitle').textContent=clip.nom;
+ document.getElementById('rpProgressFill').style.width=Math.round(((routineIndex+1)/routineQueue.length)*100)+'%';
+ const stage=document.getElementById('rpStage');
+ const newClipEl=document.createElement('div');
+ newClipEl.className='rp-clip'+(animate?' rp-clip-next':'');
+ newClipEl.innerHTML=bunnyIframeHtml(clip);
+ stage.appendChild(newClipEl);
+ if(animate){
+ // force le navigateur à prendre en compte la position de départ avant d'animer vers le centre
+ newClipEl.getBoundingClientRect();
+ requestAnimationFrame(()=>{ newClipEl.style.transform='translateY(0)'; });
+ }
+ const oldClipEl=animate?stage.children[0]:null;
+ if(oldClipEl && oldClipEl!==newClipEl)oldClipEl.classList.add('slide-out');
+ setTimeout(()=>{ if(oldClipEl && oldClipEl!==newClipEl)oldClipEl.remove(); },550);
+ _bunnyEndedCallback=()=>{
+ routineIndex++;
+ if(routineIndex<routineQueue.length)openRoutineClip(true);
+ else showRoutineEndScreen(true);
+ };
+}
 
 function renderMvCalendar(){
  if(!VIDEOS.length){
@@ -3355,7 +3849,7 @@ function renderMvCalendar(){
  }
  document.getElementById('wkCalRow').innerHTML=cells;
 
- const todayVid=weekdayVideo(todayIdx);
+ const todayVid=getTodaySession(todayIdx);
  const doneToday=completedVids.has(todayVid.id);
  const card=document.getElementById('wkTodayCard');
  card.innerHTML=`<img class="wk-today-th" src="https://img.youtube.com/vi/${todayVid.ytId}/mqdefault.jpg" onerror="this.style.display='none'">
@@ -3503,6 +3997,7 @@ function renderProgramDetail(){
 
 function renderMv(){
  renderMvCalendar();
+ renderRoutinesSection();
  renderPrograms();
  renderMvFilters();
  updateSessionsMonth();
@@ -3545,6 +4040,7 @@ async function openVD(id){
  document.getElementById('vdCat').textContent=v.cat;
  document.getElementById('vdDosha').textContent=v.dosha;
  document.getElementById('vdBens').innerHTML=v.bens.map((b,i)=>`<div class="vd-ben"><div class="vd-ben-ic">${['','','',''][i]}</div><div class="vd-ben-t">${b}</div></div>`).join('');
+ document.getElementById('vdBtn').style.display='';
  const done=completedVids.has(id);
  const btn=document.getElementById('vdBtn');
  if(done){
@@ -3556,7 +4052,7 @@ async function openVD(id){
  }
  document.getElementById('vdetail').classList.add('open');
 
- // Enregistre la toute première fois où cette vidéo est ouverte — sert de départ
+ // Enregistre la toute première fois où cette vidéo est ouverte, sert de départ
  // au compteur de 7 jours pour le déverrouillage de la semaine suivante.
  if(!videoStartDates[id]){
  videoStartDates[id]=localDateStr();
@@ -3708,13 +4204,13 @@ const MEAL_SLOTS=[
  {id:'midi',label:'Déjeuner',labelHtml:'Ton <em>déjeuner</em>',pct:0.40},
  {id:'diner',label:'Dîner',labelHtml:'Ton <em>dîner</em>',pct:0.35},
 ];
-// Sources de protéines simples, substituées selon le régime — toujours sans gluten et sans lait de vache (brebis/chèvre/cru acceptés)
+// Sources de protéines simples, substituées selon le régime, toujours sans gluten et sans lait de vache (brebis/chèvre/cru acceptés)
 const PROTEIN_BY_DIET={
  flexitarien:['Poulet','Dinde','Poisson blanc','Saumon','Œufs','Viande maigre de bœuf'],
  vegetarien:['Œufs','Fromage de brebis','Tofu','Tempeh','Yaourt de brebis'],
  vegan:['Tofu','Tempeh','Lentilles','Pois chiches','Graines de chanvre','Protéines de pois'],
 };
-// Pools d'ingrédients simples par dosha pur — les profils combinés (ex: vata-pitta) et le tridoshique
+// Pools d'ingrédients simples par dosha pur, les profils combinés (ex: vata-pitta) et le tridoshique
 // sont générés automatiquement en fusionnant ces 3 pools, pas besoin de tout réécrire à la main.
 const DOSHA_FOOD_POOLS={
  vata:{
@@ -3772,9 +4268,38 @@ function getISOWeek(d){
  const yearStart=new Date(Date.UTC(date.getUTCFullYear(),0,1));
  return Math.ceil((((date-yearStart)/86400000)+1)/7);
 }
-// Construit une option simple (pas de "recette") : céréale + protéine en grammes + légume + épice/herbe + huile.
-// Le décalage (offset) permet de proposer 3 options différentes pour un même repas, qui tournent aussi chaque semaine.
-function buildSimpleMealOption(pool,proteinList,week,mealIndex,offset,proteinGrams){
+/* Valeurs nutritionnelles pour 100g (aliment cuit, sauf mention contraire), utilisées pour convertir
+   un besoin en grammes de NUTRIMENT (protéines/glucides) en un poids réel d'ALIMENT à manger.
+   Les œufs sont comptés à l'unité (1 œuf ≈ 50g, ≈ 6,5g de protéines), pas en grammes.
+   Chaque aliment a un plafond de portion réaliste : le glucide/protéine restant (non couvert par cette
+   portion) vient naturellement des légumes, fruits et autres aliments de la journée, pas d'un seul ingrédient. */
+const FOOD_MACRO_PER_100G={
+ 'Poulet':{protein:31,maxG:200},'Dinde':{protein:29,maxG:200},'Poisson blanc':{protein:23,maxG:220},'Saumon':{protein:25,maxG:200},
+ 'Œufs':{protein:13,isEgg:true,maxEggs:4},'Viande maigre de bœuf':{protein:26,maxG:200},
+ 'Fromage de brebis':{protein:25,maxG:120},'Tofu':{protein:13,maxG:220},'Tempeh':{protein:19,maxG:200},'Yaourt de brebis':{protein:6,maxG:250},
+ 'Lentilles':{protein:9,maxG:300},'Pois chiches':{protein:8,maxG:300},'Graines de chanvre':{protein:31,maxG:60},'Protéines de pois':{protein:78,maxG:50},
+ 'Riz basmati complet':{carbs:25,maxG:250},'Sarrasin':{carbs:20,maxG:250},'Quinoa':{carbs:21,maxG:250},'Patate douce':{carbs:20,maxG:280},
+ 'Avoine sans gluten':{carbs:58,maxG:90},'Millet':{carbs:23,maxG:250},'Riz basmati':{carbs:26,maxG:250},'Riz basmati (petite quantité)':{carbs:26,maxG:180},
+};
+function gramsForNutrient(foodName,targetNutrientGrams,nutrientKey){
+ const info=FOOD_MACRO_PER_100G[foodName];
+ const per100=info?info[nutrientKey]:null;
+ if(!per100)return {display:foodName};
+ if(info.isEgg){
+ const rawCount=Math.round(targetNutrientGrams/6.5);
+ const nbOeufs=Math.min(info.maxEggs,Math.max(1,rawCount));
+ return {display:nbOeufs>1?`${nbOeufs} œufs`:`1 œuf`};
+ }
+ const rawGrams=Math.round(targetNutrientGrams/per100*100);
+ const foodGrams=Math.min(info.maxG,rawGrams);
+ return {display:`${foodName} (${foodGrams}g)`};
+}
+
+// Construit une option simple (pas de "recette") : céréale (portion calculée et plafonnée à une quantité
+// réaliste) + protéine (idem, ou nombre d'œufs) + légume + épice/herbe + huile, selon les besoins de la
+// personne. Le reste des glucides/protéines de la journée vient des autres repas, fruits et légumes.
+// Le décalage (offset) permet de proposer 3 options différentes pour un même repas, qui tournent chaque semaine.
+function buildSimpleMealOption(pool,proteinList,week,mealIndex,offset,proteinTargetG,carbTargetG){
  const idx=week+mealIndex+offset;
  const grain=pool.grains[idx%pool.grains.length];
  const veg=pool.vegetables[idx%pool.vegetables.length];
@@ -3782,13 +4307,15 @@ function buildSimpleMealOption(pool,proteinList,week,mealIndex,offset,proteinGra
  const herb=pool.herbs[(idx+1)%pool.herbs.length];
  const oil=pool.oils[idx%pool.oils.length];
  const protein=proteinList[idx%proteinList.length];
- return `${grain} · ${protein} (${proteinGrams}g) · ${veg} · ${spice}, ${herb} · ${oil}`;
+ const proteinDisplay=gramsForNutrient(protein,proteinTargetG,'protein').display;
+ const grainDisplay=gramsForNutrient(grain,carbTargetG,'carbs').display;
+ return `${grainDisplay} · ${proteinDisplay} · ${veg} · ${spice}, ${herb} · ${oil}`;
 }
 function generateMealPlan(){
  const doshaKey=userProfile.dosha||getPrimaryDoshaKey();
  const pool=getDoshaFoodPool(doshaKey);
  const proteinList=PROTEIN_BY_DIET[userProfile.dietType]||PROTEIN_BY_DIET.flexitarien;
- // Recalcule les macros du jour (même formule que le tableau de bord) — riche en protéines et
+ // Recalcule les macros du jour (même formule que le tableau de bord), riche en protéines et
  // équilibré en lipides, pensé pour la santé globale, le maintien musculaire et l'équilibre hormonal.
  const bmr=Math.round(447.593+(9.247*userProfile.weight)+(3.098*userProfile.height)-(4.33*userProfile.age));
  const mult=ACTIVITY_MULTIPLIER[userProfile.activity]||1.375;
@@ -3802,12 +4329,13 @@ function generateMealPlan(){
 
  return MEAL_SLOTS.map((slot,mealIndex)=>{
  const proteinGrams=Math.round(proteinTotal*slot.pct);
- const options=[0,1,2].map(offset=>buildSimpleMealOption(pool,proteinList,week,mealIndex,offset,proteinGrams));
+ const carbGrams=Math.round(carbTotal*slot.pct);
+ const options=[0,1,2].map(offset=>buildSimpleMealOption(pool,proteinList,week,mealIndex,offset,proteinGrams,carbGrams));
  return {
  ...slot,
  kcal:Math.round(dailyCal*slot.pct),
  protein:proteinGrams,
- carbs:Math.round(carbTotal*slot.pct),
+ carbs:carbGrams,
  fat:Math.round(fatTotal*slot.pct),
  options,
  highlight:highlightIdx,
@@ -3944,7 +4472,7 @@ function renderProgression(){
       <div style="font-size:14px;color:var(--ink-l);margin-top:6px;">Basé sur ${monthWellness.length} jour(s) suivi(s) ce mois-ci</div>
     `;
   } else {
-    document.getElementById('progWellnessAvg').innerHTML='<p style="font-size:15.5px;color:var(--ink-l);">Pas encore de suivi bien-être ce mois-ci — renseigne ton humeur du jour depuis le tableau de bord.</p>';
+    document.getElementById('progWellnessAvg').innerHTML='<p style="font-size:15.5px;color:var(--ink-l);">Pas encore de suivi bien-être ce mois-ci, renseigne ton humeur du jour depuis le tableau de bord.</p>';
   }
 }
 
@@ -3968,7 +4496,7 @@ async function shareDoshaProfile(){
       const a=document.createElement('a');
       a.href=url;a.download=fileName;a.click();
       URL.revokeObjectURL(url);
-      toast('Image téléchargée — tu peux la partager depuis ta galerie');
+      toast('Image téléchargée, tu peux la partager depuis ta galerie');
     }
   }catch(e){
     if(e.name!=='AbortError'){
@@ -4090,7 +4618,7 @@ function retakeDoshaQuiz(){
 const ZODIAC=[
  {n:'Capricorne',e:'♑',elem:'Terre',planet:'Saturne',from:[12,22],to:[1,19],traits:'Ambitieuse, disciplinée, persévérante et réservée. Sait se fixer des objectifs à long terme et les tenir avec rigueur.',
   sunText:"Le Soleil en Capricorne donne une nature profondément ambitieuse et disciplinée. Tu avances pas à pas vers tes objectifs, avec une patience et une endurance qui impressionnent souvent ton entourage. Tu prends tes responsabilités au sérieux et tu préfères la solidité aux promesses en l'air. Derrière cette réserve apparente se cache une grande loyauté envers ceux en qui tu as confiance.",
-  moonText:"Avec la Lune en Capricorne, tes émotions sont vécues de façon pudique et maîtrisée. Tu as besoin de structure et de sécurité pour te sentir bien intérieurement, et tu montres rarement tes vulnérabilités au premier venu. Ton sens du devoir peut parfois primer sur tes besoins personnels — apprendre à te reposer sans culpabiliser est un vrai chemin de croissance pour toi.",
+  moonText:"Avec la Lune en Capricorne, tes émotions sont vécues de façon pudique et maîtrisée. Tu as besoin de structure et de sécurité pour te sentir bien intérieurement, et tu montres rarement tes vulnérabilités au premier venu. Ton sens du devoir peut parfois primer sur tes besoins personnels, apprendre à te reposer sans culpabiliser est un vrai chemin de croissance pour toi.",
   ascText:"Avec cet Ascendant, tu donnes une première impression de sérieux, de maturité et de retenue, même jeune. Les autres te perçoivent comme quelqu'un de fiable et compétent, sur qui on peut s'appuyer. Tu prends le temps d'observer une situation avant de t'engager, ce qui peut parfois te faire paraître distante alors que tu es simplement prudente."},
  {n:'Verseau',e:'♒',elem:'Air',planet:'Uranus',from:[1,20],to:[2,18],traits:'Indépendante, originale, humaniste et avant-gardiste. Aime penser différemment et défendre ses idéaux.',
   sunText:"Le Soleil en Verseau façonne un esprit libre, original et tourné vers le collectif. Tu penses différemment des autres, et c'est précisément ce qui fait ta valeur : tu apportes des idées neuves là où beaucoup restent dans le conformisme. Ton sens de la justice et ton humanisme te poussent naturellement vers des causes qui dépassent ton seul intérêt personnel.",
@@ -4102,38 +4630,38 @@ const ZODIAC=[
   ascText:"Avec cet Ascendant, tu donnes une impression douce, rêveuse et légèrement mystérieuse dès le premier contact. Les gens te trouvent facilement accessible sur le plan émotionnel, presque comme si tu comprenais instinctivement ce qu'ils traversent, même sans qu'ils aient besoin de tout expliquer."},
  {n:'Bélier',e:'♈',elem:'Feu',planet:'Mars',from:[3,21],to:[4,19],traits:'Franche, dynamique, impulsive et pionnière. Aime foncer et prendre des initiatives sans attendre.',
   sunText:"Le Soleil en Bélier donne une énergie vive, directe et pleine d'initiative. Tu n'aimes pas attendre : quand une idée te vient, tu préfères agir tout de suite plutôt que de trop réfléchir. Cette spontanéité fait de toi une pionnière naturelle, toujours prête à se lancer la première là où d'autres hésitent encore.",
-  moonText:"Avec la Lune en Bélier, tes émotions sont vives et immédiates — tu ressens intensément, et ça se voit. La colère peut monter vite, mais elle redescend tout aussi rapidement, sans rancune. Tu as besoin d'action pour te sentir bien : rester passive face à une contrariété n'est vraiment pas ton fort.",
+  moonText:"Avec la Lune en Bélier, tes émotions sont vives et immédiates, tu ressens intensément, et ça se voit. La colère peut monter vite, mais elle redescend tout aussi rapidement, sans rancune. Tu as besoin d'action pour te sentir bien : rester passive face à une contrariété n'est vraiment pas ton fort.",
   ascText:"Avec cet Ascendant, tu donnes une première impression d'énergie et de franchise immédiate. On te perçoit comme quelqu'un de direct, parfois impatient, qui n'a pas peur de prendre les devants. Ta présence est difficile à ignorer, même dans un groupe où tu ne cherches pas particulièrement à te faire remarquer."},
  {n:'Taureau',e:'♉',elem:'Terre',planet:'Vénus',from:[4,20],to:[5,20],traits:'Sensuelle, stable, patiente et attachée au confort. Apprécie la beauté, la nature et la sécurité matérielle.',
-  sunText:"Le Soleil en Taureau donne une nature stable, sensorielle et profondément attachée au concret. Tu apprécies les plaisirs simples de la vie — un bon repas, une texture agréable, un environnement harmonieux — et tu as besoin de sécurité matérielle pour te sentir pleinement toi-même. Ta patience et ta persévérance te permettent de construire des choses qui durent.",
+  sunText:"Le Soleil en Taureau donne une nature stable, sensorielle et profondément attachée au concret. Tu apprécies les plaisirs simples de la vie, un bon repas, une texture agréable, un environnement harmonieux, et tu as besoin de sécurité matérielle pour te sentir pleinement toi-même. Ta patience et ta persévérance te permettent de construire des choses qui durent.",
   moonText:"Avec la Lune en Taureau, tu as besoin de stabilité et de routines rassurantes pour te sentir émotionnellement en sécurité. Le changement brusque te déstabilise ; tu préfères avancer à ton rythme, sans être bousculée. Le contact physique et les plaisirs sensoriels (une bonne odeur, une texture douce) t'apaisent particulièrement.",
   ascText:"Avec cet Ascendant, tu dégages une présence calme, posée et rassurante. Les autres te perçoivent comme quelqu'un de fiable, ancrée, peu sujette à la précipitation. Ta façon d'être, tranquille et sans esbroufe, met naturellement les gens à l'aise en ta présence."},
  {n:'Gémeaux',e:'♊',elem:'Air',planet:'Mercure',from:[5,21],to:[6,20],traits:'Curieuse, communicative, adaptable et vive d\'esprit. Aime apprendre, échanger et explorer plusieurs sujets à la fois.',
   sunText:"Le Soleil en Gémeaux donne un esprit vif, curieux et avide d'apprendre. Tu aimes jongler entre plusieurs sujets, plusieurs idées, plusieurs projets à la fois, et l'ennui est probablement ton pire ennemi. Ta facilité à communiquer et à t'adapter fait de toi quelqu'un à l'aise dans presque toutes les situations sociales.",
-  moonText:"Avec la Lune en Gémeaux, tu as besoin de parler pour comprendre ce que tu ressens — mettre des mots sur tes émotions t'aide à les apprivoiser. Tes humeurs peuvent changer rapidement, au gré des idées et des rencontres qui traversent ta journée. La stimulation intellectuelle est presque aussi nécessaire à ton équilibre que le repos.",
+  moonText:"Avec la Lune en Gémeaux, tu as besoin de parler pour comprendre ce que tu ressens, mettre des mots sur tes émotions t'aide à les apprivoiser. Tes humeurs peuvent changer rapidement, au gré des idées et des rencontres qui traversent ta journée. La stimulation intellectuelle est presque aussi nécessaire à ton équilibre que le repos.",
   ascText:"Avec cet Ascendant, tu donnes immédiatement une impression de vivacité et de curiosité. On te perçoit comme quelqu'un de facile à aborder, bavarde, pleine de questions et d'anecdotes. Ta gestuelle et ton regard trahissent souvent une pensée qui va déjà plus vite que la conversation en cours."},
  {n:'Cancer',e:'♋',elem:'Eau',planet:'Lune',from:[6,21],to:[7,22],traits:'Sensible, protectrice, intuitive et attachée à sa famille et son foyer. Grande mémoire émotionnelle.',
-  sunText:"Le Soleil en Cancer donne une identité profondément liée à l'affectif, à la famille et au sentiment d'appartenance. Tu as un instinct protecteur naturel envers les personnes que tu aimes, et ton foyer — au sens propre comme au sens figuré — est un pilier essentiel de ton équilibre. Ta mémoire émotionnelle est remarquable : tu n'oublies ni les blessures, ni les gestes de tendresse.",
+  sunText:"Le Soleil en Cancer donne une identité profondément liée à l'affectif, à la famille et au sentiment d'appartenance. Tu as un instinct protecteur naturel envers les personnes que tu aimes, et ton foyer, au sens propre comme au sens figuré, est un pilier essentiel de ton équilibre. Ta mémoire émotionnelle est remarquable : tu n'oublies ni les blessures, ni les gestes de tendresse.",
   moonText:"Avec la Lune en Cancer (son domicile), tes émotions sont particulièrement intenses et ton intuition très développée. Tu ressens les besoins des autres presque avant qu'ils ne les expriment, et prendre soin de ton entourage te procure un vrai sentiment de sécurité intérieure. Il t'arrive de te replier sur toi-même quand tu te sens vulnérable, comme pour te protéger.",
   ascText:"Avec cet Ascendant, tu donnes une image douce et chaleureuse, presque maternelle, dès le premier contact. Les gens se sentent naturellement en confiance avec toi et ont tendance à se confier facilement. Tu peux aussi paraître réservée ou sur la retenue tant que la confiance ne s'est pas installée."},
  {n:'Lion',e:'♌',elem:'Feu',planet:'Soleil',from:[7,23],to:[8,22],traits:'Généreuse, fière, charismatique, aime briller et être reconnue. Grand cœur et sens du spectacle.',
   sunText:"Le Soleil en Lion donne un rayonnement naturel et un vrai besoin de créer, d'exprimer et d'être reconnue pour qui tu es. Tu as un grand cœur, souvent plus généreux qu'on ne l'imagine derrière ta fierté, et un sens inné du spectacle qui attire naturellement l'attention. Ta loyauté envers les personnes que tu aimes est indéfectible.",
   moonText:"Avec la Lune en Lion, tu as besoin d'être vue, valorisée et appréciée pour te sentir bien émotionnellement. Tes réactions sont chaleureuses et généreuses, parfois théâtrales, jamais mesquines. Un manque de reconnaissance te touche plus que tu ne le laisses paraître, même si ta fierté t'empêche souvent de l'admettre.",
-  ascText:"Avec cet Ascendant, tu dégages une présence naturellement charismatique, difficile à manquer dans une pièce. On te perçoit comme quelqu'un de confiant, chaleureux, parfois un brin théâtral — mais toujours avec une générosité sincère qui transparaît derrière l'assurance."},
+  ascText:"Avec cet Ascendant, tu dégages une présence naturellement charismatique, difficile à manquer dans une pièce. On te perçoit comme quelqu'un de confiant, chaleureux, parfois un brin théâtral, mais toujours avec une générosité sincère qui transparaît derrière l'assurance."},
  {n:'Vierge',e:'♍',elem:'Terre',planet:'Mercure',from:[8,23],to:[9,22],traits:'Perfectionniste, analytique, serviable et minutieuse. Aime organiser, améliorer et prendre soin des détails.',
   sunText:"Le Soleil en Vierge donne un esprit analytique, précis et profondément serviable. Tu remarques les détails que d'autres laissent filer, et tu as un vrai talent pour organiser, améliorer et perfectionner ce qui t'entoure. Ton sens pratique et ton envie d'être utile font de toi quelqu'un sur qui on peut vraiment compter.",
-  moonText:"Avec la Lune en Vierge, tu as besoin d'ordre et d'utilité pour te sentir émotionnellement stable. Tu exprimes souvent ton affection par des gestes concrets plutôt que par de grandes déclarations — rendre service est ta façon d'aimer. Le perfectionnisme peut parfois se retourner contre toi sous forme d'autocritique excessive.",
+  moonText:"Avec la Lune en Vierge, tu as besoin d'ordre et d'utilité pour te sentir émotionnellement stable. Tu exprimes souvent ton affection par des gestes concrets plutôt que par de grandes déclarations, rendre service est ta façon d'aimer. Le perfectionnisme peut parfois se retourner contre toi sous forme d'autocritique excessive.",
   ascText:"Avec cet Ascendant, tu donnes une impression de sérieux, de discrétion et de sens pratique. On te perçoit comme quelqu'un d'observatrice, un peu réservée au premier abord, mais dont l'attention aux détails et le souci de bien faire inspirent naturellement confiance."},
  {n:'Balance',e:'♎',elem:'Air',planet:'Vénus',from:[9,23],to:[10,22],traits:'Diplomate, esthète, cherche l\'harmonie et l\'équilibre dans toutes ses relations.',
   sunText:"Le Soleil en Balance donne un besoin profond d'harmonie, d'équité et de relations équilibrées. Tu as un vrai sens esthétique et une capacité naturelle à voir les différents points de vue d'une situation, ce qui fait de toi une excellente médiatrice. Être seule trop longtemps te pèse : tu t'épanouis pleinement dans l'échange avec l'autre.",
-  moonText:"Avec la Lune en Balance, tu as besoin d'harmonie relationnelle pour te sentir bien émotionnellement — les conflits et les ambiances tendues te pèsent particulièrement. Tu cherches instinctivement le compromis, parfois au détriment de tes propres besoins. Apprendre à affirmer une préférence sans crainte de déplaire est un vrai apprentissage pour toi.",
+  moonText:"Avec la Lune en Balance, tu as besoin d'harmonie relationnelle pour te sentir bien émotionnellement, les conflits et les ambiances tendues te pèsent particulièrement. Tu cherches instinctivement le compromis, parfois au détriment de tes propres besoins. Apprendre à affirmer une préférence sans crainte de déplaire est un vrai apprentissage pour toi.",
   ascText:"Avec cet Ascendant, tu dégages naturellement une image charmante, posée et agréable. Les autres te perçoivent comme quelqu'un de sociable et de diplomate, avec qui les échanges sont fluides. Tu as souvent un sens esthétique visible jusque dans ta façon de te présenter."},
  {n:'Scorpion',e:'♏',elem:'Eau',planet:'Pluton',from:[10,23],to:[11,21],traits:'Intense, mystérieuse, passionnée et déterminée. Grande force de transformation et de résilience.',
   sunText:"Le Soleil en Scorpion donne une intensité et une profondeur peu communes. Tu ne fais rien à moitié : quand tu t'engages dans quelque chose ou quelqu'un, c'est avec une détermination totale. Ta capacité à te transformer et à rebondir après les épreuves est l'une de tes plus grandes forces, même si le chemin pour y arriver n'est jamais facile.",
   moonText:"Avec la Lune en Scorpion, tes émotions sont vécues intensément, souvent en profondeur et loin des regards. Tu as un instinct très fin pour percevoir ce qui se cache derrière les apparences, chez toi comme chez les autres. La confiance se mérite avec toi, mais une fois accordée, elle est d'une loyauté rare.",
   ascText:"Avec cet Ascendant, tu donnes une impression de mystère et de profondeur, même sans le vouloir. On te perçoit comme quelqu'un d'intense, dont le regard semble voir au-delà des apparences. Cette aura magnétique peut intimider avant même que tu n'aies dit un mot."},
  {n:'Sagittaire',e:'♐',elem:'Feu',planet:'Jupiter',from:[11,22],to:[12,21],traits:'Aventurière, optimiste, aime la liberté, les voyages et les grandes idées philosophiques.',
-  sunText:"Le Soleil en Sagittaire donne un optimisme contagieux et une soif d'horizons plus larges — géographiques, intellectuels ou spirituels. Tu as besoin de liberté et d'espace pour t'épanouir, et tu détestes qu'on t'enferme dans un cadre trop rigide. Ta franchise, parfois abrupte, vient d'un besoin sincère de vérité plutôt que d'un manque de tact.",
+  sunText:"Le Soleil en Sagittaire donne un optimisme contagieux et une soif d'horizons plus larges, géographiques, intellectuels ou spirituels. Tu as besoin de liberté et d'espace pour t'épanouir, et tu détestes qu'on t'enferme dans un cadre trop rigide. Ta franchise, parfois abrupte, vient d'un besoin sincère de vérité plutôt que d'un manque de tact.",
   moonText:"Avec la Lune en Sagittaire, tu as besoin d'espace et de mouvement pour te sentir émotionnellement libre. Rester coincée dans une routine étouffante ou une relation trop possessive te pèse rapidement. Tu relativises facilement les difficultés grâce à ton optimisme naturel, qui t'aide à rebondir plus vite que la moyenne.",
   ascText:"Avec cet Ascendant, tu donnes une impression enjouée, franche et pleine d'énergie positive. On te perçoit comme quelqu'un d'ouvert, curieux des autres cultures et des grandes idées, avec qui la conversation part facilement loin. Ta spontanéité peut parfois être prise pour de l'impatience."}
 ];
@@ -4162,18 +4690,18 @@ const HOUSE_STYLE_BY_SIGN={
  'Poissons':"avec intuition, en s'y adaptant de façon fluide et sensible"
 };
 const HOUSE_NAMES=[
- 'Identité — la façon dont tu te présentes au monde et ton énergie spontanée',
- 'Ressources — ton rapport à l\'argent, aux biens matériels et à ta valeur personnelle',
- 'Entourage proche — frères, sœurs, échanges du quotidien et petits déplacements',
- 'Foyer — ta famille, tes racines et ton besoin de sécurité intérieure',
- 'Créativité — l\'amour, les loisirs, les enfants et ce qui te fait vibrer',
- 'Quotidien — ton travail au jour le jour, tes habitudes et ta santé',
- 'Relations — le couple, les associations et les engagements à deux',
- 'Transformations — les passages profonds, les partages financiers et la sexualité',
- 'Horizons — les voyages, les études supérieures et la quête de sens',
- 'Vocation — ta réussite sociale, ta carrière et ton image publique',
- 'Communauté — tes amitiés, tes projets collectifs et tes espoirs pour l\'avenir',
- 'Intériorité — ton monde intérieur, ton besoin de retrait et ta spiritualité'
+ 'Identité, la façon dont tu te présentes au monde et ton énergie spontanée',
+ 'Ressources, ton rapport à l\'argent, aux biens matériels et à ta valeur personnelle',
+ 'Entourage proche, frères, sœurs, échanges du quotidien et petits déplacements',
+ 'Foyer, ta famille, tes racines et ton besoin de sécurité intérieure',
+ 'Créativité, l\'amour, les loisirs, les enfants et ce qui te fait vibrer',
+ 'Quotidien, ton travail au jour le jour, tes habitudes et ta santé',
+ 'Relations, le couple, les associations et les engagements à deux',
+ 'Transformations, les passages profonds, les partages financiers et la sexualité',
+ 'Horizons, les voyages, les études supérieures et la quête de sens',
+ 'Vocation, ta réussite sociale, ta carrière et ton image publique',
+ 'Communauté, tes amitiés, tes projets collectifs et tes espoirs pour l\'avenir',
+ 'Intériorité, ton monde intérieur, ton besoin de retrait et ta spiritualité'
 ];
 const HOUSES=[
  'Maison 1, Identité : la façon dont tu te présentes au monde, ton apparence et ta personnalité.',
@@ -4195,7 +4723,7 @@ function openAstro(){
  document.getElementById('astroPlace').value=userProfile.birthPlace||'';
  document.getElementById('astroResult').style.display=userProfile.birthDate?'block':'none';
  if(userProfile.birthDate)renderAstroResult();
- renderAstroWidget('astroWidgetProfile');
+ renderAstroDetail();
  go('astroScreen');
 }
 /* ═══════ RECHERCHE DE VILLE DE NAISSANCE ═══════ */
@@ -4213,7 +4741,7 @@ function searchBirthCity(query){
       const data=await res.json();
       const cities=data.cities||[];
       if(!cities.length){box.style.display='none';return;}
-      box.innerHTML=cities.map((c,i)=>`<div style="padding:12px 14px;font-size:15.5px;cursor:pointer;border-bottom:1px solid var(--border);" onclick="selectBirthCity(${i})">${c.name}<span style="color:var(--ink-l);font-size:14.5px;"> — ${c.region?c.region+', ':''}${c.country}</span></div>`).join('');
+      box.innerHTML=cities.map((c,i)=>`<div style="padding:12px 14px;font-size:15.5px;cursor:pointer;border-bottom:1px solid var(--border);" onclick="selectBirthCity(${i})">${c.name}<span style="color:var(--ink-l);font-size:14.5px;">, ${c.region?c.region+', ':''}${c.country}</span></div>`).join('');
       box.style.display='block';
       window._astroCityResults=cities;
     }catch(e){
@@ -4282,7 +4810,7 @@ async function calculateAstro(){
     toast('Thème calculé ✓');
   }catch(e){
     console.error(e);
-    toast('Erreur lors du calcul — réessaie dans un instant');
+    toast('Erreur lors du calcul, réessaie dans un instant');
   }finally{
     btn.disabled=false;btn.textContent='Calculer mon thème';
   }
@@ -4352,7 +4880,7 @@ const ASTRAL_CLIMATE=[
  {ym:'2027-09',label:'Septembre 2027',intro:"Un mois d'ancrage et de stabilisation après l'intensité de l'été, qui culmine avec le grand portail de l'équinoxe.",
   transits:[{d:'12 sept.',t:"Mars entre en Verseau : l'action devient plus collaborative et tournée vers les causes collectives."},{d:'23 sept.',t:"Équinoxe d'automne, le Soleil entre en Balance : recherche d'harmonie et de justesse dans les relations."}],
   newMoon:{d:'11 sept.',sign:'Vierge',t:"Nouvelle Lune de tri et de réorganisation, parfaite pour de nouvelles routines de santé."},
-  fullMoon:{d:'25 sept.',sign:'Bélier',t:"Pleine Lune qui crée une tension entre indépendance et besoin de diplomatie — souvent une période de clarification importante."},
+  fullMoon:{d:'25 sept.',sign:'Bélier',t:"Pleine Lune qui crée une tension entre indépendance et besoin de diplomatie, souvent une période de clarification importante."},
   portals:[{d:'9 sept.',t:"Journée de clôture de cycle, propice au lâcher-prise."},{d:'23 sept.',t:"L'équinoxe d'automne est un moment sacré pour harmoniser ses polarités avant la fin de l'année."}]}
 ];
 
@@ -4373,8 +4901,8 @@ function renderAstralClimate(){
     </div>
     <div class="pe-t" style="margin:14px 0 8px;font-weight:700;font-size:15.5px;">Les grands mouvements du mois</div>
     ${month.transits.map(t=>`<div class="phase-explain-card"><div class="pe-body"><div class="pe-t">${t.d}</div><div class="pe-s">${t.t}</div></div></div>`).join('')}
-    ${month.newMoon?`<div class="pe-t" style="margin:14px 0 8px;font-weight:700;font-size:15.5px;">🌑 Nouvelle Lune — ${month.newMoon.d} en ${month.newMoon.sign}</div><div class="dosha-explain">${month.newMoon.t}</div>`:''}
-    ${month.fullMoon?`<div class="pe-t" style="margin:14px 0 8px;font-weight:700;font-size:15.5px;">🌕 Pleine Lune — ${month.fullMoon.d} en ${month.fullMoon.sign}</div><div class="dosha-explain">${month.fullMoon.t}</div>`:''}
+    ${month.newMoon?`<div class="pe-t" style="margin:14px 0 8px;font-weight:700;font-size:15.5px;">🌑 Nouvelle Lune, ${month.newMoon.d} en ${month.newMoon.sign}</div><div class="dosha-explain">${month.newMoon.t}</div>`:''}
+    ${month.fullMoon?`<div class="pe-t" style="margin:14px 0 8px;font-weight:700;font-size:15.5px;">🌕 Pleine Lune, ${month.fullMoon.d} en ${month.fullMoon.sign}</div><div class="dosha-explain">${month.fullMoon.t}</div>`:''}
     <div class="pe-t" style="margin:14px 0 8px;font-weight:700;font-size:15.5px;">Portails énergétiques à retenir</div>
     ${month.portals.map(p=>`<div class="phase-explain-card"><div class="pe-body"><div class="pe-t">${p.d}</div><div class="pe-s">${p.t}</div></div></div>`).join('')}
   `;
@@ -4415,7 +4943,7 @@ function renderAstroResult(){
   const retroBlock=document.getElementById('astroRetroBlock');
   if(data.retrogrades&&data.retrogrades.length){
     const fr={Mercury:'Mercure',Venus:'Vénus',Mars:'Mars',Jupiter:'Jupiter',Saturn:'Saturne',Uranus:'Uranus',Neptune:'Neptune',Pluto:'Pluton'};
-    document.getElementById('astroRetroText').textContent=data.retrogrades.map(p=>fr[p]||p).join(', ')+' — au moment de ta naissance. Une planète rétrograde invite à vivre son énergie de façon plus intérieure et réfléchie plutôt que dans l\'action directe.';
+    document.getElementById('astroRetroText').textContent=data.retrogrades.map(p=>fr[p]||p).join(', ')+', au moment de ta naissance. Une planète rétrograde invite à vivre son énergie de façon plus intérieure et réfléchie plutôt que dans l\'action directe.';
     retroBlock.style.display='block';
   } else {
     retroBlock.style.display='none';
@@ -4423,10 +4951,10 @@ function renderAstroResult(){
 
   if(data.houses){
     document.getElementById('astroHouses').innerHTML=data.houses.map(h=>{
-      const [houseLabel,houseTheme]=HOUSE_NAMES[h.number-1].split(' — ');
+      const [houseLabel,houseTheme]=HOUSE_NAMES[h.number-1].split(', ');
       const style=HOUSE_STYLE_BY_SIGN[h.sign]||'';
       return `<div class="phase-explain-card"><div class="pe-body">
-        <div class="pe-t">Maison ${h.number} — ${houseLabel}</div>
+        <div class="pe-t">Maison ${h.number}, ${houseLabel}</div>
         <div class="pe-s" style="margin-bottom:4px;">${houseTheme}</div>
         <div class="pe-s"><b>${h.sign}</b> en Maison ${h.number} : tu vis ce domaine ${style}.</div>
       </div></div>`;
@@ -4491,6 +5019,71 @@ function renderYearEnergy(sign){
  document.getElementById('yearZodiacCard').innerHTML=`<div class="dab-title">${cz.e} Année du ${cz.n}</div><div class="dab-text">${cz.txt}</div>`;
  const quarters=QUARTER_THEMES_BY_ELEMENT[sign.elem]||QUARTER_THEMES_BY_ELEMENT.Feu;
  document.getElementById('yearQuarters').innerHTML=quarters.map(q=>`<div class="phase-explain-card"><div class="pe-body"><div class="pe-t">${q.t}</div><div class="pe-s">${q.s}</div></div></div>`).join('');
+}
+
+/* Contenu quotidien pour la préménopause et la ménopause, vient de la table Supabase `daily_tips`,
+   croisée par dosha (le tien) + mois en cours + un numéro de rotation basé sur le jour du mois.
+   Repli sur un message générique si la table n'est pas encore importée ou en cas d'erreur réseau. */
+let _dailyTipCache={};
+function getProfileDoshaKey(){
+ const weights=getDoshaWeights();
+ const isMixed=(weights[0].v-weights[1].v)<DOSHA_MIX_THRESHOLD;
+ return isMixed?'tridoshique':weights[0].k;
+}
+async function fetchDailyTip(statut){
+ const dosha=getProfileDoshaKey();
+ const mois=new Date().getMonth()+1;
+ const dayOfMonth=new Date().getDate();
+ const cacheKey=statut+'-'+dosha+'-'+mois;
+ if(_dailyTipCache[cacheKey])return _dailyTipCache[cacheKey][dayOfMonth%_dailyTipCache[cacheKey].length];
+ try{
+ const {data,error}=await sb.from('daily_tips').select('rotation,titre,niveau,texte').eq('statut',statut).eq('dosha',dosha).eq('mois',mois).order('rotation',{ascending:true});
+ if(error||!data||!data.length)throw error||new Error('vide');
+ _dailyTipCache[cacheKey]=data;
+ return data[dayOfMonth%data.length];
+ }catch(e){
+ console.error('daily_tips indisponible, repli sur message générique :',e);
+ return statut==='menopause'
+ ?{titre:'Prends soin de toi aujourd\'hui',niveau:'Moyenne',texte:'Écoute ce dont ton corps a besoin en ce moment : repos, mouvement, alimentation nourrissante ou simplement un peu de calme.'}
+ :{titre:'Une transition, pas un problème',niveau:'Moyenne',texte:'Cette période est une transition naturelle de ton corps. Prends-la un jour à la fois, avec curiosité plutôt qu\'avec inquiétude.'};
+ }
+}
+async function getPerimenoInfo(){
+ const t=await fetchDailyTip('perimenopause');
+ return {energy:t.niveau||'Moyenne',title:t.titre,text:t.texte};
+}
+async function getMenopauseTip(){
+ const t=await fetchDailyTip('menopause');
+ return {title:t.titre,text:t.texte};
+}
+
+/* Ajuste légèrement l'estimation d'énergie selon la phase de lune du jour, vient en complément
+   de l'énergie du cycle/de la transition, jamais à la place. */
+function getMoonEnergyNote(moonName){
+ const notes={
+  'Nouvelle lune':'🌑 Nouvelle lune : temps calme, propice à l\'introspection plutôt qu\'à l\'action.',
+  'Premier croissant':'🌒 Premier croissant : une énergie qui commence doucement à monter.',
+  'Premier quartier':'🌓 Premier quartier : bon moment pour avancer et ajuster tes plans.',
+  'Lune croissante':'🌔 Lune croissante : l\'énergie continue de monter, profites-en.',
+  'Pleine lune':'🌕 Pleine lune : énergie et émotions à leur pic, le sommeil peut être plus léger.',
+  'Lune décroissante':'🌖 Lune décroissante : un bon moment pour ralentir et relâcher.',
+  'Dernier quartier':'🌗 Dernier quartier : temps de faire le tri, mentalement et concrètement.',
+  'Dernier croissant':'🌘 Dernier croissant : phase de repos avant un nouveau cycle lunaire.',
+ };
+ return notes[moonName]||'';
+}
+
+/* Portails énergétiques : dates à chiffres répétés (8/8, 11/11...) et équinoxes/solstices —
+   une note bonus, jamais déterminante à elle seule. */
+function getEnergyPortalNote(date){
+ const day=date.getDate(),month=date.getMonth()+1;
+ if(day===month&&day>=1&&day<=12)return `✨ Portail énergétique du ${day}/${month} : une journée propice à poser une intention claire.`;
+ const md=month+'-'+day;
+ if(md==='3-20'||md==='3-21')return '✨ Équinoxe de printemps : un point d\'équilibre entre repos et élan, à observer sans forcer.';
+ if(md==='6-20'||md==='6-21')return '✨ Solstice d\'été : le pic de lumière de l\'année, une énergie naturellement plus haute.';
+ if(md==='9-22'||md==='9-23')return '✨ Équinoxe d\'automne : un point d\'équilibre, bon moment pour ralentir en douceur.';
+ if(md==='12-21'||md==='12-22')return '✨ Solstice d\'hiver : le point le plus bas de lumière, une invitation naturelle au repos.';
+ return '';
 }
 
 /* ═══════ PHASE DE LUNE ═══════ */
@@ -4839,7 +5432,7 @@ function renderFoodQuickPicks(){
  wrap.innerHTML=HOLISTICA_FOODS_QUICK.map(n=>{
  const f=HOLISTICA_FOODS.find(x=>x.n===n);
  if(!f)return'';
- return `<button class="food-quick-chip" onclick="selectHolisticaFood('${f.n.replace(/'/g,"\\'")}')">${f.e} ${f.n}</button>`;
+ return `<button class="food-quick-chip" onclick="selectHolisticaFood('${f.n.replace(/'/g,"\\'")}')">${f.n}</button>`;
  }).join('');
 }
 function selectHolisticaFood(name){
@@ -4871,7 +5464,7 @@ function onFoodSearchInput(){
  if(localMatches.length){
  document.getElementById('offSearchResults').innerHTML=localMatches.map(f=>
  `<div class="off-result" onclick="selectHolisticaFood('${f.n.replace(/'/g,"\\'")}')">
- <div class="off-result-n">${f.e} ${f.n}</div>
+ <div class="off-result-n">${f.n}</div>
  <div class="off-result-k">${f.cal} kcal /100g</div>
  </div>`
  ).join('');
@@ -4888,7 +5481,7 @@ async function searchOpenFoodFacts(){
  if(localMatches.length){
  document.getElementById('offSearchResults').innerHTML=localMatches.map(f=>
  `<div class="off-result" onclick="selectHolisticaFood('${f.n.replace(/'/g,"\\'")}')">
- <div class="off-result-n">${f.e} ${f.n}</div>
+ <div class="off-result-n">${f.n}</div>
  <div class="off-result-k">${f.cal} kcal /100g</div>
  </div>`
  ).join('')+`<div class="off-loading" style="cursor:pointer;text-decoration:underline;" onclick="searchOpenFoodFactsForce()">Tu cherches un produit de marque précis ? Chercher aussi dans Open Food Facts →</div>`;
@@ -4979,7 +5572,7 @@ async function handleFoodPhoto(event){
 
  if(!res.ok||data.error){
  toast(data.error==='no_food_detected'
- ?'Aucun aliment reconnu sur cette photo — entre les valeurs toi-même'
+ ?'Aucun aliment reconnu sur cette photo, entre les valeurs toi-même'
  :'Analyse indisponible, entre les valeurs toi-même');
  switchDietTab('Journal');
  return;
@@ -5057,7 +5650,7 @@ function renderFoodJournal(){
  <div class="food-item-body"><div class="food-item-n">${e.name}</div><div class="food-item-m">${e.cal} kcal · P${e.p}g G${e.g}g L${e.l}g</div></div>
  <button class="food-item-del" onclick="removeFoodEntry('${e.ts}')">✕</button>
  </div>`).join('')
- : `<div class="food-empty">Rien d'ajouté aujourd'hui — utilise les options ci-dessous pour commencer ton journal</div>`;
+ : `<div class="food-empty">Rien d'ajouté aujourd'hui, utilise les options ci-dessous pour commencer ton journal</div>`;
 
  wrap.innerHTML=`
  <div class="sec" style="padding-top:16px;"><h2>Ton <em>journal</em> quotidien</h2></div>

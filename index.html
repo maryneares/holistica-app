@@ -707,12 +707,18 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .rp-progress{position:absolute;top:0;left:0;right:0;height:4px;background:rgba(255,255,255,0.25);z-index:5;}
 .rp-progress-fill{height:100%;background:var(--purple-m);border-radius:0 3px 3px 0;transition:width .4s ease;}
 .rp-home{position:absolute;top:20px;left:16px;z-index:5;width:38px;height:38px;border-radius:50%;background:rgba(0,0,0,0.45);backdrop-filter:blur(6px);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;}
-.rp-title{position:absolute;top:22px;left:66px;right:16px;z-index:5;color:white;font-family:'League Spartan',sans-serif;font-weight:800;font-size:19px;text-shadow:0 2px 8px rgba(0,0,0,0.5);}
+.rp-title{position:absolute;top:22px;left:66px;right:80px;z-index:5;color:var(--peach);font-family:'League Spartan',sans-serif;font-weight:800;font-size:19px;text-shadow:0 2px 8px rgba(0,0,0,0.5);}
+.rp-duree-badge{position:absolute;top:20px;right:16px;z-index:5;display:flex;align-items:center;gap:5px;background:rgba(0,0,0,0.4);backdrop-filter:blur(6px);border-radius:50px;padding:6px 12px;color:white;font-size:13px;font-weight:700;font-family:'League Spartan',sans-serif;}
+.rp-edge-gradient-top{position:absolute;top:0;left:0;right:0;height:140px;background:linear-gradient(to bottom,rgba(255,255,255,0.35),transparent);z-index:3;pointer-events:none;}
+.rp-edge-gradient-bottom{position:absolute;bottom:0;left:0;right:0;height:160px;background:linear-gradient(to top,rgba(255,255,255,0.28),transparent);z-index:3;pointer-events:none;}
 .rp-stage{position:absolute;inset:0;overflow:hidden;}
 .rp-clip{position:absolute;inset:0;width:100%;height:100%;transition:transform .5s cubic-bezier(.22,1,.36,1);}
 .rp-clip iframe{width:100%;height:100%;border:0;object-fit:cover;}
 .rp-clip.slide-out{transform:translateY(-100%);}
 .rp-clip-next{transform:translateY(100%);}
+.rp-nav-col{position:absolute;right:14px;bottom:110px;z-index:8;display:flex;flex-direction:column;gap:14px;}
+.rp-nav-btn{width:46px;height:46px;border-radius:50%;background:rgba(0,0,0,0.45);backdrop-filter:blur(6px);border:1.5px solid rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.rp-nav-btn-next{background:var(--purple-m);border-color:var(--purple-m);}
 
 /* Écran de confirmation de fin / abandon, dans l'esprit de la capture de référence */
 .rp-exit-confirm{position:absolute;inset:0;background:linear-gradient(160deg,#6B4E8E,#8E5B7A);z-index:10;display:none;flex-direction:column;align-items:center;justify-content:center;padding:32px 28px;text-align:center;}
@@ -723,6 +729,17 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .rp-confirm-msg{color:rgba(255,255,255,0.92);font-size:16px;line-height:26px;margin-bottom:32px;max-width:320px;}
 .rp-confirm-btn-main{background:var(--peach);color:#2A1E1E;border:none;border-radius:50px;padding:16px 32px;font-family:'League Spartan',sans-serif;font-weight:800;font-size:17px;cursor:pointer;width:100%;max-width:320px;margin-bottom:14px;}
 .rp-confirm-btn-ghost{background:transparent;color:rgba(255,255,255,0.85);border:none;font-size:14.5px;text-decoration:underline;cursor:pointer;padding:8px;}
+
+/* Diapositive d'intro de la routine : fond violet Holistica, texte blanc/orange */
+.rp-intro{position:absolute;inset:0;background:var(--grad-h,linear-gradient(160deg,#6B4E9E,#8E5BAE));display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 32px 40px;text-align:center;overflow-y:auto;}
+.rp-intro-titre{font-family:'League Spartan',sans-serif;font-weight:800;font-size:30px;color:white;margin-bottom:8px;}
+.rp-intro-theme{color:var(--peach);font-size:17px;font-weight:700;margin-bottom:6px;}
+.rp-intro-duree{color:rgba(255,255,255,0.8);font-size:14px;margin-bottom:28px;}
+.rp-intro-list{width:100%;max-width:320px;display:flex;flex-direction:column;gap:10px;margin-bottom:36px;}
+.rp-intro-item{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.12);border-radius:12px;padding:12px 16px;color:white;font-size:14.5px;font-weight:600;text-align:left;}
+.rp-intro-num{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--peach);color:#2A1E1E;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+.rp-intro-cta{color:white;font-size:14px;font-weight:700;animation:rpBounce 1.6s ease-in-out infinite;}
+@keyframes rpBounce{0%,100%{transform:translateY(0);opacity:.7;}50%{transform:translateY(-6px);opacity:1;}}
 .vd-player iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
 .vd-title{font-family:'League Spartan',sans-serif;font-size:22px;font-weight:800;color:var(--ink);padding:16px 20px 0;line-height:1.45;}
 .vd-stats{background:var(--lav-pale);border-radius:18px 18px 0 0;margin-top:12px;padding:14px;}
@@ -976,6 +993,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
 <!-- ═══ MOUVEMENT ═══ -->
 <div id="mouvement" class="screen">
+<div class="scroll">
 <div class="mv-top">
 <div class="blob b1"></div><div class="blob b2"></div>
 <div class="mv-h1">Tes séances <em>bien-être</em></div>
@@ -987,7 +1005,6 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="wk-cal-row" id="wkCalRow"></div>
 <div class="wk-today-card" id="wkTodayCard"></div>
 </div>
-<div class="scroll">
 <div class="sec" style="padding-top:20px;"><h2>Tes <em>routines</em></h2><div class="sec-sub">Assemblées pour toi à partir de mouvements courts</div></div>
 <div class="routines-row" id="routinesWrap"></div>
 <div class="sec" style="padding-top:20px;"><h2>Tes <em>programmes</em></h2><div class="sec-sub">Une ligne directrice claire, séance après séance</div></div>
@@ -1550,8 +1567,22 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 <button class="rp-home" onclick="attemptExitRoutine()">
 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
 </button>
+<div class="rp-edge-gradient-top"></div>
+<div class="rp-edge-gradient-bottom"></div>
 <div class="rp-title" id="rpTitle"></div>
+<div class="rp-duree-badge" id="rpDureeBadge" style="display:none;">
+<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+<span id="rpDureeTxt"></span>
+</div>
 <div class="rp-stage" id="rpStage"></div>
+<div class="rp-nav-col">
+<button class="rp-nav-btn" id="rpPrevBtn" onclick="goToPreviousClip()">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+</button>
+<button class="rp-nav-btn rp-nav-btn-next" id="rpNextBtn" onclick="advanceRoutineManually()">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+</button>
+</div>
 <div class="rp-exit-confirm" id="rpExitConfirm">
 <div class="rp-confirm-title" id="rpConfirmTitle">Fin de la séance</div>
 <div class="rp-confirm-ring">
@@ -3703,31 +3734,37 @@ async function renderRoutinesSection(){
  }).join('');
 }
 
-/* Lecteur séquentiel plein écran : enchaîne automatiquement les clips d'une routine, avec un
-   effet de défilement vers le bas (façon Reels/TikTok) à chaque passage au clip suivant. */
+/* Lecteur séquentiel plein écran : diapositive d'intro (thème, durée, sommaire des mouvements) suivie
+   des clips vidéo, qui s'enchaînent automatiquement après 1 min ou au balayage manuel vers le haut,
+   avec un effet de défilement vers le bas façon Reels/TikTok à chaque changement. */
 let routineQueue=[];
-let routineIndex=0;
+let routineIndex=-1; // -1 = diapositive d'intro, 0..N-1 = clips
+let currentRoutineMeta=null;
 const BUNNY_LIBRARY_ID='730425';
 async function playRoutine(clipIds,routineTypeId){
  const clips=await fetchMovementClips();
  routineQueue=clipIds.map(id=>clips.find(c=>c.id===id)).filter(Boolean);
- routineIndex=0;
+ routineIndex=-1;
  currentRoutineTypeId=routineTypeId||null;
+ currentRoutineMeta=ROUTINE_TYPES.find(r=>r.id===routineTypeId)||null;
  if(!routineQueue.length)return;
  document.getElementById('routinePlayer').classList.add('open');
  setupRoutineSwipe();
- openRoutineClip(false);
+ showIntroSlide(false);
 }
 let currentRoutineTypeId=null;
 function closeRoutinePlayer(){
+ clearRoutineAutoTimer();
  document.getElementById('routinePlayer').classList.remove('open');
  document.getElementById('rpExitConfirm').classList.remove('open');
  document.getElementById('rpStage').innerHTML='';
- routineQueue=[];routineIndex=0;
+ document.getElementById('rpTitle').textContent='';
+ document.getElementById('rpProgressFill').style.width='0%';
+ routineQueue=[];routineIndex=-1;
 }
 const RP_RING_CIRC=553; // 2·π·88, le rayon du cercle SVG
 function showRoutineEndScreen(isNatural){
- const pct=routineQueue.length?Math.round(((isNatural?routineQueue.length:routineIndex)/routineQueue.length)*100):0;
+ const pct=routineQueue.length?Math.round(((isNatural?routineQueue.length:Math.max(routineIndex,0))/routineQueue.length)*100):0;
  document.getElementById('rpConfirmPct').textContent=pct+'%';
  document.getElementById('rpConfirmRing').style.strokeDashoffset=Math.round(RP_RING_CIRC*(1-pct/100));
  let msg,title,mainLabel;
@@ -3783,12 +3820,24 @@ function bunnyIframeHtml(clip){
  return `<iframe src="https://iframe.mediadelivery.net/embed/${BUNNY_LIBRARY_ID}/${clip.yt_id}?autoplay=true&loop=false&controls=false" loading="lazy" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;" allowfullscreen="true"></iframe>`;
 }
 function advanceRoutineManually(){
+ clearRoutineAutoTimer();
+ if(routineIndex===-1){ startFirstClip(true); return; }
  if(routineIndex<routineQueue.length-1){
  routineIndex++;
  openRoutineClip(true);
  }else{
  showRoutineEndScreen(true);
  }
+}
+function goToPreviousClip(){
+ clearRoutineAutoTimer();
+ if(routineIndex<=0){ showIntroSlide(true); return; }
+ routineIndex--;
+ openRoutineClip(true);
+}
+let _rpAutoTimer=null;
+function clearRoutineAutoTimer(){
+ if(_rpAutoTimer){ clearTimeout(_rpAutoTimer); _rpAutoTimer=null; }
 }
 let _rpTouchStartY=null;
 function setupRoutineSwipe(){
@@ -3798,32 +3847,69 @@ function setupRoutineSwipe(){
  if(_rpTouchStartY===null)return;
  const deltaY=_rpTouchStartY-e.changedTouches[0].clientY;
  _rpTouchStartY=null;
- if(deltaY>50)advanceRoutineManually(); // doigt qui remonte = clip suivant (comme un scroll vers le bas du contenu)
+ if(deltaY>50)advanceRoutineManually(); // doigt qui remonte = suivant
+ else if(deltaY<-50)goToPreviousClip(); // doigt qui descend = précédent
  };
 }
+function appendStageSlide(html,animate){
+ const stage=document.getElementById('rpStage');
+ const el=document.createElement('div');
+ el.className='rp-clip'+(animate?' rp-clip-next':'');
+ el.innerHTML=html;
+ stage.appendChild(el);
+ if(animate){
+ el.getBoundingClientRect();
+ requestAnimationFrame(()=>{ el.style.transform='translateY(0)'; });
+ }
+ const oldEl=animate?stage.children[0]:null;
+ if(oldEl && oldEl!==el)oldEl.classList.add('slide-out');
+ setTimeout(()=>{ if(oldEl && oldEl!==el)oldEl.remove(); },550);
+}
+function showIntroSlide(animate){
+ clearRoutineAutoTimer();
+ routineIndex=-1;
+ const totalMin=Math.round(routineQueue.reduce((s,c)=>s+c.duree_sec,0)/60);
+ document.getElementById('rpTitle').textContent='';
+ document.getElementById('rpDureeBadge').style.display='none';
+ document.getElementById('rpProgressFill').style.width='0%';
+ document.getElementById('rpPrevBtn').style.visibility='hidden';
+ const titre=currentRoutineMeta?currentRoutineMeta.titre:'Ta routine';
+ const theme=currentRoutineMeta?currentRoutineMeta.sous:'';
+ const sommaire=routineQueue.map((c,i)=>`<div class="rp-intro-item"><span class="rp-intro-num">${i+1}</span>${c.nom}</div>`).join('');
+ const html=`<div class="rp-intro" onclick="advanceRoutineManually()">
+ <div class="rp-intro-titre">${titre}</div>
+ <div class="rp-intro-theme">${theme}</div>
+ <div class="rp-intro-duree">${totalMin} min · ${routineQueue.length} mouvements</div>
+ <div class="rp-intro-list">${sommaire}</div>
+ <div class="rp-intro-cta">Balaie vers le haut ou touche l'écran pour commencer ↑</div>
+ </div>`;
+ appendStageSlide(html,animate);
+}
+function startFirstClip(animate){
+ routineIndex=0;
+ openRoutineClip(animate);
+}
 function openRoutineClip(animate){
+ clearRoutineAutoTimer();
  const clip=routineQueue[routineIndex];
  if(!clip)return;
  document.getElementById('rpTitle').textContent=clip.nom;
+ document.getElementById('rpDureeBadge').style.display='flex';
+ const dureeMin=Math.round(clip.duree_sec/60);
+ document.getElementById('rpDureeTxt').textContent=(dureeMin<1?'< 1':dureeMin)+' min';
  document.getElementById('rpProgressFill').style.width=Math.round(((routineIndex+1)/routineQueue.length)*100)+'%';
- const stage=document.getElementById('rpStage');
- const newClipEl=document.createElement('div');
- newClipEl.className='rp-clip'+(animate?' rp-clip-next':'');
- newClipEl.innerHTML=bunnyIframeHtml(clip);
- stage.appendChild(newClipEl);
- if(animate){
- // force le navigateur à prendre en compte la position de départ avant d'animer vers le centre
- newClipEl.getBoundingClientRect();
- requestAnimationFrame(()=>{ newClipEl.style.transform='translateY(0)'; });
- }
- const oldClipEl=animate?stage.children[0]:null;
- if(oldClipEl && oldClipEl!==newClipEl)oldClipEl.classList.add('slide-out');
- setTimeout(()=>{ if(oldClipEl && oldClipEl!==newClipEl)oldClipEl.remove(); },550);
- _bunnyEndedCallback=()=>{
+ document.getElementById('rpPrevBtn').style.visibility='visible';
+ appendStageSlide(bunnyIframeHtml(clip),animate);
+ const advance=()=>{
+ clearRoutineAutoTimer();
  routineIndex++;
  if(routineIndex<routineQueue.length)openRoutineClip(true);
  else showRoutineEndScreen(true);
  };
+ _bunnyEndedCallback=advance;
+ // Filet de sécurité : si le message "fin de vidéo" de Bunny ne remonte pas (ça peut arriver selon
+ // le navigateur), on avance quand même automatiquement en se basant sur la durée déclarée du clip.
+ _rpAutoTimer=setTimeout(advance,(clip.duree_sec+1)*1000);
 }
 
 function renderMvCalendar(){

@@ -420,6 +420,11 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .diet-info-row{font-size:14.5px;color:var(--ink-m);line-height:1.5;margin-bottom:8px;}
 .diet-info-row b{color:var(--ink);}
 .plan-option-t{font-size:15.5px;font-weight:800;color:var(--ink);margin:14px 0 4px;}
+.plan-dish-name{font-size:14.5px;font-weight:700;color:var(--purple-m);margin-bottom:6px;}
+.plan-ing-list{margin:0 0 8px;padding-left:18px;list-style:disc;}
+.plan-ing-list li{font-size:13.5px;color:var(--ink-m);line-height:22px;}
+.plan-spices{font-size:12.5px;color:var(--ink-l);font-style:italic;margin-bottom:4px;}
+.plan-option-divider{height:1px;background:var(--border);margin:10px 0;}
 .plan-option-t:first-child{margin-top:0;}
 .plan-label{font-size:15px;font-weight:700;color:var(--purple-m);margin:8px 0 3px;}
 .plan-label:first-child{margin-top:0;}
@@ -2443,56 +2448,56 @@ async function renderDietPlan(){
  });
  return;
  }
- const plan=generateMealPlan();
  const doshaKey=userProfile.dosha||'vata';
  const doshaLabel=doshaKey.split('-').map(p=>p.charAt(0).toUpperCase()+p.slice(1)).join('-');
  const dietLabel={flexitarien:'Flexitarienne',vegetarien:'Végétarienne',vegan:'Végane'}[userProfile.dietType]||'Flexitarienne';
- const totalKcal=plan.reduce((s,m)=>s+m.kcal,0);
- const totalP=plan.reduce((s,m)=>s+m.protein,0);
- const totalC=plan.reduce((s,m)=>s+m.carbs,0);
- const totalF=plan.reduce((s,m)=>s+m.fat,0);
- window._dietTargets={kcal:totalKcal,p:totalP,g:totalC,l:totalF};
- const week=getISOWeek(new Date());
- const planMois=await getPlanAlimentaireMoisCourant(doshaKey);
- const restantes=renderPlanSectionsRestantesHtml(planMois);
+ const targets=computeNutritionTargets();
+ window._dietTargets={kcal:targets.kcal,p:targets.proteinG,g:targets.carbG,l:targets.fatG};
 
- /* ═══ Onglet 1, Plan alimentaire (petit-déj / déjeuner / dîner / collation uniquement) ═══ */
+ const monthlyPlan=await fetchMonthlyMealPlan(doshaKey);
+ const restantes=renderPlanSectionsRestantesHtml(await getPlanAlimentaireMoisCourant(doshaKey));
+
+ /* ═══ Onglet 1, Plan alimentaire (petit-déj / déjeuner / collation / dîner) ═══ */
+ const MEAL_DEFS=[
+ {id:'pdj',labelHtml:'Petit-<em>déjeuner</em>',frac:0.25},
+ {id:'midi',labelHtml:'Ton <em>déjeuner</em>',frac:0.35},
+ {id:'collation',labelHtml:'Ta <em>collation</em>',frac:0.15},
+ {id:'diner',labelHtml:'Ton <em>dîner</em>',frac:0.25},
+ ];
  let planHtml='';
- plan.forEach(meal=>{
- const ideas=pickMealIdeas(meal.id,doshaKey,userProfile.dietType||'flexitarien',week);
- const planSection=findPlanSectionForMeal(planMois,meal.id);
+ MEAL_DEFS.forEach(meal=>{
+ const options=monthlyPlan[meal.id]||[];
+ const targetKcal=Math.round(targets.kcal*meal.frac);
+ const targetP=Math.round(targets.proteinG*meal.frac);
+ const targetC=Math.round(targets.carbG*meal.frac);
+ const targetF=Math.round(targets.fatG*meal.frac);
  let bodyHtml;
- if(planSection){
- bodyHtml=formatPlanSectionHtml(planSection.content);
- } else if(ideas.length){
- bodyHtml=ideas.map(idea=>`<div class="diet-meal-idea">
- ${idea.image?`<img class="diet-meal-idea-img" src="${idea.image}" onerror="this.style.display='none'">`:''}
- <div class="diet-meal-idea-body"><div class="diet-meal-idea-t">${idea.title}</div><div class="diet-meal-idea-s">${idea.ingredients||''}</div></div>
- </div>`).join('');
- } else {
+ if(options.length){
+ bodyHtml=options.map((opt,i)=>{
+ const scaled=scaleOption(opt,targetP);
+ const ingHtml=scaled.ingredients.map(ing=>`<li>${ing}</li>`).join('');
+ return `<div class="plan-option-t">Option ${i+1}</div>
+ <div class="plan-dish-name">${opt.plat}</div>
+ <ul class="plan-ing-list">${ingHtml}</ul>
+ ${opt.epices?`<div class="plan-spices">Épices : ${opt.epices}</div>`:''}`;
+ }).join('<div class="plan-option-divider"></div>');
+ }else{
  bodyHtml=`<div class="diet-meal-empty">Aucune idée de repas ajoutée pour l'instant, reviens bientôt</div>`;
  }
  planHtml+=`<div class="sec" style="padding-top:4px;"><h2>${meal.labelHtml}</h2></div>
  <div class="diet-meal-card">
  <div class="diet-meal-head">
  <div class="diet-meal-macros">
- <span class="diet-macro-pill">${meal.kcal} kcal</span>
- <span class="diet-macro-pill">P ${meal.protein}g</span>
- <span class="diet-macro-pill">G ${meal.carbs}g</span>
- <span class="diet-macro-pill">L ${meal.fat}g</span>
+ <span class="diet-macro-pill">${targetKcal} kcal</span>
+ <span class="diet-macro-pill">P ${targetP}g</span>
+ <span class="diet-macro-pill">G ${targetC}g</span>
+ <span class="diet-macro-pill">L ${targetF}g</span>
  </div>
  </div>
  ${bodyHtml}
  </div>`;
  });
- const collationSection=planMois?.sections?.find(s=>/^collation\s*\(/i.test(s.title));
- if(collationSection){
- planHtml+=`<div class="sec" style="padding-top:4px;"><h2>Collation <em>en option</em></h2></div>
- <div class="diet-meal-card">
- ${formatPlanSectionHtml(collationSection.content)}
- </div>`;
- }
- planHtml+=`<div class="diet-week-note"> De nouvelles idées reviennent chaque mois</div>`;
+ planHtml+=`<div class="diet-week-note"> De nouvelles idées reviennent toutes les 2 semaines</div>`;
  planHtml+=`<div class="diet-info-card" style="margin-top:14px;">
  <div class="diet-info-t">D'où viennent tes macronutriments ?</div>
  <table class="plan-table">${MACRO_SOURCES_INFO.map(m=>`<tr><td>${m.t}</td><td>${m.s}</td></tr>`).join('')}</table>
@@ -2502,6 +2507,12 @@ async function renderDietPlan(){
  <div class="diet-summary-card" style="margin-bottom:4px;">
  <div class="diet-summary-t">Profil ${doshaLabel} · ${dietLabel} · Sans gluten · Sans lait de vache</div>
  <div class="diet-summary-obj">Perte de masse grasse · Maintien musculaire · Soutien hormonal · Anti-inflammatoire</div>
+ <div class="diet-summary-row">
+ <div class="diet-summary-item"><div class="diet-summary-v">${targets.kcal}</div><div class="diet-summary-l">kcal/jour</div></div>
+ <div class="diet-summary-item"><div class="diet-summary-v">${targets.proteinG}g</div><div class="diet-summary-l">Protéines</div></div>
+ <div class="diet-summary-item"><div class="diet-summary-v">${targets.carbG}g</div><div class="diet-summary-l">Glucides</div></div>
+ <div class="diet-summary-item"><div class="diet-summary-v">${targets.fatG}g</div><div class="diet-summary-l">Lipides</div></div>
+ </div>
  </div>`+planHtml;
 
  /* ═══ Onglet 2, Ton journal quotidien (macros + ajouter/scanner + suivi) ═══ */
@@ -2517,6 +2528,57 @@ async function renderDietPlan(){
  document.getElementById('dietPanelTips').innerHTML=`<div class="sec" style="padding-top:16px;"><h2>Conseils <em>santé et ayurvédiques</em></h2></div>`+
  (restantes.tips||'<div class="diet-meal-empty">Rien à afficher pour ce mois pour l\'instant.</div>')+
  `<div style="height:24px;"></div>`;
+}
+
+/* ═══════ PLAN ALIMENTAIRE MENSUEL (table monthly_meal_plans, change toutes les 2 semaines) ═══════ */
+function currentMealPlanPeriod(){
+ const d=new Date();
+ return {mois:d.getMonth()+1,quinzaine:d.getDate()<=15?1:2};
+}
+let _monthlyPlanCache={};
+async function fetchMonthlyMealPlan(doshaKey){
+ const primaryDosha=(doshaKey||'vata').split('-')[0];
+ const {mois,quinzaine}=currentMealPlanPeriod();
+ const cacheKey=primaryDosha+'-'+mois+'-'+quinzaine;
+ if(_monthlyPlanCache[cacheKey])return _monthlyPlanCache[cacheKey];
+ async function tryFetch(m,q){
+ try{
+ const {data,error}=await sb.from('monthly_meal_plans').select('*').eq('dosha',primaryDosha).eq('mois',m).eq('quinzaine',q);
+ return (!error&&data&&data.length)?data:null;
+ }catch(e){return null;}
+ }
+ // Repli en cascade si la combinaison exacte n'existe pas encore : l'autre quinzaine du même mois,
+ // puis le mois précédent — pour ne jamais laisser un écran vide.
+ let rows=await tryFetch(mois,quinzaine);
+ if(!rows)rows=await tryFetch(mois,quinzaine===1?2:1);
+ if(!rows){
+ const moisPrec=mois===1?12:mois-1;
+ rows=await tryFetch(moisPrec,1)||await tryFetch(moisPrec,2);
+ }
+ if(!rows)rows=[];
+ const grouped={};
+ rows.forEach(r=>{ (grouped[r.meal_type]=grouped[r.meal_type]||[]).push(r); });
+ Object.values(grouped).forEach(arr=>arr.sort((a,b)=>a.option_num-b.option_num));
+ _monthlyPlanCache[cacheKey]=grouped;
+ return grouped;
+}
+// Ajuste les quantités chiffrées (grammes/ml) d'une ligne d'ingrédient selon un ratio, sans toucher
+// aux quantités non chiffrées ("Quelques amandes", "½ pomme"...) qui restent telles quelles.
+function scaleIngredientLine(line,ratio){
+ const m=line.match(/^(\d+(?:[.,]\d+)?)\s*(g|ml|kg|l)\b(.*)$/i);
+ if(!m)return line;
+ let qty=parseFloat(m[1].replace(',','.'))*ratio;
+ qty=Math.max(5,Math.round(qty/5)*5);
+ return `${qty} ${m[2]}${m[3]}`;
+}
+function scaleOption(option,targetProteinG){
+ let baseProtein=30;
+ if(option.protein_range){
+ const m=option.protein_range.match(/(\d+)\s*à\s*(\d+)/);
+ if(m)baseProtein=(parseInt(m[1])+parseInt(m[2]))/2;
+ }
+ const ratio=Math.max(0.6,Math.min(1.6,targetProteinG/baseProtein));
+ return {...option,ingredients:(option.ingredients||[]).map(ing=>scaleIngredientLine(ing,ratio))};
 }
 
 function renderAddFoodPanelHtml(){
@@ -2581,24 +2643,25 @@ function go(id){
 }
 
 const ACTIVITY_MULTIPLIER={'sédentaire':1.2,'légère':1.375,'modérée':1.55,'active':1.725,'très active':1.9};
-function calcNutrition(){
+function computeNutritionTargets(){
  const bmr=Math.round(447.593+(9.247*userProfile.weight)+(3.098*userProfile.height)-(4.33*userProfile.age));
  const mult=ACTIVITY_MULTIPLIER[userProfile.activity]||1.375;
- dailyCalGoal=Math.round(bmr*mult);
-
- // Répartition macro personnalisée (protéines élevées selon poids+activité, lipides ~30% pour l'équilibre hormonal, glucides = reste)
+ const dailyCalGoal=Math.round(bmr*mult);
  const proteinPerKg={'sédentaire':1.6,'légère':1.7,'modérée':1.8,'active':1.9,'très active':2.0}[userProfile.activity]||1.7;
  const proteinG=Math.round(userProfile.weight*proteinPerKg);
  const fatG=Math.round((dailyCalGoal*0.30)/9);
  const carbG=Math.max(0,Math.round((dailyCalGoal-(proteinG*4)-(fatG*9))/4));
-
- if(document.getElementById('pfMeta'))document.getElementById('pfMeta').innerHTML=bmr.toLocaleString('fr-FR')+' <span class="meta-unit">kcal/jour</span>';
- if(document.getElementById('dBmr'))document.getElementById('dBmr').innerHTML=bmr.toLocaleString('fr-FR')+' <span class="meta-unit">kcal/jour</span>';
- if(document.getElementById('dCalGoal'))document.getElementById('dCalGoal').innerHTML=dailyCalGoal.toLocaleString('fr-FR')+' <span class="meta-unit">kcal/jour</span>';
- if(document.getElementById('dMacroP'))document.getElementById('dMacroP').textContent=proteinG+'g';
- if(document.getElementById('dMacroG'))document.getElementById('dMacroG').textContent=carbG+'g';
- if(document.getElementById('dMacroL'))document.getElementById('dMacroL').textContent=fatG+'g';
-
+ return {bmr,kcal:dailyCalGoal,proteinG,carbG,fatG};
+}
+function calcNutrition(){
+ const t=computeNutritionTargets();
+ dailyCalGoal=t.kcal;
+ if(document.getElementById('pfMeta'))document.getElementById('pfMeta').innerHTML=t.bmr.toLocaleString('fr-FR')+' <span class="meta-unit">kcal/jour</span>';
+ if(document.getElementById('dBmr'))document.getElementById('dBmr').innerHTML=t.bmr.toLocaleString('fr-FR')+' <span class="meta-unit">kcal/jour</span>';
+ if(document.getElementById('dCalGoal'))document.getElementById('dCalGoal').innerHTML=t.kcal.toLocaleString('fr-FR')+' <span class="meta-unit">kcal/jour</span>';
+ if(document.getElementById('dMacroP'))document.getElementById('dMacroP').textContent=t.proteinG+'g';
+ if(document.getElementById('dMacroG'))document.getElementById('dMacroG').textContent=t.carbG+'g';
+ if(document.getElementById('dMacroL'))document.getElementById('dMacroL').textContent=t.fatG+'g';
  saveProfile();
 }
 

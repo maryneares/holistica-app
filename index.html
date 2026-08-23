@@ -396,13 +396,13 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .diet-guide-item{background:white;border-radius:16px;padding:16px 18px;box-shadow:var(--sh);border:1px solid var(--border);}
 .diet-guide-t{font-family:'League Spartan',sans-serif;font-weight:800;font-size:15.5px;color:var(--purple-m);margin-bottom:6px;}
 .diet-guide-s{font-size:13.5px;color:var(--ink-m);line-height:22px;}
-.diet-summary-card{margin:0 20px 20px;background:white;border-radius:18px;padding:18px 20px;box-shadow:var(--sh);border:1px solid var(--border);}
-.diet-summary-t{font-size:14.5px;color:var(--ink-m);font-weight:600;margin-bottom:14px;}
-.diet-summary-obj{font-size:14.5px;color:var(--purple-m);font-weight:700;margin-bottom:14px;}
-.diet-summary-row{display:flex;justify-content:space-between;}
+.diet-summary-card{margin:0 20px 20px;background:white;border-radius:18px;padding:20px 20px 18px;box-shadow:var(--sh);border:1px solid var(--border);}
+.diet-summary-t{font-size:14.5px;color:var(--ink-m);font-weight:600;margin-bottom:10px;}
+.diet-summary-obj{font-size:13.5px;color:var(--ink-l);margin-bottom:0;}
+.diet-summary-row{display:flex;justify-content:space-between;margin-top:16px;padding-top:16px;border-top:1px solid var(--border);}
 .diet-summary-item{text-align:center;flex:1;}
-.diet-summary-v{font-family:'League Spartan',sans-serif;font-size:21px;font-weight:800;background:var(--grad-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--purple-m);}
-.diet-summary-l{font-size:12.5px;color:var(--ink-l);margin-top:2px;font-weight:600;text-transform:uppercase;letter-spacing:.3px;}
+.diet-summary-v{font-family:'League Spartan',sans-serif;font-size:20px;font-weight:800;color:var(--ink);}
+.diet-summary-l{font-size:12px;color:var(--ink-l);margin-top:3px;font-weight:600;}
 .diet-meal-card{margin:0 20px 22px;background:white;border-radius:16px;padding:18px;box-shadow:var(--sh);border:1px solid var(--border);}
 .diet-meal-head{margin-bottom:12px;}
 .diet-meal-name{font-family:'League Spartan',sans-serif;font-size:18px;font-weight:800;color:var(--ink);margin-bottom:8px;}
@@ -712,7 +712,10 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .rp-progress{position:absolute;top:0;left:0;right:0;height:4px;background:rgba(255,255,255,0.25);z-index:5;}
 .rp-progress-fill{height:100%;background:var(--purple-m);border-radius:0 3px 3px 0;transition:width .4s ease;}
 .rp-home{position:absolute;top:20px;left:16px;z-index:5;width:38px;height:38px;border-radius:50%;background:rgba(0,0,0,0.45);backdrop-filter:blur(6px);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;}
-.rp-title{position:absolute;top:22px;left:66px;right:80px;z-index:5;color:var(--peach);font-family:'League Spartan',sans-serif;font-weight:800;font-size:19px;text-shadow:0 2px 8px rgba(0,0,0,0.5);}
+.rp-title{position:absolute;top:22px;left:66px;right:80px;z-index:5;color:white;font-family:'League Spartan',sans-serif;font-weight:800;font-size:19px;text-align:center;text-shadow:-1px -1px 0 var(--purple-m),1px -1px 0 var(--purple-m),-1px 1px 0 var(--purple-m),1px 1px 0 var(--purple-m),0 2px 10px rgba(0,0,0,0.35);}
+.rp-countdown{position:absolute;inset:0;z-index:15;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.55);}
+.rp-countdown.open{display:flex;}
+.rp-countdown-num{font-family:'League Spartan',sans-serif;font-weight:800;font-size:110px;color:white;text-shadow:-2px -2px 0 var(--purple-m),2px -2px 0 var(--purple-m),-2px 2px 0 var(--purple-m),2px 2px 0 var(--purple-m);}
 .rp-duree-badge{position:absolute;top:20px;right:16px;z-index:5;display:flex;align-items:center;gap:5px;background:rgba(0,0,0,0.4);backdrop-filter:blur(6px);border-radius:50px;padding:6px 12px;color:white;font-size:13px;font-weight:700;font-family:'League Spartan',sans-serif;}
 .rp-edge-gradient-top{position:absolute;top:0;left:0;right:0;height:140px;background:linear-gradient(to bottom,rgba(255,255,255,0.35),transparent);z-index:3;pointer-events:none;}
 .rp-edge-gradient-bottom{position:absolute;bottom:0;left:0;right:0;height:160px;background:linear-gradient(to top,rgba(255,255,255,0.28),transparent);z-index:3;pointer-events:none;}
@@ -741,7 +744,14 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .rp-intro-theme{color:var(--peach);font-size:17px;font-weight:700;margin-bottom:6px;}
 .rp-intro-duree{color:rgba(255,255,255,0.8);font-size:14px;margin-bottom:28px;}
 .rp-intro-list{width:100%;max-width:320px;display:flex;flex-direction:column;gap:10px;margin-bottom:36px;}
-.rp-intro-item{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.12);border-radius:12px;padding:12px 16px;color:white;font-size:14.5px;font-weight:600;text-align:left;}
+.rp-intro-item{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.12);border-radius:12px;padding:12px 16px;color:white;font-size:14.5px;font-weight:600;text-align:left;cursor:pointer;}
+.rp-intro-item:active{background:rgba(255,255,255,0.22);}
+.rp-desc-modal{position:absolute;inset:0;background:rgba(0,0,0,0.6);z-index:20;display:none;align-items:center;justify-content:center;padding:24px;}
+.rp-desc-modal.open{display:flex;}
+.rp-desc-card{background:white;border-radius:18px;padding:22px;max-height:70vh;overflow-y:auto;width:100%;}
+.rp-desc-title{font-family:'League Spartan',sans-serif;font-weight:800;font-size:18px;color:var(--purple-m);margin-bottom:10px;}
+.rp-desc-body{font-size:13.5px;color:var(--ink-m);line-height:22px;white-space:pre-line;margin-bottom:16px;}
+.rp-desc-close{width:100%;background:var(--purple-m);color:white;border:none;border-radius:50px;padding:12px;font-weight:700;font-family:'League Spartan',sans-serif;cursor:pointer;}
 .rp-intro-num{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--peach);color:#2A1E1E;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;}
 .rp-intro-cta{color:white;font-size:14px;font-weight:700;animation:rpBounce 1.6s ease-in-out infinite;}
 @keyframes rpBounce{0%,100%{transform:translateY(0);opacity:.7;}50%{transform:translateY(-6px);opacity:1;}}
@@ -1242,19 +1252,10 @@ document.addEventListener('DOMContentLoaded', function(){
 <option value="active">Active (sport 4-5x/semaine)</option>
 <option value="très active">Très active (sport quotidien intense)</option>
 </select></div>
-<div class="f-row-app"><label>Ton objectif principal</label>
-<select id="eiGoal" class="ob-input dt-input">
-<option value="bien-être">Bien-être général</option>
-<option value="perte de poids">Perte de poids</option>
-<option value="prise de masse">Prise de masse musculaire</option>
-<option value="maintien">Maintien de la forme</option>
-<option value="énergie">Plus d'énergie au quotidien</option>
-</select></div>
 <div class="f-row-app"><label>Régime alimentaire</label>
 <select id="eiDietType" class="ob-input dt-input">
-<option value="flexitarien">Flexitarienne (viande & poisson)</option>
-<option value="vegetarien">Végétarienne</option>
-<option value="vegan">Végane</option>
+<option value="flexitarien">Normal (viande & poisson)</option>
+<option value="vegetarien">Végétarien</option>
 </select></div>
 <div class="f-row-app"><label>Allergies ou intolérances</label><input type="text" id="eiAllergies" class="ob-input dt-input" placeholder="laisse vide si aucune"></div>
 <button class="btn-ob" style="margin-top:10px;" onclick="saveEditInfo()">Enregistrer</button>
@@ -1580,6 +1581,7 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 <span id="rpDureeTxt"></span>
 </div>
 <div class="rp-stage" id="rpStage"></div>
+<div class="rp-countdown" id="rpCountdown"><div class="rp-countdown-num" id="rpCountdownNum">3</div></div>
 <div class="rp-nav-col">
 <button class="rp-nav-btn" id="rpPrevBtn" onclick="goToPreviousClip()">
 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
@@ -1600,6 +1602,12 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 <div class="rp-confirm-msg" id="rpConfirmMsg"></div>
 <button class="rp-confirm-btn-main" id="rpConfirmMainBtn" onclick="confirmEndRoutine()">Terminer la séance</button>
 <button class="rp-confirm-btn-ghost" onclick="dismissExitConfirm()">Continuer la séance</button>
+</div>
+<div class="rp-exit-confirm" id="rpWarnModal" style="background:linear-gradient(160deg,#8E5B5B,#6B4E4E);">
+<div class="rp-confirm-title">Séance non comptabilisée</div>
+<div class="rp-confirm-msg">Tu as regardé <strong id="rpWarnPct">0%</strong> de la séance, en dessous des 60% nécessaires pour qu'elle compte dans tes points et badges. Continue un peu la séance, ou quitte sans qu'elle soit comptabilisée.</div>
+<button class="rp-confirm-btn-main" onclick="closeNotCountedWarning(false)">Reprendre la séance</button>
+<button class="rp-confirm-btn-ghost" onclick="closeNotCountedWarning(true)">Quitter sans valider</button>
 </div>
 </div>
 
@@ -2400,6 +2408,112 @@ function closeDietTab(){
  document.getElementById('dietBackBtn').style.display='none';
 }
 
+/* ═══ Aliments de saison + Conseils santé/ayurvédiques (tables monthly_seasonal_foods / monthly_diet_tips) ═══ */
+const SPICE_EFFECTS={
+ 'gingembre':"stimule la digestion et réchauffe le corps",
+ 'gingembre frais':"stimule la digestion et réchauffe le corps",
+ 'gingembre doux':"réchauffe en douceur sans irriter",
+ 'gingembre léger':"réchauffe en douceur sans irriter",
+ 'curcuma':"anti-inflammatoire, soutient le foie et la digestion",
+ 'curcuma doux':"anti-inflammatoire en douceur, adapté aux profils sensibles",
+ 'cumin':"facilite la digestion et réduit les ballonnements",
+ 'cumin doux':"facilite la digestion sans échauffer",
+ 'poivre noir':"active le feu digestif et améliore l'absorption des nutriments",
+ 'poivre blanc':"stimule la digestion plus en douceur que le poivre noir",
+ 'coriandre':"rafraîchit et apaise, utile en cas de chaleur interne",
+ 'coriandre fraîche':"rafraîchit et apaise le système digestif",
+ 'coriandre moulue':"rafraîchit et apaise le système digestif",
+ 'coriandre en poudre':"rafraîchit et apaise le système digestif",
+ 'fenugrec':"stimule la digestion et aide à réguler la glycémie",
+ 'moutarde':"réchauffe et stimule la circulation",
+ 'cannelle':"réchauffe, stabilise la glycémie et soutient la circulation",
+ 'cannelle de ceylan':"réchauffe en douceur et soutient la digestion",
+ 'cannelle douce':"réchauffe en douceur et soutient la digestion",
+ 'cardamome':"digestive et légèrement rafraîchissante, apaise l'estomac",
+ 'citron':"stimule la digestion et détoxifie en douceur",
+ 'fenouil':"apaise le système digestif et rafraîchit",
+ 'muscade':"calme le système nerveux et favorise le sommeil",
+ 'thym':"antiseptique naturel, soutient l'immunité",
+ 'romarin':"stimule la circulation et la concentration",
+ 'basilic':"apaise le mental et soutient la digestion",
+ 'persil':"diurétique doux, riche en vitamine C",
+ 'aneth':"facilite la digestion et réduit les gaz",
+ 'paprika':"réchauffe légèrement et stimule l'appétit",
+ 'paprika doux':"réchauffe légèrement sans irriter",
+ 'vanille':"apaise et adoucit, agréable pour les profils sensibles",
+ 'menthe':"rafraîchit et facilite la digestion",
+};
+function getSeasonName(mois){
+ if([12,1,2].includes(mois))return 'hiver';
+ if([3,4,5].includes(mois))return 'printemps';
+ if([6,7,8].includes(mois))return 'été';
+ return 'automne';
+}
+function buildSpiceDetailHtml(epicesRaw,doshaLabel,mois){
+ const season=getSeasonName(mois);
+ const spices=epicesRaw.split(/[•,]/).map(s=>s.trim()).filter(Boolean);
+ const items=spices.map(s=>{
+ const key=s.toLowerCase();
+ const effect=SPICE_EFFECTS[key];
+ return effect?`<li><strong>${s}</strong> : ${effect}</li>`:`<li>${s}</li>`;
+ }).join('');
+ return `<div class="plan-spices-detail" style="margin-top:10px;">
+ <div class="diet-info-t" style="margin-bottom:6px;">Effets des épices pour ton profil ${doshaLabel} en ${season}</div>
+ <ul class="plan-ing-list">${items}</ul>
+ </div>`;
+}
+
+async function fetchSeasonalAndTips(doshaKey){
+ const primaryDosha=(doshaKey||'vata').split('-')[0];
+ const doshaLabel=primaryDosha.charAt(0).toUpperCase()+primaryDosha.slice(1);
+ const dietTypeKey=userProfile.dietType==='vegan'?'vegetarien':(userProfile.dietType||'flexitarien');
+ const {mois,quinzaine}=currentMealPlanPeriod();
+ async function tryFetch(table,m,q){
+ try{
+ const {data,error}=await sb.from(table).select('*').eq('dosha',primaryDosha).eq('diet_type',dietTypeKey).eq('mois',m).eq('quinzaine',q);
+ return (!error&&data&&data.length)?data:null;
+ }catch(e){return null;}
+ }
+ async function fetchWithFallback(table){
+ let rows=await tryFetch(table,mois,quinzaine);
+ if(!rows)rows=await tryFetch(table,mois,quinzaine===1?2:1);
+ if(!rows){
+ const moisPrec=mois===1?12:mois-1;
+ rows=await tryFetch(table,moisPrec,1)||await tryFetch(table,moisPrec,2);
+ }
+ return rows||[];
+ }
+ const [foodsRows,tipsRows]=await Promise.all([fetchWithFallback('monthly_seasonal_foods'),fetchWithFallback('monthly_diet_tips')]);
+
+ // ═══ Aliments de saison ═══
+ let season='';
+ if(foodsRows.length){
+ const CATEGORY_LABELS={'Légumes':'Légumes','Fruits':'Fruits','Rotation protéique':'Protéines','Féculents':'Féculents','Féculents & légumineuses':'Féculents','Lipides':'Bonnes graisses','Bonnes graisses':'Bonnes graisses'};
+ const rows=foodsRows.map(r=>`<tr><td>${CATEGORY_LABELS[r.categorie]||r.categorie}</td><td>${r.items}</td></tr>`).join('');
+ season=`<div class="diet-info-card" style="margin-bottom:10px;">
+ <div class="diet-info-t">Les aliments de la quinzaine</div>
+ <table class="plan-table">${rows}</table>
+ </div>`;
+ }
+
+ // ═══ Conseils santé et ayurvédiques ═══
+ let tips=`<div class="diet-info-card" style="margin-bottom:10px;">
+ <div class="diet-info-t">Au réveil</div>
+ <div class="diet-guide-s">2 grands verres d'eau tiède au réveil, avant même le café ou le thé, pour relancer la digestion en douceur et hydrater le corps après la nuit.</div>
+ </div>`;
+ if(tipsRows.length){
+ const t=tipsRows[0];
+ const conseilsHtml=(t.conseils||[]).map(c=>`<li>${c}</li>`).join('');
+ tips+=`<div class="diet-info-card" style="margin-bottom:10px;">
+ <div class="diet-info-t">Conseils de la quinzaine</div>
+ <ul class="plan-ing-list">${conseilsHtml}</ul>
+ ${t.epices_dosha?buildSpiceDetailHtml(t.epices_dosha,doshaLabel,mois):''}
+ </div>`;
+ }
+ return {season,tips};
+}
+
+
 async function renderDietPlan(){
  const wrap=document.getElementById('dietScroll');
  if(!wrap)return;
@@ -2455,7 +2569,7 @@ async function renderDietPlan(){
  window._dietTargets={kcal:targets.kcal,p:targets.proteinG,g:targets.carbG,l:targets.fatG};
 
  const monthlyPlan=await fetchMonthlyMealPlan(doshaKey);
- const restantes=renderPlanSectionsRestantesHtml(await getPlanAlimentaireMoisCourant(doshaKey));
+ const restantes=await fetchSeasonalAndTips(doshaKey);
 
  /* ═══ Onglet 1, Plan alimentaire (petit-déj / déjeuner / collation / dîner) ═══ */
  const MEAL_DEFS=[
@@ -2538,12 +2652,14 @@ function currentMealPlanPeriod(){
 let _monthlyPlanCache={};
 async function fetchMonthlyMealPlan(doshaKey){
  const primaryDosha=(doshaKey||'vata').split('-')[0];
+ // Le régime végane n'a pas de contenu dédié : on utilise le contenu végétarien à la place.
+ const dietTypeKey=userProfile.dietType==='vegan'?'vegetarien':(userProfile.dietType||'flexitarien');
  const {mois,quinzaine}=currentMealPlanPeriod();
- const cacheKey=primaryDosha+'-'+mois+'-'+quinzaine;
+ const cacheKey=primaryDosha+'-'+dietTypeKey+'-'+mois+'-'+quinzaine;
  if(_monthlyPlanCache[cacheKey])return _monthlyPlanCache[cacheKey];
  async function tryFetch(m,q){
  try{
- const {data,error}=await sb.from('monthly_meal_plans').select('*').eq('dosha',primaryDosha).eq('mois',m).eq('quinzaine',q);
+ const {data,error}=await sb.from('monthly_meal_plans').select('*').eq('dosha',primaryDosha).eq('diet_type',dietTypeKey).eq('mois',m).eq('quinzaine',q);
  return (!error&&data&&data.length)?data:null;
  }catch(e){return null;}
  }
@@ -2646,12 +2762,21 @@ const ACTIVITY_MULTIPLIER={'sédentaire':1.2,'légère':1.375,'modérée':1.55,'
 function computeNutritionTargets(){
  const bmr=Math.round(447.593+(9.247*userProfile.weight)+(3.098*userProfile.height)-(4.33*userProfile.age));
  const mult=ACTIVITY_MULTIPLIER[userProfile.activity]||1.375;
- const dailyCalGoal=Math.round(bmr*mult);
- const proteinPerKg={'sédentaire':1.6,'légère':1.7,'modérée':1.8,'active':1.9,'très active':2.0}[userProfile.activity]||1.7;
+ const maintenanceCal=Math.round(bmr*mult);
+ // Formule unique, la même pour toutes les utilisatrices : perte de masse grasse globale, maintien
+ // de la masse musculaire, respect du cycle hormonal féminin.
+ // - Déficit calorique direct de 10% par rapport au maintien (c'est lui qui crée la perte de masse grasse)
+ // - Protéines : 2g par kg de poids de corps, réduit à 1,7g/kg au-delà de 80kg pour éviter des portions
+ //   démesurées (le besoin réel en protéines n'augmente pas linéairement à très haut poids)
+ // - Lipides : légers mais suffisants pour soutenir correctement le cycle hormonal féminin (30% des
+ //   calories cibles, jamais en dessous)
+ // - Glucides : le reste, en pesée crue/sèche pour les féculents
+ const dailyCalGoal=Math.round(maintenanceCal*0.90);
+ const proteinPerKg=userProfile.weight>=80?1.7:2.0;
  const proteinG=Math.round(userProfile.weight*proteinPerKg);
  const fatG=Math.round((dailyCalGoal*0.30)/9);
  const carbG=Math.max(0,Math.round((dailyCalGoal-(proteinG*4)-(fatG*9))/4));
- return {bmr,kcal:dailyCalGoal,proteinG,carbG,fatG};
+ return {bmr,maintenanceCal,kcal:dailyCalGoal,proteinG,carbG,fatG};
 }
 function calcNutrition(){
  const t=computeNutritionTargets();
@@ -2833,7 +2958,7 @@ const OB_STEPS=[
  {type:'choice',part:'Ton Profil',title:'As-tu tes menstruations ?',opts:['Oui','Non, pilule ou autre contraception','Non, préménopause','Non, ménopause']},
  {type:'date',part:'Ton Profil',title:'Le premier jour de tes dernières règles ?',subtitle:'Pour suivre ton cycle et t\'accompagner phase par phase.'},
  {type:'choice',part:'Ton Profil',title:'Ton niveau d\'activité physique ?',opts:['Sédentaire','Modérée','Active','Très active']},
- {type:'choice',part:'Alimentation',title:'Ton régime alimentaire ?',opts:['Flexitarienne (viande & poisson)','Végétarienne','Végane']},
+ {type:'choice',part:'Alimentation',title:'Ton régime alimentaire ?',opts:['Normal (viande & poisson)','Végétarien']},
  {type:'dosha',part:'Ton Dosha',title:'Bilan Ayurvédique complet',subtitle:'Réponds intuitivement à chaque critère, il n\'y a pas de mauvaise réponse.'},
 ];
 
@@ -2983,7 +3108,7 @@ function obNext(){
  } else if(s.type==='choice' && OB_STEPS[obStep].title.includes('activité')){
  userProfile.activity=['sédentaire','légère','modérée','active','très active'][obChoiceIdx]||'modérée';
  } else if(s.type==='choice' && OB_STEPS[obStep].title.includes('régime alimentaire')){
- userProfile.dietType=['flexitarien','vegetarien','vegan'][obChoiceIdx]||'flexitarien';
+ userProfile.dietType=['flexitarien','vegetarien'][obChoiceIdx]||'flexitarien';
  } else if(s.type==='input' && OB_STEPS[obStep].title.includes('allergies')){
  userProfile.allergies=document.getElementById('obAllergies')?.value.trim()||'';
  } else if(s.type==='dosha'){
@@ -3738,24 +3863,69 @@ async function fetchMovementClips(){
  return [];
  }
 }
+function hashStr(s){
+ let h=0;
+ for(let i=0;i<s.length;i++){ h=(h*31+s.charCodeAt(i))|0; }
+ return Math.abs(h);
+}
+// Générateur pseudo-aléatoire bien dispersé (sans cycle court), pour combiner un seed (jour de
+// l'année) et un sel (id du mouvement) sans jamais retomber sur la même séquence en boucle rapide.
+function pseudoRandom(seed,salt){
+ let x=((seed*2654435761)+(salt*40503))>>>0;
+ x=(x^(x>>>13))>>>0;
+ x=(Math.imul(x,2246822519))>>>0;
+ x=(x^(x>>>16))>>>0;
+ return x/4294967296;
+}
+// Choisit n éléments d'un pool, avec une préférence pour le dosha de la personne, mais un ordre
+// qui change chaque jour (seed = jour de l'année) pour ne jamais répéter la même combinaison.
+function scoredPick(pool,n,seed,doshaKey,excludeIds){
+ const candidates=pool.filter(c=>!excludeIds.has(c.id));
+ const scored=candidates.map(c=>({c,score:(c.dosha_favorable===doshaKey?2:0)+pseudoRandom(seed,hashStr(c.id))*3}));
+ scored.sort((a,b)=>b.score-a.score);
+ return scored.slice(0,n).map(x=>x.c);
+}
 function buildRoutinePlaylist(clips,routineType,doshaKey){
- const targetSec=routineType.dureeMin*60;
- const scoreKey=routineType.objectif+'_score';
  const pool=clips.filter(c=>c.moment===routineType.moment||c.moment==='tout_moment');
+ const isMatin=routineType.moment==='matin';
+
  const dayOfYear=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/86400000);
- const sorted=[...pool].sort((a,b)=>{
- const scoreA=(a[scoreKey]||3)+(a.dosha_favorable===doshaKey?1.5:0)+((a.id.charCodeAt(a.id.length-1)+dayOfYear)%3)*0.3;
- const scoreB=(b[scoreKey]||3)+(b.dosha_favorable===doshaKey?1.5:0)+((b.id.charCodeAt(b.id.length-1)+dayOfYear)%3)*0.3;
- return scoreB-scoreA;
- });
- const playlist=[];
- let totalSec=0;
- for(const clip of sorted){
- if(totalSec>=targetSec)break;
- playlist.push(clip);
- totalSec+=clip.duree_sec;
+ // seed différent pour matin/soir pour que les 2 routines du même jour ne soient pas identiques en logique
+ const seed=dayOfYear+(isMatin?0:5000);
+ const excludeIds=new Set();
+
+ // 1. Premier mouvement : toujours debout le matin. Le soir, assis (le pool "debout" est trop
+ //    limité pour varier chaque jour) ou debout selon ce qui est disponible.
+ const firstPool=isMatin
+ ? pool.filter(c=>c.position==='debout'&&c.categorie!=='respiration')
+ : pool.filter(c=>(c.position==='assis'||c.position==='debout')&&c.categorie!=='respiration');
+ const chosenFirst=scoredPick(firstPool,1,seed,doshaKey,excludeIds);
+ chosenFirst.forEach(c=>excludeIds.add(c.id));
+
+ // 2. Dernier mouvement : assis ou respiration, pour toujours refermer la séance en douceur.
+ const endingPool=pool.filter(c=>c.position==='assis'||c.categorie==='respiration');
+ const chosenLast=scoredPick(endingPool,1,seed+99,doshaKey,excludeIds);
+ chosenLast.forEach(c=>excludeIds.add(c.id));
+
+ // 3. Mouvements du milieu : mélange volontairement les positions (debout/assis/4 pattes/couché)
+ //    pour une vraie variété — plusieurs mouvements debout sont possibles, mais pas la quasi-totalité.
+ //    On tire 1 à 2 mouvements debout supplémentaires, et le reste parmi les autres positions.
+ const middleDeboutPool=pool.filter(c=>c.position==='debout'&&c.categorie!=='respiration'&&!excludeIds.has(c.id));
+ const middleAutresPool=pool.filter(c=>c.position!=='debout'&&c.categorie!=='respiration'&&!excludeIds.has(c.id));
+ const nMiddleTotal=4+(seed%2); // 4 ou 5, pour un total de 6-7 avec le premier et le dernier
+ const nMiddleDebout=1+(seed%2); // 1 ou 2 mouvements debout supplémentaires dans le milieu
+ const chosenMiddleDebout=scoredPick(middleDeboutPool,Math.min(nMiddleDebout,nMiddleTotal-1),seed+7,doshaKey,excludeIds);
+ chosenMiddleDebout.forEach(c=>excludeIds.add(c.id));
+ const nMiddleAutres=nMiddleTotal-chosenMiddleDebout.length;
+ const chosenMiddleAutres=scoredPick(middleAutresPool,nMiddleAutres,seed+17,doshaKey,excludeIds);
+ // mélange l'ordre des mouvements du milieu (sinon tous les "debout" seraient groupés ensemble)
+ const chosenMiddle=[...chosenMiddleDebout,...chosenMiddleAutres];
+ for(let i=chosenMiddle.length-1;i>0;i--){
+ const j=(seed+i*277)%(i+1);
+ [chosenMiddle[i],chosenMiddle[j]]=[chosenMiddle[j],chosenMiddle[i]];
  }
- return playlist;
+
+ return [...chosenFirst,...chosenMiddle,...chosenLast].filter(Boolean);
 }
 function getRoutineCompletionToday(){
  try{
@@ -3810,6 +3980,8 @@ async function playRoutine(clipIds,routineTypeId){
  routineIndex=-1;
  currentRoutineTypeId=routineTypeId||null;
  currentRoutineMeta=ROUTINE_TYPES.find(r=>r.id===routineTypeId)||null;
+ totalWatchedSec=0;
+ clipStartTimestamp=null;
  if(!routineQueue.length)return;
  document.getElementById('routinePlayer').classList.add('open');
  setupRoutineSwipe();
@@ -3820,10 +3992,12 @@ function closeRoutinePlayer(){
  clearRoutineAutoTimer();
  document.getElementById('routinePlayer').classList.remove('open');
  document.getElementById('rpExitConfirm').classList.remove('open');
+ document.getElementById('rpWarnModal').classList.remove('open');
  document.getElementById('rpStage').innerHTML='';
  document.getElementById('rpTitle').textContent='';
  document.getElementById('rpProgressFill').style.width='0%';
  routineQueue=[];routineIndex=-1;
+ totalWatchedSec=0;clipStartTimestamp=null;
 }
 const RP_RING_CIRC=553; // 2·π·88, le rayon du cercle SVG
 function showRoutineEndScreen(isNatural){
@@ -3858,17 +4032,49 @@ function showRoutineEndScreen(isNatural){
  document.getElementById('rpConfirmMainBtn').dataset.natural=isNatural?'1':'0';
  document.getElementById('rpExitConfirm').classList.add('open');
 }
+function getTotalRoutineDurationSec(){
+ return routineQueue.reduce((s,c)=>s+c.duree_sec,0);
+}
+function getWatchedPercent(){
+ const total=getTotalRoutineDurationSec();
+ if(!total)return 0;
+ return Math.min(100,Math.round((totalWatchedSec/total)*100));
+}
 function attemptExitRoutine(){
+ // comptabilise le temps du clip en cours avant d'afficher l'écran de fin
+ if(routineIndex>=0&&routineQueue[routineIndex]){
+ recordWatchedTime(routineQueue[routineIndex]);
+ }
  showRoutineEndScreen(false);
 }
 function dismissExitConfirm(){
  document.getElementById('rpExitConfirm').classList.remove('open');
+ // reprend le décompte du temps regardé sur le clip en cours, si on reprend la lecture
+ if(routineIndex>=0&&routineQueue[routineIndex])clipStartTimestamp=Date.now();
 }
 function confirmEndRoutine(){
+ const watchedPct=getWatchedPercent();
+ if(watchedPct<60){
+ showNotCountedWarning(watchedPct);
+ return;
+ }
  toast('Séance enregistrée '); addXP(15); checkBadges();
  if(currentRoutineTypeId)markRoutineCompletionToday(currentRoutineTypeId);
  closeRoutinePlayer();
  renderRoutinesSection();
+}
+// Pop-up d'avertissement : la séance n'est pas comptabilisée si moins de 50% n'a été regardé.
+function showNotCountedWarning(watchedPct){
+ document.getElementById('rpExitConfirm').classList.remove('open');
+ document.getElementById('rpWarnPct').textContent=watchedPct+'%';
+ document.getElementById('rpWarnModal').classList.add('open');
+}
+function closeNotCountedWarning(quitAnyway){
+ document.getElementById('rpWarnModal').classList.remove('open');
+ if(quitAnyway){
+ closeRoutinePlayer();
+ renderRoutinesSection();
+ }
 }
 // Écoute directement les messages envoyés par l'iframe Bunny (protocole player.js), sans dépendre
 // d'une librairie externe qui pourrait ne pas se charger correctement.
@@ -3885,6 +4091,8 @@ function bunnyIframeHtml(clip){
 function advanceRoutineManually(){
  clearRoutineAutoTimer();
  if(routineIndex===-1){ startFirstClip(true); return; }
+ const currentClip=routineQueue[routineIndex];
+ if(currentClip)recordWatchedTime(currentClip);
  if(routineIndex<routineQueue.length-1){
  routineIndex++;
  openRoutineClip(true);
@@ -3895,6 +4103,8 @@ function advanceRoutineManually(){
 function goToPreviousClip(){
  clearRoutineAutoTimer();
  if(routineIndex<=0){ showIntroSlide(true); return; }
+ const currentClip=routineQueue[routineIndex];
+ if(currentClip)recordWatchedTime(currentClip);
  routineIndex--;
  openRoutineClip(true);
 }
@@ -3938,15 +4148,33 @@ function showIntroSlide(animate){
  document.getElementById('rpPrevBtn').style.visibility='hidden';
  const titre=currentRoutineMeta?currentRoutineMeta.titre:'Ta routine';
  const theme=currentRoutineMeta?currentRoutineMeta.sous:'';
- const sommaire=routineQueue.map((c,i)=>`<div class="rp-intro-item"><span class="rp-intro-num">${i+1}</span>${c.nom}</div>`).join('');
+ const sommaire=routineQueue.map((c,i)=>`<div class="rp-intro-item" onclick="event.stopPropagation();showMovementDescription('${c.id}')"><span class="rp-intro-num">${i+1}</span><span class="rp-intro-item-nom">${c.nom}</span></div>`).join('');
  const html=`<div class="rp-intro" onclick="advanceRoutineManually()">
  <div class="rp-intro-titre">${titre}</div>
  <div class="rp-intro-theme">${theme}</div>
  <div class="rp-intro-duree">${totalMin} min · ${routineQueue.length} mouvements</div>
  <div class="rp-intro-list">${sommaire}</div>
  <div class="rp-intro-cta">Balaie vers le haut ou touche l'écran pour commencer ↑</div>
+ </div>
+ <div class="rp-desc-modal" id="rpDescModal" onclick="event.stopPropagation();closeMovementDescription()">
+ <div class="rp-desc-card" onclick="event.stopPropagation()">
+ <div class="rp-desc-title" id="rpDescTitle"></div>
+ <div class="rp-desc-body" id="rpDescBody"></div>
+ <button class="rp-desc-close" onclick="closeMovementDescription()">Fermer</button>
+ </div>
  </div>`;
  appendStageSlide(html,animate);
+}
+function showMovementDescription(clipId){
+ const clip=routineQueue.find(c=>c.id===clipId);
+ if(!clip)return;
+ document.getElementById('rpDescTitle').textContent=clip.nom;
+ document.getElementById('rpDescBody').textContent=clip.description||'Pas de description disponible pour ce mouvement.';
+ document.getElementById('rpDescModal').classList.add('open');
+}
+function closeMovementDescription(){
+ const modal=document.getElementById('rpDescModal');
+ if(modal)modal.classList.remove('open');
 }
 function startFirstClip(animate){
  routineIndex=0;
@@ -3956,6 +4184,7 @@ function openRoutineClip(animate){
  clearRoutineAutoTimer();
  const clip=routineQueue[routineIndex];
  if(!clip)return;
+ const launch=()=>{
  document.getElementById('rpTitle').textContent=clip.nom;
  document.getElementById('rpDureeBadge').style.display='flex';
  const dureeMin=Math.round(clip.duree_sec/60);
@@ -3963,16 +4192,47 @@ function openRoutineClip(animate){
  document.getElementById('rpProgressFill').style.width=Math.round(((routineIndex+1)/routineQueue.length)*100)+'%';
  document.getElementById('rpPrevBtn').style.visibility='visible';
  appendStageSlide(bunnyIframeHtml(clip),animate);
+ clipStartTimestamp=Date.now();
  const advance=()=>{
  clearRoutineAutoTimer();
+ recordWatchedTime(clip);
  routineIndex++;
- if(routineIndex<routineQueue.length)openRoutineClip(true);
+ if(routineIndex<routineQueue.length)runCountdownThenOpen(true);
  else showRoutineEndScreen(true);
  };
  _bunnyEndedCallback=advance;
  // Filet de sécurité : si le message "fin de vidéo" de Bunny ne remonte pas (ça peut arriver selon
  // le navigateur), on avance quand même automatiquement en se basant sur la durée déclarée du clip.
  _rpAutoTimer=setTimeout(advance,(clip.duree_sec+1)*1000);
+ };
+ launch();
+}
+// Décompte de 3 secondes en grand, affiché entre deux vidéos avant le lancement automatique de la suivante.
+function runCountdownThenOpen(animate){
+ const el=document.getElementById('rpCountdown');
+ const numEl=document.getElementById('rpCountdownNum');
+ let n=3;
+ numEl.textContent=n;
+ el.classList.add('open');
+ const tick=setInterval(()=>{
+ n--;
+ if(n<=0){
+ clearInterval(tick);
+ el.classList.remove('open');
+ openRoutineClip(animate);
+ }else{
+ numEl.textContent=n;
+ }
+ },1000);
+}
+// Suivi du temps réellement regardé sur chaque clip, pour la validation de séance à 50%.
+let clipStartTimestamp=null;
+let totalWatchedSec=0;
+function recordWatchedTime(clip){
+ if(!clipStartTimestamp)return;
+ const elapsed=(Date.now()-clipStartTimestamp)/1000;
+ totalWatchedSec+=Math.min(elapsed,clip.duree_sec);
+ clipStartTimestamp=null;
 }
 
 function renderMvCalendar(){
@@ -4324,7 +4584,6 @@ function openEditInfo(){
  document.getElementById('eiHeight').value=userProfile.height;
  document.getElementById('eiAge').value=userProfile.age;
  document.getElementById('eiActivity').value=userProfile.activity;
- document.getElementById('eiGoal').value=userProfile.goal||'bien-être';
  document.getElementById('eiDietType').value=userProfile.dietType||'flexitarien';
  document.getElementById('eiAllergies').value=userProfile.allergies||'';
  go('editInfo');
@@ -4337,7 +4596,6 @@ function saveEditInfo(){
  userProfile.height=parseFloat(document.getElementById('eiHeight').value)||userProfile.height;
  userProfile.age=parseInt(document.getElementById('eiAge').value)||userProfile.age;
  userProfile.activity=document.getElementById('eiActivity').value;
- userProfile.goal=document.getElementById('eiGoal').value;
  userProfile.dietType=document.getElementById('eiDietType').value;
  userProfile.allergies=document.getElementById('eiAllergies').value.trim();
  saveProfile();

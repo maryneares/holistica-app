@@ -16,7 +16,7 @@ const supabase = createClient(
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
+  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type'
 };
 
@@ -29,14 +29,14 @@ exports.handler = async function (event) {
     if (event.httpMethod === 'GET') {
       const { data, error } = await supabase
         .from('crm_campaigns')
-        .select('id,subject,status,scheduled_at,sent_at,recipients_count,list_id,created_at')
+        .select('id,subject,status,scheduled_at,sent_at,recipients_count,list_id,contact_ids,blocks,header_tag,skip_wrapper,created_at')
         .order('created_at', { ascending: false });
       if (error) throw error;
       return { headers: CORS_HEADERS, statusCode: 200, body: JSON.stringify({ campaigns: data || [] }) };
     }
 
     if (event.httpMethod === 'POST') {
-      const { listId, contactIds, subject, blocks, headerTag, scheduledAt } = JSON.parse(event.body || '{}');
+      const { listId, contactIds, subject, blocks, headerTag, skipWrapper, scheduledAt } = JSON.parse(event.body || '{}');
       if ((!listId && !contactIds) || !subject || !blocks) {
         return { headers: CORS_HEADERS, statusCode: 400, body: JSON.stringify({ error: 'listId ou contactIds, subject et blocks sont requis' }) };
       }
@@ -47,11 +47,44 @@ exports.handler = async function (event) {
         subject,
         blocks,
         header_tag: headerTag || '',
+        skip_wrapper: !!skipWrapper,
         body_html: '', // généré au moment de l'envoi
         status,
         scheduled_at: scheduledAt || null
       }).select('id').single();
       if (error) throw error;
+      return { headers: CORS_HEADERS, statusCode: 200, body: JSON.stringify({ success: true, id: data.id, status }) };
+    }
+
+    if (event.httpMethod === 'PUT') {
+      const { id, listId, contactIds, subject, blocks, headerTag, skipWrapper, scheduledAt } = JSON.parse(event.body || '{}');
+      if (!id) {
+        return { headers: CORS_HEADERS, statusCode: 400, body: JSON.stringify({ error: 'id manquant' }) };
+      }
+      if ((!listId && !contactIds) || !subject || !blocks) {
+        return { headers: CORS_HEADERS, statusCode: 400, body: JSON.stringify({ error: 'listId ou contactIds, subject et blocks sont requis' }) };
+      }
+      const status = scheduledAt ? 'scheduled' : 'draft';
+      const { data, error } = await supabase
+        .from('crm_campaigns')
+        .update({
+          list_id: listId || null,
+          contact_ids: contactIds || null,
+          subject,
+          blocks,
+          header_tag: headerTag || '',
+          skip_wrapper: !!skipWrapper,
+          status,
+          scheduled_at: scheduledAt || null
+        })
+        .eq('id', id)
+        .neq('status', 'sent') // sécurité : impossible de modifier une campagne déjà envoyée
+        .select('id')
+        .single();
+      if (error) throw error;
+      if (!data) {
+        return { headers: CORS_HEADERS, statusCode: 404, body: JSON.stringify({ error: 'Campagne introuvable ou déjà envoyée' }) };
+      }
       return { headers: CORS_HEADERS, statusCode: 200, body: JSON.stringify({ success: true, id: data.id, status }) };
     }
 

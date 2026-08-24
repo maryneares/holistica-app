@@ -52,6 +52,9 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 
 /* Section */
 .sec{padding:28px 20px 12px;display:flex;align-items:baseline;justify-content:space-between;}
+.sec-stacked{padding:22px 20px 14px;}
+.sec-stacked h2{font-family:'League Spartan',sans-serif;font-size:24px;color:var(--ink);font-weight:700;letter-spacing:-.01em;margin-bottom:6px;}
+.sec-stacked .sec-sub{font-size:13.5px;color:var(--ink-l);line-height:19px;max-width:300px;}
 .journey-strip{display:flex;flex-direction:column;gap:8px;padding:0 20px;margin-bottom:6px;}
 .journey-progress-wrap{padding:0 20px;margin-bottom:14px;}
 .journey-progress-lbl{display:flex;justify-content:space-between;font-size:12.5px;font-weight:700;color:var(--ink-l);margin-bottom:6px;}
@@ -258,7 +261,7 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .prog-section{padding:0 20px;margin-top:6px;}
 .prog-row{display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;}
 .routines-row{display:flex;gap:14px;overflow-x:auto;scrollbar-width:none;padding:0 20px 8px;}
-.routine-card{position:relative;flex-shrink:0;width:200px;height:260px;border-radius:22px;overflow:hidden;cursor:pointer;background:linear-gradient(160deg,#7B6EC8,#5B3E8E);box-shadow:var(--sh);}
+.routine-card{position:relative;flex-shrink:0;width:170px;height:302px;border-radius:22px;overflow:hidden;cursor:pointer;background:linear-gradient(160deg,#7B6EC8,#5B3E8E);box-shadow:var(--sh);}
 .routine-card-img{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.9;}
 .routine-img-yoga1{background:linear-gradient(160deg,#E8A857,#C9668A);}
 .routine-img-yoga2{background:linear-gradient(160deg,#5FA8A0,#3E6E8E);}
@@ -417,6 +420,7 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .diet-meal-empty{font-size:14.5px;color:var(--ink-l);font-style:italic;padding:6px 0;}
 .diet-info-card{margin:20px 20px 0;background:white;border-radius:16px;padding:18px;box-shadow:var(--sh);border:1px solid var(--border);}
 .diet-info-t{font-size:14.5px;font-weight:800;color:var(--purple);text-transform:uppercase;letter-spacing:.3px;margin-bottom:10px;}
+.plan-subtitle{font-size:13px;font-weight:800;color:var(--purple-m);text-transform:uppercase;letter-spacing:.3px;margin-bottom:4px;}
 .diet-info-row{font-size:14.5px;color:var(--ink-m);line-height:1.5;margin-bottom:8px;}
 .diet-info-row b{color:var(--ink);}
 .plan-option-t{font-size:15.5px;font-weight:800;color:var(--ink);margin:14px 0 4px;}
@@ -569,6 +573,17 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .dd-dot.p{background:var(--peach);}
 .dd-dot.k{background:#7FBFA0;}
 .dosha-explain{font-size:15.5px;color:var(--ink-m);line-height:1.6;background:var(--lav-pale);padding:16px;border-radius:14px;}
+.dosha-intro-text{font-size:14px;color:var(--ink-m);line-height:22px;margin:10px 0 18px;}
+.dosha-btn-row{display:flex;gap:10px;margin-bottom:16px;}
+.dosha-select-btn{flex:1;padding:12px 0;border-radius:50px;border:1.5px solid var(--purple-m);background:white;color:var(--purple-m);font-family:'League Spartan',sans-serif;font-weight:700;font-size:14.5px;cursor:pointer;}
+.dosha-select-btn.active{background:var(--purple-m);color:white;}
+.dosha-long-card{background:white;border-radius:20px;overflow:hidden;box-shadow:var(--sh);border:1px solid var(--border);margin-bottom:20px;}
+.dosha-long-img{width:100%;height:180px;background-size:cover;background-position:center;}
+.dosha-long-body{padding:18px 20px 22px;}
+.dosha-long-title{font-family:'League Spartan',sans-serif;font-weight:800;font-size:22px;color:var(--purple-m);margin-bottom:8px;}
+.dosha-long-short{font-size:13.5px;color:var(--ink-m);line-height:21px;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border);}
+.dosha-long-subtitle{font-size:13px;font-weight:800;color:var(--purple-m);text-transform:uppercase;letter-spacing:.3px;margin:14px 0 6px;}
+.dosha-long-text{font-size:13.5px;color:var(--ink-m);line-height:21px;white-space:pre-line;}
 .dosha-analysis-block{background:white;border-radius:16px;padding:16px;margin-bottom:10px;box-shadow:var(--sh);border:1px solid var(--border);}
 .dab-title{display:flex;align-items:center;gap:8px;font-size:15.5px;font-weight:800;color:var(--purple);margin-bottom:8px;text-transform:uppercase;letter-spacing:.3px;}
 .dab-text{font-size:15.5px;color:var(--ink-m);line-height:1.6;}
@@ -712,11 +727,12 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .rp-progress{position:absolute;top:0;left:0;right:0;height:4px;background:rgba(255,255,255,0.25);z-index:5;}
 .rp-progress-fill{height:100%;background:var(--purple-m);border-radius:0 3px 3px 0;transition:width .4s ease;}
 .rp-home{position:absolute;top:20px;left:16px;z-index:5;width:38px;height:38px;border-radius:50%;background:rgba(0,0,0,0.45);backdrop-filter:blur(6px);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;}
-.rp-title{position:absolute;top:22px;left:66px;right:80px;z-index:5;color:white;font-family:'League Spartan',sans-serif;font-weight:800;font-size:19px;text-align:center;text-shadow:-1px -1px 0 var(--purple-m),1px -1px 0 var(--purple-m),-1px 1px 0 var(--purple-m),1px 1px 0 var(--purple-m),0 2px 10px rgba(0,0,0,0.35);}
+.rp-title{position:absolute;top:76px;left:16px;right:16px;z-index:5;color:white;font-family:'League Spartan',sans-serif;font-weight:800;font-size:22px;text-align:center;text-shadow:0 4px 14px rgba(91,62,142,0.85),0 2px 6px rgba(0,0,0,0.4);}
 .rp-countdown{position:absolute;inset:0;z-index:15;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.55);}
 .rp-countdown.open{display:flex;}
 .rp-countdown-num{font-family:'League Spartan',sans-serif;font-weight:800;font-size:110px;color:white;text-shadow:-2px -2px 0 var(--purple-m),2px -2px 0 var(--purple-m),-2px 2px 0 var(--purple-m),2px 2px 0 var(--purple-m);}
 .rp-duree-badge{position:absolute;top:20px;right:16px;z-index:5;display:flex;align-items:center;gap:5px;background:rgba(0,0,0,0.4);backdrop-filter:blur(6px);border-radius:50px;padding:6px 12px;color:white;font-size:13px;font-weight:700;font-family:'League Spartan',sans-serif;}
+.rp-mute-btn{position:absolute;top:20px;right:96px;z-index:5;width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,0.4);backdrop-filter:blur(6px);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;}
 .rp-edge-gradient-top{position:absolute;top:0;left:0;right:0;height:140px;background:linear-gradient(to bottom,rgba(255,255,255,0.35),transparent);z-index:3;pointer-events:none;}
 .rp-edge-gradient-bottom{position:absolute;bottom:0;left:0;right:0;height:160px;background:linear-gradient(to top,rgba(255,255,255,0.28),transparent);z-index:3;pointer-events:none;}
 .rp-stage{position:absolute;inset:0;overflow:hidden;}
@@ -962,6 +978,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="duo-card hl"><div class="gauge-wrap" id="dHormoGauge"></div><div class="duo-lbl"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--ink-l)" stroke-width="2" stroke-linecap="round" style="vertical-align:-1px;margin-right:3px;"><path d="M12 8a4 4 0 1 1 4 4 4 4 0 1 1-4 4 4 4 0 1 1-4-4 4 4 0 1 1 4-4z"/></svg>Équilibre hormonal</div><div class="duo-sub">Phase cycle + stress + sommeil</div></div>
 </div>
 <!-- Cycle -->
+<div id="cycleSectionWrap">
 <div class="sec"><h2 id="cycleSecTitle">Ton <em>cycle</em></h2></div>
 <div class="cycle-card" id="cycleCard">
 <div class="cycle-head"><span class="cycle-badge" id="cycleBadge"> Cycle</span><span class="cycle-day" id="cycleDayLbl">Jour 1</span></div>
@@ -969,6 +986,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="cycle-msg-t" id="cycleMsgTitle"></div>
 <div class="cycle-msg" id="cycleMsgBody"></div>
 <div class="cycle-energy" id="cycleEnergy"></div>
+</div>
 </div>
 <!-- Mood -->
 <div class="sec" id="secMood"><h2>Comment tu te <em>sens</em> ?</h2></div>
@@ -1020,9 +1038,9 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="wk-cal-row" id="wkCalRow"></div>
 <div class="wk-today-card" id="wkTodayCard"></div>
 </div>
-<div class="sec" style="padding-top:20px;"><h2>Tes <em>routines</em></h2><div class="sec-sub">Assemblées pour toi à partir de mouvements courts</div></div>
+<div class="sec-stacked" style="padding-top:22px;"><h2>Tes <em>routines</em></h2><div class="sec-sub">Assemblées pour toi à partir de mouvements courts</div></div>
 <div class="routines-row" id="routinesWrap"></div>
-<div class="sec" style="padding-top:20px;"><h2>Tes <em>programmes</em></h2><div class="sec-sub">Une ligne directrice claire, séance après séance</div></div>
+<div class="sec-stacked" style="padding-top:22px;"><h2>Tes <em>programmes</em></h2><div class="sec-sub">Une ligne directrice claire, séance après séance</div></div>
 <div class="prog-section"><div class="prog-row" id="progRow"></div></div>
 <div class="explore-divider"><span class="explore-divider-t">Explorer librement</span><span class="explore-divider-line"></span></div>
 <div class="mv-filters" id="mvFilters"></div>
@@ -1270,6 +1288,7 @@ document.addEventListener('DOMContentLoaded', function(){
 </div>
 <div class="scroll" style="padding:0 24px;">
 <div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Mon profil <em>ayurvédique</em></div>
+<div class="dosha-intro-text" id="doshaIntroText"></div>
 <div class="dosha-detail-card">
 <div class="dosha-bar" style="height:12px;"><div class="dosha-bar-v" id="dpBarV"></div><div class="dosha-bar-p" id="dpBarP"></div><div class="dosha-bar-k" id="dpBarK"></div></div>
 <div class="dosha-detail-row"><span class="dd-dot v"></span>Vata <b id="dpV">33%</b></div>
@@ -1278,6 +1297,14 @@ document.addEventListener('DOMContentLoaded', function(){
 </div>
 <div class="sec" style="padding:16px 0 8px;"><h2>Ton profil <em id="dpName">Vata</em></h2></div>
 <div id="dpAnalysis"></div>
+<div class="sec" style="padding:22px 0 8px;"><h2>Découvre les <em>3 profils</em></h2></div>
+<div class="dosha-explain" style="margin-bottom:12px;">Chacune est composée des 3 énergies, dans des proportions qui te sont propres. Explore les descriptions complètes de chaque profil pour mieux comprendre celles qui t'entourent, ou approfondir la tienne.</div>
+<div class="dosha-btn-row">
+<button class="dosha-select-btn" id="doshaBtnVata" onclick="showDoshaLongProfile('vata')">Vata</button>
+<button class="dosha-select-btn" id="doshaBtnPitta" onclick="showDoshaLongProfile('pitta')">Pitta</button>
+<button class="dosha-select-btn" id="doshaBtnKapha" onclick="showDoshaLongProfile('kapha')">Kapha</button>
+</div>
+<div id="doshaLongProfileWrap"></div>
 <button class="btn-ob" style="margin-top:18px;" onclick="retakeDoshaQuiz()">Refaire le test</button>
 <button class="btn-ob" style="margin-top:10px;background:transparent;border:1.5px solid var(--purple-m);color:var(--purple-m);display:flex;align-items:center;justify-content:center;gap:8px;" onclick="shareDoshaProfile()">
 <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
@@ -1570,8 +1597,9 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 <!-- LECTEUR ROUTINE PLEIN ÉCRAN (format vertical, façon Reels/TikTok) -->
 <div class="routine-player" id="routinePlayer">
 <div class="rp-progress"><div class="rp-progress-fill" id="rpProgressFill"></div></div>
-<button class="rp-home" onclick="attemptExitRoutine()">
-<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
+<button class="rp-home" id="rpHomeBtn" onclick="handleTopLeftButton()">
+<svg id="rpHomeIconHouse" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
+<svg id="rpHomeIconBack" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><path d="M19 12H5"/><path d="M11 18l-6-6 6-6"/></svg>
 </button>
 <div class="rp-edge-gradient-top"></div>
 <div class="rp-edge-gradient-bottom"></div>
@@ -1580,6 +1608,10 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
 <span id="rpDureeTxt"></span>
 </div>
+<button class="rp-mute-btn" id="rpMuteBtn" onclick="toggleRoutineMute()">
+<svg id="rpMuteIconOn" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+<svg id="rpMuteIconOff" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+</button>
 <div class="rp-stage" id="rpStage"></div>
 <div class="rp-countdown" id="rpCountdown"><div class="rp-countdown-num" id="rpCountdownNum">3</div></div>
 <div class="rp-nav-col">
@@ -1768,7 +1800,7 @@ const _MONTH_NAMES_FR=['Janvier','Février','Mars','Avril','Mai','Juin','Juillet
 const _curMonthName=_MONTH_NAMES_FR[_now.getMonth()];
 let dailyCalGoal=2000,currentRC=null,sessionDates=[],wellnessLog=[],retakeDoshaMode=false,foodLog=[],videoStartDates={};
 let ytPlayer=null,ytProgressInterval=null,ytApiReady=false;
-let userProfile={name:'',lastName:'',email:'',goal:'bien-être',age:30,weight:62,height:165,activity:'modérée',hasPeriod:true,menopause:false,perimenopause:false,contraception:false,dosha:'vata',lastPeriodStart:'',doshaV:33,doshaP:33,doshaK:34,cycleLength:28,birthDate:'',birthTime:'',birthPlace:'',subscriptionStatus:'inactive',subscriptionPlan:null,dietType:'flexitarien',allergies:'',referralCode:'',referredBy:null};
+let userProfile={name:'',lastName:'',email:'',goal:'bien-être',sexe:'femme',age:30,weight:62,height:165,activity:'modérée',hasPeriod:true,menopause:false,perimenopause:false,contraception:false,dosha:'vata',lastPeriodStart:'',doshaV:33,doshaP:33,doshaK:34,cycleLength:28,birthDate:'',birthTime:'',birthPlace:'',subscriptionStatus:'inactive',subscriptionPlan:null,dietType:'flexitarien',allergies:'',referralCode:'',referredBy:null};
 let moodScore=0,sleepScore=8,stressScore=5;
 let activeMvFilter='Tout',activeRcFilter='Tout';
 
@@ -1982,7 +2014,7 @@ async function loadProfileAndEnter(){
  // seulement quand il est confirmé qu'aucun profil n'existe (voir plus bas).
  }
  if(profile){
- userProfile={name:profile.name||'',lastName:profile.last_name||'',email:profile.email||'',goal:profile.goal||'bien-être',age:profile.age||30,weight:profile.weight||62,height:profile.height||165,activity:profile.activity||'modérée',hasPeriod:profile.has_period,menopause:profile.menopause,perimenopause:profile.perimenopause||false,contraception:profile.contraception||false,dosha:profile.dosha||'vata',lastPeriodStart:profile.last_period_start||'',doshaV:profile.dosha_v??33,doshaP:profile.dosha_p??33,doshaK:profile.dosha_k??34,cycleLength:profile.cycle_length||28,birthDate:profile.birth_date||'',birthTime:profile.birth_time||'',birthPlace:profile.birth_place||'',subscriptionStatus:profile.subscription_status||'inactive',subscriptionPlan:profile.subscription_plan||null,dietType:profile.diet_type||'flexitarien',allergies:profile.allergies||'',referralCode:profile.referral_code||'',referredBy:profile.referred_by||null,hasSeenWalkthrough:profile.has_seen_walkthrough||false};
+ userProfile={name:profile.name||'',lastName:profile.last_name||'',email:profile.email||'',goal:profile.goal||'bien-être',sexe:profile.sexe||'femme',age:profile.age||30,weight:profile.weight||62,height:profile.height||165,activity:profile.activity||'modérée',hasPeriod:profile.has_period,menopause:profile.menopause,perimenopause:profile.perimenopause||false,contraception:profile.contraception||false,dosha:profile.dosha||'vata',lastPeriodStart:profile.last_period_start||'',doshaV:profile.dosha_v??33,doshaP:profile.dosha_p??33,doshaK:profile.dosha_k??34,cycleLength:profile.cycle_length||28,birthDate:profile.birth_date||'',birthTime:profile.birth_time||'',birthPlace:profile.birth_place||'',subscriptionStatus:profile.subscription_status||'inactive',subscriptionPlan:profile.subscription_plan||null,dietType:profile.diet_type||'flexitarien',allergies:profile.allergies||'',referralCode:profile.referral_code||'',referredBy:profile.referred_by||null,hasSeenWalkthrough:profile.has_seen_walkthrough||false};
  if(isDevAccount()){
  // Accès complet en mémoire uniquement pour tester (n'écrase jamais la vraie valeur en base)
  userProfile.subscriptionStatus='active';
@@ -2049,7 +2081,7 @@ function saveProfile(){
  const {error}=await sb.from('profiles').upsert({
  id:currentUser.id,
  name:userProfile.name,age:userProfile.age,weight:userProfile.weight,height:userProfile.height,
- activity:userProfile.activity,has_period:userProfile.hasPeriod,menopause:userProfile.menopause,perimenopause:userProfile.perimenopause,contraception:userProfile.contraception,dosha:userProfile.dosha,
+ activity:userProfile.activity,sexe:userProfile.sexe,has_period:userProfile.hasPeriod,menopause:userProfile.menopause,perimenopause:userProfile.perimenopause,contraception:userProfile.contraception,dosha:userProfile.dosha,
  last_period_start:userProfile.lastPeriodStart||null,dosha_v:userProfile.doshaV,dosha_p:userProfile.doshaP,dosha_k:userProfile.doshaK,cycle_length:userProfile.cycleLength,
  last_name:userProfile.lastName,email:userProfile.email,goal:userProfile.goal,
  birth_date:userProfile.birthDate||null,birth_time:userProfile.birthTime||null,birth_place:userProfile.birthPlace,
@@ -2510,9 +2542,58 @@ async function fetchSeasonalAndTips(doshaKey){
  ${t.epices_dosha?buildSpiceDetailHtml(t.epices_dosha,doshaLabel,mois):''}
  </div>`;
  }
+
+ // ═══ Conseils nutrition bihebdomadaires (universels, changent toutes les 2 semaines) ═══
+ const MOIS_NOMS=['','janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+ async function tryFetchBiweekly(m,q){
+ try{
+ const {data,error}=await sb.from('biweekly_nutrition_tips').select('*').eq('mois',m).eq('quinzaine',q).maybeSingle();
+ return (!error&&data)?data:null;
+ }catch(e){return null;}
+ }
+ let biweekly=await tryFetchBiweekly(mois,quinzaine);
+ if(!biweekly)biweekly=await tryFetchBiweekly(mois,quinzaine===1?2:1);
+ if(biweekly){
+ tips+=`<div class="diet-info-card" style="margin-bottom:10px;">
+ <div class="diet-info-t">${MOIS_NOMS[mois]}, ${quinzaine===1?'1ère':'2ème'} quinzaine</div>
+ ${parseSubsectionedText(biweekly.texte)}
+ </div>`;
+ }
+
+ // ═══ Conseils selon la phase du cycle (uniquement si la personne suit un cycle actif) ═══
+ const cycleInfo=(typeof getCurrentCycleInfo==='function')?getCurrentCycleInfo():null;
+ if(cycleInfo && cycleInfo.phase){
+ const PHASE_KEY_MAP={'Menstruelle':'menstruelle','Folliculaire':'folliculaire','Ovulation':'ovulatoire','Lutéale':'luteale'};
+ const phaseKey=PHASE_KEY_MAP[cycleInfo.phase];
+ if(phaseKey){
+ try{
+ const {data:phaseData,error:phaseErr}=await sb.from('cycle_phase_nutrition_tips').select('*').eq('phase',phaseKey).maybeSingle();
+ if(!phaseErr&&phaseData){
+ tips+=`<div class="diet-info-card" style="margin-bottom:10px;">
+ <div class="diet-info-t">${phaseData.saison_titre||''}</div>
+ <div class="diet-guide-s" style="margin-bottom:12px;">${(phaseData.saison_texte||'').replace(/\n/g,'<br>')}</div>
+ <div class="diet-info-t">${phaseData.detail_titre||''}</div>
+ ${parseSubsectionedText(phaseData.detail_texte||'')}
+ </div>`;
+ }
+ }catch(e){}
+ }
+ }
  return {season,tips};
 }
-
+// Découpe un texte structuré en blocs "Sous-titre\nParagraphe" (séparés par une ligne vide) en
+// sous-titres violets gras majuscules suivis du texte, dans le même style que le reste de l'app.
+function parseSubsectionedText(text){
+ if(!text)return'';
+ const blocks=text.trim().split(/\n\s*\n/).filter(Boolean);
+ return blocks.map(b=>{
+ const lines=b.split('\n');
+ const label=lines[0].trim();
+ const body=lines.slice(1).join(' ').trim();
+ if(!body)return `<div class="diet-guide-s" style="margin-bottom:10px;">${label}</div>`;
+ return `<div class="plan-subtitle">${label.toUpperCase()} :</div><div class="diet-guide-s" style="margin-bottom:12px;">${body}</div>`;
+ }).join('');
+}
 
 async function renderDietPlan(){
  const wrap=document.getElementById('dietScroll');
@@ -2952,6 +3033,7 @@ function enterApp(){
 let obStep=0;
 const OB_STEPS=[
  {type:'input',part:'Ton Profil',title:'Comment tu t\'appelles ?',fields:[{id:'obName',ph:'Ton prénom',type:'text'}]},
+ {type:'choice',part:'Ton Profil',title:'Ton sexe ?',opts:['Femme','Homme']},
  {type:'slider',part:'Ton Profil',title:'Quel âge as-tu ?',min:16,max:65,val:30,id:'obAge'},
  {type:'slider',part:'Ton Profil',title:'Ta taille ?',min:140,max:200,val:165,id:'obHeight',unit:'cm'},
  {type:'slider',part:'Ton Profil',title:'Ton poids actuel ?',min:40,max:150,val:62,id:'obWeight',unit:'kg'},
@@ -3079,6 +3161,13 @@ function obPrev(){
  }
  if(obStep<=0)return;
  obStep--;
+ // Un profil "Homme" resaute la question menstruations (et sa date) si elle avait été sautée à l'aller
+ if(userProfile.sexe==='homme' && OB_STEPS[obStep] && OB_STEPS[obStep].type==='date'){
+ obStep--;
+ }
+ if(userProfile.sexe==='homme' && OB_STEPS[obStep] && OB_STEPS[obStep].type==='choice' && OB_STEPS[obStep].title.includes('menstruations')){
+ obStep--;
+ }
  // Re-saute l'étape date si elle avait été sautée à l'aller (pas de règles)
  if(OB_STEPS[obStep] && OB_STEPS[obStep].type==='date' && !userProfile.hasPeriod){
  obStep--;
@@ -3093,12 +3182,14 @@ function obNext(){
  // Save current step data
  if(s.type==='input'){
  userProfile.name=document.getElementById('obName')?.value||'';
+ } else if(s.type==='choice' && OB_STEPS[obStep].title.includes('sexe')){
+ userProfile.sexe=obChoiceIdx===1?'homme':'femme';
  } else if(s.type==='slider'){
  const v=+document.getElementById(s.id).value;
  if(s.id==='obAge') userProfile.age=v;
  if(s.id==='obHeight') userProfile.height=v;
  if(s.id==='obWeight') userProfile.weight=v;
- } else if(s.type==='choice' && obStep===4){
+ } else if(s.type==='choice' && OB_STEPS[obStep].title.includes('menstruations')){
  userProfile.hasPeriod=obChoiceIdx===0;
  userProfile.contraception=obChoiceIdx===1;
  userProfile.perimenopause=obChoiceIdx===2;
@@ -3164,6 +3255,10 @@ function obNext(){
  }
  obChoiceIdx=-1;
  obStep++;
+ // Un profil "Homme" saute entièrement les questions liées au cycle féminin (menstruations + date des dernières règles)
+ if(userProfile.sexe==='homme' && OB_STEPS[obStep] && OB_STEPS[obStep].type==='choice' && OB_STEPS[obStep].title.includes('menstruations')){
+ obStep+=2; // saute la question ET l'étape date qui la suit
+ }
  // Sauter l'étape date si pas de menstruations
  if(OB_STEPS[obStep] && OB_STEPS[obStep].type==='date' && !userProfile.hasPeriod){
  obStep++;
@@ -3336,7 +3431,15 @@ function refreshDash(){
  const dStressEl=document.getElementById('dStress');
  if(dStressEl)dStressEl.innerHTML=stressScore+'<span class="quick-unit">/10</span>';
  updateRecoveryGauges();
+ const cycleWrap=document.getElementById('cycleSectionWrap');
+ if(cycleWrap){
+ if(userProfile.sexe==='homme'){
+ cycleWrap.style.display='none';
+ }else{
+ cycleWrap.style.display='';
  renderCycle();
+ }
+ }
  buildRoutine();
  calcNutrition();
  updateSessionsMonth();
@@ -3847,8 +3950,8 @@ function getTodaySession(todayIdx){
 // Catalogue des types de routine proposés. Chaque type cherche des clips filtrés par moment
 // et triés en priorité selon l'objectif visé, avec un bonus si le dosha du clip correspond au profil.
 const ROUTINE_TYPES=[
- {id:'matin_reveil',titre:'Ta routine du matin',sous:'Réveiller le corps',moment:'matin',objectif:'energie',dureeMin:7,img:'yoga1'},
- {id:'soir_ralentir',titre:'Ta routine du soir',sous:'Ralentir et relâcher',moment:'soir',objectif:'apaisement',dureeMin:9,img:'yoga3'},
+ {id:'matin_reveil',titre:'Ta routine du matin',sous:'Réveiller le corps',moment:'matin',objectif:'energie',dureeMin:7,img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a8bedb1700274.03571474_morningroutine.png'},
+ {id:'soir_ralentir',titre:'Ta routine du soir',sous:'Ralentir et relâcher',moment:'soir',objectif:'apaisement',dureeMin:9,img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a8bedb921a6f0.17844406_eveningroutine.png'},
 ];
 let _movementClipsCache=null;
 async function fetchMovementClips(){
@@ -3938,10 +4041,7 @@ function markRoutineCompletionToday(routineId){
  if(!done.includes(routineId))done.push(routineId);
  localStorage.setItem('holistica-routines-done',JSON.stringify({date:todayStr(),ids:done}));
 }
-const ROUTINE_CARD_PHOTOS=[
- 'https://d1yei2z3i6k35z.cloudfront.net/125337/6a8411b5a4d4d1.52432292_Screenshot2026-08-18at10.02.06.png',
- 'https://d1yei2z3i6k35z.cloudfront.net/125337/6a8411bd36a069.42615250_Screenshot2026-08-18at10.01.43.png',
-];
+const ROUTINE_CARD_PHOTOS=[]; // conservé pour compatibilité, plus utilisé (chaque routine a désormais sa propre image)
 async function renderRoutinesSection(){
  const wrap=document.getElementById('routinesWrap');
  if(!wrap)return;
@@ -3953,16 +4053,13 @@ async function renderRoutinesSection(){
  const playlist=buildRoutinePlaylist(clips,rt,doshaKey);
  if(!playlist.length)return'';
  const totalMin=Math.round(playlist.reduce((s,c)=>s+c.duree_sec,0)/60);
- const isDone=doneToday.includes(rt.id);
- const photo=ROUTINE_CARD_PHOTOS[Math.floor(Math.random()*ROUTINE_CARD_PHOTOS.length)];
  return `<div class="routine-card" onclick='playRoutine(${JSON.stringify(playlist.map(c=>c.id))},"${rt.id}")'>
- <div class="routine-card-img" style="background-image:url('${photo}');"></div>
+ <div class="routine-card-img" style="background-image:url('${rt.img}');"></div>
  <div class="routine-card-overlay"></div>
  <div class="routine-card-body">
  <div class="routine-card-t">${rt.titre}</div>
  <div class="routine-card-s">${rt.sous} · <span class="routine-card-min">${totalMin} min</span></div>
  </div>
- <div class="routine-card-play${isDone?' done':''}">${isDone?'✓':'▶'}</div>
  </div>`;
  }).join('');
 }
@@ -4040,6 +4137,23 @@ function getWatchedPercent(){
  if(!total)return 0;
  return Math.min(100,Math.round((totalWatchedSec/total)*100));
 }
+// Sur l'écran d'intro : le bouton en haut à gauche sert à quitter (icône maison).
+// Pendant la lecture d'une vidéo : il ramène au sommaire plutôt que de quitter (icône flèche retour).
+function handleTopLeftButton(){
+ if(routineIndex===-1){
+ attemptExitRoutine();
+ }else{
+ const currentClip=routineQueue[routineIndex];
+ if(currentClip)recordWatchedTime(currentClip);
+ clearRoutineAutoTimer();
+ showIntroSlide(true);
+ }
+}
+function updateTopLeftButtonIcon(){
+ const isIntro=routineIndex===-1;
+ document.getElementById('rpHomeIconHouse').style.display=isIntro?'block':'none';
+ document.getElementById('rpHomeIconBack').style.display=isIntro?'none':'block';
+}
 function attemptExitRoutine(){
  // comptabilise le temps du clip en cours avant d'afficher l'écran de fin
  if(routineIndex>=0&&routineQueue[routineIndex]){
@@ -4085,8 +4199,20 @@ window.addEventListener('message',(event)=>{
  try{ if(typeof data==='string')data=JSON.parse(data); }catch(e){ return; }
  if(data && data.event==='ended' && _bunnyEndedCallback)_bunnyEndedCallback();
 });
+function capitalizeFirst(s){
+ if(!s)return s;
+ return s.charAt(0).toUpperCase()+s.slice(1);
+}
 function bunnyIframeHtml(clip){
- return `<iframe src="https://iframe.mediadelivery.net/embed/${BUNNY_LIBRARY_ID}/${clip.yt_id}?autoplay=true&loop=false&controls=false" loading="lazy" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;" allowfullscreen="true"></iframe>`;
+ return `<iframe src="https://iframe.mediadelivery.net/embed/${BUNNY_LIBRARY_ID}/${clip.yt_id}?autoplay=true&loop=false&controls=false&muted=${rpIsMuted?'true':'false'}" loading="lazy" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;" allowfullscreen="true"></iframe>`;
+}
+let rpIsMuted=true; // démarre en muet pour garantir le lancement automatique (règle des navigateurs), l'utilisatrice peut réactiver le son
+function toggleRoutineMute(){
+ rpIsMuted=!rpIsMuted;
+ document.getElementById('rpMuteIconOn').style.display=rpIsMuted?'none':'block';
+ document.getElementById('rpMuteIconOff').style.display=rpIsMuted?'block':'none';
+ // recharge le clip en cours avec le nouvel état du son
+ if(routineIndex>=0)openRoutineClip(false);
 }
 function advanceRoutineManually(){
  clearRoutineAutoTimer();
@@ -4141,9 +4267,11 @@ function appendStageSlide(html,animate){
 function showIntroSlide(animate){
  clearRoutineAutoTimer();
  routineIndex=-1;
+ updateTopLeftButtonIcon();
  const totalMin=Math.round(routineQueue.reduce((s,c)=>s+c.duree_sec,0)/60);
  document.getElementById('rpTitle').textContent='';
  document.getElementById('rpDureeBadge').style.display='none';
+ document.getElementById('rpMuteBtn').style.display='none';
  document.getElementById('rpProgressFill').style.width='0%';
  document.getElementById('rpPrevBtn').style.visibility='hidden';
  const titre=currentRoutineMeta?currentRoutineMeta.titre:'Ta routine';
@@ -4184,9 +4312,11 @@ function openRoutineClip(animate){
  clearRoutineAutoTimer();
  const clip=routineQueue[routineIndex];
  if(!clip)return;
+ updateTopLeftButtonIcon();
  const launch=()=>{
- document.getElementById('rpTitle').textContent=clip.nom;
+ document.getElementById('rpTitle').textContent=capitalizeFirst(clip.nom);
  document.getElementById('rpDureeBadge').style.display='flex';
+ document.getElementById('rpMuteBtn').style.display='flex';
  const dureeMin=Math.round(clip.duree_sec/60);
  document.getElementById('rpDureeTxt').textContent=(dureeMin<1?'< 1':dureeMin)+' min';
  document.getElementById('rpProgressFill').style.width=Math.round(((routineIndex+1)/routineQueue.length)*100)+'%';
@@ -4789,6 +4919,49 @@ const SUB_ICONS={
  caractere:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/></svg>',
  alimentation:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3v5.5M6 3v5.5M6 8.5c0 1.5-.4 2-.75 2M6 8.5c0-1.5.4-2 .75-2M5.25 10.5V21"/><circle cx="13.5" cy="12" r="7.5"/><circle cx="13.5" cy="12" r="4"/><path d="M19.5 3c1.2.3 1.5 2 1.5 3.5S20.7 9.7 19.5 10"/></svg>',
 };
+const DOSHA_INTRO_TEXT='En Ayurveda, les Doshas sont trois grandes énergies qui influencent notre constitution, notre digestion, notre énergie, notre mental et notre équilibre général : Vata, Pitta et Kapha. Nous possédons tous les trois, mais dans des proportions différentes. Votre profil dominant peut vous aider à mieux comprendre ce dont votre corps a besoin, sans vous enfermer dans une catégorie fixe.';
+const DOSHA_SHORT={
+ vata:'Vata est le Dosha du mouvement. Il est associé aux éléments air et espace et influence notamment la respiration, la circulation, le système nerveux et la mobilité. Les personnes à dominante Vata sont souvent créatives, spontanées, sensibles et pleines d\'idées. Leur énergie peut cependant être irrégulière. Lorsqu\'il augmente, Vata peut se manifester par de l\'agitation, de l\'anxiété, une digestion variable, des ballonnements, une peau sèche ou des difficultés à dormir. La régularité, la chaleur, les repas nourrissants et une routine stable sont généralement particulièrement favorables à son équilibre.',
+ pitta:'Pitta est le Dosha de la transformation. Associé principalement aux éléments feu et eau, il gouverne la digestion, le métabolisme et de nombreux processus de transformation du corps. Les personnes à dominante Pitta sont souvent ambitieuses, structurées, concentrées et capables de passer rapidement à l\'action. Lorsque Pitta augmente, elles peuvent devenir plus critiques, impatientes ou perfectionnistes et ressentir davantage de chaleur, d\'acidité, d\'inflammation ou d\'irritabilité. Pour retrouver son équilibre, Pitta bénéficie généralement de modération, de fraîcheur, de pauses régulières et d\'une alimentation variée évitant les excès de stimulants, d\'épices très piquantes et d\'aliments très irritants.',
+ kapha:'Kapha est le Dosha de la stabilité et de la structure. Associé aux éléments terre et eau, il participe à la cohésion, à la lubrification et à la résistance de l\'organisme. Les personnes à dominante Kapha sont souvent calmes, loyales, patientes et constantes. Elles disposent généralement d\'une énergie plus stable mais peuvent avoir tendance à la lenteur ou à l\'inertie lorsqu\'elles manquent de stimulation. Lorsque Kapha augmente, une sensation de lourdeur, de fatigue, de congestion ou de stagnation peut apparaître. Le mouvement, la variété, la stimulation et une alimentation légère et chaleureuse peuvent alors contribuer à retrouver davantage de dynamisme.',
+};
+const DOSHA_IMAGES={
+ vata:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a8bf4149d8c74.15715327_vata-dosha-guide.jpg',
+ pitta:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a8bf4038370e0.36122445_pitta.jpg',
+ kapha:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a8bf40ac70893.75885199_kapha.jpg',
+};
+const DOSHA_LONG_SECTIONS={
+ vata:[
+  {titre:'Profil général',texte:'Vata est associé à l\'espace et à l\'air. Il représente le mouvement, la créativité, la communication, la circulation et l\'adaptation. Son énergie est mobile, légère, rapide et changeante.',items:null},
+  {titre:'Comportement',texte:'Vata est souvent curieux, imaginatif, intuitif et spontané. Il aime découvrir, apprendre, voyager, échanger et commencer de nouveaux projets. Il pense rapidement et peut avoir beaucoup d\'idées simultanément.\n\nIl peut cependant avoir du mal à terminer ce qu\'il commence. Son humeur et son énergie peuvent changer rapidement. Il peut être très enthousiaste un jour puis avoir besoin de s\'isoler ou de récupérer le lendemain.',items:null},
+  {titre:'Aspect physique',texte:'Vata est souvent associé à une silhouette plutôt fine ou longiligne, avec une musculature qui se développe parfois plus difficilement. Les extrémités peuvent être froides et la peau naturellement plus sèche.\n\nSon énergie peut être irrégulière : périodes de grande motivation suivies de périodes de fatigue.',items:null},
+  {titre:'Ce que Vata aime',texte:'',items:['La nouveauté et le changement','Voyager et découvrir','Les activités créatives','Les échanges et les nouvelles rencontres','La spontanéité','Les pratiques douces et variées','Les environnements inspirants']},
+  {titre:'Ce dont Vata a besoin',texte:'',items:['Régularité','Chaleur','Repos','Repas nourrissants et réguliers','Sommeil suffisant','Temps calme','Ancrage','Routines simples et répétées']},
+  {titre:'Ce qui peut déséquilibrer Vata',texte:'',items:['Trop de changements','Stress chronique','Manque de sommeil','Voyages fréquents','Horaires irréguliers','Sauter des repas','Excès de caféine','Trop d\'activité physique','Alimentation très froide, sèche ou légère']},
+  {titre:'Quand Vata est déséquilibré',texte:'Le déséquilibre peut se traduire par de l\'agitation, de l\'anxiété, de la dispersion, des difficultés à se concentrer ou à dormir. Sur le plan digestif, Vata est traditionnellement associé aux ballonnements, gaz et transit irrégulier. Une sensation de froid, de sécheresse ou de fatigue peut également apparaître.',items:null},
+  {titre:'Comment rééquilibrer Vata',texte:'Revenir à une routine stable est généralement la priorité. Privilégiez des repas chauds et réguliers, des activités physiques modérées, des horaires de sommeil constants et des moments de calme. Les pratiques lentes comme le yoga doux, la respiration, la méditation ou la marche peuvent favoriser l\'ancrage.',items:null},
+ ],
+ pitta:[
+  {titre:'Profil général',texte:'Pitta est associé au feu et à l\'eau. Il représente la transformation, la digestion, le métabolisme, la concentration et la capacité à passer à l\'action. Son énergie est intense, précise et structurée.',items:null},
+  {titre:'Comportement',texte:'Pitta est souvent déterminé, ambitieux, organisé et orienté vers les résultats. Il aime comprendre, analyser, optimiser et atteindre ses objectifs.\n\nIl apprécie les challenges et peut avoir un fort esprit de compétition. Lorsqu\'il est équilibré, il possède généralement une bonne capacité de décision et de concentration.\n\nEn excès, cette même énergie peut devenir perfectionnisme, impatience, besoin de contrôle ou irritabilité.',items:null},
+  {titre:'Aspect physique',texte:'Pitta est souvent associé à une constitution moyenne, avec une musculature qui peut se développer facilement. Le corps peut avoir tendance à produire davantage de chaleur.\n\nLa peau peut être sensible ou réactive et avoir tendance aux rougeurs. L\'appétit peut être marqué et la digestion généralement active.',items:null},
+  {titre:'Ce que Pitta aime',texte:'',items:['Les challenges','Les objectifs précis','La compétition','Apprendre et comprendre','Organiser','Être efficace','Diriger des projets','Les activités stimulantes']},
+  {titre:'Ce dont Pitta a besoin',texte:'',items:['Modération','Fraîcheur','Temps de pause','Lâcher-prise','Activités non compétitives','Contact avec la nature','Sommeil régulier','Moments de plaisir sans objectif de performance']},
+  {titre:'Ce qui peut déséquilibrer Pitta',texte:'',items:['Surmenage','Compétition excessive','Perfectionnisme','Colère ou frustration répétée','Chaleur excessive','Manque de repos','Alcool','Excès de caféine','Aliments très épicés ou irritants']},
+  {titre:'Quand Pitta est déséquilibré',texte:'Pitta en excès peut se manifester par de l\'irritabilité, de l\'impatience, de la frustration ou un besoin accru de contrôle. Sur le plan physique, l\'Ayurveda l\'associe notamment aux sensations de chaleur, à l\'acidité digestive, aux rougeurs ou aux réactions inflammatoires.',items:null},
+  {titre:'Comment rééquilibrer Pitta',texte:'Créer davantage d\'espace entre l\'effort et la récupération. Privilégiez les activités modérées, les moments dans la nature, les pratiques relaxantes et une alimentation variée et peu irritante. Apprendre à ralentir sans transformer le repos en nouvel objectif est particulièrement important pour Pitta.',items:null},
+ ],
+ kapha:[
+  {titre:'Profil général',texte:'Kapha est associé à l\'eau et à la terre. Il représente la stabilité, la structure, la force, la récupération et la capacité à maintenir l\'équilibre. Son énergie est lente, stable, lourde et nourrissante.',items:null},
+  {titre:'Comportement',texte:'Kapha est généralement calme, patient, loyal et constant. Il aime la stabilité, les habitudes, les relations profondes et les environnements sécurisants.\n\nIl peut prendre plus de temps pour démarrer quelque chose, mais lorsqu\'il s\'engage, il est souvent très persévérant.\n\nSon principal défi peut être l\'inertie : rester dans une situation confortable même lorsqu\'un changement serait bénéfique.',items:null},
+  {titre:'Aspect physique',texte:'Kapha est traditionnellement associé à une constitution plus robuste, avec une ossature et une musculature naturellement solides. Le corps peut avoir tendance à stocker plus facilement.\n\nLa peau peut être douce et bien hydratée. L\'énergie est souvent stable mais le réveil peut être plus lent.',items:null},
+  {titre:'Ce que Kapha aime',texte:'',items:['Le confort','Les routines','La stabilité','Les relations profondes','Les moments tranquilles','Dormir et récupérer','Les environnements familiers','Prendre son temps']},
+  {titre:'Ce dont Kapha a besoin',texte:'',items:['Mouvement quotidien','Stimulation','Nouveauté','Légèreté','Variété','Exposition à la lumière','Activités dynamiques','Défis et objectifs']},
+  {titre:'Ce qui peut déséquilibrer Kapha',texte:'',items:['Sédentarité','Trop dormir','Grignotage','Alimentation très riche ou lourde','Excès de sucre','Manque de stimulation','Isolement','Routine trop figée','Manque d\'activité physique']},
+  {titre:'Quand Kapha est déséquilibré',texte:'Kapha en excès peut être associé à une sensation de lourdeur, de lenteur, de fatigue ou de manque de motivation. La personne peut avoir tendance à procrastiner, à rechercher davantage de confort ou à avoir du mal à sortir de ses habitudes.\n\nSur le plan physique, l\'Ayurveda associe notamment Kapha à la congestion, à la rétention et à une digestion plus lente.',items:null},
+  {titre:'Comment rééquilibrer Kapha',texte:'Le mouvement est essentiel. Commencez la journée de manière dynamique, augmentez progressivement l\'activité physique et recherchez davantage de stimulation. Variez les activités, sortez de la routine et privilégiez une alimentation légère mais suffisamment nourrissante. Le but n\'est pas de se restreindre, mais de retrouver de la légèreté et du mouvement.',items:null},
+ ],
+};
 function doshaBlockHtml(key,label){
  const d=DOSHA_DETAIL[key];
  return `<div class="dosha-analysis-block">
@@ -4802,6 +4975,7 @@ function doshaBlockHtml(key,label){
  </div>`;
 }
 function renderDoshaProfile(){
+ document.getElementById('doshaIntroText').textContent=DOSHA_INTRO_TEXT;
  document.getElementById('dpBarV').style.width=userProfile.doshaV+'%';
  document.getElementById('dpBarP').style.width=userProfile.doshaP+'%';
  document.getElementById('dpBarK').style.width=userProfile.doshaK+'%';
@@ -4823,6 +4997,30 @@ function renderDoshaProfile(){
  html=doshaBlockHtml(userProfile.dosha,name);
  }
  document.getElementById('dpAnalysis').innerHTML=html;
+ document.getElementById('doshaLongProfileWrap').innerHTML='';
+ ['Vata','Pitta','Kapha'].forEach(d=>document.getElementById('doshaBtn'+d).classList.remove('active'));
+}
+// Affiche la description longue et complète d'un dosha (accessible pour les 3, pas seulement le sien)
+function showDoshaLongProfile(doshaKey){
+ ['Vata','Pitta','Kapha'].forEach(d=>document.getElementById('doshaBtn'+d).classList.toggle('active',d.toLowerCase()===doshaKey));
+ const label=doshaKey.charAt(0).toUpperCase()+doshaKey.slice(1);
+ const sections=DOSHA_LONG_SECTIONS[doshaKey]||[];
+ const sectionsHtml=sections.map(s=>{
+ if(s.items){
+ return `<div class="dosha-long-subtitle">${s.titre.toUpperCase()}</div><ul class="plan-ing-list">${s.items.map(i=>`<li>${i}</li>`).join('')}</ul>`;
+ }
+ return `<div class="dosha-long-subtitle">${s.titre.toUpperCase()}</div><div class="dosha-long-text">${s.texte}</div>`;
+ }).join('');
+ document.getElementById('doshaLongProfileWrap').innerHTML=`
+ <div class="dosha-long-card">
+ <div class="dosha-long-img" style="background-image:url('${DOSHA_IMAGES[doshaKey]}');"></div>
+ <div class="dosha-long-body">
+ <div class="dosha-long-title">${label}</div>
+ <div class="dosha-long-short">${DOSHA_SHORT[doshaKey]}</div>
+ ${sectionsHtml}
+ </div>
+ </div>`;
+ document.getElementById('doshaLongProfileWrap').scrollIntoView({behavior:'smooth',block:'start'});
 }
 /* ═══════ MA PROGRESSION ═══════ */
 function renderProgression(){

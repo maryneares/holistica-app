@@ -231,6 +231,11 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .quick-val{font-family:'League Spartan',sans-serif;font-size:22px;color:var(--ink);font-weight:800;}
 .quick-unit{font-size:13.5px;color:var(--ink-l);}
 .quick-slider{width:100%;accent-color:var(--purple);margin-top:4px;}
+.menopause-tip-btn{width:100%;background:linear-gradient(135deg,#7B6EC8,#C98FB0);border:none;border-radius:16px;padding:16px 18px;text-align:left;cursor:pointer;box-shadow:var(--sh);}
+.menopause-tip-lbl{display:block;color:rgba(255,255,255,0.85);font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.3px;margin-bottom:4px;}
+.menopause-tip-topic{display:block;color:white;font-family:'League Spartan',sans-serif;font-weight:800;font-size:18px;}
+.menopause-tip-card{margin:0 20px 24px;background:white;border-radius:20px;padding:22px 20px;box-shadow:var(--sh);border:1px solid var(--border);}
+.menopause-tip-title{font-family:'League Spartan',sans-serif;font-weight:800;font-size:22px;color:var(--purple-m);margin-bottom:16px;}
 .sleep-time-row{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;}
 .sleep-time-box{background:var(--ivory);border-radius:10px;padding:6px 8px;border:1px solid var(--border);}
 .sleep-time-box label{display:block;font-size:12px;color:var(--ink-l);text-transform:uppercase;letter-spacing:.3px;margin-bottom:2px;font-weight:600;}
@@ -319,7 +324,15 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .pd-week-title{font-size:14.5px;font-weight:800;color:var(--ink-l);text-transform:uppercase;letter-spacing:.5px;margin:22px 20px 10px;}
 .pd-week-title:first-of-type{margin-top:16px;}
 /* Diététique */
-.diet-locked-wrap{padding:60px 24px;text-align:center;}
+.diet-locked-wrap{margin:20px;padding:44px 24px;text-align:center;background:linear-gradient(160deg,#7B6EC8,#5B3E8E);border-radius:20px;box-shadow:var(--sh);}
+.locked-tab-wrap{position:relative;min-height:70vh;overflow:hidden;}
+.locked-tab-bg{filter:blur(7px);opacity:0.55;pointer-events:none;user-select:none;transform:scale(1.02);}
+.locked-tab-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 22px;background:linear-gradient(180deg,rgba(248,247,252,0.45) 0%,rgba(248,247,252,0.97) 22%);text-align:center;}
+.locked-tab-title{font-family:'League Spartan',sans-serif;font-weight:800;font-size:20px;color:var(--purple-m);margin-bottom:16px;max-width:280px;}
+.locked-tab-list{list-style:none;padding:0;margin:0 0 20px;text-align:left;width:100%;max-width:320px;}
+.locked-tab-list li{font-size:13.5px;color:var(--ink-m);line-height:22px;padding-left:22px;position:relative;margin-bottom:6px;}
+.locked-tab-list li::before{content:'✓';position:absolute;left:0;color:var(--purple-m);font-weight:800;}
+.locked-tab-overlay .diet-upgrade-btn{max-width:280px;}
 .diet-tabs{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:14px 20px 12px;}
 .diet-tab{position:relative;overflow:hidden;background:white;color:var(--ink-m);border:1.5px solid var(--border);font-size:15px;font-weight:700;padding:18px 12px;border-radius:18px;cursor:pointer;font-family:'League Spartan',sans-serif;text-align:center;line-height:1.5;min-height:130px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;transition:transform .15s ease,box-shadow .15s ease;}
 .diet-tab:active{transform:scale(.97);}
@@ -578,7 +591,7 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .dosha-select-btn{flex:1;padding:12px 0;border-radius:50px;border:1.5px solid var(--purple-m);background:white;color:var(--purple-m);font-family:'League Spartan',sans-serif;font-weight:700;font-size:14.5px;cursor:pointer;}
 .dosha-select-btn.active{background:var(--purple-m);color:white;}
 .dosha-long-card{background:white;border-radius:20px;overflow:hidden;box-shadow:var(--sh);border:1px solid var(--border);margin-bottom:20px;}
-.dosha-long-img{width:100%;height:180px;background-size:cover;background-position:center;}
+.dosha-long-img{width:100%;height:220px;background-size:contain;background-position:center;background-repeat:no-repeat;background-color:var(--lav-pale);}
 .dosha-long-body{padding:18px 20px 22px;}
 .dosha-long-title{font-family:'League Spartan',sans-serif;font-weight:800;font-size:22px;color:var(--purple-m);margin-bottom:8px;}
 .dosha-long-short{font-size:13.5px;color:var(--ink-m);line-height:21px;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border);}
@@ -727,7 +740,8 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .rp-progress{position:absolute;top:0;left:0;right:0;height:4px;background:rgba(255,255,255,0.25);z-index:5;}
 .rp-progress-fill{height:100%;background:var(--purple-m);border-radius:0 3px 3px 0;transition:width .4s ease;}
 .rp-home{position:absolute;top:20px;left:16px;z-index:5;width:38px;height:38px;border-radius:50%;background:rgba(0,0,0,0.45);backdrop-filter:blur(6px);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;}
-.rp-title{position:absolute;top:76px;left:16px;right:16px;z-index:5;color:white;font-family:'League Spartan',sans-serif;font-weight:800;font-size:22px;text-align:center;text-shadow:0 4px 14px rgba(91,62,142,0.85),0 2px 6px rgba(0,0,0,0.4);}
+.rp-title{position:absolute;top:70px;left:16px;right:16px;z-index:5;color:white;font-family:'League Spartan',sans-serif;font-weight:800;font-size:22px;line-height:1.25;text-align:center;word-break:break-word;overflow-wrap:break-word;text-shadow:0 4px 14px rgba(91,62,142,0.85),0 2px 6px rgba(0,0,0,0.4);}
+.rp-title.long{font-size:17px;}
 .rp-countdown{position:absolute;inset:0;z-index:15;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.55);}
 .rp-countdown.open{display:flex;}
 .rp-countdown-num{font-family:'League Spartan',sans-serif;font-weight:800;font-size:110px;color:white;text-shadow:-2px -2px 0 var(--purple-m),2px -2px 0 var(--purple-m),-2px 2px 0 var(--purple-m),2px 2px 0 var(--purple-m);}
@@ -1018,6 +1032,12 @@ document.addEventListener('DOMContentLoaded', function(){
 </div>
 <div class="quick-card"><div class="quick-lbl"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--ink-l)" stroke-width="2" stroke-linecap="round" style="vertical-align:-1px;margin-right:3px;"><circle cx="12" cy="8" r="4"/><path d="M6 21c0-3.5 2.5-6 6-6s6 2.5 6 6"/></svg>Stress aujourd'hui</div><div class="quick-val" id="dStress">5<span class="quick-unit">/10</span></div><input type="range" class="quick-slider" id="stressSlider" min="1" max="10" value="5" oninput="stressScore=parseFloat(this.value);document.getElementById('dStress').innerHTML=this.value+'<span class=quick-unit>/10</span>';calcRecovery()"></div>
 </div>
+<div id="menopauseTipBtnWrap" style="display:none;padding:0 20px 8px;">
+<button class="menopause-tip-btn" onclick="openMenopauseTip()">
+<span class="menopause-tip-lbl">Mon conseil ménopause du jour</span>
+<span class="menopause-tip-topic" id="menopauseTipTopic">Chargement…</span>
+</button>
+</div>
 <!-- Routine -->
 <div class="sec" id="secRoutine" style="display:block;"><h2>Routine <em>du jour</em></h2><div class="sec-sub">Selon ton profil ayurvédique</div></div>
 <div class="todo-wrap" id="todoWrap"></div>
@@ -1282,6 +1302,11 @@ document.addEventListener('DOMContentLoaded', function(){
 </div>
 
 <!-- ═══ MON PROFIL AYURVÉDIQUE ═══ -->
+<div id="menopauseTipScreen" class="screen">
+<button class="vd-back" onclick="go('dashboard')">←</button>
+<div class="sec" style="padding-top:60px;"><h2>Conseil <em>ménopause</em></h2><div class="sec-sub">Un sujet différent chaque jour</div></div>
+<div class="menopause-tip-card" id="menopauseTipCard"></div>
+</div>
 <div id="doshaProfile" class="screen">
 <div class="ob-top" style="background:var(--ivory);padding:calc(env(safe-area-inset-top) + 30px) 20px 10px;">
 <button class="vd-back" onclick="go('profil')" style="position:static;">←</button>
@@ -1360,7 +1385,7 @@ Partager mon profil
 </div>
 <div class="scroll" style="padding:0 24px;">
 <div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Mes <em>badges</em></div>
-<div style="background:var(--lav-pale);border-radius:14px;padding:14px 16px;margin-bottom:14px;font-size:13.5px;color:var(--ink);line-height:22px;">🎁 Chaque badge débloqué te donne accès à du contenu bonus : recettes exclusives, séances supplémentaires ou points bonus. Continue ta régularité pour tous les obtenir !</div>
+<div style="background:var(--lav-pale);border-radius:14px;padding:14px 16px;margin-bottom:14px;font-size:13.5px;color:var(--ink);line-height:22px;">Chaque badge débloqué te donne accès à du contenu bonus : recettes exclusives, séances supplémentaires ou points bonus. Continue ta régularité pour tous les obtenir !</div>
 <div style="font-size:15.5px;color:var(--ink-l);margin-bottom:16px;"><span id="badgesCount">0/9</span> débloqués, continue pour tous les obtenir</div>
 <div class="badges-grid" id="badgesGrid"></div>
 <div style="height:30px;"></div>
@@ -1561,7 +1586,7 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 </div>
 <div class="scroll" style="padding:0 24px;">
 <div id="unsubStep1">
- <div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">On est triste de te voir <em>partir</em> 💔</div>
+ <div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">On est triste de te voir <em>partir</em></div>
  <div style="font-size:15.5px;color:var(--ink-m);margin:10px 0 20px;">Avant tout, dis-nous pourquoi, ça nous aide à améliorer Holistica Club.</div>
  <div id="unsubReasons"></div>
 </div>
@@ -1782,10 +1807,14 @@ async function loadContent(){
  }catch(e){
  console.error('Erreur loadContent:',e);
  }
- // Rafraîchit les écrans si déjà affichés/visités
+ // Rafraîchit les écrans si déjà affichés/visités. Repoussé à la fin de la file d'attente
+ // (setTimeout) pour être certaine que tout le script est chargé avant d'appeler ces fonctions,
+ // même si la réponse Supabase revient très vite.
+ setTimeout(()=>{
  if(document.getElementById('mvFilters'))renderMv();
  if(document.getElementById('rcFilters'))renderRec();
  if(document.getElementById('naturoBody'))renderNaturo();
+ },0);
 }
 loadContent();
 
@@ -1832,17 +1861,24 @@ const WT_ICONS={
 };
 
 const WT_STEPS=[
-  {icon:'sparkle',img:'',title:'Bienvenue sur Holistica Club',desc:"On te fait découvrir chaque partie de l'application pour que tu trouves tout facilement dès le premier jour."},
-  {icon:'home',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a6b3d52ca4077.20955655_IMG_1254.PNG',title:'Ton écran d\'accueil',desc:"C'est l'onglet du milieu, en bas de ton écran. Tu y retrouves chaque jour : ton message du jour selon ton profil ayurvédique et la phase de la lune, ton cycle (jours avant tes prochaines règles, ta phase actuelle et ton niveau d'énergie), ta routine bien-être ayurvédique adaptée à ton profil et ton cycle, et ton humeur du jour à renseigner pour suivre ton stress et ton bien-être, avec une moyenne calculée sur le mois."},
-  {icon:'play',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a6b3d243c03f5.97813414_Screenshot2026-07-28at14.42.41.png',title:'Tes séances',desc:"C'est l'onglet tout à gauche. Suis une ligne directrice pour progresser en yoga, pilates ou méditation, ou pioche librement dans la bibliothèque complète des cours. Certains se débloquent avec ton ancienneté et tes connexions régulières, tu gagnes des points et des badges au fil du temps."},
+  {icon:'sparkle',img:'',title:'Bienvenue sur Holistica Club',desc:"On te fait découvrir en détail chaque partie de l'application, pour que tu profites de tout ce qui est à ta disposition dès le premier jour."},
+  {icon:'home',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a6b3d52ca4077.20955655_IMG_1254.PNG',title:'Ton écran d\'accueil',desc:"C'est l'onglet du milieu, en bas de ton écran. Tu y retrouves chaque jour ton message personnalisé selon ton profil ayurvédique et la phase de la lune, ton cycle menstruel (jours avant tes prochaines règles, phase actuelle et niveau d'énergie), ton sommeil et ton stress à renseigner, et ton parcours du jour pour visualiser d'un coup d'œil tout ce qu'il te reste à faire."},
+  {icon:'pulse',img:'',title:'Ton conseil ménopause du jour',desc:"Si tu es en préménopause ou ménopause, un bouton dédié apparaît sur ton accueil, juste sous Sommeil & Stress. Il t'annonce un sujet différent chaque jour, bouffées de chaleur, sommeil, humeur, digestion, et bien d'autres, avec des recommandations naturopathie, nutrition et ayurvédiques pour t'accompagner au quotidien."},
+  {icon:'play',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a6b3d243c03f5.97813414_Screenshot2026-07-28at14.42.41.png',title:'Tes séances',desc:"C'est l'onglet tout à gauche, ton espace mouvement complet. Retrouve ta routine du matin et ta routine du soir, tes programmes à suivre pas à pas, et la bibliothèque complète des cours."},
+  {icon:'play',img:'',title:'Tes routines du matin et du soir',desc:"Chaque routine est composée automatiquement de 6 à 7 mouvements adaptés à ton profil, dans une combinaison différente chaque jour pour ne jamais te lasser. Touche un mouvement dans le sommaire pour voir sa description avant de commencer, puis lance la séance : les vidéos s'enchaînent automatiquement avec un décompte entre chaque, et tu peux réactiver le son à tout moment. Une séance compte comme complétée dès que tu en as regardé au moins 60%."},
+  {icon:'award',img:'',title:'Tes programmes & ta bibliothèque',desc:"Suis une ligne directrice claire pour progresser en Pilates ou en méditation guidée, séance après séance, ou pioche librement dans la bibliothèque complète des cours de yoga, Pilates et méditation. Certains contenus se débloquent avec ton ancienneté et tes connexions régulières, et tu gagnes des points et des badges au fil de ta progression."},
   {icon:'bowl',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a6b3db50db989.92116283_IMG_1261.PNG',title:'Tes recettes',desc:"C'est le deuxième onglet en partant de la gauche. Retrouve des recettes classées par thème selon ton profil ayurvédique : végétarien, boissons, anti-inflammatoire, petit-déjeuner, et bien plus. Certaines se débloquent aussi selon ton assiduité."},
-  {icon:'leaf',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a6b3d32851aa3.79038288_Screenshot2026-07-28at14.42.25.png',title:'Tes dossiers bien-être',desc:"Juste à côté du bouton Accueil. Chaque semaine, retrouve un dossier complet : soin des cheveux, de la peau, produits ménagers naturels, naturopathie, nutrition, aromathérapie, respiration, et bien d'autres sujets."},
-  {icon:'people',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a75937b502736.96000489_IMG_2240.jpg',title:'Communauté & challenges',desc:"À droite du bouton Accueil. Avec l'offre Immersion, rejoins le groupe WhatsApp pour échanger avec d'autres femmes et Maryne : un cours de yoga en visio chaque mois (avec correction et partage d'écran), une conférence mensuelle, et un nouveau challenge chaque mois pour avancer ensemble."},
-  {icon:'apple',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a759382331f63.37573717_IMG_2241.jpg',title:'Ta diététique',desc:"Deuxième onglet à droite du bouton Accueil. Ton plan alimentaire est calculé selon tes propres paramètres, anti-inflammatoire, sans gluten et sans lactose, et évolue chaque mois avec les saisons. 4 parties : ton plan alimentaire, ton journal quotidien (macros et calories), tes conseils ayurvédiques du moment, et les aliments de saison avec ta liste de courses."},
-  {icon:'user',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a75955383bfe9.60451086_IMG_22422.jpg',title:'Ton profil',desc:"Dernier onglet à droite. Modifie tes informations personnelles, gère ton abonnement, et retrouve ton profil ayurvédique déterminé lors de ton test."},
-  {icon:'pulse',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a7593a90abc39.64516789_IMG_2246.jpg',title:'Ton historique bien-être',desc:"Chaque routine remplie depuis l'accueil vient nourrir ton historique, un aperçu clair de ton évolution jour après jour."},
-  {icon:'moon',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a7593b4ea23b5.66768804_IMG_2248.jpg',title:'Ton thème astral',desc:"Comprends l'énergie du moment : pleine lune, planète en rétrograde, ton signe, ta personnalité, ton année, de quoi éclairer tes prises de décision."},
-  {icon:'award',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a7593af5412f5.54951503_IMG_2247.jpg',title:'Tes badges & récompenses',desc:"Débloque progressivement de nouvelles recettes, de nouveaux cours et séances, et de nouveaux dossiers naturopathie au fil de ta progression."}
+  {icon:'leaf',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a6b3d32851aa3.79038288_Screenshot2026-07-28at14.42.25.png',title:'Tes dossiers bien-être',desc:"C'est le troisième onglet en partant de la gauche. Chaque semaine, un nouveau dossier complet t'attend sur un sujet naturopathie : soin des cheveux, soin de la peau, produits ménagers naturels, nutrition, aromathérapie, respiration, et bien d'autres thèmes pour prendre soin de toi au naturel, à ton rythme."},
+  {icon:'people',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a75937b502736.96000489_IMG_2240.jpg',title:'Communauté & challenges',desc:"À droite du bouton Accueil. Avec l'offre Immersion, rejoins le groupe WhatsApp pour échanger avec d'autres femmes et Maryne, participe à un cours de yoga en visio chaque mois avec correction et partage d'écran, à une conférence mensuelle, et à un nouveau challenge chaque mois pour avancer ensemble."},
+  {icon:'apple',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a759382331f63.37573717_IMG_2241.jpg',title:'Ta diététique',desc:"Deuxième onglet à droite du bouton Accueil, réservé à l'offre Immersion. Ton espace alimentation complet en 4 parties : ton plan alimentaire personnalisé, ton journal quotidien, tes conseils santé et ayurvédiques, et les aliments de saison."},
+  {icon:'apple',img:'',title:'Ton plan alimentaire',desc:"Il change automatiquement toutes les 2 semaines, calculé selon tes propres paramètres, anti-inflammatoire, sans gluten et sans lactose, avec des grammages précis pour chaque aliment. 3 options te sont proposées pour chaque repas, matin, midi, collation et soir."},
+  {icon:'pulse',img:'',title:'Ton journal & tes conseils',desc:"Suis au jour le jour ton total calorique et la répartition entre protéines, glucides et lipides depuis ton journal quotidien. Retrouve aussi des conseils santé et ayurvédiques qui évoluent toutes les 2 semaines, avec des recommandations adaptées à la phase de ton cycle menstruel et à ton alimentation."},
+  {icon:'user',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a75955383bfe9.60451086_IMG_22422.jpg',title:'Ton profil',desc:"Dernier onglet à droite. Modifie tes informations personnelles, gère ton abonnement, et retrouve tout ce qui te concerne : ton profil ayurvédique, ton thème astral, ton historique bien-être, tes badges, et la possibilité de changer d'offre à tout moment."},
+  {icon:'user',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a75955383bfe9.60451086_IMG_22422.jpg',title:'Ton profil ayurvédique, le cœur de l\'app',desc:"C'est ton bilan ayurvédique, rempli lors de ton inscription, qui personnalise toute l'application : il adapte tes routines du matin et du soir, le choix de tes séances, et surtout ton alimentation (plan alimentaire et recommandations nutritionnelles). Retrouve le détail complet de ton dosha dominant, et explore aussi les 2 autres profils, Vata, Pitta et Kapha, en un clic pour mieux te comprendre ou comprendre celles qui t'entourent."},
+  {icon:'moon',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a7593b4ea23b5.66768804_IMG_2248.jpg',title:'Ton thème astral',desc:"Depuis l'onglet Profil. Découvre ton astro du jour, de la semaine, du mois et de l'année, la lune du mois en cours et son influence, ainsi que les portails énergétiques à retenir, dates à chiffres répétés, équinoxes, solstices. De quoi éclairer tes prises de décision au quotidien."},
+  {icon:'pulse',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a7593a90abc39.64516789_IMG_2246.jpg',title:'Ton historique bien-être',desc:"Depuis l'onglet Profil. Chaque routine remplie depuis l'accueil vient nourrir ton historique, un aperçu clair de ton évolution jour après jour."},
+  {icon:'award',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a7593af5412f5.54951503_IMG_2247.jpg',title:'Tes badges & récompenses',desc:"Depuis l'onglet Profil. Débloque progressivement de nouvelles recettes, de nouveaux cours et séances, et de nouveaux dossiers naturopathie au fil de ta progression."},
+  {icon:'sparkle',img:'',title:'Envie d\'aller plus loin ?',desc:"Avec l'offre Immersion, tu débloques : ton plan alimentaire personnalisé qui change toutes les 2 semaines, ton journal quotidien de macros et calories, tes conseils santé et ayurvédiques adaptés à ton cycle, les aliments de saison, l'accès au groupe WhatsApp privé avec Maryne et les autres membres, les défis réguliers, la conférence mensuelle, et les cours en visio. Change d'offre à tout moment depuis l'onglet Profil."}
 ];
 let wtIndex=0;
 
@@ -1907,7 +1943,7 @@ async function confirmNewPassword(){
  const {error}=await sb.auth.updateUser({password:p1});
  btn.textContent='Valider le nouveau mot de passe';
  if(error){toast('Erreur : '+error.message);return;}
- toast('Mot de passe mis à jour ✓');
+ toast('Mot de passe mis à jour');
  // La session de récupération est déjà active : on entre directement dans l'app
  currentUser=(await sb.auth.getUser()).data.user;
  loadProfileAndEnter();
@@ -1918,7 +1954,7 @@ async function handleForgotPassword(){
  if(!email){toast('Entre d\'abord ton email ci-dessus, puis reclique');return;}
  const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+window.location.pathname});
  if(error){toast('Erreur : '+error.message);return;}
- toast('📧 Email de réinitialisation envoyé à '+email);
+ toast('Email de réinitialisation envoyé à '+email);
 }
 
 async function handleSignUp(){
@@ -1944,7 +1980,7 @@ async function handleSignUp(){
  // La confirmation par email est activée côté Supabase : pas de session tant que le lien n'est pas cliqué
  go('signin');
  document.getElementById('siEmail').value=email;
- toast('📧 Vérifie tes emails pour confirmer ton compte avant de te connecter');
+ toast('Vérifie tes emails pour confirmer ton compte avant de te connecter');
  return;
  }
  toast('Compte créé Complète ton profil');
@@ -1967,7 +2003,7 @@ async function deleteAccount(){
  const emailToNotify=userProfile.email||currentUser.email;
  const nameToNotify=userProfile.name||'';
  const {error}=await sb.from('profiles').delete().eq('id',currentUser.id);
- if(error){toast('❌ Erreur : '+error.message);return;}
+ if(error){toast('Erreur : '+error.message);return;}
  // Envoi de la confirmation par email (best-effort, on ne bloque jamais la suppression si l'email échoue)
  if(emailToNotify){
  fetch('/.netlify/functions/send-account-email',{
@@ -1976,7 +2012,7 @@ async function deleteAccount(){
  }).catch(()=>{});
  }
  await sb.auth.signOut();
- toast('Tes données ont été supprimées 🌸');
+ toast('Tes données ont été supprimées');
  setTimeout(()=>location.reload(),1200);
 }
 
@@ -2046,14 +2082,12 @@ async function loadProfileAndEnter(){
  ensureReferralCode();
  applyPendingReferral();
  refreshReferralCount();
- // TEMPORAIRE, verrou d'abonnement désactivé pour la période de tests Google Play.
- // Pour remettre le verrou : décommente les 5 lignes ci-dessous et supprime ce commentaire.
- // if(!isDevAccount() && userProfile.subscriptionStatus!=='active'){
- // go('offers');
- // document.getElementById('bnav').style.display='none';
- // saveProfile();
- // return;
- // }
+ if(!isDevAccount() && userProfile.subscriptionStatus!=='active'){
+ go('offers');
+ document.getElementById('bnav').style.display='none';
+ saveProfile();
+ return;
+ }
  go('dashboard');enterApp();addXP(0);checkBadges(true);
  const wtAlreadySeenLocally=localStorage.getItem('holistica_wt_seen_'+(userProfile.email||''))==='1';
  if(!userProfile.hasSeenWalkthrough&&!wtAlreadySeenLocally)setTimeout(showWalkthrough,600);
@@ -2098,7 +2132,7 @@ function saveProfile(){
  saveTimer=setTimeout(()=>{saveRetryCount=0;saveProfile();},2000);
  } else {
  saveRetryCount=0;
- toast('⚠️ Ta dernière modification n\'a pas pu être enregistrée, vérifie ta connexion');
+ toast('Ta dernière modification n\'a pas pu être enregistrée, vérifie ta connexion');
  }
  } else {
  saveRetryCount=0;
@@ -2108,6 +2142,11 @@ function saveProfile(){
 
 // Point d'entrée unique pour toute connexion réussie : email/mdp, Google, Apple, ou session déjà active
 sb.auth.onAuthStateChange((event,session)=>{
+ // Certains clients Supabase déclenchent ce callback de façon synchrone dès l'inscription (avec
+ // la session déjà active), potentiellement avant que le reste du script ait fini de s'exécuter
+ // (variables déclarées plus bas dans le fichier). On repousse donc systématiquement d'un tick
+ // pour être certaine que tout le script est chargé avant d'entrer dans l'app.
+ setTimeout(()=>{
  console.log('[Auth] event:',event,'session:',!!session);
  if(event==='PASSWORD_RECOVERY'){
  profileLoaded=true; // empêche l'entrée automatique dans l'app tant que le nouveau mot de passe n'est pas défini
@@ -2124,6 +2163,7 @@ sb.auth.onAuthStateChange((event,session)=>{
  profileLoaded=false;
  currentUser=null;
  }
+ },0);
 });
 
 // Sur mobile (app installée notamment), le navigateur met en pause le JS
@@ -2151,7 +2191,7 @@ window.addEventListener('load',async()=>{
  currentUser=data.session.user;
  loadProfileAndEnter();
  } else if(!data.session&&window.location.hash.includes('access_token')){
- toast('⚠️ Jeton reçu mais session non créée, vérifie la config Supabase');
+ toast('Jeton reçu mais session non créée, vérifie la config Supabase');
  }
  }
  },1500);
@@ -2163,9 +2203,7 @@ const PROTECTED_SCREENS=['dashboard','mouvement','recettes','naturo','challenge'
 const WHATSAPP_GROUP_LINK='https://chat.whatsapp.com/BmQ0hxeccsU9iwspW5UQim?s=cl&p=i&mlu=4&amv=2';
 
 function renderChallenge(){
- // TEMPORAIRE, pour remettre le verrou, remplace la ligne du dessous par :
- // const isImmersion=userProfile.subscriptionPlan==='immersion';
- const isImmersion=true;
+ const isImmersion=userProfile.subscriptionPlan==='immersion';
  const communityCard=document.getElementById('chCommunityCard');
  const upgradeCard=document.getElementById('chUpgradeCard');
  if(!communityCard||!upgradeCard)return;
@@ -2569,12 +2607,23 @@ async function fetchSeasonalAndTips(doshaKey){
  try{
  const {data:phaseData,error:phaseErr}=await sb.from('cycle_phase_nutrition_tips').select('*').eq('phase',phaseKey).maybeSingle();
  if(!phaseErr&&phaseData){
+ const saisonNom=(phaseData.saison_titre||'').split('—')[0].trim();
+ const detailTitreClean=(phaseData.detail_titre||'').replace(/\s*—\s*/g,' : ');
+ const phaseLabelClean=((phaseData.saison_titre||'').split('—')[1]?.trim()||cycleInfo.phase).replace(/^phase\s+/i,'');
  tips+=`<div class="diet-info-card" style="margin-bottom:10px;">
- <div class="diet-info-t">${phaseData.saison_titre||''}</div>
+ <div class="diet-info-t">La saison influence sur ton cycle : ${saisonNom}</div>
  <div class="diet-guide-s" style="margin-bottom:12px;">${(phaseData.saison_texte||'').replace(/\n/g,'<br>')}</div>
- <div class="diet-info-t">${phaseData.detail_titre||''}</div>
+ <div class="diet-info-t">${detailTitreClean}</div>
  ${parseSubsectionedText(phaseData.detail_texte||'')}
  </div>`;
+ const alimentationSection=extractNamedSection(phaseData.detail_texte||'','Alimentation');
+ if(alimentationSection){
+ tips+=`<div class="diet-info-card" style="margin-bottom:10px;">
+ <div class="diet-info-t">Tu es en phase ${phaseLabelClean}</div>
+ <div class="diet-guide-s" style="margin-bottom:8px;">Voici tes recommandations sur ton alimentation :</div>
+ <div class="diet-guide-s">${alimentationSection}</div>
+ </div>`;
+ }
  }
  }catch(e){}
  }
@@ -2583,6 +2632,19 @@ async function fetchSeasonalAndTips(doshaKey){
 }
 // Découpe un texte structuré en blocs "Sous-titre\nParagraphe" (séparés par une ligne vide) en
 // sous-titres violets gras majuscules suivis du texte, dans le même style que le reste de l'app.
+// Extrait uniquement la sous-section nommée (ex: "Alimentation") d'un texte structuré en blocs
+function extractNamedSection(text,sectionName){
+ if(!text)return'';
+ const blocks=text.trim().split(/\n\s*\n/).filter(Boolean);
+ for(const b of blocks){
+ const lines=b.split('\n');
+ const label=lines[0].trim();
+ if(label.toLowerCase()===sectionName.toLowerCase()){
+ return lines.slice(1).join(' ').trim();
+ }
+ }
+ return'';
+}
 function parseSubsectionedText(text){
  if(!text)return'';
  const blocks=text.trim().split(/\n\s*\n/).filter(Boolean);
@@ -2595,18 +2657,41 @@ function parseSubsectionedText(text){
  }).join('');
 }
 
+// Habillage commun pour un onglet verrouillé : le vrai contenu (à titre d'exemple) en fond flouté,
+// avec par-dessus un message complet listant tout ce qu'apporte le Plan Immersion.
+function buildLockedTabHtml(panelId,previewContentHtml){
+ const el=document.getElementById(panelId);
+ if(!el)return;
+ el.innerHTML=`<div class="locked-tab-wrap">
+ <div class="locked-tab-bg">${previewContentHtml}</div>
+ <div class="locked-tab-overlay">
+ <div class="diet-upgrade-ic"></div>
+ <div class="locked-tab-title">Débloque tout avec l'offre Immersion</div>
+ <ul class="locked-tab-list">
+ <li>Ton plan alimentaire personnalisé, qui change toutes les 2 semaines</li>
+ <li>Ton journal quotidien de macros et calories</li>
+ <li>Tes conseils santé et ayurvédiques adaptés à ton cycle</li>
+ <li>Les aliments de saison, mois après mois</li>
+ <li>L'accès au groupe WhatsApp privé avec Maryne</li>
+ <li>Les défis réguliers et la conférence mensuelle</li>
+ <li>Les cours en visio, yoga et pilates en direct</li>
+ </ul>
+ <button class="diet-upgrade-btn" onclick="go('offers')">Passer au Plan Immersion</button>
+ </div>
+ </div>`;
+}
 async function renderDietPlan(){
  const wrap=document.getElementById('dietScroll');
  if(!wrap)return;
- // TEMPORAIRE, pour remettre le verrou, remplace la ligne du dessous par :
- // const isImmersion=userProfile.subscriptionPlan==='immersion';
- const isImmersion=true;
+ const isImmersion=userProfile.subscriptionPlan==='immersion';
+ const doshaKey=userProfile.dosha||'vata';
+ const doshaLabel=doshaKey.split('-').map(p=>p.charAt(0).toUpperCase()+p.slice(1)).join('-');
+ const dietLabel={flexitarien:'Flexitarienne',vegetarien:'Végétarienne',vegan:'Végane'}[userProfile.dietType]||'Flexitarienne';
  if(!isImmersion){
- document.getElementById('dietPanelPlan').innerHTML=`
- <div class="diet-preview-wrap">
+ const previewPlan=`
  <div class="sec" style="padding-top:20px;"><h2>Ton <em>résumé</em> du jour</h2></div>
  <div class="diet-summary-card">
- <div class="diet-summary-t">Profil Vata · Flexitarienne · Sans gluten · Sans lait de vache</div>
+ <div class="diet-summary-t">Profil ${doshaLabel} · ${dietLabel} · Sans gluten · Sans lait de vache</div>
  <div class="diet-summary-obj">Perte de masse grasse · Maintien musculaire · Soutien hormonal · Anti-inflammatoire</div>
  <div class="diet-summary-row">
  <div class="diet-summary-item"><div class="diet-summary-v">2100</div><div class="diet-summary-l">kcal/jour</div></div>
@@ -2621,7 +2706,8 @@ async function renderDietPlan(){
  <span class="diet-macro-pill">550 kcal</span><span class="diet-macro-pill">P 25g</span><span class="diet-macro-pill">G 70g</span><span class="diet-macro-pill">L 18g</span>
  </div></div>
  <div class="plan-option-t">Option 1</div>
- <div class="plan-list">Un exemple de recette adaptée à ton profil et à tes objectifs, avec les quantités précises</div>
+ <div class="plan-dish-name">Porridge protéiné pomme-cannelle</div>
+ <ul class="plan-ing-list"><li>45 g de flocons d'avoine</li><li>250 ml de boisson végétale</li><li>25 g de protéines en poudre vanille</li></ul>
  </div>
  <div class="sec" style="padding-top:4px;"><h2>Ton <em>déjeuner</em></h2></div>
  <div class="diet-meal-card">
@@ -2629,28 +2715,30 @@ async function renderDietPlan(){
  <span class="diet-macro-pill">750 kcal</span><span class="diet-macro-pill">P 40g</span><span class="diet-macro-pill">G 95g</span><span class="diet-macro-pill">L 24g</span>
  </div></div>
  <div class="plan-option-t">Option 1</div>
- <div class="plan-list">Un exemple de recette adaptée à ton profil et à tes objectifs, avec les quantités précises</div>
- </div>
- </div>
- <div class="diet-upgrade-card">
- <div class="diet-upgrade-ic"></div>
- <div class="diet-upgrade-t">Débloque ton plan alimentaire complet</div>
- <div class="diet-upgrade-p">Menu sur-mesure (petit-déj, déjeuner, dîner, collation), calculé selon ton dosha, ton régime et tes objectifs, avec un programme Ayurvédique qui change chaque mois.</div>
- <button class="diet-upgrade-btn" onclick="go('offers')">Passer au Plan Immersion</button>
+ <div class="plan-dish-name">Poulet citronné, riz basmati & légumes</div>
+ <ul class="plan-ing-list"><li>150 g de blanc de poulet</li><li>60 g de riz basmati cru</li><li>150 g de légumes de saison</li></ul>
  </div>`;
- ['dietPanelJournal','dietPanelAdd','dietPanelScan','dietPanelSeason','dietPanelTips'].forEach(id=>{
- document.getElementById(id).innerHTML='<div class="diet-locked-wrap"><div class="diet-upgrade-ic"></div><div class="diet-upgrade-p">Réservé au Plan Immersion</div></div>';
- });
- return;
- }
- const doshaKey=userProfile.dosha||'vata';
- const doshaLabel=doshaKey.split('-').map(p=>p.charAt(0).toUpperCase()+p.slice(1)).join('-');
- const dietLabel={flexitarien:'Flexitarienne',vegetarien:'Végétarienne',vegan:'Végane'}[userProfile.dietType]||'Flexitarienne';
+ buildLockedTabHtml('dietPanelPlan',previewPlan);
+ // Toute la partie diététique est réservée au Plan Immersion : les 3 autres onglets sont
+ // verrouillés eux aussi, pas seulement le plan alimentaire, avec le même traitement (fond flouté).
+ const previewJournal=`<div class="sec" style="padding-top:20px;"><h2>Ton <em>journal</em> du jour</h2></div>
+ <div class="diet-summary-card"><div class="diet-summary-row">
+ <div class="diet-summary-item"><div class="diet-summary-v">1450</div><div class="diet-summary-l">kcal consommées</div></div>
+ <div class="diet-summary-item"><div class="diet-summary-v">72g</div><div class="diet-summary-l">Protéines</div></div>
+ </div></div>`;
+ const previewSeason=`<div class="sec" style="padding-top:20px;"><h2>Aliments <em>de saison</em></h2></div>
+ <div class="diet-info-card"><div class="diet-info-t">Légumes</div><div class="diet-guide-s">Courges, poireaux, épinards, brocolis, carottes...</div></div>`;
+ const previewTips=`<div class="sec" style="padding-top:20px;"><h2>Conseils <em>santé</em></h2></div>
+ <div class="diet-info-card"><div class="diet-info-t">Au réveil</div><div class="diet-guide-s">2 grands verres d'eau tiède, avant même le café ou le thé...</div></div>`;
+ buildLockedTabHtml('dietPanelJournal',previewJournal);
+ buildLockedTabHtml('dietPanelSeason',previewSeason);
+ buildLockedTabHtml('dietPanelTips',previewTips);
+ } else {
+ const restantes=await fetchSeasonalAndTips(doshaKey);
  const targets=computeNutritionTargets();
  window._dietTargets={kcal:targets.kcal,p:targets.proteinG,g:targets.carbG,l:targets.fatG};
 
  const monthlyPlan=await fetchMonthlyMealPlan(doshaKey);
- const restantes=await fetchSeasonalAndTips(doshaKey);
 
  /* ═══ Onglet 1, Plan alimentaire (petit-déj / déjeuner / collation / dîner) ═══ */
  const MEAL_DEFS=[
@@ -2723,6 +2811,7 @@ async function renderDietPlan(){
  document.getElementById('dietPanelTips').innerHTML=`<div class="sec" style="padding-top:16px;"><h2>Conseils <em>santé et ayurvédiques</em></h2></div>`+
  (restantes.tips||'<div class="diet-meal-empty">Rien à afficher pour ce mois pour l\'instant.</div>')+
  `<div style="height:24px;"></div>`;
+ }
 }
 
 /* ═══════ PLAN ALIMENTAIRE MENSUEL (table monthly_meal_plans, change toutes les 2 semaines) ═══════ */
@@ -2820,12 +2909,10 @@ function go(id){
  // Garde-fou : impossible d'accéder aux écrans du contenu sans abonnement actif,
  // même en forçant la navigation (ex: via la console). Le profil, les offres,
  // la confidentialité et la déconnexion restent accessibles pour gérer son compte.
- // TEMPORAIRE, désactivé pour la période de tests Google Play.
- // Pour remettre le verrou : décommente les 3 lignes ci-dessous.
- // if(PROTECTED_SCREENS.includes(id) && currentUser && !isDevAccount() && userProfile.subscriptionStatus!=='active'){
- // id='offers';
- // toast('🔒 Abonne-toi pour accéder à ton espace Holistica');
- // }
+ if(PROTECTED_SCREENS.includes(id) && currentUser && !isDevAccount() && userProfile.subscriptionStatus!=='active'){
+ id='offers';
+ toast('Abonne-toi pour accéder à ton espace Holistica');
+ }
  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
  document.getElementById(id).classList.add('active');
  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('act'));
@@ -2989,7 +3076,7 @@ function markDossierRead(id){
  readDossiers.add(id);
  const d=DOSSIERS.find(x=>x.id===id);
  addXP(d?.points||10);
- toast('Dossier lu · +'+(d?.points||10)+' points 🌿');
+ toast('Dossier lu · +'+(d?.points||10)+' points');
  checkBadges();
  renderNaturo();
  if(currentDossierId===id)openDossierDetail(id); // Rafraîchit le bouton sur l'écran de lecture
@@ -3006,7 +3093,7 @@ function enterApp(){
  if(unsubWrap)unsubWrap.style.display=userProfile.subscriptionPlan?'block':'none';
  }
  const h=new Date().getHours();
- document.getElementById('dGreet').textContent=h<12?'Bonjour ☀️':h<18?'Bon après-midi 🌤️':'Bonsoir 🌙';
+ document.getElementById('dGreet').textContent=h<12?'Bonjour':h<18?'Bon après-midi':'Bonsoir';
  document.getElementById('dNameDisplay').textContent=userProfile.name||'toi';
  const initial=userProfile.name?userProfile.name.charAt(0).toUpperCase():'';
  document.getElementById('dAvatar').textContent=initial;
@@ -3229,7 +3316,7 @@ function obNext(){
  if(retakeDoshaMode){
  retakeDoshaMode=false;
  saveProfile();
- toast('Profil ayurvédique mis à jour 🌿');
+ toast('Profil ayurvédique mis à jour');
  go('profil');
  renderDoshaProfile();
  // Rafraîchit aussi les libellés dosha affichés ailleurs (dashboard, header profil)
@@ -3445,6 +3532,39 @@ function refreshDash(){
  updateSessionsMonth();
  renderAstroWidget();
  renderJourneyStrip();
+ refreshMenopauseTipButton();
+}
+// Le bouton "conseil ménopause du jour" n'est visible que pour un profil femme ayant déclaré
+// préménopause ou ménopause à l'inscription. Le sujet tourne aléatoirement chaque jour parmi les 59.
+let _menopauseTipCache=null;
+function getTodayMenopauseTipId(){
+ const dayOfYear=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/86400000);
+ const year=new Date().getFullYear();
+ return Math.floor(pseudoRandom(dayOfYear+year*400,777)*59)+1;
+}
+async function refreshMenopauseTipButton(){
+ const wrap=document.getElementById('menopauseTipBtnWrap');
+ if(!wrap)return;
+ const eligible=userProfile.sexe==='femme'&&(userProfile.perimenopause||userProfile.menopause);
+ if(!eligible){wrap.style.display='none';return;}
+ wrap.style.display='block';
+ const id=getTodayMenopauseTipId();
+ try{
+ const {data,error}=await sb.from('menopause_daily_tips').select('*').eq('id',id).maybeSingle();
+ if(!error&&data){
+ _menopauseTipCache=data;
+ document.getElementById('menopauseTipTopic').textContent=data.titre;
+ }
+ }catch(e){}
+}
+function openMenopauseTip(){
+ if(!_menopauseTipCache)return;
+ const t=_menopauseTipCache;
+ const sectionsHtml=(t.sections||[]).map(s=>
+ `<div class="diet-info-t">${s.titre.toUpperCase()}</div><div class="diet-guide-s" style="margin-bottom:14px;">${s.texte}</div>`
+ ).join('');
+ document.getElementById('menopauseTipCard').innerHTML=`<div class="menopause-tip-title">${t.titre}</div>${sectionsHtml}`;
+ go('menopauseTipScreen');
 }
 
 function scrollToSection(id){
@@ -3865,7 +3985,7 @@ async function renderCycle(){
  document.getElementById('cycleSecTitle').innerHTML='Conseils <em>ménopause du mois</em>';
  const m=await getConseilMenopauseDuMois();
  const tip=await getMenopauseTip();
- const safetyNote='<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:12.5px;color:var(--ink-l);">⚕️ Tout saignement après la ménopause doit être signalé à un médecin, même léger.</div>';
+ const safetyNote='<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:12.5px;color:var(--ink-l);">Tout saignement après la ménopause doit être signalé à un médecin, même léger.</div>';
  if(!m){
  document.getElementById('cycleBadge').textContent='🍃 Ménopause';
  document.getElementById('cycleDayLbl').textContent='';
@@ -3997,16 +4117,18 @@ function buildRoutinePlaylist(clips,routineType,doshaKey){
  const seed=dayOfYear+(isMatin?0:5000);
  const excludeIds=new Set();
 
- // 1. Premier mouvement : toujours debout le matin. Le soir, assis (le pool "debout" est trop
- //    limité pour varier chaque jour) ou debout selon ce qui est disponible.
+ // 1. Premier mouvement : toujours debout le matin. Le soir, entièrement aléatoire (toutes positions).
  const firstPool=isMatin
  ? pool.filter(c=>c.position==='debout'&&c.categorie!=='respiration')
- : pool.filter(c=>(c.position==='assis'||c.position==='debout')&&c.categorie!=='respiration');
+ : pool.filter(c=>c.categorie!=='respiration');
  const chosenFirst=scoredPick(firstPool,1,seed,doshaKey,excludeIds);
  chosenFirst.forEach(c=>excludeIds.add(c.id));
 
- // 2. Dernier mouvement : assis ou respiration, pour toujours refermer la séance en douceur.
- const endingPool=pool.filter(c=>c.position==='assis'||c.categorie==='respiration');
+ // 2. Dernier mouvement : le matin, un mouvement d'apaisement ou (généralement) une respiration.
+ //    Le soir, toujours une vraie respiration pour refermer la séance.
+ const endingPool=isMatin
+ ? pool.filter(c=>c.objectif_principal==='apaisement'||c.categorie==='respiration')
+ : pool.filter(c=>c.categorie==='respiration');
  const chosenLast=scoredPick(endingPool,1,seed+99,doshaKey,excludeIds);
  chosenLast.forEach(c=>excludeIds.add(c.id));
 
@@ -4314,7 +4436,10 @@ function openRoutineClip(animate){
  if(!clip)return;
  updateTopLeftButtonIcon();
  const launch=()=>{
- document.getElementById('rpTitle').textContent=capitalizeFirst(clip.nom);
+ const rpTitleEl=document.getElementById('rpTitle');
+ const titleText=capitalizeFirst(clip.nom);
+ rpTitleEl.textContent=titleText;
+ rpTitleEl.classList.toggle('long',titleText.length>30);
  document.getElementById('rpDureeBadge').style.display='flex';
  document.getElementById('rpMuteBtn').style.display='flex';
  const dureeMin=Math.round(clip.duree_sec/60);

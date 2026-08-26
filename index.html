@@ -346,10 +346,11 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .diet-tab.active{background:var(--grad);color:white;border-color:transparent;}
 .diet-tab-panel{display:none;}
 .diet-tab-panel.active{display:block;}
-.diet-journal-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
-.diet-action-card{background:white;border:1.5px solid var(--border);border-radius:14px;padding:16px 10px;text-align:center;cursor:pointer;}
+.diet-journal-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 20px 12px;}
+.diet-action-card{background:white;border:1.5px solid var(--border);border-radius:14px;padding:14px 8px;text-align:center;cursor:pointer;box-shadow:var(--sh);}
 .diet-action-ic{color:var(--purple-m);margin-bottom:6px;display:flex;align-items:center;justify-content:center;}
-.diet-action-t{font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.55;}
+.diet-action-ic svg{width:20px;height:20px;}
+.diet-action-t{font-size:13px;font-weight:700;color:var(--ink);line-height:1.45;}
 .food-pill{margin-bottom:14px;}
 .food-pill:last-child{margin-bottom:0;}
 .food-pill-top{display:flex;justify-content:space-between;font-size:14.5px;font-weight:700;color:var(--ink);margin-bottom:5px;}
@@ -432,6 +433,8 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .diet-meal-idea-s{font-size:14.5px;color:var(--ink-m);line-height:1.5;}
 .diet-meal-empty{font-size:14.5px;color:var(--ink-l);font-style:italic;padding:6px 0;}
 .diet-info-card{margin:20px 20px 0;background:white;border-radius:16px;padding:18px;box-shadow:var(--sh);border:1px solid var(--border);}
+.form-card-app{background:white;border-radius:16px;padding:18px;box-shadow:var(--sh);border:1px solid var(--border);margin-top:14px;}
+.form-card-app .f-row-app:last-of-type{margin-bottom:0;}
 .diet-info-t{font-size:14.5px;font-weight:800;color:var(--purple);text-transform:uppercase;letter-spacing:.3px;margin-bottom:10px;}
 .plan-subtitle{font-size:13px;font-weight:800;color:var(--purple-m);text-transform:uppercase;letter-spacing:.3px;margin-bottom:4px;}
 .diet-info-row{font-size:14.5px;color:var(--ink-m);line-height:1.5;margin-bottom:8px;}
@@ -1421,15 +1424,17 @@ Partager mon profil
 <div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Mon thème <em>astral</em></div>
 <div id="astroDetailWrap"></div>
 <div class="ob-title dt-title" style="text-align:left;font-size:17px;margin-top:24px;">Calcule ton thème <em>natal</em></div>
+<div class="form-card-app">
 <div class="f-row-app"><label>Prénom</label><input type="text" id="astroPrenom" class="ob-input dt-input" placeholder="Ton prénom"></div>
 <div class="f-row-app"><label>Date de naissance</label><input type="date" id="astroDate" class="ob-input dt-input"></div>
 <div class="f-row-app"><label>Heure de naissance (pour l'Ascendant)</label><input type="time" id="astroTime" class="ob-input dt-input"></div>
-<div class="f-row-app" style="position:relative;">
+<div class="f-row-app" style="position:relative;margin-bottom:0;">
 <label>Ville de naissance</label>
 <input type="text" id="astroPlace" class="ob-input dt-input" placeholder="Commence à taper..." oninput="searchBirthCity(this.value)" autocomplete="off">
 <div id="astroCitySuggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:white;border:1px solid var(--border);border-radius:12px;margin-top:4px;max-height:220px;overflow-y:auto;z-index:10;box-shadow:0 8px 24px rgba(0,0,0,0.1);"></div>
 </div>
 <button class="btn-ob" style="margin-top:6px;" onclick="calculateAstro()" id="astroCalcBtn">Calculer mon thème</button>
+</div>
 
 <div id="astroResult" style="display:none;margin-top:24px;">
 

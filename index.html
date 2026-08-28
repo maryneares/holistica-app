@@ -548,29 +548,26 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 
 /* Offres */
 .offer-card{background:white;border-radius:20px;padding:22px;margin-bottom:16px;border:1.5px solid var(--border);position:relative;box-shadow:var(--sh);}
+.offer-info-box{background:var(--lav-pale);border-radius:16px;padding:18px 20px;margin:4px 0 20px;text-align:center;}
+.offer-upgrade-box{background:var(--grad-warm);border-radius:16px;padding:18px 20px;margin:-4px 0 16px;text-align:center;}
+.offer-upgrade-box .offer-info-t{text-shadow:0 1px 6px rgba(36,20,50,0.35);}
+.offer-info-t{font-family:'League Spartan',sans-serif;font-weight:800;font-size:14.5px;color:var(--purple-m);text-transform:uppercase;letter-spacing:.3px;margin-bottom:8px;}
+.offer-info-txt{font-size:14px;color:var(--ink-m);line-height:21px;}
 .billing-toggle{display:flex;background:var(--lav-pale);border-radius:14px;padding:4px;margin-bottom:10px;}
 .bt-opt{flex:1;border:none;background:transparent;padding:11px 8px;border-radius:11px;font-size:15.5px;font-weight:700;color:var(--ink-m);cursor:pointer;font-family:'League Spartan',sans-serif;transition:all .2s;}
 .bt-opt.active{background:white;color:var(--purple);box-shadow:var(--sh);}
 .bt-save{display:inline-block;background:var(--grad);color:white;font-size:12px;font-weight:800;padding:2px 6px;border-radius:20px;margin-left:5px;vertical-align:middle;}
 .trial-note{text-align:center;font-size:14.5px;color:var(--purple-m);font-weight:700;margin-bottom:18px;}
-.offer-price-sub{font-size:14px;font-weight:700;color:var(--purple-m);text-align:center;margin-top:-12px;margin-bottom:16px;}
-.offer-price-sub b{color:var(--purple);}
-.offer-card.hl .offer-price-sub{color:rgba(255,255,255,0.9);}
-.offer-card.hl .offer-price-sub b{color:white;}
 .offer-card.hl{background:var(--grad-warm);border:none;box-shadow:var(--sh-m);}
 .offer-badge{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--ink);color:white;font-size:12.5px;font-weight:700;padding:5px 14px;border-radius:50px;text-transform:uppercase;letter-spacing:.3px;}
 .offer-name{font-family:'League Spartan',sans-serif;font-size:18px;font-weight:700;color:var(--ink);text-align:center;margin-bottom:6px;}
-.offer-card.hl .offer-name{color:white;}
-.offer-price{font-family:'League Spartan',sans-serif;font-size:34px;font-weight:800;color:var(--purple);text-align:center;margin-bottom:16px;}
-.offer-price span{font-size:16px;font-weight:600;color:var(--ink-l);}
-.offer-card.hl .offer-price{color:white;}
-.offer-card.hl .offer-price span{color:rgba(255,255,255,0.95);}
+.offer-card.hl .offer-name{color:white;text-shadow:0 1px 6px rgba(36,20,50,0.35);}
 .offer-list{list-style:none;margin-bottom:18px;}
 .offer-list li{font-size:15.5px;color:var(--ink-m);padding:8px 0 8px 24px;position:relative;border-bottom:1px solid var(--border);}
 .offer-list li:last-child{border-bottom:none;}
 .offer-list li::before{content:'✓';position:absolute;left:0;color:var(--purple-m);font-weight:800;}
-.offer-card.hl .offer-list li{color:rgba(255,255,255,0.9);border-bottom-color:rgba(255,255,255,0.45);}
-.offer-card.hl .offer-list li::before{color:white;}
+.offer-card.hl .offer-list li{color:white;text-shadow:0 1px 5px rgba(36,20,50,0.3);border-bottom-color:rgba(255,255,255,0.4);}
+.offer-card.hl .offer-list li::before{color:white;text-shadow:0 1px 5px rgba(36,20,50,0.4);}
 .offer-or{text-align:center;font-size:13.5px;color:var(--ink-l);margin:12px 0;position:relative;}
 .offer-or::before,.offer-or::after{content:'';position:absolute;top:50%;width:40%;height:1px;background:var(--border);}
 .offer-or::before{left:0;}
@@ -1188,34 +1185,23 @@ document.addEventListener('DOMContentLoaded', function(){
 <div id="offers" class="screen">
 <button class="vd-back" onclick="go('challenge')" style="position:fixed;top:16px;left:16px;z-index:5;">←</button>
 <div class="scroll" style="padding:0 20px;">
-<div class="ob-title" style="text-align:center;margin-top:60px;font-size:24px;">Choisis ton <em>accompagnement</em></div>
-<div style="font-size:15.5px;color:var(--ink-l);text-align:center;margin-bottom:18px;">Deux formules pour avancer à ton rythme</div>
-
-<div class="billing-toggle">
- <button class="bt-opt active" id="btMonthly" onclick="setBillingPeriod('monthly')">Mensuel</button>
- <button class="bt-opt" id="btAnnual" onclick="setBillingPeriod('annual')">Annuel <span class="bt-save">-20%</span></button>
-</div>
-<div class="trial-note"> Essai gratuit de 3 jours, sans engagement</div>
+<div class="ob-title" style="text-align:center;margin-top:60px;font-size:24px;">Ton <em>accompagnement</em></div>
+<div style="font-size:15.5px;color:var(--ink-l);text-align:center;margin-bottom:24px;">Deux formules pour avancer à ton rythme</div>
 
 <div class="offer-card">
 <div class="offer-name">Plan Équilibre</div>
-<div class="offer-price" id="priceEquilibre">29€<span>/mois</span></div>
-<div class="offer-price-sub" id="priceEquilibreSub" onclick="setBillingPeriod('annual')" style="cursor:pointer;">ou <b>279€/an</b> (-20%, soit 23€/mois) →</div>
-<ul class="offer-list">
+<ul class="offer-list" style="margin-top:14px;">
 <li>Accès complet à l'application</li>
 <li>Toutes les recettes et séances vidéo</li>
 <li>Suivi de cycle et bilan ayurvédique</li>
 <li>Recommandations personnalisées</li>
 </ul>
-<button class="btn-ob" id="btnEquilibre" onclick="goToCheckout(CHECKOUT_LINKS.equilibre[billingPeriod])">Commencer l'essai gratuit</button>
 </div>
 
 <div class="offer-card hl">
 <div class="offer-badge">Le plus populaire</div>
 <div class="offer-name">Plan Immersion</div>
-<div class="offer-price" id="priceImmersion">49€<span>/mois</span></div>
-<div class="offer-price-sub" id="priceImmersionSub" onclick="setBillingPeriod('annual')" style="cursor:pointer;">ou <b>470€/an</b> (-20%, soit 39€/mois) →</div>
-<ul class="offer-list">
+<ul class="offer-list" style="margin-top:14px;">
 <li>Tout le Plan Équilibre, inclus</li>
 <li>Plan alimentaire personnalisé selon ton profil Ayurvédique</li>
 <li>Groupe WhatsApp privé avec les autres membres</li>
@@ -1223,7 +1209,16 @@ document.addEventListener('DOMContentLoaded', function(){
 <li>Lives et cours en visio avec Maryne</li>
 <li>Conférence mensuelle questions-réponses</li>
 </ul>
-<button class="btn-ob purple" id="btnImmersion" onclick="goToCheckout(CHECKOUT_LINKS.immersion[billingPeriod])">Commencer l'essai gratuit</button>
+</div>
+
+<div class="offer-upgrade-box" id="offerUpgradeBox" style="display:none;">
+<div class="offer-info-t" style="color:white;">Envie d'aller plus loin ?</div>
+<div class="offer-info-txt" style="color:rgba(255,255,255,0.92);">Tu es actuellement sur le Plan Équilibre. Passe au Plan Immersion pour débloquer ton plan alimentaire personnalisé, le groupe WhatsApp et les lives avec Maryne — directement depuis holisticaclub . com, dans la partie "Gérer mon abonnement".</div>
+</div>
+
+<div class="offer-info-box">
+<div class="offer-info-t">Comment s'abonner</div>
+<div class="offer-info-txt">Abonne-toi sur notre site holisticaclub . com pour accéder à ton espace, ou retrouve-nous sur Instagram @maryne.ares.</div>
 </div>
 
 
@@ -2938,6 +2933,14 @@ function go(id){
  if(id==='doshaProfile')renderDoshaProfile();
  if(id==='challenge')renderChallenge();
  if(id==='dietPlan')renderDietPlan();
+ if(id==='offers')renderOffersUpgradeHint();
+}
+// Affiche un encart d'incitation à passer en Immersion, uniquement pour les personnes
+// déjà abonnées au Plan Équilibre (les non-abonnées et les Immersion ne le voient pas).
+function renderOffersUpgradeHint(){
+ const box=document.getElementById('offerUpgradeBox');
+ if(!box)return;
+ box.style.display=(userProfile.subscriptionStatus==='active'&&userProfile.subscriptionPlan==='equilibre')?'block':'none';
 }
 
 const ACTIVITY_MULTIPLIER={'sédentaire':1.2,'légère':1.375,'modérée':1.55,'active':1.725,'très active':1.9};
@@ -3101,7 +3104,7 @@ function enterApp(){
  applyPendingReferral();
  document.getElementById('bnav').style.display='flex';
  if(document.getElementById('pfSubscription')){
- const planLabels={equilibre:'Plan Équilibre · 29€/mois',immersion:'Plan Immersion · 49€/mois'};
+ const planLabels={equilibre:'Plan Équilibre',immersion:'Plan Immersion'};
  document.getElementById('pfSubscription').textContent=userProfile.subscriptionPlan?planLabels[userProfile.subscriptionPlan]||'Abonnement actif':'Aucun abonnement actif';
  const unsubWrap=document.getElementById('unsubLinkWrap');
  if(unsubWrap)unsubWrap.style.display=userProfile.subscriptionPlan?'block':'none';
@@ -6447,57 +6450,9 @@ function renderFoodHistory(days){
 }
 
 /* ═══════ CHECKOUT ═══════ */
-/* ═══ Sélecteur Mensuel / Annuel (écran des offres) ═══
- Remplace les liens "annual" ci-dessous par tes vrais Payment
- Links Stripe une fois créés (abonnement annuel Équilibre/Immersion). */
-let billingPeriod='monthly';
-const CHECKOUT_LINKS={
- equilibre:{
- monthly:'https://buy.stripe.com/3cI3cw2cvaJv5wMerf7IY00',
- annual:'https://buy.stripe.com/eVq4gA4kDg3PbVa3MB7IY04'
- },
- immersion:{
- monthly:'https://buy.stripe.com/aFa00k04neZLaR62Ix7IY01',
- annual:'https://buy.stripe.com/6oU3cwg3lg3P6AQaaZ7IY05'
- }
-};
+/* Retiré : l'app ne propose plus de paiement en direct (abonnement géré uniquement
+ via holisticaclub.com, conformément aux règles Google Play pour une app gratuite). */
 
-function setBillingPeriod(period){
- billingPeriod=period;
- document.getElementById('btMonthly').classList.toggle('active',period==='monthly');
- document.getElementById('btAnnual').classList.toggle('active',period==='annual');
- const isAnnual=period==='annual';
- document.getElementById('priceEquilibre').innerHTML=isAnnual?'279€<span>/an</span>':'29€<span>/mois</span>';
- document.getElementById('priceImmersion').innerHTML=isAnnual?'470€<span>/an</span>':'49€<span>/mois</span>';
- document.getElementById('priceEquilibreSub').innerHTML=isAnnual?'soit 23€/mois, facturé 279€/an':'ou <b>279€/an</b> (-20%, soit 23€/mois) →';
- document.getElementById('priceImmersionSub').innerHTML=isAnnual?'soit 39€/mois, facturé 470€/an':'ou <b>470€/an</b> (-20%, soit 39€/mois) →';
- document.getElementById('priceEquilibreSub').style.visibility='visible';
- document.getElementById('priceImmersionSub').style.visibility='visible';
- document.getElementById('priceEquilibreSub').onclick=isAnnual?null:()=>setBillingPeriod('annual');
- document.getElementById('priceImmersionSub').onclick=isAnnual?null:()=>setBillingPeriod('annual');
- document.getElementById('priceEquilibreSub').style.cursor=isAnnual?'default':'pointer';
- document.getElementById('priceImmersionSub').style.cursor=isAnnual?'default':'pointer';
- const btnLabel=isAnnual?"M'abonner":"Commencer l'essai gratuit";
- document.getElementById('btnEquilibre').textContent=btnLabel;
- document.getElementById('btnImmersion').textContent=btnLabel;
- document.querySelector('.trial-note').style.visibility=isAnnual?'hidden':'visible';
-}
-
-async function goToCheckout(url){
- try{
- const { data: { user } } = await sb.auth.getUser();
- if(!user){
- alert("Connecte-toi d'abord pour t'abonner.");
- return;
- }
- const finalUrl = url + '?client_reference_id=' + user.id;
-trackEvent('clic_offre');
- toast('Redirection en cours...');
- setTimeout(()=>{window.location.href=finalUrl;},300);
- }catch(e){
- alert('Erreur : '+e.message);
- }
-}
 /* ═══════ TOAST ═══════ */
 /* ═══════ PARRAINAGE ═══════ */
 function generateReferralCode(){

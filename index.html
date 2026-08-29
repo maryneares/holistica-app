@@ -1016,7 +1016,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <div id="cycleSectionWrap">
 <div class="sec"><h2 id="cycleSecTitle">Ton <em>cycle</em></h2></div>
 <div class="cycle-card" id="cycleCard">
-<div class="cycle-head"><span class="cycle-badge" id="cycleBadge"> Cycle</span><span class="cycle-day" id="cycleDayLbl" onclick="openCycleCalendar()" style="cursor:pointer;text-decoration:underline;text-decoration-style:dotted;">Jour 1</span></div>
+<div class="cycle-head"><span class="cycle-badge" id="cycleBadge"> Cycle</span><span class="cycle-day" id="cycleDayLbl" onclick="openCycleCalendar()" style="cursor:pointer;">Jour 1</span></div>
 <div class="cycle-bar"><div class="cycle-bar-fill" id="cycleBarFill" style="width:0%"></div></div>
 <div class="cycle-msg-t" id="cycleMsgTitle"></div>
 <div class="cycle-msg" id="cycleMsgBody"></div>
@@ -3978,8 +3978,8 @@ function getCyclePhaseInfo(cycleDay,daysUntilNext,cycleLength){
 // et dans "Mon cycle" (Profil), pour garantir un format strictement cohérent partout.
 function getCycleSummaryText(c){
  const nextPeriodDate=new Date();nextPeriodDate.setHours(0,0,0,0);nextPeriodDate.setDate(nextPeriodDate.getDate()+c.daysUntilNext);
- const nextPeriodLbl=nextPeriodDate.toLocaleDateString('fr-FR',{day:'numeric',month:'short'});
- return 'Jour '+c.cycleDay+'/'+c.len+' · règles dans '+c.daysUntilNext+'j · le '+nextPeriodLbl;
+ const nextPeriodLbl=nextPeriodDate.toLocaleDateString('fr-FR',{day:'numeric',month:'long'});
+ return 'Jour '+c.cycleDay+'/'+c.len+' - règles dans '+c.daysUntilNext+' j le '+nextPeriodLbl;
 }
 function getCurrentCycleInfo(){
  if(!userProfile.hasPeriod||userProfile.menopause||!userProfile.lastPeriodStart)return null;

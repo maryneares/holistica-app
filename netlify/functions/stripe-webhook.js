@@ -21,6 +21,12 @@
 // 5. Dans Stripe Dashboard > Settings > Billing > Subscriptions and emails > Manage failed payments :
 //    règle le nombre de tentatives / délai pour que l'annulation finale arrive ~7 jours après
 //    le premier échec (sinon le délai par défaut de Stripe peut être plus long).
+//
+// ═══════ MODIF (rattachée au CMS) ═══════
+// Ajout de l'enregistrement de subscription_started_at, canceled_at, mrr_amount et
+// trial_end, nécessaires au tableau de bord "Clients" du CMS admin (avant cette version,
+// ces champs n'étaient jamais écrits, ce qui faisait afficher des statistiques à zéro
+// partout : abonnés actifs, MRR, nouveaux/résiliés par période, etc.)
 
 const Stripe = require('stripe');
 const { createClient } = require('@supabase/supabase-js');
@@ -71,6 +77,15 @@ function planFromAmount(amountTotal) {
   return 'equilibre';
 }
 
+// MRR mensuel équivalent, peu importe si l'abonnement est facturé au mois ou à l'année.
+function mrrFromSession(session, plan) {
+  const amount = session.amount_total || 0; // en centimes
+  // Un montant élevé (>100€) indique très probablement une facturation annuelle : on
+  // ramène alors à son équivalent mensuel pour un MRR cohérent d'un plan à l'autre.
+  if (amount > 10000) return Math.round((amount / 100 / 12) * 100) / 100;
+  return amount / 100;
+}
+
 exports.handler = async (event) => {
   const sig = event.headers['stripe-signature'];
   let stripeEvent;
@@ -99,11 +114,27 @@ exports.handler = async (event) => {
           recipientEmail = authUser?.user?.email;
         }
 
+        // Récupère la date de fin d'essai directement depuis l'abonnement Stripe créé,
+        // pour alimenter la colonne trial_end utilisée par le CMS.
+        let trialEnd = null;
+        if (session.subscription) {
+          try {
+            const sub = await stripe.subscriptions.retrieve(session.subscription);
+            if (sub.trial_end) trialEnd = new Date(sub.trial_end * 1000).toISOString();
+          } catch (e) {
+            console.error('Impossible de récupérer la date de fin d\'essai:', e.message);
+          }
+        }
+
         const updatePayload = {
           subscription_status: 'active',
           subscription_plan: plan,
           stripe_customer_id: session.customer,
-          payment_warning_sent_at: null
+          payment_warning_sent_at: null,
+          subscription_started_at: new Date().toISOString(),
+          canceled_at: null,
+          mrr_amount: mrrFromSession(session, plan),
+          trial_end: trialEnd,
         };
         if (recipientEmail) updatePayload.email = recipientEmail;
         await supabase.from('profiles').update(updatePayload).eq('id', userId);
@@ -162,7 +193,12 @@ exports.handler = async (event) => {
         const reason = sub.cancellation_details?.reason; // 'cancellation_requested' | 'payment_failed' | ...
         const isVoluntary = reason === 'cancellation_requested' || (!reason && profile.subscription_status === 'active');
 
-        await supabase.from('profiles').update({ subscription_status: 'cancelled', subscription_plan: null }).eq('id', profile.id);
+        await supabase.from('profiles').update({
+          subscription_status: 'cancelled',
+          subscription_plan: null,
+          canceled_at: new Date().toISOString(),
+          mrr_amount: 0,
+        }).eq('id', profile.id);
 
         if (profile.email) {
           const html = isVoluntary

@@ -206,9 +206,9 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .cycle-t{font-size:14.5px;color:rgba(255,255,255,0.96);text-shadow:0 1px 3px rgba(0,0,0,0.12);margin-bottom:4px;}
 .cycle-v{font-family:'League Spartan',sans-serif;font-size:19px;color:white;font-weight:700;}
 .cycle-phase{font-size:13.5px;color:rgba(255,255,255,0.95);margin-top:4px;}
-.cycle-head{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1;margin-bottom:12px;}
-.cycle-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.22);padding:6px 13px;border-radius:50px;font-size:14.5px;font-weight:800;color:white;}
-.cycle-day{font-size:14.5px;font-weight:600;color:rgba(255,255,255,0.9);}
+.cycle-head{display:flex;justify-content:space-between;align-items:flex-start;position:relative;z-index:1;margin-bottom:12px;gap:10px;}
+.cycle-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.22);padding:6px 13px;border-radius:50px;font-size:14.5px;font-weight:800;color:white;flex-shrink:0;}
+.cycle-day{font-size:14.5px;font-weight:600;color:rgba(255,255,255,0.9);text-align:right;}
 .cycle-bar{height:5px;background:rgba(255,255,255,0.2);border-radius:50px;margin-bottom:14px;position:relative;z-index:1;overflow:hidden;}
 .cycle-bar-fill{height:100%;background:white;border-radius:50px;transition:width .4s;}
 .cycle-msg-t{font-size:17px;font-weight:800;color:white;margin-bottom:6px;position:relative;z-index:1;}
@@ -1024,17 +1024,6 @@ document.addEventListener('DOMContentLoaded', function(){
 </div>
 </div>
 
-<!-- Calendrier annuel du cycle -->
-<div class="cyc-cal-overlay" id="cycCalOverlay" onclick="if(event.target===this)closeCycleCalendar()">
-<div class="cyc-cal-modal">
-<div class="cyc-cal-head">
-<div class="cyc-cal-title">Ton calendrier <em>annuel</em></div>
-<button class="cyc-cal-close" onclick="closeCycleCalendar()">✕</button>
-</div>
-<div class="cyc-cal-legend"><span class="cyc-cal-dot"></span> Règles prévues (5 jours)</div>
-<div class="cyc-cal-grid" id="cycCalGrid"></div>
-</div>
-</div>
 <!-- Mood -->
 <div class="sec" id="secMood"><h2>Comment tu te <em>sens</em> ?</h2></div>
 <div class="mood-card">
@@ -6679,5 +6668,19 @@ go = function(id){
  return _origGo(id);
 };
 </script>
+
+<!-- Calendrier annuel du cycle : placé à la racine du document (hors des écrans
+ et de leurs zones de défilement internes) pour garantir un vrai plein écran fixe,
+ qui ne bouge jamais au scroll, quel que soit l'écran depuis lequel on l'ouvre. -->
+<div class="cyc-cal-overlay" id="cycCalOverlay" onclick="if(event.target===this)closeCycleCalendar()">
+<div class="cyc-cal-modal">
+<div class="cyc-cal-head">
+<div class="cyc-cal-title">Ton calendrier <em>annuel</em></div>
+<button class="cyc-cal-close" onclick="closeCycleCalendar()">✕</button>
+</div>
+<div class="cyc-cal-legend"><span class="cyc-cal-dot"></span> Règles prévues (5 jours)</div>
+<div class="cyc-cal-grid" id="cycCalGrid"></div>
+</div>
+</div>
 </body>
 </html>

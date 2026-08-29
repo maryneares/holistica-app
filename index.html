@@ -214,6 +214,26 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .cycle-msg-t{font-size:17px;font-weight:800;color:white;margin-bottom:6px;position:relative;z-index:1;}
 .cycle-msg{font-size:15.5px;font-weight:500;color:rgba(255,255,255,0.95);line-height:1.55;position:relative;z-index:1;}
 .cycle-energy{display:flex;align-items:center;gap:6px;margin-top:12px;font-size:14.5px;font-weight:600;color:rgba(255,255,255,0.9);position:relative;z-index:1;}
+
+/* Calendrier annuel du cycle */
+.cyc-cal-overlay{display:none;position:fixed;inset:0;background:rgba(36,20,50,0.6);z-index:200;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto;}
+.cyc-cal-overlay.open{display:flex;}
+.cyc-cal-modal{background:var(--ivory);border-radius:24px;padding:22px 14px 26px;max-width:460px;width:100%;margin-top:20px;box-shadow:0 24px 60px rgba(36,20,50,0.4);}
+.cyc-cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.cyc-cal-title{font-family:'League Spartan',sans-serif;font-weight:800;font-size:19px;color:var(--ink);}
+.cyc-cal-title em{color:var(--purple-m);font-style:normal;}
+.cyc-cal-close{background:var(--lav-pale);border:none;border-radius:50%;width:32px;height:32px;font-size:14px;color:var(--ink-m);cursor:pointer;}
+.cyc-cal-legend{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--ink-l);margin-bottom:16px;}
+.cyc-cal-dot{width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,#7B6EC8,#C98FB0);display:inline-block;}
+.cyc-cal-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.cyc-month{background:white;border-radius:14px;padding:10px 6px;border:1px solid var(--border);}
+.cyc-month-t{font-family:'League Spartan',sans-serif;font-weight:700;font-size:11.5px;color:var(--ink);text-align:center;margin-bottom:6px;}
+.cyc-month-wk{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;margin-bottom:2px;}
+.cyc-month-wk span{font-size:7px;color:var(--ink-l);text-align:center;font-weight:700;}
+.cyc-month-days{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;}
+.cyc-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:8.5px;color:var(--ink-m);border-radius:50%;}
+.cyc-day.period{background:linear-gradient(135deg,#7B6EC8,#C98FB0);color:white;font-weight:700;}
+.cyc-day.today{border:1.5px solid var(--purple-m);font-weight:800;color:var(--purple-m);}
 .cycle-energy-dot{width:6px;height:6px;border-radius:50%;background:white;}
 
 /* Mood */
@@ -251,7 +271,7 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .tck.done{background:white;border-color:white;}
 .tck.done::after{content:'✓';color:var(--purple);font-size:12.5px;font-weight:700;}
 .todo-body{flex:1;}
-.todo-t{font-size:14.5px;color:white;font-weight:600;}
+.todo-t{font-size:15.5px;color:white;font-weight:500;line-height:22px;letter-spacing:.1px;}
 .todo-t.done{color:rgba(255,255,255,0.75);text-decoration:line-through;}
 .todo-s{font-size:12.5px;color:rgba(255,255,255,0.96);text-shadow:0 1px 3px rgba(0,0,0,0.12);margin-top:1px;}
 
@@ -996,11 +1016,23 @@ document.addEventListener('DOMContentLoaded', function(){
 <div id="cycleSectionWrap">
 <div class="sec"><h2 id="cycleSecTitle">Ton <em>cycle</em></h2></div>
 <div class="cycle-card" id="cycleCard">
-<div class="cycle-head"><span class="cycle-badge" id="cycleBadge"> Cycle</span><span class="cycle-day" id="cycleDayLbl">Jour 1</span></div>
+<div class="cycle-head"><span class="cycle-badge" id="cycleBadge"> Cycle</span><span class="cycle-day" id="cycleDayLbl" onclick="openCycleCalendar()" style="cursor:pointer;text-decoration:underline;text-decoration-style:dotted;">Jour 1</span></div>
 <div class="cycle-bar"><div class="cycle-bar-fill" id="cycleBarFill" style="width:0%"></div></div>
 <div class="cycle-msg-t" id="cycleMsgTitle"></div>
 <div class="cycle-msg" id="cycleMsgBody"></div>
 <div class="cycle-energy" id="cycleEnergy"></div>
+</div>
+</div>
+
+<!-- Calendrier annuel du cycle -->
+<div class="cyc-cal-overlay" id="cycCalOverlay" onclick="if(event.target===this)closeCycleCalendar()">
+<div class="cyc-cal-modal">
+<div class="cyc-cal-head">
+<div class="cyc-cal-title">Ton calendrier <em>annuel</em></div>
+<button class="cyc-cal-close" onclick="closeCycleCalendar()">✕</button>
+</div>
+<div class="cyc-cal-legend"><span class="cyc-cal-dot"></span> Règles prévues (5 jours)</div>
+<div class="cyc-cal-grid" id="cycCalGrid"></div>
 </div>
 </div>
 <!-- Mood -->
@@ -1217,7 +1249,7 @@ document.addEventListener('DOMContentLoaded', function(){
 </div>
 
 <div class="offer-info-box">
-<div class="offer-info-t">Comment s'abonner</div>
+<div class="offer-info-t">Réservé aux membres</div>
 <div class="offer-info-txt">Abonne-toi sur notre site holisticaclub . com pour accéder à ton espace, ou retrouve-nous sur Instagram @maryne.ares.</div>
 </div>
 
@@ -1402,6 +1434,11 @@ Partager mon profil
 <div class="f-row-app"><label>Premier jour de tes dernières règles</label><input type="date" id="csLastPeriod" class="ob-input dt-input"></div>
 <div class="f-row-app"><label>Durée moyenne de ton cycle</label><div class="cycle-len-input" style="width:100%;justify-content:center;"><input type="number" id="csCycleLength" min="21" max="45" value="28" style="width:50px;font-size:19px;"><span>jours</span></div></div>
 <button class="btn-ob" style="margin-top:6px;" onclick="saveCycleSettings()">Enregistrer</button>
+
+<div id="csCycleSummary" style="display:none;margin-top:18px;background:linear-gradient(160deg,#7B6EC8,#C98FB0);border-radius:16px;padding:16px 18px;text-align:center;cursor:pointer;" onclick="openCycleCalendar()">
+<span id="csCycleSummaryTxt" style="color:white;font-weight:700;font-size:14.5px;line-height:20px;"></span>
+<div style="color:rgba(255,255,255,0.75);font-size:11.5px;margin-top:4px;">Voir le calendrier annuel →</div>
+</div>
 
 <div class="sec" style="padding:26px 0 10px;"><h2>Comprendre <em>mon cycle</em></h2></div>
 <div class="phase-explain-card"><div class="pe-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V9"/><path d="M12 9c0-4 -3-6-7-6 0 4 3 6 7 6z"/><path d="M12 13c0-3.5 2.5-5.5 6-5.5 0 3.5-2.5 5.5-6 5.5z"/></svg></div><div class="pe-body"><div class="pe-t">Phase menstruelle</div><div class="pe-s">Environ 5 jours. Ton corps se renouvelle, l'énergie est plus basse, c'est le moment de ralentir et de t'écouter.</div></div></div>
@@ -1664,7 +1701,7 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 </div>
 <div class="rp-exit-confirm" id="rpWarnModal" style="background:linear-gradient(160deg,#8E5B5B,#6B4E4E);">
 <div class="rp-confirm-title">Séance non comptabilisée</div>
-<div class="rp-confirm-msg">Tu as regardé <strong id="rpWarnPct">0%</strong> de la séance, en dessous des 60% nécessaires pour qu'elle compte dans tes points et badges. Continue un peu la séance, ou quitte sans qu'elle soit comptabilisée.</div>
+<div class="rp-confirm-msg">Continue encore <strong id="rpWarnPct">0 sec</strong> pour que ta séance compte dans tes points et badges. Continue un peu, ou quitte sans qu'elle soit comptabilisée.</div>
 <button class="rp-confirm-btn-main" onclick="closeNotCountedWarning(false)">Reprendre la séance</button>
 <button class="rp-confirm-btn-ghost" onclick="closeNotCountedWarning(true)">Quitter sans valider</button>
 </div>
@@ -1874,7 +1911,7 @@ const WT_STEPS=[
   {icon:'home',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a6b3d52ca4077.20955655_IMG_1254.PNG',title:'Ton écran d\'accueil',desc:"C'est l'onglet du milieu, en bas de ton écran. Tu y retrouves chaque jour ton message personnalisé selon ton profil ayurvédique et la phase de la lune, ton cycle menstruel (jours avant tes prochaines règles, phase actuelle et niveau d'énergie), ton sommeil et ton stress à renseigner, et ton parcours du jour pour visualiser d'un coup d'œil tout ce qu'il te reste à faire."},
   {icon:'pulse',img:'',title:'Ton conseil ménopause du jour',desc:"Si tu es en préménopause ou ménopause, un bouton dédié apparaît sur ton accueil, juste sous Sommeil & Stress. Il t'annonce un sujet différent chaque jour, bouffées de chaleur, sommeil, humeur, digestion, et bien d'autres, avec des recommandations naturopathie, nutrition et ayurvédiques pour t'accompagner au quotidien."},
   {icon:'play',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a6b3d243c03f5.97813414_Screenshot2026-07-28at14.42.41.png',title:'Tes séances',desc:"C'est l'onglet tout à gauche, ton espace mouvement complet. Retrouve ta routine du matin et ta routine du soir, tes programmes à suivre pas à pas, et la bibliothèque complète des cours."},
-  {icon:'play',img:'',title:'Tes routines du matin et du soir',desc:"Chaque routine est composée automatiquement de 6 à 7 mouvements adaptés à ton profil, dans une combinaison différente chaque jour pour ne jamais te lasser. Touche un mouvement dans le sommaire pour voir sa description avant de commencer, puis lance la séance : les vidéos s'enchaînent automatiquement avec un décompte entre chaque, et tu peux réactiver le son à tout moment. Une séance compte comme complétée dès que tu en as regardé au moins 60%."},
+  {icon:'play',img:'',title:'Tes routines du matin et du soir',desc:"Chaque routine est composée automatiquement de 6 à 7 mouvements adaptés à ton profil, dans une combinaison différente chaque jour pour ne jamais te lasser. Touche un mouvement dans le sommaire pour voir sa description avant de commencer, puis lance la séance : les vidéos s'enchaînent automatiquement avec un décompte entre chaque, et tu peux réactiver le son à tout moment. Une séance compte comme complétée dès que tu as regardé chaque mouvement quelques secondes."},
   {icon:'award',img:'',title:'Tes programmes & ta bibliothèque',desc:"Suis une ligne directrice claire pour progresser en Pilates ou en méditation guidée, séance après séance, ou pioche librement dans la bibliothèque complète des cours de yoga, Pilates et méditation. Certains contenus se débloquent avec ton ancienneté et tes connexions régulières, et tu gagnes des points et des badges au fil de ta progression."},
   {icon:'bowl',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a6b3db50db989.92116283_IMG_1261.PNG',title:'Tes recettes',desc:"C'est le deuxième onglet en partant de la gauche. Retrouve des recettes classées par thème selon ton profil ayurvédique : végétarien, boissons, anti-inflammatoire, petit-déjeuner, et bien plus. Certaines se débloquent aussi selon ton assiduité."},
   {icon:'leaf',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a6b3d32851aa3.79038288_Screenshot2026-07-28at14.42.25.png',title:'Tes dossiers bien-être',desc:"C'est le troisième onglet en partant de la gauche. Chaque semaine, un nouveau dossier complet t'attend sur un sujet naturopathie : soin des cheveux, soin de la peau, produits ménagers naturels, nutrition, aromathérapie, respiration, et bien d'autres thèmes pour prendre soin de toi au naturel, à ton rythme."},
@@ -3751,27 +3788,9 @@ async function fetchDailyRoutine(){
 async function buildRoutine(){
  const routineText=await fetchDailyRoutine();
  const items=routineText.split('\n').map(l=>' '+l.replace(/^\d+\.\s*/,'').trim()).filter(Boolean);
- const weights=getDoshaWeights();
- const primary=weights[0].k,secondary=weights[1];
- const isMixed=(weights[0].v-secondary.v)<DOSHA_MIX_THRESHOLD;
- const cycle=getCurrentCycleInfo();
- const season=getSeason(new Date());
- if(cycle && CYCLE_DOSHA_TIP[primary] && CYCLE_DOSHA_TIP[primary][cycle.phase]){
- let tip=pickDailyTip(CYCLE_DOSHA_TIP[primary][cycle.phase]);
- if(isMixed){
- const secLabel=secondary.k.charAt(0).toUpperCase()+secondary.k.slice(1);
- tip+=` (nuancé par ton ${secLabel} : ${DOSHA_TODAY_TIP[secondary.k]})`;
- }
- items.push(tip);
- }
- if(cycle && cycle.phase==='Lutéale' && cycle.daysUntilNext<=7){
- items.push(' Privilégie les bons gras (sardines, maquereau, avocat, graines) pour soutenir ton système hormonal, plutôt que de te tourner vers le sucre');
- }
- if(SEASON_DOSHA_TIP[primary] && SEASON_DOSHA_TIP[primary][season]){
- items.push(` En ${season.toLowerCase()} : ${SEASON_DOSHA_TIP[primary][season]}`);
- }
- const ageNuance=getAgeNuance(userProfile.age).trim();
- if(ageNuance)items.push(' '+ageNuance);
+ // Les conseils du dosha, du cycle, de la saison et de l'âge sont déjà affichés dans
+ // "Ta phrase du jour" juste au-dessus : on évite de les répéter ici, cette liste ne garde
+ // que les vraies actions concrètes à cocher.
  const checkedToday=getRoutineChecks();
  document.getElementById('todoWrap').innerHTML=items.map(t=>{
  const done=checkedToday.includes(t);
@@ -3955,6 +3974,13 @@ function getCyclePhaseInfo(cycleDay,daysUntilNext,cycleLength){
  return{phase:'Lutéale',emoji:best.emoji,energy:daysUntilNext<=5?'Basse':'Moyenne',title:best.title,text:best.text};
 }
 
+// Texte "Jour X/Y · règles dans Zj · le DATE", utilisé à l'identique sur le dashboard
+// et dans "Mon cycle" (Profil), pour garantir un format strictement cohérent partout.
+function getCycleSummaryText(c){
+ const nextPeriodDate=new Date();nextPeriodDate.setHours(0,0,0,0);nextPeriodDate.setDate(nextPeriodDate.getDate()+c.daysUntilNext);
+ const nextPeriodLbl=nextPeriodDate.toLocaleDateString('fr-FR',{day:'numeric',month:'short'});
+ return 'Jour '+c.cycleDay+'/'+c.len+' · règles dans '+c.daysUntilNext+'j · le '+nextPeriodLbl;
+}
 function getCurrentCycleInfo(){
  if(!userProfile.hasPeriod||userProfile.menopause||!userProfile.lastPeriodStart)return null;
  const len=userProfile.cycleLength||28;
@@ -3965,6 +3991,64 @@ function getCurrentCycleInfo(){
  const daysUntilNext=len-cycleDay+1;
  const info=getCyclePhaseInfo(cycleDay,daysUntilNext,len);
  return {cycleDay,daysUntilNext,len,...info};
+}
+
+/* ═══ Calendrier annuel du cycle (règles prévues sur toute l'année) ═══ */
+function openCycleCalendar(){
+ const c=getCurrentCycleInfo();
+ if(!c){toast('Renseigne la date de tes dernières règles dans ton profil');return;}
+ const year=new Date().getFullYear();
+ const len=userProfile.cycleLength||28;
+ const lastStart=new Date(userProfile.lastPeriodStart+'T00:00:00');
+
+ // Calcule toutes les dates de début de règles (passées et futures) qui recoupent
+ // l'année affichée, en remontant/avançant cycle par cycle depuis la date connue.
+ const periodStarts=[];
+ const yearStart=new Date(year,0,1);
+ const yearEnd=new Date(year,11,31);
+ // Remonte depuis lastStart jusqu'à avant le début de l'année
+ let cursor=new Date(lastStart);
+ while(cursor>yearStart){cursor=new Date(cursor);cursor.setDate(cursor.getDate()-len);}
+ // Avance ensuite jusqu'à après la fin de l'année, en gardant toutes les dates dans la plage utile
+ while(cursor<=yearEnd){
+ const periodEnd=new Date(cursor);periodEnd.setDate(periodEnd.getDate()+4);
+ if(periodEnd>=yearStart)periodStarts.push(new Date(cursor));
+ cursor=new Date(cursor);cursor.setDate(cursor.getDate()+len);
+ }
+
+ function isPeriodDay(date){
+ return periodStarts.some(start=>{
+ const diff=Math.floor((date-start)/86400000);
+ return diff>=0 && diff<=4;
+ });
+ }
+
+ const monthNames=['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+ const today=new Date();today.setHours(0,0,0,0);
+ let html='';
+ for(let m=0;m<12;m++){
+ const firstDay=new Date(year,m,1);
+ const daysInMonth=new Date(year,m+1,0).getDate();
+ // Lundi = 0 ... Dimanche = 6 (convention française)
+ const startOffset=(firstDay.getDay()+6)%7;
+ let daysHtml='';
+ for(let i=0;i<startOffset;i++)daysHtml+='<span></span>';
+ for(let d=1;d<=daysInMonth;d++){
+ const date=new Date(year,m,d);
+ const classes=['cyc-day'];
+ if(isPeriodDay(date))classes.push('period');
+ if(date.getTime()===today.getTime())classes.push('today');
+ daysHtml+='<div class="'+classes.join(' ')+'">'+d+'</div>';
+ }
+ html+='<div class="cyc-month"><div class="cyc-month-t">'+monthNames[m]+' '+year+'</div>'+
+ '<div class="cyc-month-wk"><span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span></div>'+
+ '<div class="cyc-month-days">'+daysHtml+'</div></div>';
+ }
+ document.getElementById('cycCalGrid').innerHTML=html;
+ document.getElementById('cycCalOverlay').classList.add('open');
+}
+function closeCycleCalendar(){
+ document.getElementById('cycCalOverlay').classList.remove('open');
 }
 
 /* Cache simple pour éviter de re-fetch à chaque appel de renderCycle() */
@@ -4058,7 +4142,7 @@ async function renderCycle(){
  return;
  }
  document.getElementById('cycleBadge').textContent=c.emoji+' '+c.phase;
- document.getElementById('cycleDayLbl').textContent='Jour '+c.cycleDay+'/'+c.len+' · règles dans '+c.daysUntilNext+'j';
+ document.getElementById('cycleDayLbl').textContent=getCycleSummaryText(c);
  document.getElementById('cycleBarFill').style.width=Math.round(c.cycleDay/c.len*100)+'%';
  document.getElementById('cycleMsgTitle').textContent=c.title;
  document.getElementById('cycleMsgBody').textContent=c.text;
@@ -4306,9 +4390,9 @@ function dismissExitConfirm(){
  if(routineIndex>=0&&routineQueue[routineIndex])clipStartTimestamp=Date.now();
 }
 function confirmEndRoutine(){
- const watchedPct=getWatchedPercent();
- if(watchedPct<60){
- showNotCountedWarning(watchedPct);
+ const requiredSec=routineQueue.length*10; // environ 10 secondes par mouvement de la routine
+ if(totalWatchedSec<requiredSec){
+ showNotCountedWarning(requiredSec);
  return;
  }
  toast('Séance enregistrée '); addXP(15); checkBadges();
@@ -4316,10 +4400,12 @@ function confirmEndRoutine(){
  closeRoutinePlayer();
  renderRoutinesSection();
 }
-// Pop-up d'avertissement : la séance n'est pas comptabilisée si moins de 50% n'a été regardé.
-function showNotCountedWarning(watchedPct){
+// Pop-up d'avertissement : la séance n'est pas comptabilisée si moins de 10 secondes par
+// mouvement (environ) n'a été regardé au total.
+function showNotCountedWarning(requiredSec){
  document.getElementById('rpExitConfirm').classList.remove('open');
- document.getElementById('rpWarnPct').textContent=watchedPct+'%';
+ const remainingSec=Math.max(0,requiredSec-totalWatchedSec);
+ document.getElementById('rpWarnPct').textContent=remainingSec+' sec';
  document.getElementById('rpWarnModal').classList.add('open');
 }
 function closeNotCountedWarning(quitAnyway){
@@ -5898,6 +5984,14 @@ function openWellnessHistory(){
 function openCycleSettings(){
  document.getElementById('csLastPeriod').value=userProfile.lastPeriodStart||'';
  document.getElementById('csCycleLength').value=userProfile.cycleLength||28;
+ const c=getCurrentCycleInfo();
+ const summaryWrap=document.getElementById('csCycleSummary');
+ if(c){
+ document.getElementById('csCycleSummaryTxt').textContent=getCycleSummaryText(c);
+ summaryWrap.style.display='block';
+ } else {
+ summaryWrap.style.display='none';
+ }
  go('cycleSettings');
 }
 function saveCycleSettings(){

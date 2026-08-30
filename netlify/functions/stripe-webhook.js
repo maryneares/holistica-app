@@ -1,32 +1,32 @@
 // netlify/functions/stripe-webhook.js
 //
-// Webhook Stripe pour Holistica Club.
-// Reçoit les événements Stripe, met à jour Supabase (profiles), et envoie les emails
-// correspondants via l'API Resend (pas besoin de repasser par les templates Supabase Auth,
-// puisque ce sont des événements de paiement, pas des événements de connexion).
+// Webhook Stripe pour Holistica Club — version corrigée pour bien gérer l'essai
+// gratuit de 3 jours de bout en bout, avec les emails de confirmation à chaque étape.
 //
-// ═══════ MISE EN PLACE (à faire une seule fois) ═══════
-// 1. Dans ton projet : mkdir -p netlify/functions, puis place ce fichier dans ce dossier.
-// 2. npm install stripe @supabase/supabase-js (à la racine du projet, avant déploiement).
-// 3. Variables d'environnement à ajouter dans Netlify (Site settings > Environment variables) :
-//    STRIPE_SECRET_KEY       (Stripe > Developers > API keys > Secret key)
-//    STRIPE_WEBHOOK_SECRET   (donné après l'étape 4 ci-dessous)
-//    SUPABASE_URL            (https://lsoddhgahdfcpmuydmbt.supabase.co)
-//    SUPABASE_SERVICE_ROLE_KEY (Supabase > Settings > API > service_role — GARDE-LA SECRÈTE)
-//    RESEND_API_KEY          (Resend > API keys)
-// 4. Dans Stripe Dashboard > Developers > Webhooks > Add endpoint :
-//    URL: https://TON-SITE.netlify.app/.netlify/functions/stripe-webhook
-//    Événements à écouter : checkout.session.completed, invoice.payment_failed,
-//    customer.subscription.deleted, customer.subscription.updated
-// 5. Dans Stripe Dashboard > Settings > Billing > Subscriptions and emails > Manage failed payments :
-//    règle le nombre de tentatives / délai pour que l'annulation finale arrive ~7 jours après
-//    le premier échec (sinon le délai par défaut de Stripe peut être plus long).
+// ═══════ ÉVÉNEMENTS ÉCOUTÉS (à activer dans Stripe Dashboard > Webhooks) ═══════
+//   checkout.session.completed   → premier contact (infos initiales du client)
+//   customer.subscription.created → démarrage réel de l'abonnement/essai (LE PLUS FIABLE)
+//   customer.subscription.updated → changement de statut (fin d'essai, reprise, etc.)
+//   customer.subscription.deleted → annulation (y compris pendant l'essai)
+//   invoice.paid                  → paiement réel confirmé (fin d'essai réussie)
+//   invoice.payment_failed        → échec de paiement
 //
-// ═══════ MODIF (rattachée au CMS) ═══════
-// Ajout de l'enregistrement de subscription_started_at, canceled_at, mrr_amount et
-// trial_end, nécessaires au tableau de bord "Clients" du CMS admin (avant cette version,
-// ces champs n'étaient jamais écrits, ce qui faisait afficher des statistiques à zéro
-// partout : abonnés actifs, MRR, nouveaux/résiliés par période, etc.)
+// ═══════ MISE EN PLACE ═══════
+// Variables d'environnement Netlify nécessaires :
+//   STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, SUPABASE_URL,
+//   SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY
+//
+// ═══════ CE QUI A CHANGÉ PAR RAPPORT À LA VERSION PRÉCÉDENTE ═══════
+// - Ajout de customer.subscription.created : c'est l'événement le plus fiable pour
+//   savoir qu'un essai démarre (checkout.session.completed peut arriver avant que
+//   l'abonnement Stripe soit complètement formé).
+// - subscription_status prend maintenant correctement la valeur 'trialing' pendant
+//   l'essai (avant, tout était mis à 'active' même pendant l'essai, ce qui n'est pas
+//   grave pour l'accès, mais empêchait le CMS de distinguer "en essai" / "payante").
+// - Ajout de invoice.paid : confirme le VRAI paiement à la fin de l'essai, envoie un
+//   email de confirmation différent de l'email de bienvenue initial.
+// - Table de correspondance stricte : email + stripe_customer_id + stripe_subscription_id,
+//   pour ne jamais créer de doublon si Stripe renvoie plusieurs fois le même événement.
 
 const Stripe = require('stripe');
 const { createClient } = require('@supabase/supabase-js');
@@ -40,10 +40,7 @@ async function sendEmail(to, subject, html) {
   try {
     await fetch('https://api.resend.com/emails', {
       method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
-        'Content-Type': 'application/json'
-      },
+      headers: { 'Authorization': `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({ from: FROM, to: [to], subject, html })
     });
   } catch (e) {
@@ -71,19 +68,68 @@ function wrapEmail(title, bodyHtml) {
 </div>`;
 }
 
-function planFromAmount(amountTotal) {
+function planFromAmount(amount) {
   // 29€ = Plan Équilibre, 49€ = Plan Immersion (montants en centimes)
-  if (amountTotal >= 4000) return 'immersion';
+  if (amount >= 4000) return 'immersion';
   return 'equilibre';
 }
 
-// MRR mensuel équivalent, peu importe si l'abonnement est facturé au mois ou à l'année.
-function mrrFromSession(session, plan) {
-  const amount = session.amount_total || 0; // en centimes
-  // Un montant élevé (>100€) indique très probablement une facturation annuelle : on
-  // ramène alors à son équivalent mensuel pour un MRR cohérent d'un plan à l'autre.
+function mrrFromAmount(amount) {
   if (amount > 10000) return Math.round((amount / 100 / 12) * 100) / 100;
   return amount / 100;
+}
+
+// Retrouve (ou prépare) le profil correspondant à cet abonnement Stripe, en essayant
+// dans l'ordre : identifiant direct, email déjà connu, puis abandon vers "en attente".
+async function findProfile({ userId, email, stripeCustomerId }) {
+  if (userId) {
+    const { data } = await supabase.from('profiles').select('id,email,name').eq('id', userId).maybeSingle();
+    if (data) return data;
+  }
+  if (stripeCustomerId) {
+    const { data } = await supabase.from('profiles').select('id,email,name').eq('stripe_customer_id', stripeCustomerId).maybeSingle();
+    if (data) return data;
+  }
+  if (email) {
+    const { data } = await supabase.from('profiles').select('id,email,name').eq('email', email).maybeSingle();
+    if (data) return data;
+  }
+  return null;
+}
+
+async function applySubscriptionUpdate({ profile, email, status, plan, stripeCustomerId, stripeSubscriptionId, trialEnd, mrr, isNew }) {
+  const payload = {
+    subscription_status: status,
+    stripe_customer_id: stripeCustomerId,
+    stripe_subscription_id: stripeSubscriptionId,
+    payment_warning_sent_at: null,
+  };
+  if (plan) payload.subscription_plan = plan;
+  if (trialEnd !== undefined) payload.trial_end = trialEnd;
+  if (mrr !== undefined) payload.mrr_amount = mrr;
+  if (isNew) { payload.subscription_started_at = new Date().toISOString(); payload.canceled_at = null; }
+
+  if (profile) {
+    if (email && !profile.email) payload.email = email;
+    await supabase.from('profiles').update(payload).eq('id', profile.id);
+    return true;
+  } else if (email) {
+    // Aucun compte encore créé dans l'app : on garde l'abonnement de côté. Il sera
+    // appliqué automatiquement dès que la personne se connecte (app OU site), qui
+    // vérifient tous les deux pending_subscriptions au moment de la connexion.
+    await supabase.from('pending_subscriptions').upsert({
+      email,
+      subscription_plan: plan,
+      subscription_status: status,
+      stripe_customer_id: stripeCustomerId,
+      stripe_subscription_id: stripeSubscriptionId,
+      subscription_started_at: new Date().toISOString(),
+      mrr_amount: mrr,
+      trial_end: trialEnd,
+    });
+    return false;
+  }
+  return false;
 }
 
 exports.handler = async (event) => {
@@ -99,85 +145,104 @@ exports.handler = async (event) => {
   try {
     switch (stripeEvent.type) {
 
+      // ═══ Premier contact : récupère les infos initiales, mais ne fait pas
+      // confiance à cet événement seul pour l'activation (voir subscription.created).
       case 'checkout.session.completed': {
         const session = stripeEvent.data.object;
+        const payerEmail = session.customer_details?.email || session.customer_email || null;
         const userId = session.client_reference_id;
-        if (!userId) break;
-        const plan = planFromAmount(session.amount_total);
-
-        const { data: profile } = await supabase.from('profiles').select('email,name').eq('id', userId).maybeSingle();
-        // La colonne profiles.email n'est remplie que si l'utilisatrice a édité son profil manuellement.
-        // On va donc chercher l'email fiable directement sur le compte (rempli dès l'inscription).
-        let recipientEmail = profile?.email;
-        if (!recipientEmail) {
-          const { data: authUser } = await supabase.auth.admin.getUserById(userId);
-          recipientEmail = authUser?.user?.email;
-        }
-
-        // Récupère la date de fin d'essai directement depuis l'abonnement Stripe créé,
-        // pour alimenter la colonne trial_end utilisée par le CMS.
-        let trialEnd = null;
-        if (session.subscription) {
-          try {
-            const sub = await stripe.subscriptions.retrieve(session.subscription);
-            if (sub.trial_end) trialEnd = new Date(sub.trial_end * 1000).toISOString();
-          } catch (e) {
-            console.error('Impossible de récupérer la date de fin d\'essai:', e.message);
+        if (payerEmail || userId) {
+          const profile = await findProfile({ userId, email: payerEmail, stripeCustomerId: session.customer });
+          if (profile && session.customer) {
+            await supabase.from('profiles').update({ stripe_customer_id: session.customer }).eq('id', profile.id);
           }
         }
+        break;
+      }
 
-        const updatePayload = {
-          subscription_status: 'active',
-          subscription_plan: plan,
-          stripe_customer_id: session.customer,
-          payment_warning_sent_at: null,
-          subscription_started_at: new Date().toISOString(),
-          canceled_at: null,
-          mrr_amount: mrrFromSession(session, plan),
-          trial_end: trialEnd,
-        };
-        if (recipientEmail) updatePayload.email = recipientEmail;
-        await supabase.from('profiles').update(updatePayload).eq('id', userId);
+      // ═══ L'événement le plus fiable pour savoir qu'un essai (ou abonnement) démarre. ═══
+      case 'customer.subscription.created': {
+        const sub = stripeEvent.data.object;
+        const amount = sub.items?.data?.[0]?.price?.unit_amount || 0;
+        const plan = planFromAmount(amount);
+        const status = sub.status === 'trialing' ? 'trialing' : 'active';
+        const trialEnd = sub.trial_end ? new Date(sub.trial_end * 1000).toISOString() : null;
+        const mrr = mrrFromAmount(amount);
 
+        let customerEmail = null;
+        try {
+          const customer = await stripe.customers.retrieve(sub.customer);
+          customerEmail = customer.email;
+        } catch (e) { /* tant pis, on continue sans email direct */ }
+
+        const profile = await findProfile({ email: customerEmail, stripeCustomerId: sub.customer });
+        const applied = await applySubscriptionUpdate({
+          profile, email: customerEmail, status, plan,
+          stripeCustomerId: sub.customer, stripeSubscriptionId: sub.id,
+          trialEnd, mrr, isNew: true,
+        });
+
+        const recipientEmail = profile?.email || customerEmail;
         if (recipientEmail) {
-          const planLabel = plan === 'immersion' ? 'Plan Immersion (49€/mois)' : 'Plan Équilibre (29€/mois)';
-          const extra = plan === 'immersion'
-            ? `<div style="font-size:14px;line-height:1.7;color:#3D3860;margin-top:14px;">Ton accès au groupe WhatsApp privé est déjà actif — tu le trouveras directement dans l'onglet <b>Challenge</b> de l'app.</div>`
-            : '';
-          const html = wrapEmail('Bienvenue dans ton espace 🌸', `
-            <div style="font-size:14px;line-height:1.7;color:#3D3860;">
-              Merci ${profile?.name || ''} pour ta confiance ! Ton abonnement <b>${planLabel}</b> est actif dès maintenant.
-              Toutes tes recettes, séances et ton suivi personnalisé t'attendent dans l'app.
-            </div>${extra}
+          const planLabel = plan === 'immersion' ? 'Plan Immersion' : 'Plan Équilibre';
+          const trialDateFr = trialEnd ? new Date(trialEnd).toLocaleDateString('fr-FR', { day:'numeric', month:'long' }) : null;
+          const bodyText = applied
+            ? `Ton essai gratuit de 3 jours sur le <b>${planLabel}</b> commence aujourd'hui${trialDateFr ? `, jusqu'au <b>${trialDateFr}</b>` : ''}. Aucun prélèvement avant cette date. Toutes tes recettes, séances et ton suivi personnalisé t'attendent déjà dans l'app.`
+            : `Ton essai gratuit de 3 jours sur le <b>${planLabel}</b> est enregistré${trialDateFr ? `, jusqu'au <b>${trialDateFr}</b>` : ''}. Il ne te reste qu'une étape : télécharge l'app Holistica Club et crée ton compte avec <b>cette même adresse email</b> pour débloquer ton accès tout de suite.`;
+          const html = wrapEmail('Ton essai gratuit commence 🌸', `
+            <div style="font-size:14px;line-height:1.7;color:#3D3860;">${bodyText}</div>
+            <div style="font-size:13px;line-height:1.6;color:#8A85A8;margin-top:16px;">Tu peux annuler à tout moment avant la fin de ton essai, sans aucun frais, directement depuis ton espace membre.</div>
           `);
-          await sendEmail(recipientEmail, 'Bienvenue dans ton espace Holistica Club 🌸', html);
-        } else {
-          console.error('Aucun email trouvé pour l\'utilisateur', userId);
+          await sendEmail(recipientEmail, 'Ton essai gratuit Holistica Club commence 🌸', html);
+        }
+        break;
+      }
+
+      // ═══ Paiement réel confirmé (fin d'essai réussie, ou renouvellement). ═══
+      case 'invoice.paid': {
+        const invoice = stripeEvent.data.object;
+        if (!invoice.subscription) break; // ignore les factures hors abonnement
+        const profile = await findProfile({ stripeCustomerId: invoice.customer });
+        if (!profile) break;
+
+        await supabase.from('profiles').update({
+          subscription_status: 'active',
+          payment_warning_sent_at: null,
+        }).eq('id', profile.id);
+
+        // On n'envoie l'email "paiement confirmé" que pour un vrai montant prélevé
+        // (pas pour une facture à 0€ générée pendant l'essai lui-même).
+        if (profile.email && invoice.amount_paid > 0) {
+          const montant = (invoice.amount_paid / 100).toFixed(2).replace('.', ',') + '€';
+          const prochaine = invoice.lines?.data?.[0]?.period?.end
+            ? new Date(invoice.lines.data[0].period.end * 1000).toLocaleDateString('fr-FR', { day:'numeric', month:'long' })
+            : null;
+          const html = wrapEmail('Ton abonnement est confirmé 🌸', `
+            <div style="font-size:14px;line-height:1.7;color:#3D3860;">
+              Ton paiement de <b>${montant}</b> a bien été effectué. Ton abonnement Holistica Club est maintenant actif${prochaine ? `, prochaine échéance le <b>${prochaine}</b>` : ''}.
+            </div>
+            ${invoice.hosted_invoice_url ? `<div style="text-align:center;margin-top:20px;"><a href="${invoice.hosted_invoice_url}" style="display:inline-block;background:#5B4EA8;color:#ffffff;text-decoration:none;font-weight:700;font-size:15px;padding:14px 32px;border-radius:14px;">Voir ma facture</a></div>` : ''}
+          `);
+          await sendEmail(profile.email, 'Paiement confirmé — Holistica Club', html);
         }
         break;
       }
 
       case 'invoice.payment_failed': {
         const invoice = stripeEvent.data.object;
-        const customerId = invoice.customer;
-        const { data: profile } = await supabase.from('profiles').select('id,email,name,payment_warning_sent_at').eq('stripe_customer_id', customerId).maybeSingle();
+        const profile = await findProfile({ stripeCustomerId: invoice.customer });
         if (!profile) break;
 
+        const { data: current } = await supabase.from('profiles').select('payment_warning_sent_at').eq('id', profile.id).maybeSingle();
         await supabase.from('profiles').update({ subscription_status: 'past_due' }).eq('id', profile.id);
 
-        // On n'envoie le mail d'avertissement "7 jours" qu'une seule fois par cycle d'échec,
-        // pour ne pas spammer à chaque nouvelle tentative de prélèvement de Stripe.
-        if (!profile.payment_warning_sent_at && profile.email) {
-          const html = wrapEmail('Ton paiement a échoué ⚠️', `
-            <div style="font-size:14px;line-height:1.7;color:#3D3860;">
-              Nous n'avons pas pu prélever ton abonnement Holistica Club. Merci de vérifier ou mettre à jour ton moyen de paiement dès que possible.
-            </div>
-            <div style="font-size:14px;line-height:1.7;color:#3D3860;margin-top:10px;">
-              <b>Sans mise à jour, ton accès sera automatiquement coupé dans 7 jours.</b>
-            </div>
+        if (!current?.payment_warning_sent_at && profile.email) {
+          const html = wrapEmail('Action requise pour ton abonnement ⚠️', `
+            <div style="font-size:14px;line-height:1.7;color:#3D3860;">Nous n'avons pas pu prélever ton abonnement Holistica Club. Merci de vérifier ou mettre à jour ton moyen de paiement dès que possible.</div>
+            <div style="font-size:14px;line-height:1.7;color:#3D3860;margin-top:10px;"><b>Sans mise à jour, ton accès sera automatiquement coupé dans 7 jours.</b></div>
             ${invoice.hosted_invoice_url ? `<div style="text-align:center;margin-top:20px;"><a href="${invoice.hosted_invoice_url}" style="display:inline-block;background:#5B4EA8;color:#ffffff;text-decoration:none;font-weight:700;font-size:15px;padding:14px 32px;border-radius:14px;">Mettre à jour mon paiement</a></div>` : ''}
           `);
-          await sendEmail(profile.email, 'Paiement échoué — 7 jours pour régulariser', html);
+          await sendEmail(profile.email, 'Action requise pour ton abonnement Holistica Club', html);
           await supabase.from('profiles').update({ payment_warning_sent_at: new Date().toISOString() }).eq('id', profile.id);
         }
         break;
@@ -185,37 +250,26 @@ exports.handler = async (event) => {
 
       case 'customer.subscription.deleted': {
         const sub = stripeEvent.data.object;
-        const { data: profile } = await supabase.from('profiles').select('id,email,name,subscription_status').eq('stripe_customer_id', sub.customer).maybeSingle();
+        const profile = await findProfile({ stripeCustomerId: sub.customer });
         if (!profile) break;
 
-        // Détermine si c'est une annulation volontaire (cliente encore à jour de paiement) ou
-        // une coupure suite à échec de paiement définitif (déjà en 'past_due' avant cet événement).
-        const reason = sub.cancellation_details?.reason; // 'cancellation_requested' | 'payment_failed' | ...
-        const isVoluntary = reason === 'cancellation_requested' || (!reason && profile.subscription_status === 'active');
+        const { data: current } = await supabase.from('profiles').select('subscription_status').eq('id', profile.id).maybeSingle();
+        const reason = sub.cancellation_details?.reason;
+        const wasTrialing = current?.subscription_status === 'trialing';
+        const isVoluntary = reason === 'cancellation_requested' || (!reason && current?.subscription_status === 'active');
 
         await supabase.from('profiles').update({
-          subscription_status: 'cancelled',
-          subscription_plan: null,
-          canceled_at: new Date().toISOString(),
-          mrr_amount: 0,
+          subscription_status: 'cancelled', subscription_plan: null,
+          canceled_at: new Date().toISOString(), mrr_amount: 0,
         }).eq('id', profile.id);
 
         if (profile.email) {
-          const html = isVoluntary
-            ? wrapEmail('Ton abonnement a été annulé', `
-              <div style="font-size:14px;line-height:1.7;color:#3D3860;">
-                Ton abonnement Holistica Club a bien été annulé, comme demandé. Ton accès reste actif jusqu'à la fin de la période déjà payée.
-              </div>
-              <div style="font-size:14px;line-height:1.7;color:#3D3860;margin-top:10px;">
-                Tu peux te réabonner à tout moment directement depuis l'app pour retrouver tout ton suivi — rien n'est perdu.
-              </div>
-            `)
-            : wrapEmail('Ton accès a été suspendu', `
-              <div style="font-size:14px;line-height:1.7;color:#3D3860;">
-                Faute de paiement régularisé, ton accès à Holistica Club vient d'être suspendu. Tu peux te réabonner à tout moment directement depuis l'app pour retrouver tout ton suivi.
-              </div>
-            `);
-          const subject = isVoluntary ? 'Confirmation d\'annulation — Holistica Club' : 'Ton accès Holistica Club a été suspendu';
+          const html = wasTrialing
+            ? wrapEmail('Ton essai a été annulé', `<div style="font-size:14px;line-height:1.7;color:#3D3860;">Ton essai gratuit Holistica Club a bien été annulé, comme demandé. Aucun prélèvement n'aura lieu. Tu peux te réabonner à tout moment.</div>`)
+            : isVoluntary
+              ? wrapEmail('Ton abonnement a été annulé', `<div style="font-size:14px;line-height:1.7;color:#3D3860;">Ton abonnement Holistica Club a bien été annulé, comme demandé. Ton accès reste actif jusqu'à la fin de la période déjà payée.</div>`)
+              : wrapEmail('Ton accès a été suspendu', `<div style="font-size:14px;line-height:1.7;color:#3D3860;">Faute de paiement régularisé, ton accès à Holistica Club vient d'être suspendu. Tu peux te réabonner à tout moment.</div>`);
+          const subject = wasTrialing ? "Confirmation d'annulation de ton essai" : (isVoluntary ? "Confirmation d'annulation — Holistica Club" : 'Ton accès Holistica Club a été suspendu');
           await sendEmail(profile.email, subject, html);
         }
         break;
@@ -223,12 +277,15 @@ exports.handler = async (event) => {
 
       case 'customer.subscription.updated': {
         const sub = stripeEvent.data.object;
-        // Reprise de paiement après un échec : on redonne l'accès et on relance rien.
+        const profile = await findProfile({ stripeCustomerId: sub.customer });
+        if (!profile) break;
+
         if (sub.status === 'active') {
-          const { data: profile } = await supabase.from('profiles').select('id').eq('stripe_customer_id', sub.customer).maybeSingle();
-          if (profile) {
-            await supabase.from('profiles').update({ subscription_status: 'active', payment_warning_sent_at: null }).eq('id', profile.id);
-          }
+          await supabase.from('profiles').update({ subscription_status: 'active', payment_warning_sent_at: null }).eq('id', profile.id);
+        } else if (sub.status === 'trialing') {
+          await supabase.from('profiles').update({ subscription_status: 'trialing' }).eq('id', profile.id);
+        } else if (sub.status === 'past_due' || sub.status === 'unpaid') {
+          await supabase.from('profiles').update({ subscription_status: 'past_due' }).eq('id', profile.id);
         }
         break;
       }

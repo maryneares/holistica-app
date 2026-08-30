@@ -34,7 +34,7 @@ const { createClient } = require('@supabase/supabase-js');
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
 
-const FROM = '"Holistica Club - Maryne Arès" <bonjour@maryneares.fr>';
+const FROM = '"Holistica Club - Maryne Arès" <info@maryneares.fr>';
 
 async function sendEmail(to, subject, html) {
   try {
@@ -185,13 +185,65 @@ exports.handler = async (event) => {
         const recipientEmail = profile?.email || customerEmail;
         if (recipientEmail) {
           const planLabel = plan === 'immersion' ? 'Plan Immersion' : 'Plan Équilibre';
+          const planFeatures = plan === 'immersion'
+            ? ['Accès complet à l\'application, recettes et séances vidéo', 'Suivi de cycle et bilan ayurvédique', 'Plan alimentaire personnalisé, mis à jour toutes les 2 semaines', 'Groupe WhatsApp privé, challenges et lives avec Maryne']
+            : ['Accès complet à l\'application', 'Toutes les recettes et séances vidéo', 'Suivi de cycle et bilan ayurvédique', 'Recommandations personnalisées'];
           const trialDateFr = trialEnd ? new Date(trialEnd).toLocaleDateString('fr-FR', { day:'numeric', month:'long' }) : null;
-          const bodyText = applied
-            ? `Ton essai gratuit de 3 jours sur le <b>${planLabel}</b> commence aujourd'hui${trialDateFr ? `, jusqu'au <b>${trialDateFr}</b>` : ''}. Aucun prélèvement avant cette date. Toutes tes recettes, séances et ton suivi personnalisé t'attendent déjà dans l'app.`
-            : `Ton essai gratuit de 3 jours sur le <b>${planLabel}</b> est enregistré${trialDateFr ? `, jusqu'au <b>${trialDateFr}</b>` : ''}. Il ne te reste qu'une étape : télécharge l'app Holistica Club et crée ton compte avec <b>cette même adresse email</b> pour débloquer ton accès tout de suite.`;
+
           const html = wrapEmail('Ton essai gratuit commence 🌸', `
-            <div style="font-size:14px;line-height:1.7;color:#3D3860;">${bodyText}</div>
-            <div style="font-size:13px;line-height:1.6;color:#8A85A8;margin-top:16px;">Tu peux annuler à tout moment avant la fin de ton essai, sans aucun frais, directement depuis ton espace membre.</div>
+            <div style="font-size:14px;line-height:1.7;color:#3D3860;">
+              Merci pour ta confiance ! Ton essai gratuit de 3 jours sur le <b>${planLabel}</b> commence aujourd'hui${trialDateFr ? `, jusqu'au <b>${trialDateFr}</b>` : ''}. Aucun prélèvement avant cette date.
+            </div>
+
+            <div style="background:#F4F0FB;border-radius:14px;padding:16px 18px;margin:18px 0;">
+              <div style="font-size:13px;font-weight:700;color:#5B4EA8;text-transform:uppercase;letter-spacing:.3px;margin-bottom:8px;">Ce qui est inclus dans ton ${planLabel}</div>
+              ${planFeatures.map(f => `<div style="font-size:13.5px;color:#3D3860;padding:4px 0;">✓ ${f}</div>`).join('')}
+            </div>
+
+            <div style="font-size:15px;font-weight:700;color:#1A1828;margin:22px 0 12px;">Tes prochaines étapes</div>
+
+            <div style="font-size:14px;line-height:1.6;color:#3D3860;margin-bottom:14px;">
+              <b>1. Télécharge l'app</b><br>
+              — Sur <b>Android</b> : cherche "Holistica Club" sur le Google Play Store.<br>
+              — Sur <b>iPhone</b> : l'app s'installe comme une icône sur ton écran d'accueil, directement depuis Safari (voir le tutoriel juste en dessous).
+            </div>
+
+            <div style="font-size:14px;line-height:1.6;color:#3D3860;margin-bottom:14px;">
+              <b>2. Crée ton compte</b><br>
+              Utilise <b>cette même adresse email</b> (${recipientEmail}) et choisis un mot de passe. Confirme ensuite ton compte via l'email de vérification que tu recevras.
+            </div>
+
+            <div style="font-size:14px;line-height:1.6;color:#3D3860;margin-bottom:20px;">
+              <b>3. Réponds au questionnaire</b><br>
+              Il personnalise entièrement ton espace : ton profil ayurvédique, tes routines, ton alimentation et tes séances.
+            </div>
+
+            <div style="text-align:center;margin:20px 0;">
+              <a href="https://app.holisticaclub.com/" style="display:inline-block;background:#5B4EA8;color:#ffffff;text-decoration:none;font-weight:700;font-size:15px;padding:14px 32px;border-radius:14px;">Ouvrir l'app (iPhone / lien direct)</a>
+            </div>
+            <div style="text-align:center;margin-bottom:20px;">
+              <a href="https://play.google.com/store/apps/details?id=com.holisticaclub.app2" style="color:#5B4EA8;font-weight:700;font-size:14px;text-decoration:underline;">Télécharger sur Google Play (Android)</a>
+            </div>
+
+            <div style="background:#FAF8FF;border:1px solid #EDE6FB;border-radius:14px;padding:16px 18px;margin-bottom:20px;">
+              <div style="font-size:13px;font-weight:700;color:#5B4EA8;margin-bottom:10px;">📱 Comment installer sur iPhone (30 secondes)</div>
+              <div style="font-size:13px;line-height:1.7;color:#3D3860;">
+                1. Ouvre <a href="https://app.holisticaclub.com/" style="color:#5B4EA8;">app.holisticaclub.com</a> dans Safari<br>
+                2. Appuie sur l'icône de partage (la flèche qui pointe vers le haut, en bas de l'écran)<br>
+                3. Fais défiler et choisis <b>"Ajouter à l'écran d'accueil"</b><br>
+                4. Confirme en appuyant sur <b>"Ajouter"</b> en haut à droite<br>
+                5. Une icône Holistica Club apparaît sur ton écran d'accueil, exactement comme une vraie app — ton espace est prêt !
+              </div>
+            </div>
+
+            <div style="border-top:1px solid #EDE6FB;padding-top:16px;">
+              <div style="font-size:13.5px;font-weight:700;color:#1A1828;margin-bottom:6px;">Ton espace membre en ligne</div>
+              <div style="font-size:13px;line-height:1.6;color:#8A85A8;">
+                Retrouve à tout moment sur <a href="https://www.holisticaclub.com/" style="color:#5B4EA8;">holisticaclub.com</a> : la gestion de ton abonnement (changer de formule, annuler), ton profil ayurvédique complet, ton thème astral et tes factures.
+              </div>
+            </div>
+
+            <div style="font-size:12.5px;line-height:1.6;color:#8A85A8;margin-top:16px;">Tu peux annuler à tout moment avant la fin de ton essai, sans aucun frais, directement depuis ton espace membre.</div>
           `);
           await sendEmail(recipientEmail, 'Ton essai gratuit Holistica Club commence 🌸', html);
         }
@@ -239,7 +291,7 @@ exports.handler = async (event) => {
         if (!current?.payment_warning_sent_at && profile.email) {
           const html = wrapEmail('Action requise pour ton abonnement ⚠️', `
             <div style="font-size:14px;line-height:1.7;color:#3D3860;">Nous n'avons pas pu prélever ton abonnement Holistica Club. Merci de vérifier ou mettre à jour ton moyen de paiement dès que possible.</div>
-            <div style="font-size:14px;line-height:1.7;color:#3D3860;margin-top:10px;"><b>Sans mise à jour, ton accès sera automatiquement coupé dans 7 jours.</b></div>
+            <div style="font-size:14px;line-height:1.7;color:#3D3860;margin-top:10px;"><b>Sans mise à jour, ton accès sera automatiquement coupé dans 3 jours.</b></div>
             ${invoice.hosted_invoice_url ? `<div style="text-align:center;margin-top:20px;"><a href="${invoice.hosted_invoice_url}" style="display:inline-block;background:#5B4EA8;color:#ffffff;text-decoration:none;font-weight:700;font-size:15px;padding:14px 32px;border-radius:14px;">Mettre à jour mon paiement</a></div>` : ''}
           `);
           await sendEmail(profile.email, 'Action requise pour ton abonnement Holistica Club', html);

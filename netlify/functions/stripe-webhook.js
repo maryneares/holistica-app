@@ -62,7 +62,7 @@ function wrapEmail(title, bodyHtml) {
       ${bodyHtml}
     </td></tr>
     <tr><td style="padding:24px 32px 36px;">
-      <div style="font-size:12px;color:#8A85A8;line-height:1.6;text-align:center;">Des questions ? Réponds directement à cet email.<br>À très vite sur Holistica Club 🪷</div>
+      <div style="font-size:12px;color:#8A85A8;line-height:1.6;text-align:center;">Pour toute demande, envoie un email à <a href="mailto:info@maryneares.fr" style="color:#8A85A8;">info@maryneares.fr</a>.<br>Ne réponds pas directement à cet email automatique.<br>À très vite sur Holistica Club 🪷</div>
     </td></tr>
   </table>
 </div>`;

@@ -68,10 +68,38 @@ function wrapEmail(title, bodyHtml) {
 </div>`;
 }
 
-function planFromAmount(amount) {
-  // 29€ = Plan Équilibre, 49€ = Plan Immersion (montants en centimes)
-  if (amount >= 4000) return 'immersion';
-  return 'equilibre';
+// Détermine le plan (équilibre / immersion) à partir du VRAI PRODUIT Stripe associé
+// au tarif payé, plutôt que du montant — un simple seuil de montant est fragile face
+// aux tarifs annuels (montant élevé mais Équilibre) et aux offres promotionnelles
+// (ex: 39€ de lancement pour Immersion, en dessous du seuil "Immersion" habituel).
+// Le produit associé, lui, ne change jamais, peu importe le prix ou la remise.
+async function planFromPriceItem(priceItem) {
+  try {
+    const productId = typeof priceItem?.product === 'string' ? priceItem.product : priceItem?.product?.id;
+    if (!productId) return planFromAmountFallback(priceItem?.unit_amount);
+    const product = await stripe.products.retrieve(productId);
+    const name = (product.name || '').toLowerCase();
+    if (name.includes('immersion')) return 'immersion';
+    if (name.includes('équilibre') || name.includes('equilibre')) return 'equilibre';
+    // Nom de produit non reconnu : on se rabat sur le montant, en dernier recours.
+    return planFromAmountFallback(priceItem?.unit_amount);
+  } catch (e) {
+    console.error('Impossible de récupérer le produit Stripe, repli sur le montant:', e.message);
+    return planFromAmountFallback(priceItem?.unit_amount);
+  }
+}
+// Solution de repli uniquement si le produit n'a pas pu être identifié (ne devrait
+// quasiment jamais arriver) : reconnaît les montants exacts connus (mensuels et
+// annuels, tarif normal et tarif de lancement), pour éviter qu'un paiement annuel
+// Équilibre (montant élevé) soit mal classé comme Immersion.
+function planFromAmountFallback(amount) {
+  const immersionAmounts = [4900, 3900, 47000]; // 49€, 39€ (lancement), 470€/an
+  const equilibreAmounts = [2900, 27900]; // 29€, 279€/an
+  if (immersionAmounts.includes(amount)) return 'immersion';
+  if (equilibreAmounts.includes(amount)) return 'equilibre';
+  // Montant totalement inconnu (ex: nouveau tarif jamais vu) : dernier recours,
+  // un seuil qui couvre au moins les deux tarifs mensuels actuels.
+  return amount >= 3500 ? 'immersion' : 'equilibre';
 }
 
 function mrrFromAmount(amount) {
@@ -165,8 +193,9 @@ exports.handler = async (event) => {
           break;
         }
 
-        const amount = sub.items?.data?.[0]?.price?.unit_amount || 0;
-        const plan = planFromAmount(amount);
+        const priceItem = sub.items?.data?.[0]?.price;
+        const amount = priceItem?.unit_amount || 0;
+        const plan = await planFromPriceItem(priceItem);
         const status = sub.status === 'trialing' ? 'trialing' : 'active';
         const trialEnd = sub.trial_end ? new Date(sub.trial_end * 1000).toISOString() : null;
         const mrr = mrrFromAmount(amount);
@@ -246,15 +275,69 @@ exports.handler = async (event) => {
         break;
       }
 
-      // ═══ Confirmation secondaire : si pour une raison quelconque le rattachement
-      // ci-dessus n'avait pas encore de compte à mettre à jour (compte créé après
-      // coup), s'assure que le stripe_subscription_id est bien à jour une fois le
-      // compte relié. Aucun email ici (déjà envoyé par checkout.session.completed).
+      // ═══ Deuxième chance de rattachement complet : pour certains moyens de paiement
+      // (notamment PayPal, qui passe par un mandat d'autorisation en 2 temps chez
+      // Stripe), l'abonnement n'est parfois créé qu'APRÈS que checkout.session.completed
+      // se soit déclenché sans encore avoir d'abonnement à traiter. Cet événement fait
+      // donc le même travail complet, en cherchant l'email de façon robuste : d'abord
+      // sur l'objet Client, puis en repli sur la session de paiement d'origine.
       case 'customer.subscription.created': {
         const sub = stripeEvent.data.object;
-        const profile = await findProfile({ stripeCustomerId: sub.customer });
+
+        // Si déjà correctement traité par checkout.session.completed (cas normal des
+        // cartes bancaires), le profil aura déjà été mis à jour : on se contente alors
+        // de vérifier/compléter le numéro d'abonnement, sans tout refaire.
+        let profile = await findProfile({ stripeCustomerId: sub.customer });
         if (profile) {
           await supabase.from('profiles').update({ stripe_subscription_id: sub.id }).eq('id', profile.id);
+          break;
+        }
+
+        // Sinon (cas PayPal typiquement) : on refait le rattachement complet ici,
+        // avec une recherche d'email en 2 niveaux pour plus de fiabilité.
+        let email = null;
+        try {
+          const customer = await stripe.customers.retrieve(sub.customer);
+          email = customer.email || null;
+        } catch (e) { /* on tente le repli ci-dessous */ }
+        if (!email) {
+          try {
+            const sessions = await stripe.checkout.sessions.list({ subscription: sub.id, limit: 1 });
+            email = sessions.data[0]?.customer_details?.email || sessions.data[0]?.customer_email || null;
+          } catch (e) { /* tant pis, on continue sans email */ }
+        }
+
+        profile = await findProfile({ email, stripeCustomerId: sub.customer });
+
+        const priceItem = sub.items?.data?.[0]?.price;
+        const amount = priceItem?.unit_amount || 0;
+        const plan = await planFromPriceItem(priceItem);
+        const status = sub.status === 'trialing' ? 'trialing' : (sub.status === 'past_due' ? 'past_due' : 'active');
+        const trialEnd = sub.trial_end ? new Date(sub.trial_end * 1000).toISOString() : null;
+        const mrr = mrrFromAmount(amount);
+
+        await applySubscriptionUpdate({
+          profile, email, status, plan,
+          stripeCustomerId: sub.customer, stripeSubscriptionId: sub.id,
+          trialEnd, mrr, isNew: true,
+        });
+
+        // Envoie l'email de bienvenue ici aussi si ce n'est pas déjà fait par
+        // checkout.session.completed (cas où celui-ci n'avait pas encore d'abonnement).
+        const recipientEmail = profile?.email || email;
+        if (recipientEmail) {
+          const planLabel = plan === 'immersion' ? 'Plan Immersion' : 'Plan Équilibre';
+          const trialDateFr = trialEnd ? new Date(trialEnd).toLocaleDateString('fr-FR', { day:'numeric', month:'long' }) : null;
+          const html = wrapEmail('Ton essai gratuit commence 🌸', `
+            <div style="font-size:14px;line-height:1.7;color:#3D3860;">
+              Merci pour ta confiance ! Ton essai gratuit de 3 jours sur le <b>${planLabel}</b> commence aujourd'hui${trialDateFr ? `, jusqu'au <b>${trialDateFr}</b>` : ''}. Aucun prélèvement avant cette date.
+            </div>
+            <div style="font-size:14px;line-height:1.6;color:#3D3860;margin-top:14px;">
+              Télécharge l'app sur <a href="https://app.holisticaclub.com/" style="color:#5B4EA8;">app.holisticaclub.com</a> (iPhone) ou via le Google Play Store (Android), puis crée ton compte avec <b>cette même adresse email</b> (${recipientEmail}) pour débloquer ton accès immédiatement.
+            </div>
+            <div style="font-size:12.5px;line-height:1.6;color:#8A85A8;margin-top:16px;">Tu peux annuler à tout moment avant la fin de ton essai, sans aucun frais, directement depuis ton espace membre sur holisticaclub.com.</div>
+          `);
+          await sendEmail(recipientEmail, 'Ton essai gratuit Holistica Club commence 🌸', html);
         }
         break;
       }

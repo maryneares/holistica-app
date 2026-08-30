@@ -11,10 +11,10 @@
 // MARCHE À SUIVRE :
 // 1. Place ce fichier dans netlify/functions/, à côté de stripe-webhook.js
 // 2. Ajoute la variable d'environnement RESYNC_SECRET dans Netlify (un mot de passe
-//    que tu inventes, ex: "resync2026").
+//    que tu inventes toi-même).
 // 3. Déploie (GitHub push).
 // 4. Visite une seule fois :
-//    https://TON-SITE.netlify.app/.netlify/functions/resync-broken-accounts?secret=resync2026
+//    https://TON-SITE.netlify.app/.netlify/functions/resync-broken-accounts?secret=TON_MOT_DE_PASSE
 // 5. Regarde le résultat (combien de comptes corrigés, lesquels).
 // 6. SUPPRIME ce fichier de ton dépôt une fois terminé (sécurité).
 

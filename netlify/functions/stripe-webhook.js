@@ -145,44 +145,40 @@ exports.handler = async (event) => {
   try {
     switch (stripeEvent.type) {
 
-      // ═══ Premier contact : récupère les infos initiales, mais ne fait pas
-      // confiance à cet événement seul pour l'activation (voir subscription.created).
+      // ═══ Point d'entrée principal et fiable, quel que soit le moyen de paiement ═══
+      // (carte, PayPal, Apple Pay, Google Pay). Contrairement à l'objet Client Stripe,
+      // qui ne renseigne pas toujours l'email de façon fiable pour les paiements PayPal,
+      // cet événement contient TOUJOURS l'email du payeur, pour tous les moyens de
+      // paiement. C'est donc ici que se fait le vrai rattachement du compte.
       case 'checkout.session.completed': {
         const session = stripeEvent.data.object;
         const payerEmail = session.customer_details?.email || session.customer_email || null;
         const userId = session.client_reference_id;
-        if (payerEmail || userId) {
-          const profile = await findProfile({ userId, email: payerEmail, stripeCustomerId: session.customer });
-          if (profile && session.customer) {
-            await supabase.from('profiles').update({ stripe_customer_id: session.customer }).eq('id', profile.id);
-          }
-        }
-        break;
-      }
 
-      // ═══ L'événement le plus fiable pour savoir qu'un essai (ou abonnement) démarre. ═══
-      case 'customer.subscription.created': {
-        const sub = stripeEvent.data.object;
+        if (!session.subscription) break; // paiement hors abonnement, rien à faire ici
+
+        let sub;
+        try {
+          sub = await stripe.subscriptions.retrieve(session.subscription);
+        } catch (e) {
+          console.error('Impossible de récupérer l\'abonnement Stripe:', e.message);
+          break;
+        }
+
         const amount = sub.items?.data?.[0]?.price?.unit_amount || 0;
         const plan = planFromAmount(amount);
         const status = sub.status === 'trialing' ? 'trialing' : 'active';
         const trialEnd = sub.trial_end ? new Date(sub.trial_end * 1000).toISOString() : null;
         const mrr = mrrFromAmount(amount);
 
-        let customerEmail = null;
-        try {
-          const customer = await stripe.customers.retrieve(sub.customer);
-          customerEmail = customer.email;
-        } catch (e) { /* tant pis, on continue sans email direct */ }
-
-        const profile = await findProfile({ email: customerEmail, stripeCustomerId: sub.customer });
+        const profile = await findProfile({ userId, email: payerEmail, stripeCustomerId: session.customer });
         const applied = await applySubscriptionUpdate({
-          profile, email: customerEmail, status, plan,
-          stripeCustomerId: sub.customer, stripeSubscriptionId: sub.id,
+          profile, email: payerEmail, status, plan,
+          stripeCustomerId: session.customer, stripeSubscriptionId: sub.id,
           trialEnd, mrr, isNew: true,
         });
 
-        const recipientEmail = profile?.email || customerEmail;
+        const recipientEmail = profile?.email || payerEmail;
         if (recipientEmail) {
           const planLabel = plan === 'immersion' ? 'Plan Immersion' : 'Plan Équilibre';
           const planFeatures = plan === 'immersion'
@@ -246,6 +242,19 @@ exports.handler = async (event) => {
             <div style="font-size:12.5px;line-height:1.6;color:#8A85A8;margin-top:16px;">Tu peux annuler à tout moment avant la fin de ton essai, sans aucun frais, directement depuis ton espace membre.</div>
           `);
           await sendEmail(recipientEmail, 'Ton essai gratuit Holistica Club commence 🌸', html);
+        }
+        break;
+      }
+
+      // ═══ Confirmation secondaire : si pour une raison quelconque le rattachement
+      // ci-dessus n'avait pas encore de compte à mettre à jour (compte créé après
+      // coup), s'assure que le stripe_subscription_id est bien à jour une fois le
+      // compte relié. Aucun email ici (déjà envoyé par checkout.session.completed).
+      case 'customer.subscription.created': {
+        const sub = stripeEvent.data.object;
+        const profile = await findProfile({ stripeCustomerId: sub.customer });
+        if (profile) {
+          await supabase.from('profiles').update({ stripe_subscription_id: sub.id }).eq('id', profile.id);
         }
         break;
       }

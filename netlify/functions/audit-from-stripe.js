@@ -25,9 +25,30 @@ const { createClient } = require('@supabase/supabase-js');
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
 
-function planFromAmount(amount) {
-  if (amount >= 4000) return 'immersion';
-  return 'equilibre';
+// Détermine le plan via le vrai produit Stripe (fiable), avec repli sur les montants
+// exacts connus si jamais la récupération du produit échoue — même logique que le
+// webhook corrigé, pour éviter que l'offre de lancement à 39€ (Immersion) soit mal
+// classée comme Équilibre, et qu'un abonnement annuel Équilibre (montant élevé) soit
+// mal classé comme Immersion.
+async function planFromPriceItem(priceItem) {
+  try {
+    const productId = typeof priceItem?.product === 'string' ? priceItem.product : priceItem?.product?.id;
+    if (!productId) return planFromAmountFallback(priceItem?.unit_amount);
+    const product = await stripe.products.retrieve(productId);
+    const name = (product.name || '').toLowerCase();
+    if (name.includes('immersion')) return 'immersion';
+    if (name.includes('équilibre') || name.includes('equilibre')) return 'equilibre';
+    return planFromAmountFallback(priceItem?.unit_amount);
+  } catch (e) {
+    return planFromAmountFallback(priceItem?.unit_amount);
+  }
+}
+function planFromAmountFallback(amount) {
+  const immersionAmounts = [4900, 3900, 47000];
+  const equilibreAmounts = [2900, 27900];
+  if (immersionAmounts.includes(amount)) return 'immersion';
+  if (equilibreAmounts.includes(amount)) return 'equilibre';
+  return amount >= 3500 ? 'immersion' : 'equilibre';
 }
 function mrrFromAmount(amount) {
   if (amount > 10000) return Math.round((amount / 100 / 12) * 100) / 100;
@@ -84,42 +105,46 @@ exports.handler = async (event) => {
         continue;
       }
 
-      const amount = sub.items?.data?.[0]?.price?.unit_amount || 0;
-      const plan = planFromAmount(amount);
+      const priceItem = sub.items?.data?.[0]?.price;
+      const amount = priceItem?.unit_amount || 0;
+      const plan = await planFromPriceItem(priceItem);
       const status = sub.status === 'trialing' ? 'trialing' : (sub.status === 'past_due' ? 'past_due' : 'active');
       const trialEnd = sub.trial_end ? new Date(sub.trial_end * 1000).toISOString() : null;
       const mrr = mrrFromAmount(amount);
 
-      // Cherche d'abord un profil déjà existant (par email).
-      const { data: profile } = await supabase.from('profiles').select('id,subscription_status,subscription_plan').eq('email', email).maybeSingle();
-
-      if (profile) {
-        const isAlreadyCorrect = profile.subscription_status === status && profile.subscription_plan === plan;
-        if (isAlreadyCorrect) {
-          results.alreadyOk.push({ email, plan, status });
-          continue;
-        }
-        await supabase.from('profiles').update({
-          subscription_status: status, subscription_plan: plan,
-          stripe_customer_id: typeof customer === 'string' ? customer : customer.id,
-          stripe_subscription_id: sub.id, mrr_amount: mrr, trial_end: trialEnd,
-        }).eq('id', profile.id);
-        results.corrected.push({ email, plan, status, avant: profile.subscription_status });
-        continue;
-      }
-
-      // Aucun profil du tout : cherche si un compte Supabase Auth existe déjà
-      // (créé dans l'app mais sans encore de ligne profiles), pour le lier directement.
+      // Cherche D'ABORD le vrai compte Supabase Auth par email (la source de vérité
+      // la plus fiable), PUIS son profil par identifiant — plutôt que l'inverse.
+      // Cela couvre aussi le cas où un profil existe déjà mais avec une colonne
+      // email vide ou différente (compte jamais mis à jour manuellement), qui
+      // aurait été raté par une simple recherche de profil par email.
       const authUser = await findAuthUserByEmail(email);
+
       if (authUser) {
-        await supabase.from('profiles').upsert({
-          id: authUser.id, email,
-          subscription_status: status, subscription_plan: plan,
-          stripe_customer_id: typeof customer === 'string' ? customer : customer.id,
-          stripe_subscription_id: sub.id, mrr_amount: mrr, trial_end: trialEnd,
-          subscription_started_at: new Date(sub.created * 1000).toISOString(),
-        });
-        results.corrected.push({ email, plan, status, avant: 'aucun profil existant (compte créé, jamais lié)' });
+        const { data: profile } = await supabase.from('profiles').select('id,subscription_status,subscription_plan').eq('id', authUser.id).maybeSingle();
+
+        if (profile) {
+          const isAlreadyCorrect = profile.subscription_status === status && profile.subscription_plan === plan;
+          if (isAlreadyCorrect) {
+            results.alreadyOk.push({ email, plan, status });
+            continue;
+          }
+          await supabase.from('profiles').update({
+            subscription_status: status, subscription_plan: plan, email,
+            stripe_customer_id: typeof customer === 'string' ? customer : customer.id,
+            stripe_subscription_id: sub.id, mrr_amount: mrr, trial_end: trialEnd,
+          }).eq('id', profile.id);
+          results.corrected.push({ email, plan, status, avant: profile.subscription_status + ' (profil existant, email peut-être mal renseigné avant)' });
+        } else {
+          // Compte Auth trouvé, mais aucune ligne profils du tout : la crée.
+          await supabase.from('profiles').upsert({
+            id: authUser.id, email,
+            subscription_status: status, subscription_plan: plan,
+            stripe_customer_id: typeof customer === 'string' ? customer : customer.id,
+            stripe_subscription_id: sub.id, mrr_amount: mrr, trial_end: trialEnd,
+            subscription_started_at: new Date(sub.created * 1000).toISOString(),
+          });
+          results.corrected.push({ email, plan, status, avant: 'aucun profil existant (compte créé, jamais lié)' });
+        }
       } else {
         // Personne n'a encore créé de compte dans l'app avec cet email : on le
         // met en attente, comme le fait déjà normalement le webhook.

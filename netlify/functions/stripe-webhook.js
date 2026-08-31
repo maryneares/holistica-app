@@ -48,6 +48,45 @@ async function sendEmail(to, subject, html) {
   }
 }
 
+// ═══ Synchronisation Brevo, pour déclencher tes propres tunnels d'automatisation ═══
+// Crée ou met à jour le contact chez Brevo, avec ses attributs à jour (plan, statut),
+// et l'ajoute à la liste correspondant à l'étape de son parcours. Chaque liste peut
+// ensuite déclencher un scénario d'automatisation différent dans Brevo (email de
+// bienvenue, relance de paiement, tunnel de réengagement après annulation, etc.).
+// Nécessite les variables d'environnement BREVO_API_KEY et les 4 BREVO_LIST_ID_*
+// (identifiants numériques de liste, à créer une fois dans Brevo).
+const BREVO_LISTS = {
+  essai_demarre: process.env.BREVO_LIST_ID_ESSAI_DEMARRE,
+  essai_annule: process.env.BREVO_LIST_ID_ESSAI_ANNULE,
+  abonnement_annule: process.env.BREVO_LIST_ID_ABONNEMENT_ANNULE,
+  paiement_echoue: process.env.BREVO_LIST_ID_PAIEMENT_ECHOUE,
+};
+
+async function syncToBrevo(email, listKey, attributes = {}) {
+  const listId = BREVO_LISTS[listKey];
+  if (!process.env.BREVO_API_KEY || !listId) {
+    console.error(`Synchronisation Brevo ignorée (variable manquante) pour la liste "${listKey}"`);
+    return;
+  }
+  try {
+    await fetch('https://api.brevo.com/v3/contacts', {
+      method: 'POST',
+      headers: {
+        'api-key': process.env.BREVO_API_KEY,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+        attributes,
+        listIds: [parseInt(listId, 10)],
+        updateEnabled: true, // met à jour le contact s'il existe déjà, sans erreur
+      }),
+    });
+  } catch (e) {
+    console.error('Erreur synchronisation Brevo:', e.message);
+  }
+}
+
 function wrapEmail(title, bodyHtml) {
   return `<div style="background-color:#FAF8FF;padding:32px 16px;font-family:'Helvetica Neue',Arial,sans-serif;">
   <table role="presentation" width="100%" style="max-width:480px;margin:0 auto;background:#ffffff;border-radius:20px;overflow:hidden;box-shadow:0 4px 24px rgba(91,78,168,0.10);">
@@ -271,6 +310,7 @@ exports.handler = async (event) => {
             <div style="font-size:12.5px;line-height:1.6;color:#8A85A8;margin-top:16px;">Tu peux annuler à tout moment avant la fin de ton essai, sans aucun frais, directement depuis ton espace membre.</div>
           `);
           await sendEmail(recipientEmail, 'Ton essai gratuit Holistica Club commence 🌸', html);
+          await syncToBrevo(recipientEmail, 'essai_demarre', { PLAN: plan, STATUT: status });
         }
         break;
       }
@@ -338,6 +378,7 @@ exports.handler = async (event) => {
             <div style="font-size:12.5px;line-height:1.6;color:#8A85A8;margin-top:16px;">Tu peux annuler à tout moment avant la fin de ton essai, sans aucun frais, directement depuis ton espace membre sur holisticaclub.com.</div>
           `);
           await sendEmail(recipientEmail, 'Ton essai gratuit Holistica Club commence 🌸', html);
+          await syncToBrevo(recipientEmail, 'essai_demarre', { PLAN: plan, STATUT: status });
         }
         break;
       }
@@ -353,6 +394,13 @@ exports.handler = async (event) => {
           subscription_status: 'active',
           payment_warning_sent_at: null,
         }).eq('id', profile.id);
+
+        // Met à jour son statut chez Brevo (sans l'ajouter à une nouvelle liste) pour
+        // que ton automatisation de relance de paiement puisse s'arrêter si elle est
+        // configurée pour sortir un contact quand cet attribut redevient "active".
+        if (profile.email) {
+          await syncToBrevo(profile.email, 'paiement_echoue', { STATUT: 'active' });
+        }
 
         // On n'envoie l'email "paiement confirmé" que pour un vrai montant prélevé
         // (pas pour une facture à 0€ générée pendant l'essai lui-même).
@@ -388,6 +436,9 @@ exports.handler = async (event) => {
           `);
           await sendEmail(profile.email, 'Action requise pour ton abonnement Holistica Club', html);
           await supabase.from('profiles').update({ payment_warning_sent_at: new Date().toISOString() }).eq('id', profile.id);
+          // Synchronise dès le premier échec, pour que Brevo démarre sa propre
+          // relance de paiement sans attendre l'annulation définitive à J+3.
+          await syncToBrevo(profile.email, 'paiement_echoue', { STATUT: 'past_due' });
         }
         break;
       }
@@ -415,6 +466,13 @@ exports.handler = async (event) => {
               : wrapEmail('Ton accès a été suspendu', `<div style="font-size:14px;line-height:1.7;color:#3D3860;">Faute de paiement régularisé, ton accès à Holistica Club vient d'être suspendu. Tu peux te réabonner à tout moment.</div>`);
           const subject = wasTrialing ? "Confirmation d'annulation de ton essai" : (isVoluntary ? "Confirmation d'annulation — Holistica Club" : 'Ton accès Holistica Club a été suspendu');
           await sendEmail(profile.email, subject, html);
+
+          // Synchronise vers la bonne liste Brevo selon le cas précis, pour que
+          // chacune puisse déclencher un tunnel d'automatisation différent :
+          // réengagement après essai non converti, feedback après résiliation
+          // volontaire, ou relance après échec de paiement définitif.
+          const brevoList = wasTrialing ? 'essai_annule' : (isVoluntary ? 'abonnement_annule' : 'paiement_echoue');
+          await syncToBrevo(profile.email, brevoList, { STATUT: 'cancelled' });
         }
         break;
       }

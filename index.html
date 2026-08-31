@@ -932,6 +932,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="si-div">ou</div>
 <button class="btn-glass" onclick="signInWithOAuth('google')" style="display:flex;align-items:center;justify-content:center;gap:10px;"><svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/></svg>Continuer avec Google</button>
 <div class="si-btm">Déjà un compte ? <a onclick="go('signin')">Se connecter</a></div>
+<div class="si-btm" style="margin-top:6px;">Juste curieuse ? <a onclick="showWalkthrough(true)">Découvrir l'app en images</a></div>
 </div>
 <div class="si-bubbles"><div class="bubble bb1"></div><div class="bubble bb2"></div><div class="bubble bb3"></div></div>
 </div>
@@ -1811,6 +1812,14 @@ function isDevAccount(){
  return !!(currentUser && currentUser.email && DEV_EMAILS.includes(currentUser.email.toLowerCase()));
 }
 
+// Statuts qui donnent droit à l'accès à l'app : abonnement actif, période d'essai en
+// cours, ET les 3 jours de grâce en cas de paiement échoué (past_due) — annoncés
+// dans l'email envoyé automatiquement par le webhook. Centralisé ici pour ne jamais
+// oublier un cas dans l'un des 4 endroits qui vérifient l'accès.
+function hasActiveAccess(){
+ return ['active','trialing','past_due'].includes(userProfile.subscriptionStatus);
+}
+
 // Retourne la date locale (YYYY-MM-DD) au lieu de la date UTC.
 // new Date().toISOString() convertit en UTC, donc à Paris (UTC+1/+2), autour de minuit
 // ou après un setHours(0,0,0,0), ça décalait "aujourd'hui" d'un jour en arrière —
@@ -1928,9 +1937,12 @@ const WT_STEPS=[
 ];
 let wtIndex=0;
 
-function showWalkthrough(){
+let wtFromDiscovery=false;
+function showWalkthrough(fromDiscovery){
+  wtFromDiscovery=!!fromDiscovery;
   wtIndex=0;
   document.getElementById('walkthroughOverlay').style.display='flex';
+  document.getElementById('wtDots').style.display='flex';
   renderWtStep();
 }
 
@@ -1974,6 +1986,22 @@ function wtSkip(){
 }
 
 function wtFinish(){
+  // Si le tutoriel a été ouvert par curiosité (pas encore de compte), on propose de
+  // créer son compte sur le site plutôt que de simplement refermer l'écran.
+  if(wtFromDiscovery && !currentUser){
+    document.getElementById('wtScrollArea').innerHTML=`
+      <div style="width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,0.18);display:flex;align-items:center;justify-content:center;margin-bottom:18px;">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+      </div>
+      <div style="font-family:'League Spartan',sans-serif;font-weight:800;font-size:24px;color:white;margin-bottom:10px;">Convaincue ?</div>
+      <div style="font-size:17px;color:white;line-height:1.55;max-width:340px;">Crée ton compte directement sur notre site pour choisir ta formule et démarrer ton accompagnement.</div>
+    `;
+    document.getElementById('wtDots').style.display='none';
+    const btn=document.getElementById('wtNextBtn');
+    btn.textContent="Créer mon compte sur le site";
+    btn.onclick=function(){window.location.href='https://www.holisticaclub.com/creer-un-compte';};
+    return;
+  }
   document.getElementById('walkthroughOverlay').style.display='none';
   userProfile.hasSeenWalkthrough=true;
   localStorage.setItem('holistica_wt_seen_'+(userProfile.email||''),'1');
@@ -2012,6 +2040,22 @@ async function handleForgotPassword(){
  const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+window.location.pathname});
  if(error){toast('Erreur : '+error.message);return;}
  toast('Email de réinitialisation envoyé à '+email);
+}
+
+async function claimPendingSubscription(){
+ try{
+ const {data:{session}}=await sb.auth.getSession();
+ if(!session)return null;
+ const res=await fetch('https://app.holisticaclub.com/.netlify/functions/claim-pending-subscription',{
+ method:'POST',
+ headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token}
+ });
+ const json=await res.json();
+ return json; // { applied: true/false, plan?: 'equilibre'|'immersion' }
+ }catch(e){
+ console.error('Erreur vérification abonnement en attente:',e);
+ return null;
+ }
 }
 
 async function handleSignUp(){
@@ -2139,7 +2183,15 @@ async function loadProfileAndEnter(){
  ensureReferralCode();
  applyPendingReferral();
  refreshReferralCount();
- if(!isDevAccount() && userProfile.subscriptionStatus!=='active'){
+ // Avant de trancher, tente de récupérer un éventuel abonnement payé sur le site
+ // avant la création de ce compte (même email) : sans ça, quelqu'un qui a payé
+ // sur le site puis crée son compte dans l'app resterait bloqué à tort.
+ const claimResult=await claimPendingSubscription();
+ if(claimResult&&claimResult.applied){
+ userProfile.subscriptionStatus=claimResult.status||'active';
+ userProfile.subscriptionPlan=claimResult.plan;
+ }
+ if(!isDevAccount() && !hasActiveAccess()){
  go('offers');
  document.getElementById('bnav').style.display='none';
  saveProfile();
@@ -2150,6 +2202,21 @@ async function loadProfileAndEnter(){
  if(!userProfile.hasSeenWalkthrough&&!wtAlreadySeenLocally)setTimeout(showWalkthrough,600);
  saveProfile();
  } else {
+ // Nouveau compte, aucun profil enregistré pour l'instant : on vérifie D'ABORD si un
+ // abonnement payé sur le site attend cet email, AVANT de proposer le questionnaire.
+ // Le questionnaire ne doit être rempli qu'une fois l'abonnement actif (sans quoi
+ // n'importe qui pourrait le remplir sans jamais avoir payé).
+ userProfile={name:'',lastName:'',email:currentUser.email||'',goal:'bien-être',sexe:'femme',age:30,weight:62,height:165,activity:'modérée',hasPeriod:true,menopause:false,perimenopause:false,contraception:false,dosha:'vata',lastPeriodStart:'',doshaV:33,doshaP:33,doshaK:34,cycleLength:28,birthDate:'',birthTime:'',birthPlace:'',subscriptionStatus:'inactive',subscriptionPlan:null,dietType:'flexitarien',allergies:'',referralCode:'',referredBy:null,hasSeenWalkthrough:false};
+ const claimResult=await claimPendingSubscription();
+ if(claimResult&&claimResult.applied){
+ userProfile.subscriptionStatus=claimResult.status||'active';
+ userProfile.subscriptionPlan=claimResult.plan;
+ }
+ if(!isDevAccount() && !hasActiveAccess()){
+ go('offers');
+ document.getElementById('bnav').style.display='none';
+ return;
+ }
  // Réinitialisation complète avant de démarrer : sans ça, un précédent essai
  // resté en mémoire (ex: plusieurs comptes testés sans recharger la page)
  // fait "sauter" des questions déjà vues, car obStep repart d'où il en était.
@@ -2966,7 +3033,7 @@ function go(id){
  // Garde-fou : impossible d'accéder aux écrans du contenu sans abonnement actif,
  // même en forçant la navigation (ex: via la console). Le profil, les offres,
  // la confidentialité et la déconnexion restent accessibles pour gérer son compte.
- if(PROTECTED_SCREENS.includes(id) && currentUser && !isDevAccount() && userProfile.subscriptionStatus!=='active'){
+ if(PROTECTED_SCREENS.includes(id) && currentUser && !isDevAccount() && !hasActiveAccess()){
  id='offers';
  toast('Abonne-toi pour accéder à ton espace Holistica');
  }
@@ -3399,7 +3466,7 @@ function obNext(){
  userProfile.subscriptionStatus='active';
  userProfile.subscriptionPlan='immersion';
  enterApp(); // Rafraîchit l'affichage (ex: "Mon abonnement") avec les nouvelles valeurs
- } else if(userProfile.subscriptionStatus!=='active'){
+ } else if(!hasActiveAccess()){
  go('offers');
  document.getElementById('bnav').style.display='none';
  }

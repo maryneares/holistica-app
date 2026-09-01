@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Holistica">
@@ -161,7 +161,7 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 
 /* ═══ DASHBOARD ═══ */
 #dashboard{background:var(--ivory);}
-.d-top{background:var(--grad-h);padding:48px 20px 22px;position:relative;overflow:hidden;flex-shrink:0;}
+.d-top{background:var(--grad-h);padding:48px 20px 22px;position:sticky;top:0;overflow:hidden;flex-shrink:0;z-index:5;max-height:none;}
 .d-top .blob{opacity:.06;background:white;}
 .dz{position:relative;z-index:1;}
 .d-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
@@ -864,6 +864,7 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .vd-bar{background:white;padding:12px 20px 30px;display:flex;gap:8px;border-top:1px solid var(--border);}
 .vd-btn{flex:1;background:var(--grad);color:white;border:none;padding:13px;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;font-family:'League Spartan',sans-serif;}
 .vd-btn-pending{background:var(--border);color:var(--ink-l);cursor:default;}
+.vd-btn:disabled{background:var(--border);color:var(--ink-l);cursor:default;opacity:.75;}
 
 /* Recipe detail */
 .rcdetail{position:fixed;inset:0;background:var(--ivory);z-index:200;display:none;flex-direction:column;overflow-y:auto;max-width:430px;margin:0 auto;}
@@ -1108,6 +1109,7 @@ document.addEventListener('DOMContentLoaded', function(){
 </div>
 <div class="quick-card"><div class="quick-lbl"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--ink-l)" stroke-width="2" stroke-linecap="round" style="vertical-align:-1px;margin-right:3px;"><circle cx="12" cy="8" r="4"/><path d="M6 21c0-3.5 2.5-6 6-6s6 2.5 6 6"/></svg>Stress aujourd'hui</div><div class="quick-val" id="dStress">5<span class="quick-unit">/10</span></div><input type="range" class="quick-slider" id="stressSlider" min="1" max="10" value="5" oninput="stressScore=parseFloat(this.value);document.getElementById('dStress').innerHTML=this.value+'<span class=quick-unit>/10</span>';calcRecovery()"></div>
 </div>
+<div style="padding:2px 20px 4px;"><button class="btn-ob" style="padding:12px;font-size:14.5px;" onclick="saveWellnessToday()">Enregistrer</button></div>
 <div id="menopauseTipBtnWrap" style="display:none;padding:0 20px 8px;">
 <button class="menopause-tip-btn" onclick="openMenopauseTip()">
 <span class="menopause-tip-lbl">Mon conseil ménopause du jour</span>
@@ -1118,6 +1120,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <!-- Routine -->
 <div class="sec" id="secRoutine" style="display:block;"><h2>Routine <em>du jour</em></h2><div class="sec-sub">Selon ton profil ayurvédique</div></div>
 <div class="todo-wrap" id="todoWrap"></div>
+<div style="padding:12px 20px 4px;"><button class="btn-ob" style="padding:12px;font-size:14.5px;" onclick="saveRoutineToday()">Enregistrer</button></div>
 </div>
 </div>
 
@@ -1699,7 +1702,9 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 <div class="vd-title" id="vdTitle"></div>
 <div class="vd-stats"><div class="vd-stats-row"><div class="vds"><div class="vds-l">Durée</div><div class="vds-v" id="vdDur">—</div></div><div class="vds"><div class="vds-l">Catégorie</div><div class="vds-v" id="vdCat">—</div></div><div class="vds"><div class="vds-l">Dosha</div><div class="vds-v" id="vdDosha">—</div></div></div></div>
 <div class="vd-bens"><div class="vd-sec">Bénéfices</div><div id="vdBens"></div></div>
-<div class="vd-bar"><button class="vd-btn" id="vdBtn" onclick="markVDone()">Séance terminée · +15 points →</button></div>
+<div class="vd-bar"><button class="vd-btn" id="vdBtn" onclick="markVDone()" disabled>Séance terminée · +15 points →</button>
+<div id="vdHint" style="text-align:center;font-size:11.5px;color:var(--ink-l);margin-top:6px;">Validation à 50% de visionnage pour débloquer tes badges</div>
+</div>
 </div>
 
 <!-- LECTEUR ROUTINE PLEIN ÉCRAN (format vertical, façon Reels/TikTok) -->
@@ -4018,6 +4023,20 @@ function calcRecovery(){
  renderJourneyStrip();
 }
 
+// Bouton "Enregistrer" sous Sommeil & Stress : la sauvegarde se fait déjà automatiquement
+// à chaque changement (voir calcRecovery), ce bouton sert surtout à confirmer clairement
+// à la personne que c'est bien pris en compte dans son journal de bord.
+function saveWellnessToday(){
+ calcRecovery();
+ toast('Bien-être enregistré dans ton journal ✓');
+}
+// Bouton "Enregistrer" sous la routine du jour : les cases sont déjà sauvegardées à chaque
+// clic, ce bouton confirme l'enregistrement et comptabilise la routine dans le parcours du jour.
+function saveRoutineToday(){
+ renderJourneyStrip();
+ checkBadges();
+ toast('Routine enregistrée dans ton journal ✓');
+}
 function logWellnessToday(){
  const today=localDateStr();
  const existing=wellnessLog.find(w=>w.date===today);
@@ -4709,7 +4728,7 @@ function confirmEndRoutine(){
 // mouvement (environ) n'a été regardé au total.
 function showNotCountedWarning(requiredSec){
  document.getElementById('rpExitConfirm').classList.remove('open');
- const remainingSec=Math.max(0,requiredSec-totalWatchedSec);
+ const remainingSec=Math.round(Math.max(0,requiredSec-totalWatchedSec));
  document.getElementById('rpWarnPct').textContent=remainingSec+' sec';
  document.getElementById('rpWarnModal').classList.add('open');
 }
@@ -5115,12 +5134,17 @@ async function openVD(id){
  document.getElementById('vdBtn').style.display='';
  const done=completedVids.has(id);
  const btn=document.getElementById('vdBtn');
+ const hint=document.getElementById('vdHint');
  if(done){
  btn.textContent='✓ Séance complétée';
  btn.className='vd-btn done';
+ btn.disabled=false;
+ if(hint)hint.style.display='none';
  } else {
  btn.textContent='Regarde au moins 50% pour valider';
  btn.className='vd-btn vd-btn-pending';
+ btn.disabled=true;
+ if(hint){hint.style.display='';hint.textContent='Validation à 50% de visionnage pour débloquer tes badges';}
  }
  document.getElementById('vdetail').classList.add('open');
 
@@ -5155,7 +5179,16 @@ function startWatchTracking(){
  if(!duration)return;
  const ratio=current/duration;
  if(ratio>=0.5&&!completedVids.has(currentVid)){
- markVDone();
+ // Débloque le bouton "Enregistrer et valider ma séance" plutôt que de valider
+ // automatiquement : la personne confirme elle-même la validation.
+ const btn=document.getElementById('vdBtn');
+ if(btn&&btn.disabled){
+ btn.disabled=false;
+ btn.textContent='Enregistrer et valider ma séance';
+ btn.className='vd-btn';
+ const hint=document.getElementById('vdHint');
+ if(hint)hint.textContent='50% de la séance visionnée, tu peux valider ✓';
+ }
  }
  },3000);
 }
@@ -5221,6 +5254,9 @@ function markVDone(){
  if(document.getElementById('pfStreak'))document.getElementById('pfStreak').textContent=streak;
  document.getElementById('vdBtn').textContent='✓ Séance complétée';
  document.getElementById('vdBtn').className='vd-btn done';
+ document.getElementById('vdBtn').disabled=false;
+ const vdHintEl=document.getElementById('vdHint');
+ if(vdHintEl)vdHintEl.style.display='none';
  if(document.getElementById('wkCalRow'))renderMvCalendar();
  if(document.getElementById('progRow'))renderPrograms();
  if(currentProgramId && document.getElementById('pdWeeksList'))renderProgramDetail();
@@ -6969,6 +7005,31 @@ async function confirmCancellation(){
 }
 
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+
+/* ═══════ FILET DE SÉCURITÉ CLAVIER iOS ═══════
+   Le meta viewport "interactive-widget=resizes-content" corrige le problème sur iOS 17+,
+   mais certains iPhone plus anciens ou certaines webviews ne le supportent pas encore.
+   En complément : dès qu'un champ de saisie reçoit le focus, on le fait défiler dans la
+   zone visible après un court délai (le temps que le clavier s'ouvre), pour être sûr que
+   le champ ET les boutons "Enregistrer"/"Continuer" juste en dessous restent accessibles. */
+document.addEventListener('focusin',(e)=>{
+ const el=e.target;
+ if(!el||!el.matches('input,select,textarea'))return;
+ setTimeout(()=>{
+ el.scrollIntoView({behavior:'smooth',block:'center'});
+ },350);
+});
+/* Si l'appareil supporte visualViewport (la plupart des navigateurs récents), on l'utilise
+   en plus pour recaler le bouton "Enregistrer"/"Continuer" de l'écran actif dès que le
+   clavier change la hauteur visible, sans attendre que la personne touche un champ. */
+if(window.visualViewport){
+ window.visualViewport.addEventListener('resize',()=>{
+ const active=document.activeElement;
+ if(active&&active.matches('input,select,textarea')){
+ active.scrollIntoView({behavior:'smooth',block:'center'});
+ }
+ });
+}
 
 /* ═══════ PWA ═══════ */
 if('serviceWorker' in navigator){

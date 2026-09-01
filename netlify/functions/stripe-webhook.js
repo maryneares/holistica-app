@@ -34,6 +34,17 @@ const { createClient } = require('@supabase/supabase-js');
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
 
+// Supabase Auth met toujours l'email en minuscules à la création du compte, mais
+// Stripe ne normalise JAMAIS l'email tapé au paiement (ex: "Marie.Dupont@Gmail.com").
+// Sans cette normalisation, ".eq('email', ...)" est sensible à la casse et ne
+// retrouve jamais le profil si la casse diffère ne serait-ce que d'une lettre —
+// l'abonnement part alors dans pending_subscriptions et n'est jamais réclamé,
+// alors que la facture est bien "active" côté Stripe. Toujours normaliser AVANT
+// toute comparaison ou écriture d'email.
+function normEmail(email) {
+  return (email || '').trim().toLowerCase() || null;
+}
+
 const FROM = '"Holistica Club - Maryne Arès" <info@maryneares.fr>';
 
 async function sendEmail(to, subject, html) {
@@ -157,14 +168,16 @@ async function findProfile({ userId, email, stripeCustomerId }) {
     const { data } = await supabase.from('profiles').select('id,email,name').eq('stripe_customer_id', stripeCustomerId).maybeSingle();
     if (data) return data;
   }
-  if (email) {
-    const { data } = await supabase.from('profiles').select('id,email,name').eq('email', email).maybeSingle();
+  const normalizedEmail = normEmail(email);
+  if (normalizedEmail) {
+    const { data } = await supabase.from('profiles').select('id,email,name').ilike('email', normalizedEmail).maybeSingle();
     if (data) return data;
   }
   return null;
 }
 
 async function applySubscriptionUpdate({ profile, email, status, plan, stripeCustomerId, stripeSubscriptionId, trialEnd, mrr, isNew }) {
+  const normalizedEmail = normEmail(email);
   const payload = {
     subscription_status: status,
     stripe_customer_id: stripeCustomerId,
@@ -177,15 +190,15 @@ async function applySubscriptionUpdate({ profile, email, status, plan, stripeCus
   if (isNew) { payload.subscription_started_at = new Date().toISOString(); payload.canceled_at = null; }
 
   if (profile) {
-    if (email && !profile.email) payload.email = email;
+    if (normalizedEmail && !profile.email) payload.email = normalizedEmail;
     await supabase.from('profiles').update(payload).eq('id', profile.id);
     return true;
-  } else if (email) {
+  } else if (normalizedEmail) {
     // Aucun compte encore créé dans l'app : on garde l'abonnement de côté. Il sera
     // appliqué automatiquement dès que la personne se connecte (app OU site), qui
     // vérifient tous les deux pending_subscriptions au moment de la connexion.
     await supabase.from('pending_subscriptions').upsert({
-      email,
+      email: normalizedEmail,
       subscription_plan: plan,
       subscription_status: status,
       stripe_customer_id: stripeCustomerId,
@@ -219,7 +232,7 @@ exports.handler = async (event) => {
       // paiement. C'est donc ici que se fait le vrai rattachement du compte.
       case 'checkout.session.completed': {
         const session = stripeEvent.data.object;
-        const payerEmail = session.customer_details?.email || session.customer_email || null;
+        const payerEmail = normEmail(session.customer_details?.email || session.customer_email || null);
         const userId = session.client_reference_id;
 
         if (!session.subscription) break; // paiement hors abonnement, rien à faire ici
@@ -346,6 +359,7 @@ exports.handler = async (event) => {
             email = sessions.data[0]?.customer_details?.email || sessions.data[0]?.customer_email || null;
           } catch (e) { /* tant pis, on continue sans email */ }
         }
+        email = normEmail(email);
 
         profile = await findProfile({ email, stripeCustomerId: sub.customer });
 

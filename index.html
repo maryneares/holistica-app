@@ -1262,7 +1262,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <!-- ═══ OFFRES ═══ -->
 <div id="offers" class="screen">
 <button class="vd-back" onclick="go('challenge')" style="position:fixed;top:16px;left:16px;z-index:5;">←</button>
-<div class="scroll" style="padding:0 20px;">
+<div class="scroll" style="padding:0 20px calc(env(safe-area-inset-bottom) + 100px);">
 <div class="ob-title" style="text-align:center;margin-top:60px;font-size:24px;">Ton <em>accompagnement</em></div>
 <div style="font-size:15.5px;color:var(--ink-l);text-align:center;margin-bottom:24px;">Deux formules pour avancer à ton rythme</div>
 
@@ -1353,7 +1353,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="ob-top" style="background:var(--ivory);padding:calc(env(safe-area-inset-top) + 30px) 20px 10px;">
 <button class="vd-back" onclick="go('profil')" style="position:static;">←</button>
 </div>
-<div class="scroll" style="padding:0 24px;">
+<div class="scroll" style="padding:0 24px calc(env(safe-area-inset-bottom) + 100px);">
 <div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Modifier mes <em>informations</em></div>
 <div class="f-row-app"><label>Prénom</label><input type="text" id="eiName" class="ob-input dt-input"></div>
 <div class="f-row-app"><label>Nom de famille</label><input type="text" id="eiLastName" class="ob-input dt-input"></div>
@@ -1390,7 +1390,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="ob-top" style="background:var(--ivory);padding:calc(env(safe-area-inset-top) + 30px) 20px 10px;">
 <button class="vd-back" onclick="go('profil')" style="position:static;">←</button>
 </div>
-<div class="scroll" style="padding:0 24px;">
+<div class="scroll" style="padding:0 24px calc(env(safe-area-inset-bottom) + 100px);">
 <div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Mon profil <em>ayurvédique</em></div>
 <div class="dosha-intro-text" id="doshaIntroText"></div>
 <div class="dosha-detail-card">
@@ -1423,7 +1423,7 @@ Partager mon profil
 <div class="ob-top" style="background:var(--ivory);padding:calc(env(safe-area-inset-top) + 30px) 20px 10px;">
 <button class="vd-back" onclick="go('profil')" style="position:static;">←</button>
 </div>
-<div class="scroll" style="padding:0 24px;">
+<div class="scroll" style="padding:0 24px calc(env(safe-area-inset-bottom) + 100px);">
 <div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Ma <em>progression</em></div>
 <div style="font-size:15.5px;color:var(--ink-l);margin-bottom:18px;">Ton bilan du mois en cours</div>
 
@@ -1449,7 +1449,7 @@ Partager mon profil
 <div class="ob-top" style="background:var(--ivory);padding:calc(env(safe-area-inset-top) + 30px) 20px 10px;">
 <button class="vd-back" onclick="go('profil')" style="position:static;">←</button>
 </div>
-<div class="scroll" style="padding:0 24px;">
+<div class="scroll" style="padding:0 24px calc(env(safe-area-inset-bottom) + 100px);">
 <div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Historique <em>bien-être</em></div>
 <div style="font-size:15.5px;color:var(--ink-l);margin-bottom:16px;">Tes 14 derniers jours suivis</div>
 <div id="wellnessList"></div>
@@ -1462,7 +1462,7 @@ Partager mon profil
 <div class="ob-top" style="background:var(--ivory);padding:calc(env(safe-area-inset-top) + 30px) 20px 10px;">
 <button class="vd-back" onclick="go('profil')" style="position:static;">←</button>
 </div>
-<div class="scroll" style="padding:0 24px;">
+<div class="scroll" style="padding:0 24px calc(env(safe-area-inset-bottom) + 100px);">
 <div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Mes <em>badges</em></div>
 <div style="background:var(--lav-pale);border-radius:14px;padding:14px 16px;margin-bottom:14px;font-size:13.5px;color:var(--ink);line-height:22px;">Chaque badge débloqué te donne accès à du contenu bonus : recettes exclusives, séances supplémentaires ou points bonus. Continue ta régularité pour tous les obtenir !</div>
 <div style="font-size:15.5px;color:var(--ink-l);margin-bottom:16px;"><span id="badgesCount">0/9</span> débloqués, continue pour tous les obtenir</div>
@@ -1476,7 +1476,7 @@ Partager mon profil
 <div class="ob-top" style="background:var(--ivory);padding:calc(env(safe-area-inset-top) + 30px) 20px 10px;">
 <button class="vd-back" onclick="go('profil')" style="position:static;">←</button>
 </div>
-<div class="scroll" style="padding:0 24px;">
+<div class="scroll" style="padding:0 24px calc(env(safe-area-inset-bottom) + 100px);">
 <div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Mon <em>cycle</em></div>
 <div class="f-row-app"><label>Premier jour de tes dernières règles</label><input type="date" id="csLastPeriod" class="ob-input dt-input"></div>
 <div class="f-row-app"><label>Durée moyenne de ton cycle</label><div class="cycle-len-input" style="width:100%;justify-content:center;"><input type="number" id="csCycleLength" min="21" max="45" value="28" style="width:50px;font-size:19px;"><span>jours</span></div></div>
@@ -1501,7 +1501,7 @@ Partager mon profil
 <div class="ob-top" style="background:var(--ivory);padding:calc(env(safe-area-inset-top) + 30px) 20px 10px;">
 <button class="vd-back" onclick="go('profil')" style="position:static;">←</button>
 </div>
-<div class="scroll" style="padding:0 24px;">
+<div class="scroll" style="padding:0 24px calc(env(safe-area-inset-bottom) + 100px);">
 <div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Mon thème <em>astral</em></div>
 <div id="astroDetailWrap"></div>
 <div class="ob-title dt-title" style="text-align:left;font-size:17px;margin-top:24px;">Calcule ton thème <em>natal</em></div>
@@ -1573,7 +1573,7 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 <div class="ob-top" style="background:var(--ivory);padding:calc(env(safe-area-inset-top) + 30px) 20px 10px;">
 <button class="vd-back" onclick="go('profil')" style="position:static;">←</button>
 </div>
-<div class="scroll" style="padding:0 24px;">
+<div class="scroll" style="padding:0 24px calc(env(safe-area-inset-bottom) + 100px);">
 <div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Politique de <em>confidentialité</em></div>
 <div style="font-size:15.5px;color:var(--ink-m);line-height:1.7;margin-top:12px;">
 <p style="margin-bottom:14px;"><strong>Dernière mise à jour :</strong> juillet 2026</p>
@@ -1592,7 +1592,7 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 <div class="ob-top" style="background:var(--ivory);padding:calc(env(safe-area-inset-top) + 30px) 20px 10px;">
 <button class="vd-back" onclick="go('profil')" style="position:static;">←</button>
 </div>
-<div class="scroll" style="padding:0 24px;">
+<div class="scroll" style="padding:0 24px calc(env(safe-area-inset-bottom) + 100px);">
 <div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Conditions <em>d'utilisation</em></div>
 <div style="font-size:15.5px;color:var(--ink-m);line-height:1.7;margin-top:12px;">
 <p style="margin-bottom:14px;"><strong>Dernière mise à jour :</strong> juillet 2026</p>
@@ -1612,7 +1612,7 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 <div class="ob-top" style="background:var(--ivory);padding:calc(env(safe-area-inset-top) + 30px) 20px 10px;">
 <button class="vd-back" onclick="go('profil')" style="position:static;">←</button>
 </div>
-<div class="scroll" style="padding:0 24px;">
+<div class="scroll" style="padding:0 24px calc(env(safe-area-inset-bottom) + 100px);">
 <div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Mentions <em>légales</em></div>
 <div style="font-size:15.5px;color:var(--ink-m);line-height:1.7;margin-top:12px;">
 <p style="margin-bottom:14px;"><strong>Dernière mise à jour :</strong> juillet 2026</p>
@@ -1637,7 +1637,7 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 <div style="font-size:15.5px;color:rgba(255,255,255,0.96);text-shadow:0 1px 3px rgba(0,0,0,0.12);margin-top:6px;">Elle profite d'une réduction de bienvenue, tu gagnes 2 semaines offertes</div>
 </div>
 </div>
-<div class="scroll" style="padding:20px 20px 0;">
+<div class="scroll" style="padding:20px 20px calc(env(safe-area-inset-bottom) + 100px);">
 
 <div class="referral-card">
  <div class="referral-card-lbl">Ton code personnel</div>
@@ -1670,7 +1670,7 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 <div class="ob-top" style="background:var(--ivory);padding:calc(env(safe-area-inset-top) + 30px) 20px 10px;">
 <button class="vd-back" onclick="go('profil')" style="position:static;">←</button>
 </div>
-<div class="scroll" style="padding:0 24px;">
+<div class="scroll" style="padding:0 24px calc(env(safe-area-inset-bottom) + 100px);">
 <div id="unsubStep1">
  <div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">On est triste de te voir <em>partir</em></div>
  <div style="font-size:15.5px;color:var(--ink-m);margin:10px 0 20px;">Avant tout, dis-nous pourquoi, ça nous aide à améliorer Holistica Club.</div>

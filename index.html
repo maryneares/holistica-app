@@ -161,7 +161,7 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 
 /* ═══ DASHBOARD ═══ */
 #dashboard{background:var(--ivory);}
-.d-top{background:var(--grad-h);padding:48px 20px 22px;position:sticky;top:0;overflow:hidden;flex-shrink:0;z-index:5;max-height:none;}
+.d-top{background:var(--grad-h);padding:48px 20px 22px;position:relative;overflow:hidden;flex-shrink:0;z-index:5;max-height:none;}
 .d-top .blob{opacity:.06;background:white;}
 .dz{position:relative;z-index:1;}
 .d-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
@@ -1028,7 +1028,6 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="journey-progress-lbl"><span>Aujourd'hui</span><b id="journeyProgressLbl">0/5</b></div>
 <div class="journey-progress-bar"><div class="journey-progress-fill" id="journeyProgressFill" style="width:0%"></div></div>
 <button class="journey-replay-btn" onclick="openJourneyReplay()">Récap de tes étapes du jour</button>
-<button class="journey-replay-btn journey-replay-btn-outline" onclick="go('mouvement')">Voir toutes mes routines</button>
 </div>
 <!-- La liste détaillée existe toujours en mémoire (utile pour le calcul de progression
  et la vue "Revoir toutes mes étapes"), mais n'est plus affichée en permanence : la
@@ -1335,7 +1334,6 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="pa" id="buddyToggleRow" style="display:none;cursor:default;" onclick="event.stopPropagation();"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M1 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg></div><div class="pa-body"><div class="pa-t">Disponible comme binôme</div><div class="pa-s">Sois jumelée avec une autre membre pour vous soutenir mutuellement</div></div><label class="buddy-switch"><input type="checkbox" id="buddyToggleInput" onchange="toggleBuddyAvailable(this.checked)"><span class="buddy-switch-slider"></span></label></div>
 <div class="pa" onclick="showWalkthrough()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.5-2.5 2-2.5 3.5"/><path d="M12 17h.01"/></svg></div><div class="pa-body"><div class="pa-t">Revoir le tutoriel</div><div class="pa-s">Redécouvre toutes les fonctionnalités de l'app</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="openAstro()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/><circle cx="12" cy="12" r="4"/></svg></div><div class="pa-body"><div class="pa-t">Mon thème astral</div><div class="pa-s" id="paAstroSub">Renseigne ta date de naissance</div></div><span class="pa-arr">›</span></div>
-<div class="pa" onclick="go('offers')"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6L17 7M7 17l-1.4 1.4"/><circle cx="12" cy="12" r="3"/></svg></div><div class="pa-body"><div class="pa-t">Mon abonnement</div><div class="pa-s" id="pfSubscription">—</div></div><span class="pa-arr">›</span></div>
 </div>
 <div class="sec"><h2>Confidentialité <em>& données</em></h2></div>
 <div class="pf-acts">

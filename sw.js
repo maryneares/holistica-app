@@ -1,4 +1,4 @@
-const CACHE_NAME = 'holistica-cache-v2';
+const CACHE_NAME = 'holistica-cache-v3';
 const APP_SHELL = [
   '/index.html',
   '/manifest.json',
@@ -9,7 +9,13 @@ const APP_SHELL = [
 self.addEventListener('install', (event) => {
   self.skipWaiting();
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL))
+    caches.open(CACHE_NAME).then((cache) =>
+      Promise.all(
+        APP_SHELL.map((url) =>
+          fetch(url, { cache: 'no-store' }).then((res) => cache.put(url, res))
+        )
+      )
+    )
   );
 });
 
@@ -35,7 +41,10 @@ self.addEventListener('fetch', (event) => {
 
   if (request.mode === 'navigate') {
     event.respondWith(
-      fetch(request)
+      // cache: 'no-store' force un vrai aller-retour réseau, en ignorant le cache HTTP
+      // du navigateur — sans ça, Safari peut renvoyer une version périmée d'index.html
+      // même en "network-first", ce qui bloquait les mises à jour chez certaines utilisatrices.
+      fetch(request, { cache: 'no-store' })
         .then((res) => {
           const clone = res.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put('/index.html', clone));

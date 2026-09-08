@@ -35,9 +35,9 @@ button,a,.pa,.ni-ctr,.btn-ob,.btn-w{-webkit-tap-highlight-color:transparent;-web
 input,textarea{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default;}
 img{-webkit-touch-callout:none;-webkit-user-select:none;}
 
-.screen{display:none;height:100vh;height:100dvh;flex-direction:column;overflow:hidden;}
+.screen{display:none;height:100vh;height:100dvh;flex-direction:column;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;}
 .screen.active{display:flex;}
-.scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;overscroll-behavior-y:contain;padding-bottom:calc(env(safe-area-inset-bottom) + 100px);}
+.scroll{padding-bottom:calc(env(safe-area-inset-bottom) + 100px);}
 .scroll::-webkit-scrollbar{display:none;}
 
 /* Fonts */

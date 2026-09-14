@@ -1293,12 +1293,12 @@ document.addEventListener('DOMContentLoaded', function(){
 
 <div class="offer-upgrade-box" id="offerUpgradeBox" style="display:none;">
 <div class="offer-info-t" style="color:white;">Envie d'aller plus loin ?</div>
-<div class="offer-info-txt" style="color:rgba(255,255,255,0.92);">Tu es actuellement sur le Plan Équilibre. Passe au Plan Immersion pour débloquer ton plan alimentaire personnalisé, le groupe WhatsApp et les lives avec Maryne — directement depuis holisticaclub . com, dans la partie "Gérer mon abonnement".</div>
+<div class="offer-info-txt" style="color:rgba(255,255,255,0.92);">Tu es actuellement sur le Plan Équilibre. Contacte-nous pour découvrir le Plan Immersion et débloquer ton plan alimentaire personnalisé, le groupe WhatsApp et les lives avec Maryne.</div>
 </div>
 
 <div class="offer-info-box">
 <div class="offer-info-t">Réservé aux membres</div>
-<div class="offer-info-txt">Abonne-toi sur notre site holisticaclub . com pour accéder à ton espace, ou retrouve-nous sur Instagram @maryne.ares.</div>
+<div class="offer-info-txt">Cet espace est réservé aux membres avec un abonnement actif.</div>
 </div>
 
 
@@ -2054,12 +2054,12 @@ function wtFinish(){
         <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
       </div>
       <div style="font-family:'League Spartan',sans-serif;font-weight:800;font-size:24px;color:white;margin-bottom:10px;">Convaincue ?</div>
-      <div style="font-size:17px;color:white;line-height:1.55;max-width:340px;">Crée ton compte directement sur notre site pour choisir ta formule et démarrer ton accompagnement.</div>
+      <div style="font-size:17px;color:white;line-height:1.55;max-width:340px;">Crée ton compte pour démarrer ton accompagnement.</div>
     `;
     document.getElementById('wtDots').style.display='none';
     const btn=document.getElementById('wtNextBtn');
-    btn.textContent="Créer mon compte sur le site";
-    btn.onclick=function(){window.location.href='https://www.holisticaclub.com/creer-un-compte';};
+    btn.textContent="Créer mon compte";
+    btn.onclick=function(){document.getElementById('walkthroughOverlay').style.display='none';go('signup');};
     return;
   }
   document.getElementById('walkthroughOverlay').style.display='none';
@@ -2178,6 +2178,31 @@ async function deleteAccount(){
 }
 
 async function signInWithOAuth(provider){
+ const estAppNative=!!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
+ const browserPlugin=estAppNative && window.Capacitor.Plugins && window.Capacitor.Plugins.Browser;
+ const appPlugin=estAppNative && window.Capacitor.Plugins && window.Capacitor.Plugins.App;
+
+ if(browserPlugin && appPlugin){
+   // Dans l'app native : on reste dedans via Safari View Controller (conforme Apple),
+   // au lieu d'ouvrir le navigateur externe.
+   const {data,error}=await sb.auth.signInWithOAuth({
+     provider,
+     options:{redirectTo:'https://app.holisticaclub.com',skipBrowserRedirect:true}
+   });
+   if(error){toast('Erreur : '+error.message);return;}
+   let listenerHandle=null;
+   listenerHandle=await appPlugin.addListener('appUrlOpen',async ({url})=>{
+     if(url && (url.includes('access_token')||url.includes('code='))){
+       try{ await browserPlugin.close(); }catch(_e){}
+       window.location.href=url; // la page se recharge, Supabase détecte la session dans l'URL comme sur le web
+       if(listenerHandle) listenerHandle.remove();
+     }
+   });
+   await browserPlugin.open({url:data.url,presentationStyle:'popover'});
+   return;
+ }
+
+ // Web classique (hors app native) : flux inchangé
  const {error}=await sb.auth.signInWithOAuth({
  provider,
  options:{redirectTo:window.location.origin+window.location.pathname}

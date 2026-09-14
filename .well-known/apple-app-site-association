@@ -1,0 +1,11 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "3PU6PD6S6X.com.holisticaclub.app2",
+        "paths": ["*"]
+      }
+    ]
+  }
+}

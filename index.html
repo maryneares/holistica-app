@@ -1250,47 +1250,6 @@ document.addEventListener('DOMContentLoaded', function(){
 </div>
 
 <!-- ═══ CHALLENGE ═══ -->
-<div id="challenge" class="screen">
-<button class="vd-back" onclick="go('profil')" style="position:fixed;top:16px;left:16px;z-index:5;">←</button>
-<div class="ch-top">
-<div class="blob b1"></div><div class="blob b2"></div>
-<div class="ch-h1">Communauté & <em>Challenges</em></div>
-</div>
-<div class="scroll" style="padding-top:18px;">
-<div id="chCommunityCard"></div>
-<div id="chUpgradeCard"></div>
-</div>
-</div>
-
-<!-- ═══ OFFRES ═══ -->
-<div id="offers" class="screen">
-<button class="vd-back" onclick="go('profil')" style="position:fixed;top:16px;left:16px;z-index:5;">←</button>
-<div class="scroll" style="padding:0 20px calc(env(safe-area-inset-bottom) + 100px);">
-<div class="ob-title" style="text-align:center;margin-top:60px;font-size:24px;">Ton <em>accompagnement</em></div>
-<div style="font-size:15.5px;color:var(--ink-l);text-align:center;margin-bottom:24px;">Trois formules pour avancer à ton rythme</div>
-
-<div id="iapOffersWrap">
-<div style="text-align:center;padding:30px 0;color:var(--ink-l);">Chargement des offres...</div>
-</div>
-
-<div class="offer-info-box" id="offerReservedBox">
-<div class="offer-info-t">Réservé aux membres</div>
-<div class="offer-info-txt">Cet espace est réservé aux membres avec un abonnement actif.</div>
-</div>
-
-<button class="btn-glass" style="width:100%;margin-top:10px;" onclick="restoreIapPurchases()">Restaurer mes achats</button>
-
-
-<div class="unsub-link-wrap" id="unsubLinkWrap" style="display:none;padding:20px 0 20px;">
-<div style="background:var(--ivory);border:1px solid var(--border);border-radius:14px;padding:16px 18px;text-align:center;">
-<div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:4px;">Mon abonnement</div>
-<div style="font-size:12.5px;color:var(--ink-l);margin-bottom:10px;">Gère ton abonnement actuel ci-dessous.</div>
-<a onclick="go('unsubscribeScreen');renderUnsubscribeReasons();" style="color:var(--ink-l);font-size:13px;text-decoration:underline;cursor:pointer;">Me désabonner</a>
-</div>
-</div>
-<div style="height:30px;"></div>
-</div>
-</div>
 
 <!-- ═══ PROFIL ═══ -->
 <div id="profil" class="screen">
@@ -1316,13 +1275,11 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="pa" id="buddyToggleRow" style="display:none;cursor:default;" onclick="event.stopPropagation();"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M1 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg></div><div class="pa-body"><div class="pa-t">Disponible comme binôme</div><div class="pa-s">Sois jumelée avec une autre membre pour vous soutenir mutuellement</div></div><label class="buddy-switch"><input type="checkbox" id="buddyToggleInput" onchange="toggleBuddyAvailable(this.checked)"><span class="buddy-switch-slider"></span></label></div>
 <div class="pa" onclick="showWalkthrough()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.5-2.5 2-2.5 3.5"/><path d="M12 17h.01"/></svg></div><div class="pa-body"><div class="pa-t">Revoir le tutoriel</div><div class="pa-s">Redécouvre toutes les fonctionnalités de l'app</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="openAstro()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/><circle cx="12" cy="12" r="4"/></svg></div><div class="pa-body"><div class="pa-t">Mon thème astral</div><div class="pa-s" id="paAstroSub">Renseigne ta date de naissance</div></div><span class="pa-arr">›</span></div>
-<div class="pa" onclick="go('challenge')"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10v4a5 5 0 0 1-10 0V4z"/><path d="M7 5H4v2a3 3 0 0 0 3 3M17 5h3v2a3 3 0 0 1-3 3"/><path d="M12 13v3"/><path d="M9 20h6M10 17h4v3h-4z"/></svg></div><div class="pa-body"><div class="pa-t">Communauté & Challenges</div><div class="pa-s">Défis, motivation et entraide entre membres</div></div><span class="pa-arr">›</span></div>
-</div>
-<div class="sec"><h2>Confidentialité <em>& données</em></h2></div>
-<div class="pf-acts">
 <div class="pa" onclick="go('privacy')"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div><div class="pa-body"><div class="pa-t">Politique de confidentialité</div><div class="pa-s">Comment tes données sont utilisées</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="handleSignOut()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg></div><div class="pa-body"><div class="pa-t">Déconnexion</div><div class="pa-s">Se déconnecter de mon compte</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="confirmDeleteAccount()" style="border:1px solid rgba(200,80,80,0.25);"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C85050" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M6 7l1 13a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-13"/><path d="M10 11v6M14 11v6"/></svg></div><div class="pa-body"><div class="pa-t" style="color:#C85050;">Supprimer mon compte</div><div class="pa-s">Effacer définitivement mes données · besoin d'aide ? info@maryneares.fr</div></div><span class="pa-arr">›</span></div>
+</div>
+<div style="text-align:center;padding:24px 20px 10px;font-size:11.5px;color:var(--ink-l);">Contact & support : <a href="mailto:info@maryneares.fr" style="color:var(--ink-l);text-decoration:underline;">info@maryneares.fr</a></div>
 </div>
 </div>
 </div>
@@ -1555,13 +1512,14 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 <div class="scroll" style="padding:0 24px calc(env(safe-area-inset-bottom) + 100px);">
 <div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Politique de <em>confidentialité</em></div>
 <div style="font-size:15.5px;color:var(--ink-m);line-height:1.7;margin-top:12px;">
-<p style="margin-bottom:14px;"><strong>Dernière mise à jour :</strong> juillet 2026</p>
-<p style="margin-bottom:14px;">Holistica Club collecte les données suivantes dans le cadre de ton utilisation de l'application : ton prénom, âge, taille, poids, niveau d'activité, informations sur ton cycle menstruel, ton profil Ayurvédique (dosha), ainsi que des données de bien-être quotidiennes (humeur, sommeil, niveau de stress) et ta progression (points, séances complétées, série).</p>
-<p style="margin-bottom:14px;"><strong>Pourquoi on collecte ces données :</strong> uniquement pour te fournir des recommandations personnalisées (routine dosha, calcul de récupération, suivi de cycle) et sauvegarder ta progression d'une session à l'autre.</p>
-<p style="margin-bottom:14px;"><strong>Hébergement :</strong> tes données sont stockées de façon sécurisée via Supabase, avec un accès strictement limité à ton propre compte (sécurité au niveau des lignes). Aucune donnée n'est vendue ni partagée avec des tiers à des fins publicitaires.</p>
-<p style="margin-bottom:14px;"><strong>Tes droits :</strong> conformément au RGPD, tu peux à tout moment consulter, corriger ou supprimer définitivement tes données depuis l'onglet Profil, ou en nous contactant à info@maryneares.fr.</p>
-<p style="margin-bottom:14px;"><strong>Conservation :</strong> tes données sont conservées tant que ton compte est actif. En cas de suppression de compte, elles sont effacées sous 30 jours maximum.</p>
-<p style="margin-bottom:14px;"><strong>Cookies :</strong> l'application utilise uniquement des identifiants techniques nécessaires à l'authentification (aucun cookie publicitaire ou de tracking tiers).</p>
+<p style="margin-bottom:14px;"><strong>Dernière mise à jour :</strong> septembre 2026</p>
+<p style="margin-bottom:14px;">Holistica Club est actuellement une <strong>application 100% gratuite</strong>, sans aucun paiement ni abonnement.</p>
+<p style="margin-bottom:14px;">Nous collectons uniquement les données nécessaires au fonctionnement de l'app : ton prénom, ton profil Ayurvédique, ainsi que tes informations de bien-être au quotidien (gestion du stress, qualité du sommeil, humeur, cycle menstruel) et ta progression (séances complétées, points).</p>
+<p style="margin-bottom:14px;"><strong>Pourquoi :</strong> uniquement pour te proposer des recommandations personnalisées et garder ta progression d'une session à l'autre. Aucune donnée n'est vendue ni partagée avec des tiers.</p>
+<p style="margin-bottom:14px;"><strong>Hébergement :</strong> tes données sont stockées de façon sécurisée (Supabase), accessibles uniquement depuis ton propre compte.</p>
+<p style="margin-bottom:14px;"><strong>Tes droits :</strong> tu peux consulter, corriger ou supprimer définitivement tes données à tout moment, depuis l'onglet Profil ou en nous contactant à info@maryneares.fr.</p>
+<p style="margin-bottom:14px;"><strong>Suppression de compte :</strong> en supprimant ton compte, ton profil ET tes identifiants de connexion sont définitivement effacés — cette action est immédiate et irréversible, aucune de tes données personnelles n'est conservée.</p>
+<p style="margin-bottom:14px;"><strong>Cookies :</strong> uniquement des identifiants techniques nécessaires à l'authentification (aucun cookie publicitaire ou de tracking).</p>
 </div>
 </div>
 </div>
@@ -1577,7 +1535,7 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 <p style="margin-bottom:14px;"><strong>Dernière mise à jour :</strong> juillet 2026</p>
 <p style="margin-bottom:14px;"><strong>1. Objet.</strong> Holistica Club propose des contenus de bien-être (routines, séances de mouvement, recettes) à visée informative et de mieux-être. L'application ne fournit pas de diagnostic médical et ne remplace pas l'avis d'un professionnel de santé.</p>
 <p style="margin-bottom:14px;"><strong>2. Compte utilisateur.</strong> Tu es responsable de la confidentialité de tes identifiants de connexion. Les informations fournies lors de l'inscription doivent être exactes.</p>
-<p style="margin-bottom:14px;"><strong>3. Abonnement.</strong> Certaines fonctionnalités peuvent être proposées dans le cadre d'un abonnement payant, résiliable à tout moment depuis l'onglet Profil.</p>
+<p style="margin-bottom:14px;"><strong>3. Gratuité.</strong> Holistica Club est actuellement une application 100% gratuite, sans aucun abonnement ni paiement requis.</p>
 <p style="margin-bottom:14px;"><strong>4. Propriété intellectuelle.</strong> Les contenus (textes, vidéos, recettes, visuels) sont la propriété de Holistica Club et ne peuvent être reproduits sans autorisation.</p>
 <p style="margin-bottom:14px;"><strong>5. Responsabilité.</strong> Les conseils proposés sont d'ordre général. Consulte un professionnel de santé avant tout changement important d'alimentation ou d'activité physique, notamment en cas de grossesse ou de condition médicale particulière.</p>
 <p style="margin-bottom:14px;"><strong>6. Résiliation.</strong> Tu peux supprimer ton compte à tout moment depuis l'onglet Profil. Holistica Club se réserve le droit de suspendre un compte en cas d'usage abusif.</p>
@@ -1599,7 +1557,7 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 <p style="margin-bottom:14px;"><strong>Contact.</strong> info@maryneares.fr</p>
 <p style="margin-bottom:14px;"><strong>Hébergement du site.</strong> Netlify, Inc., 44 Montgomery Street, Suite 300, San Francisco, California 94104, États-Unis. <a href="https://www.netlify.com" target="_blank" rel="noopener" style="color:var(--purple-m);">www.netlify.com</a></p>
 <p style="margin-bottom:14px;"><strong>Hébergement des données.</strong> Les données utilisateur (base de données, authentification) sont hébergées par Supabase Inc., au sein de l'Union Européenne.</p>
-<p style="margin-bottom:14px;"><strong>Paiements.</strong> Les paiements par abonnement sont traités par Stripe Payments Europe, Ltd., conformément aux normes de sécurité PCI-DSS. Holistica Club ne stocke aucune donnée bancaire.</p>
+<p style="margin-bottom:14px;"><strong>Gratuité.</strong> Holistica Club est actuellement une application gratuite. Aucune donnée bancaire n'est collectée.</p>
 <p style="margin-bottom:14px;"><strong>Propriété intellectuelle.</strong> L'ensemble des contenus présents sur Holistica Club (textes, vidéos, recettes, visuels, logo) est protégé par le droit d'auteur. Toute reproduction, même partielle, est interdite sans autorisation préalable écrite.</p>
 <p style="margin-bottom:14px;"><strong>Litiges.</strong> Le présent site est soumis au droit français. En cas de litige, une solution amiable sera recherchée avant toute action judiciaire.</p>
 </div>
@@ -1613,7 +1571,7 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 <div style="text-align:center;margin-top:10px;">
 <div style="font-size:40px;margin-bottom:8px;"></div>
 <div class="ob-title" style="color:white;font-size:22px;">Parraine tes <em style="color:#FFE8C0;">amies</em></div>
-<div style="font-size:15.5px;color:rgba(255,255,255,0.96);text-shadow:0 1px 3px rgba(0,0,0,0.12);margin-top:6px;">Elle profite d'une réduction de bienvenue, tu gagnes 2 semaines offertes</div>
+<div style="font-size:15.5px;color:rgba(255,255,255,0.96);text-shadow:0 1px 3px rgba(0,0,0,0.12);margin-top:6px;">Fais découvrir l'app à tes amies</div>
 </div>
 </div>
 <div class="scroll" style="padding:20px 20px calc(env(safe-area-inset-bottom) + 100px);">
@@ -1636,8 +1594,7 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 <div class="diet-info-card" style="margin-top:16px;">
  <div class="diet-info-t">Comment ça marche</div>
  <div class="plan-line">1. Partage ton lien ou ton code à une amie</div>
- <div class="plan-line">2. Elle l'utilise en créant son compte et profite d'une réduction de bienvenue</div>
- <div class="plan-line">3. Une fois son abonnement actif, tes 2 semaines offertes sont appliquées automatiquement sur ta prochaine facture, rien à faire de ton côté</div>
+ <div class="plan-line">2. Elle l'utilise en créant son compte</div>
 </div>
 
 <div style="height:30px;"></div>
@@ -1964,7 +1921,7 @@ const WT_STEPS=[
   {icon:'apple',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a759382331f63.37573717_IMG_2241.jpg',title:'Ta diététique',desc:"Deuxième onglet à droite du bouton Accueil, réservé à l'offre Immersion. Ton espace alimentation complet en 4 parties : ton plan alimentaire personnalisé, ton journal quotidien, tes conseils santé et ayurvédiques, et les aliments de saison."},
   {icon:'apple',imgs:['https://d1yei2z3i6k35z.cloudfront.net/125337/6a8fe291192883.39196252_20.png','https://d1yei2z3i6k35z.cloudfront.net/125337/6a8fe298aa9d07.36789624_19.png'],title:'Ton plan alimentaire',desc:"Il change automatiquement toutes les 2 semaines, calculé selon tes propres paramètres, anti-inflammatoire, sans gluten et sans lactose, avec des grammages précis pour chaque aliment. 3 options te sont proposées pour chaque repas, matin, midi, collation et soir."},
   {icon:'pulse',imgs:['https://d1yei2z3i6k35z.cloudfront.net/125337/6a8fe1f04bfb28.69768914_22.png','https://d1yei2z3i6k35z.cloudfront.net/125337/6a8fe2a808f545.46293256_15.png'],title:'Ton journal & tes conseils',desc:"Suis au jour le jour ton total calorique et la répartition entre protéines, glucides et lipides depuis ton journal quotidien. Retrouve aussi des conseils santé et ayurvédiques qui évoluent toutes les 2 semaines, avec des recommandations adaptées à la phase de ton cycle menstruel et à ton alimentation."},
-  {icon:'user',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a75955383bfe9.60451086_IMG_22422.jpg',title:'Ton profil',desc:"Dernier onglet à droite. Modifie tes informations personnelles, gère ton abonnement, et retrouve tout ce qui te concerne : ton profil ayurvédique, ton thème astral, ton historique bien-être, tes badges, et la possibilité de changer d'offre à tout moment."},
+  {icon:'user',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a75955383bfe9.60451086_IMG_22422.jpg',title:'Ton profil',desc:"Dernier onglet à droite. Modifie tes informations personnelles et retrouve tout ce qui te concerne : ton profil ayurvédique, ton thème astral, ton historique bien-être et tes badges."},
   {icon:'user',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a7593886569f7.29205270_IMG_2243.jpg',title:'Ton profil ayurvédique, le cœur de l\'app',desc:"C'est ton bilan ayurvédique, rempli lors de ton inscription, qui personnalise toute l'application : il adapte tes routines du matin et du soir, le choix de tes séances, et surtout ton alimentation. Retrouve le détail complet de ton dosha dominant, et explore aussi les 2 autres profils, Vata, Pitta et Kapha, en un clic."},
   {icon:'moon',imgs:['https://d1yei2z3i6k35z.cloudfront.net/125337/6a8fe2280a0e77.33828538_34.png','https://d1yei2z3i6k35z.cloudfront.net/125337/6a8fe2751a9234.30994533_27.png'],title:'Ton thème astral',desc:"Depuis l'onglet Profil. Découvre ton astro du jour, de la semaine, du mois et de l'année, la lune du mois en cours, ainsi que les portails énergétiques et grandes dates du mois à retenir : dates à chiffres répétés, équinoxes, solstices. De quoi éclairer tes prises de décision au quotidien."},
   {icon:'pulse',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a7593a90abc39.64516789_IMG_2246.jpg',title:'Ton historique bien-être',desc:"Depuis l'onglet Profil. Chaque routine remplie depuis l'accueil vient nourrir ton historique, un aperçu clair de ton évolution jour après jour."},
@@ -2160,7 +2117,7 @@ async function deleteAccount(){
  }).catch(()=>{});
  }
  await sb.auth.signOut();
- toast('Ton compte et tes données ont été définitivement supprimés');
+ toast('✅ Ton compte et toutes tes données personnelles ont été définitivement supprimés');
  setTimeout(()=>location.reload(),1200);
 }
 
@@ -2229,98 +2186,6 @@ async function initGoogleSignInNative(){
  }catch(e){console.error('Erreur init GoogleSignIn:',e);}
 }
 document.addEventListener('DOMContentLoaded',initGoogleSignInNative);
-
-/* ═══════ REVENUECAT — ACHATS IN-APP ═══════ */
-const RC_API_KEY_IOS='appl_RybePfeJyvFeYCgkYUqajQofwoa';
-const RC_PLANS=[
- {pkg:'equilibre',entitlement:'equilibre_access',plan:'equilibre',title:'Équilibre',desc:['Accès complet à l\'application','Toutes les recettes et séances vidéo','Suivi de cycle et bilan ayurvédique','Recommandations personnalisées']},
- {pkg:'immersion',entitlement:'immersion_access',plan:'immersion',title:'Immersion',desc:['Tout Équilibre, inclus','Plan alimentaire personnalisé Ayurvédique','Groupe WhatsApp privé','Challenges hebdomadaires','Lives et visio avec Maryne'],highlight:true},
- {pkg:'transformation',entitlement:'transformation_access',plan:'transformation',title:'Transformation',desc:['Bilan complet & programme 100% personnalisé','Visio toutes les 2 semaines','WhatsApp illimité','App Immersion incluse']}
-];
-let rcInitialized=false;
-
-async function initRevenueCat(){
- const estAppNative=!!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
- const rc=estAppNative && window.Capacitor.Plugins && window.Capacitor.Plugins.Purchases;
- if(!rc || !currentUser || rcInitialized)return;
- try{
-   await rc.configure({apiKey:RC_API_KEY_IOS,appUserID:currentUser.id});
-   rcInitialized=true;
- }catch(e){console.error('Erreur init RevenueCat:',e);}
-}
-
-async function renderIapOffers(){
- const wrap=document.getElementById('iapOffersWrap');
- if(!wrap)return;
- const estAppNative=!!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
- const rc=estAppNative && window.Capacitor.Plugins && window.Capacitor.Plugins.Purchases;
-
- if(!rc){
-   wrap.innerHTML='<div style="text-align:center;padding:20px;color:var(--ink-l);font-size:13.5px;">Les achats intégrés sont disponibles depuis l\'app iOS.</div>';
-   return;
- }
- await initRevenueCat();
- try{
-   const {offerings}=await rc.getOfferings();
-   const current=offerings && offerings.current;
-   const packages=(current && current.availablePackages)||[];
-   wrap.innerHTML=RC_PLANS.map(p=>{
-     const pack=packages.find(pk=>pk.identifier===p.pkg);
-     const priceStr=pack ? pack.product.priceString : '—';
-     return `<div class="offer-card ${p.highlight?'hl':''}">
-       ${p.highlight?'<div class="offer-badge">Le plus populaire</div>':''}
-       <div class="offer-name">${p.title}</div>
-       <ul class="offer-list" style="margin-top:14px;">${p.desc.map(d=>`<li>${d}</li>`).join('')}</ul>
-       <button class="btn-add" style="width:100%;margin-top:16px;" onclick="purchaseIapPlan('${p.pkg}')">${priceStr!=='—'?priceStr+' — Choisir':'Indisponible'}</button>
-     </div>`;
-   }).join('');
- }catch(e){
-   console.error('Erreur chargement offres:',e);
-   wrap.innerHTML='<div style="text-align:center;padding:20px;color:var(--ink-l);font-size:13.5px;">Impossible de charger les offres pour le moment.</div>';
- }
-}
-
-async function purchaseIapPlan(packageId){
- const estAppNative=!!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
- const rc=estAppNative && window.Capacitor.Plugins && window.Capacitor.Plugins.Purchases;
- if(!rc)return;
- try{
-   const {offerings}=await rc.getOfferings();
-   const current=offerings && offerings.current;
-   const pack=current && current.availablePackages.find(pk=>pk.identifier===packageId);
-   if(!pack){toast('Offre indisponible');return;}
-   const {customerInfo}=await rc.purchasePackage({aPackage:pack});
-   const planInfo=RC_PLANS.find(p=>p.pkg===packageId);
-   const isActive=customerInfo && customerInfo.entitlements && customerInfo.entitlements.active && customerInfo.entitlements.active[planInfo.entitlement];
-   if(isActive){
-     // Mise à jour immédiate côté app ; le webhook RevenueCat confirme aussi côté serveur
-     await sb.from('profiles').update({subscription_status:'active',subscription_plan:planInfo.plan}).eq('id',currentUser.id);
-     toast('Abonnement activé, bienvenue !');
-     setTimeout(()=>location.reload(),1200);
-   }
- }catch(e){
-   if(e && e.userCancelled)return;
-   toast('Erreur achat : '+(e.message||e));
- }
-}
-
-async function restoreIapPurchases(){
- const estAppNative=!!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
- const rc=estAppNative && window.Capacitor.Plugins && window.Capacitor.Plugins.Purchases;
- if(!rc)return;
- try{
-   const {customerInfo}=await rc.restorePurchases();
-   const active=customerInfo && customerInfo.entitlements && customerInfo.entitlements.active;
-   const found=RC_PLANS.find(p=>active && active[p.entitlement]);
-   if(found){
-     await sb.from('profiles').update({subscription_status:'active',subscription_plan:found.plan}).eq('id',currentUser.id);
-     toast('Abonnement restauré');
-     setTimeout(()=>location.reload(),1200);
-   }else{
-     toast('Aucun achat à restaurer');
-   }
- }catch(e){toast('Erreur : '+(e.message||e));}
-}
 
 
 
@@ -2546,46 +2411,6 @@ window.addEventListener('load',async()=>{
 
 /* ═══════ NAV ═══════ */
 const PROTECTED_SCREENS=['dashboard','mouvement','recettes','naturo','challenge','doshaProfile','editInfo','wellnessHistory','badgesScreen','cycleSettings','astroScreen','programDetail','dossierDetail','dietPlan','referralScreen','unsubscribeScreen','progressionScreen'];
-// Lien d'invitation du groupe WhatsApp Holistica Club (Plan Immersion)
-const WHATSAPP_GROUP_LINK='https://chat.whatsapp.com/HahC8tXyBfRL91dMWpitOp?s=sh&p=i&mlu=4';
-
-function renderChallenge(){
- const isImmersion=true; // App temporairement 100% gratuite : tout débloqué
- const communityCard=document.getElementById('chCommunityCard');
- const upgradeCard=document.getElementById('chUpgradeCard');
- if(!communityCard||!upgradeCard)return;
-
- const features=[
- {ic:'👥',t:'Groupe WhatsApp privé',s:'Accès au groupe et motivation entre membres'},
- {ic:'🏆',t:'Défis réguliers',s:'Chaque semaine et chaque mois, un nouveau challenge'},
- {ic:'🎤',t:'Conférence mensuelle',s:'Maryne anime une session questions-réponses une fois par mois'},
- {ic:'🧘',t:'Cours en visio',s:'Yoga ou pilates en direct, avec ajustements personnalisés'},
- ];
-
- communityCard.innerHTML=`
- <div class="ch-hero">
- <div class="ch-hero-ic"></div>
- <div class="ch-hero-t">Bienvenue dans la communauté Holistica</div>
- <div class="ch-hero-p">Ton accès au groupe WhatsApp est actif, les challenges y sont organisés avec les autres filles.</div>
- </div>
- <div class="ch-feat-t">Ce qui t'attend</div>
- ${features.map(f=>`<div class="ch-feature-row">
- <div class="ch-feature-ic">${f.ic}</div>
- <div class="ch-feature-body"><div class="ch-feature-t">${f.t}</div><div class="ch-feature-s">${f.s}</div></div>
- </div>`).join('')}
- <div class="ch-cta-wrap">
- ${isImmersion
- ?`<a class="btn-ch" style="display:block;text-align:center;text-decoration:none;" href="${WHATSAPP_GROUP_LINK}" target="_blank" rel="noopener">Rejoindre le groupe WhatsApp →</a>`
- :`<button class="btn-ch" onclick="go('offers')" style="opacity:.6;"> Réservé au Plan Immersion</button>`
- }
- </div>`;
-
- upgradeCard.innerHTML=isImmersion?'':`<div class="ch-upgrade">
- <div class="ch-upgrade-t">Tu n'as pas accès ?</div>
- <div class="ch-upgrade-p">La communauté et les challenges sont inclus dans l'offre supérieure. Passe à l'offre Immersion pour rejoindre les filles et bénéficier des lives avec Maryne.</div>
- <button class="btn-ch" style="margin-top:12px;" onclick="go('offers')">Voir les offres →</button>
- </div>`;
-}
 
 // Sélectionne jusqu'à 3 idées repas correspondant au repas/dosha/régime, en élargissant
 // progressivement si rien de pile poil ne correspond (dosha ou régime = 'tous' en repli).
@@ -3005,7 +2830,7 @@ function parseSubsectionedText(text){
 }
 
 // Habillage commun pour un onglet verrouillé : le vrai contenu (à titre d'exemple) en fond flouté,
-// avec par-dessus un message complet listant tout ce qu'apporte le Plan Immersion.
+// avec par-dessus un message complet listant les fonctionnalités à venir.
 function buildLockedTabHtml(panelId,previewContentHtml){
  const el=document.getElementById(panelId);
  if(!el)return;
@@ -3013,17 +2838,13 @@ function buildLockedTabHtml(panelId,previewContentHtml){
  <div class="locked-tab-bg">${previewContentHtml}</div>
  <div class="locked-tab-overlay">
  <div class="diet-upgrade-ic"></div>
- <div class="locked-tab-title">Débloque tout avec l'offre Immersion</div>
+ <div class="locked-tab-title">Bientôt disponible</div>
  <ul class="locked-tab-list">
  <li>Ton plan alimentaire personnalisé, qui change toutes les 2 semaines</li>
  <li>Ton journal quotidien de macros et calories</li>
  <li>Tes conseils santé et ayurvédiques adaptés à ton cycle</li>
  <li>Les aliments de saison, mois après mois</li>
- <li>L'accès au groupe WhatsApp privé avec Maryne</li>
- <li>Les défis réguliers et la conférence mensuelle</li>
- <li>Les cours en visio, yoga et pilates en direct</li>
  </ul>
- <button class="diet-upgrade-btn" onclick="go('offers')">Passer au Plan Immersion</button>
  </div>
  </div>`;
 }
@@ -3066,7 +2887,7 @@ async function renderDietPlan(){
  <ul class="plan-ing-list"><li>150 g de blanc de poulet</li><li>60 g de riz basmati cru</li><li>150 g de légumes de saison</li></ul>
  </div>`;
  buildLockedTabHtml('dietPanelPlan',previewPlan);
- // Toute la partie diététique est réservée au Plan Immersion : les 3 autres onglets sont
+ // Toute la partie diététique est temporairement désactivée : les 3 autres onglets sont
  // verrouillés eux aussi, pas seulement le plan alimentaire, avec le même traitement (fond flouté).
  const previewJournal=`<div class="sec" style="padding-top:20px;"><h2>Ton <em>journal</em> du jour</h2></div>
  <div class="diet-summary-card"><div class="diet-summary-row">
@@ -3269,7 +3090,6 @@ function go(id){
  if(id==='naturo')renderNaturo();
  if(id==='dashboard')refreshDash();
  if(id==='doshaProfile')renderDoshaProfile();
- if(id==='challenge')renderChallenge();
  if(id==='dietPlan')renderDietPlan();
  if(id==='offers')renderIapOffers();
 }
@@ -3542,7 +3362,7 @@ function enterApp(){
  // Le jumelage binôme est ouvert à toutes les membres.
  const buddyRow=document.getElementById('buddyToggleRow');
  if(buddyRow){
- buddyRow.style.display='flex';
+ buddyRow.style.display='none';
  document.getElementById('buddyToggleInput').checked=!!userProfile.buddyAvailable;
  }
  const h=new Date().getHours();
@@ -5457,7 +5277,7 @@ function saveEditInfo(){
 }
 
 /* ═══════ MON PROFIL AYURVÉDIQUE ═══════ */
-/* ═══════ PLAN ALIMENTAIRE PERSONNALISÉ (onglet Diététique, réservé Plan Immersion) ═══════ */
+/* ═══════ PLAN ALIMENTAIRE PERSONNALISÉ (onglet Diététique, temporairement désactivé) ═══════ */
 const MEAL_SLOTS=[
  {id:'pdj',label:'Petit-déjeuner',labelHtml:'Petit-<em>déjeuner</em>',pct:0.25},
  {id:'midi',label:'Déjeuner',labelHtml:'Ton <em>déjeuner</em>',pct:0.40},

@@ -1250,9 +1250,21 @@ document.addEventListener('DOMContentLoaded', function(){
 </div>
 
 <!-- ═══ CHALLENGE ═══ -->
+<div id="challenge" class="screen">
+<button class="vd-back" onclick="go('profil')" style="position:fixed;top:16px;left:16px;z-index:5;">←</button>
+<div class="ch-top">
+<div class="blob b1"></div><div class="blob b2"></div>
+<div class="ch-h1">Communauté & <em>Challenges</em></div>
+</div>
+<div class="scroll" style="padding-top:18px;">
+<div id="chCommunityCard"></div>
+<div id="chUpgradeCard"></div>
+</div>
+</div>
+
 <!-- ═══ OFFRES ═══ -->
 <div id="offers" class="screen">
-<button class="vd-back" onclick="go('challenge')" style="position:fixed;top:16px;left:16px;z-index:5;">←</button>
+<button class="vd-back" onclick="go('profil')" style="position:fixed;top:16px;left:16px;z-index:5;">←</button>
 <div class="scroll" style="padding:0 20px calc(env(safe-area-inset-bottom) + 100px);">
 <div class="ob-title" style="text-align:center;margin-top:60px;font-size:24px;">Ton <em>accompagnement</em></div>
 <div style="font-size:15.5px;color:var(--ink-l);text-align:center;margin-bottom:24px;">Trois formules pour avancer à ton rythme</div>
@@ -1304,6 +1316,8 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="pa" id="buddyToggleRow" style="display:none;cursor:default;" onclick="event.stopPropagation();"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M1 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg></div><div class="pa-body"><div class="pa-t">Disponible comme binôme</div><div class="pa-s">Sois jumelée avec une autre membre pour vous soutenir mutuellement</div></div><label class="buddy-switch"><input type="checkbox" id="buddyToggleInput" onchange="toggleBuddyAvailable(this.checked)"><span class="buddy-switch-slider"></span></label></div>
 <div class="pa" onclick="showWalkthrough()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.5-2.5 2-2.5 3.5"/><path d="M12 17h.01"/></svg></div><div class="pa-body"><div class="pa-t">Revoir le tutoriel</div><div class="pa-s">Redécouvre toutes les fonctionnalités de l'app</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="openAstro()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/><circle cx="12" cy="12" r="4"/></svg></div><div class="pa-body"><div class="pa-t">Mon thème astral</div><div class="pa-s" id="paAstroSub">Renseigne ta date de naissance</div></div><span class="pa-arr">›</span></div>
+<div class="pa" onclick="go('challenge')"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10v4a5 5 0 0 1-10 0V4z"/><path d="M7 5H4v2a3 3 0 0 0 3 3M17 5h3v2a3 3 0 0 1-3 3"/><path d="M12 13v3"/><path d="M9 20h6M10 17h4v3h-4z"/></svg></div><div class="pa-body"><div class="pa-t">Communauté & Challenges</div><div class="pa-s">Défis, motivation et entraide entre membres</div></div><span class="pa-arr">›</span></div>
+<div class="pa" onclick="go('offers')"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.4 14.5L16 10.1V4H8v6.1l-4.4 4.4a2 2 0 0 0 0 2.8l1.1 1.1a2 2 0 0 0 2.8 0L12 14l4.5 4.5a2 2 0 0 0 2.8 0l1.1-1.1a2 2 0 0 0 0-2.9z"/></svg></div><div class="pa-body"><div class="pa-t">Mon abonnement</div><div class="pa-s">Voir les offres et gérer mon accompagnement</div></div><span class="pa-arr">›</span></div>
 </div>
 <div class="sec"><h2>Confidentialité <em>& données</em></h2></div>
 <div class="pf-acts">
@@ -2025,6 +2039,8 @@ function wtFinish(){
     const btn=document.getElementById('wtNextBtn');
     btn.textContent="Créer mon compte";
     btn.onclick=function(){document.getElementById('walkthroughOverlay').style.display='none';go('signup');};
+    const skipBtn=document.querySelector('#walkthroughOverlay > button[onclick="wtSkip()"]');
+    if(skipBtn){skipBtn.textContent='← Retour';skipBtn.onclick=function(){document.getElementById('walkthroughOverlay').style.display='none';go('signin');};}
     return;
   }
   document.getElementById('walkthroughOverlay').style.display='none';

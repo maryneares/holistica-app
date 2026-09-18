@@ -602,35 +602,6 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .ch-upgrade-t{font-size:16px;font-weight:700;color:var(--purple);margin-bottom:4px;}
 .ch-upgrade-p{font-size:14.5px;color:var(--ink-m);line-height:1.5;}
 
-/* Offres */
-.offer-card{background:white;border-radius:20px;padding:22px;margin-bottom:16px;border:1.5px solid var(--border);position:relative;box-shadow:var(--sh);}
-.offer-info-box{background:var(--lav-pale);border-radius:16px;padding:18px 20px;margin:4px 0 20px;text-align:center;}
-.offer-upgrade-box{background:var(--grad-warm);border-radius:16px;padding:18px 20px;margin:-4px 0 16px;text-align:center;}
-.offer-upgrade-box .offer-info-t{text-shadow:0 1px 6px rgba(36,20,50,0.35);}
-.offer-info-t{font-family:'League Spartan',sans-serif;font-weight:800;font-size:14.5px;color:var(--purple-m);text-transform:uppercase;letter-spacing:.3px;margin-bottom:8px;}
-.offer-info-txt{font-size:14px;color:var(--ink-m);line-height:21px;}
-.billing-toggle{display:flex;background:var(--lav-pale);border-radius:14px;padding:4px;margin-bottom:10px;}
-.bt-opt{flex:1;border:none;background:transparent;padding:11px 8px;border-radius:11px;font-size:15.5px;font-weight:700;color:var(--ink-m);cursor:pointer;font-family:'League Spartan',sans-serif;transition:all .2s;}
-.bt-opt.active{background:white;color:var(--purple);box-shadow:var(--sh);}
-.bt-save{display:inline-block;background:var(--grad);color:white;font-size:12px;font-weight:800;padding:2px 6px;border-radius:20px;margin-left:5px;vertical-align:middle;}
-.trial-note{text-align:center;font-size:14.5px;color:var(--purple-m);font-weight:700;margin-bottom:18px;}
-.offer-card.hl{background:var(--grad-warm);border:none;box-shadow:var(--sh-m);}
-.offer-badge{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--ink);color:white;font-size:12.5px;font-weight:700;padding:5px 14px;border-radius:50px;text-transform:uppercase;letter-spacing:.3px;}
-.offer-name{font-family:'League Spartan',sans-serif;font-size:18px;font-weight:700;color:var(--ink);text-align:center;margin-bottom:6px;}
-.offer-card.hl .offer-name{color:white;text-shadow:0 1px 6px rgba(36,20,50,0.35);}
-.offer-list{list-style:none;margin-bottom:18px;}
-.offer-list li{font-size:15.5px;color:var(--ink-m);padding:8px 0 8px 24px;position:relative;border-bottom:1px solid var(--border);}
-.offer-list li:last-child{border-bottom:none;}
-.offer-list li::before{content:'✓';position:absolute;left:0;color:var(--purple-m);font-weight:800;}
-.offer-card.hl .offer-list li{color:white;text-shadow:0 1px 5px rgba(36,20,50,0.3);border-bottom-color:rgba(255,255,255,0.4);}
-.offer-card.hl .offer-list li::before{color:white;text-shadow:0 1px 5px rgba(36,20,50,0.4);}
-.offer-or{text-align:center;font-size:13.5px;color:var(--ink-l);margin:12px 0;position:relative;}
-.offer-or::before,.offer-or::after{content:'';position:absolute;top:50%;width:40%;height:1px;background:var(--border);}
-.offer-or::before{left:0;}
-.offer-or::after{right:0;}
-.offer-or.light{color:rgba(255,255,255,0.95);}
-.offer-or.light::before,.offer-or.light::after{background:rgba(255,255,255,0.3);}
-
 /* Nouveaux écrans profil */
 .f-row-app{margin-bottom:12px;text-align:left;}
 .f-row-app label{display:block;font-size:13.5px;font-weight:700;color:var(--ink-l);text-transform:uppercase;letter-spacing:.3px;margin-bottom:5px;}
@@ -978,7 +949,6 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="si-div">ou</div>
 <button class="btn-glass" onclick="signInWithGoogleNative()" style="display:flex;align-items:center;justify-content:center;gap:10px;"><svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/></svg>Continuer avec Google</button><button class="btn-glass" onclick="signInWithApple()" style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:10px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.08l-.01-.01ZM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25Z"/></svg>Continuer avec Apple</button>
 <div class="si-btm">Déjà un compte ? <a onclick="go('signin')">Se connecter</a></div>
-<div class="si-btm" style="margin-top:6px;">Juste curieuse ? <a onclick="showWalkthrough(true)">Découvrir l'app en images</a></div>
 </div>
 <div class="si-bubbles"><div class="bubble bb1"></div><div class="bubble bb2"></div><div class="bubble bb3"></div></div>
 </div>
@@ -1258,6 +1228,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="pf-av" id="pfAvatar"></div>
 <div class="pf-name" id="pfName">Maryne Arès</div>
 <div class="pf-dosha" id="pfDosha">Dosha Vata · Holistica Club</div>
+<div style="display:inline-block;background:rgba(255,255,255,0.22);color:white;font-size:11.5px;font-weight:700;padding:4px 12px;border-radius:20px;margin-bottom:8px;position:relative;z-index:1;">✨ App 100% gratuite</div>
 <div class="dosha-bar" id="doshaBar"><div class="dosha-bar-v" id="doshaBarV"></div><div class="dosha-bar-p" id="doshaBarP"></div><div class="dosha-bar-k" id="doshaBarK"></div></div>
 <div class="dosha-bar-lbl" id="doshaBarLbl"></div>
 <div class="pf-xp-t"><div class="pf-xp-f" id="xpFill" style="width:15%"></div></div>
@@ -1273,7 +1244,6 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="pa" onclick="go('badgesScreen');renderBadges();"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M8.5 13.5L7 22l5-3 5 3-1.5-8.5"/></svg></div><div class="pa-body"><div class="pa-t">Mes badges</div><div class="pa-s" id="pfBadgesDetail">0/9 débloqués</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="openCycleSettings()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg></div><div class="pa-body"><div class="pa-t">Durée & suivi de mon cycle</div><div class="pa-s">Dernières règles, durée, comprendre les phases</div></div><span class="pa-arr">›</span></div>
 <div class="pa" id="buddyToggleRow" style="display:none;cursor:default;" onclick="event.stopPropagation();"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M1 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg></div><div class="pa-body"><div class="pa-t">Disponible comme binôme</div><div class="pa-s">Sois jumelée avec une autre membre pour vous soutenir mutuellement</div></div><label class="buddy-switch"><input type="checkbox" id="buddyToggleInput" onchange="toggleBuddyAvailable(this.checked)"><span class="buddy-switch-slider"></span></label></div>
-<div class="pa" onclick="showWalkthrough()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.5-2.5 2-2.5 3.5"/><path d="M12 17h.01"/></svg></div><div class="pa-body"><div class="pa-t">Revoir le tutoriel</div><div class="pa-s">Redécouvre toutes les fonctionnalités de l'app</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="openAstro()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/><circle cx="12" cy="12" r="4"/></svg></div><div class="pa-body"><div class="pa-t">Mon thème astral</div><div class="pa-s" id="paAstroSub">Renseigne ta date de naissance</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="go('privacy')"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div><div class="pa-body"><div class="pa-t">Politique de confidentialité</div><div class="pa-s">Comment tes données sont utilisées</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="handleSignOut()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg></div><div class="pa-body"><div class="pa-t">Déconnexion</div><div class="pa-s">Se déconnecter de mon compte</div></div><span class="pa-arr">›</span></div>
@@ -1601,36 +1571,6 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 </div>
 </div>
 
-<!-- ═══ DÉSABONNEMENT ═══ -->
-<div id="unsubscribeScreen" class="screen">
-<div class="ob-top" style="background:var(--ivory);padding:calc(env(safe-area-inset-top) + 30px) 20px 10px;">
-<button class="vd-back" onclick="go('profil')" style="position:static;">←</button>
-</div>
-<div class="scroll" style="padding:0 24px calc(env(safe-area-inset-bottom) + 100px);">
-<div id="unsubStep1">
- <div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">On est triste de te voir <em>partir</em></div>
- <div style="font-size:15.5px;color:var(--ink-m);margin:10px 0 20px;">Avant tout, dis-nous pourquoi, ça nous aide à améliorer Holistica Club.</div>
- <div id="unsubReasons"></div>
-</div>
-
-<div id="unsubStep2" style="display:none;">
- <div style="font-size:40px;text-align:center;margin:20px 0 12px;"></div>
- <div class="ob-title dt-title" style="text-align:center;font-size:21px;">Et si on te proposait <em>-50%</em> ?</div>
- <div style="font-size:15.5px;color:var(--ink-m);text-align:center;margin:12px 0 24px;line-height:1.6;">Reste avec nous encore un mois, à moitié prix, sans engagement. Applicable automatiquement sur ta prochaine facture.</div>
- <button class="btn-ob purple" onclick="acceptRetentionOffer()">Profiter de -50% le mois prochain</button>
- <button class="btn-ob" style="margin-top:10px;background:white;color:var(--ink-m);border:1.5px solid var(--border);" onclick="confirmCancellation()">Non merci, je résilie quand même</button>
-</div>
-
-<div id="unsubStep3" style="display:none;text-align:center;padding:40px 0;">
- <div style="font-size:40px;margin-bottom:12px;" id="unsubFinalIcon"></div>
- <div class="ob-title dt-title" style="font-size:20px;" id="unsubFinalTitle"></div>
- <div style="font-size:15.5px;color:var(--ink-m);margin-top:10px;line-height:1.6;" id="unsubFinalBody"></div>
-</div>
-
-<div style="height:30px;"></div>
-</div>
-</div>
-
 <!-- VIDEO DETAIL -->
 <div class="vdetail" id="vdetail">
 <button class="vd-back" onclick="closeVD()">←</button>
@@ -1734,27 +1674,6 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 <div class="toast" id="toast"></div>
 
 <!-- ═══ TUTORIEL DE BIENVENUE (WALKTHROUGH) ═══ -->
-<div id="walkthroughOverlay" style="display:none;position:fixed;inset:0;z-index:9999;background:var(--grad-h);flex-direction:column;">
-  <button onclick="wtSkip()" style="position:absolute;top:20px;right:20px;z-index:2;background:rgba(255,255,255,0.2);border:none;color:white;font-size:15.5px;font-weight:700;padding:8px 16px;border-radius:20px;font-family:'League Spartan',sans-serif;cursor:pointer;">Passer</button>
-  <div id="wtScrollArea" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:50px 28px 20px;text-align:center;">
-    <div id="wtIcon" style="width:38px;height:38px;margin-bottom:10px;color:white;flex-shrink:0;"></div>
-    <div id="wtTitle" style="font-family:'League Spartan',sans-serif;font-weight:800;font-size:24px;color:white;margin-bottom:10px;line-height:1.4;flex-shrink:0;"></div>
-    <div id="wtDesc" style="font-size:17px;color:white;line-height:1.55;max-width:380px;margin-bottom:18px;flex-shrink:0;"></div>
-    <img id="wtImg" src="" style="max-width:190px;max-height:30vh;width:auto;border-radius:20px;box-shadow:0 12px 40px rgba(0,0,0,0.25);flex-shrink:0;object-fit:cover;display:none;">
-    <div id="wtImgsWrap" style="display:none;gap:12px;justify-content:center;flex-shrink:0;">
-      <div style="background:#241E38;border-radius:22px;padding:7px 6px 9px;box-shadow:0 12px 30px rgba(0,0,0,0.25);position:relative;">
-        <div style="position:absolute;top:7px;left:50%;transform:translateX(-50%);width:34%;height:11px;background:#241E38;border-radius:0 0 8px 8px;z-index:2;"></div>
-        <div style="border-radius:15px;overflow:hidden;"><img id="wtImg1" src="" style="width:140px;display:block;"></div>
-      </div>
-      <div style="background:#241E38;border-radius:22px;padding:7px 6px 9px;box-shadow:0 12px 30px rgba(0,0,0,0.25);position:relative;">
-        <div style="position:absolute;top:7px;left:50%;transform:translateX(-50%);width:34%;height:11px;background:#241E38;border-radius:0 0 8px 8px;z-index:2;"></div>
-        <div style="border-radius:15px;overflow:hidden;"><img id="wtImg2" src="" style="width:140px;display:block;"></div>
-      </div>
-    </div>
-  </div>
-  <div style="padding:14px 28px 30px;flex-shrink:0;">
-    <div id="wtDots" style="display:flex;justify-content:center;gap:6px;margin-bottom:18px;flex-wrap:wrap;"></div>
-    <button class="btn-w" id="wtNextBtn" onclick="wtNext()">Suivant</button>
   </div>
 </div>
 
@@ -1788,29 +1707,18 @@ if(navigator.storage&&navigator.storage.persist){
  const ref=params.get('ref');
  if(ref)localStorage.setItem('pendingReferralCode',ref.trim().toUpperCase());
 })();
-async function allerVersStripe(lienBase) {
- const { data: { user } } = await sb.auth.getUser();
- if (!user) {
- alert("Connecte-toi d'abord pour t'abonner.");
- return;
- }
- window.location.href = `${lienBase}?client_reference_id=${user.id}`;
-}
 let currentUser=null;
 
-// ═══════ COMPTE(S) DÉVELOPPEUR : accès gratuit permanent, sans passer par Stripe ═══════
-// Ajoute ici toute adresse email qui doit toujours avoir accès, quel que soit son statut d'abonnement réel.
+// ═══════ COMPTE(S) DÉVELOPPEUR : accès gratuit permanent ═══════
+// Ajoute ici toute adresse email qui doit toujours avoir accès.
 const DEV_EMAILS=['maryne.monnier@gmail.com'];
 function isDevAccount(){
  return !!(currentUser && currentUser.email && DEV_EMAILS.includes(currentUser.email.toLowerCase()));
 }
 
-// Statuts qui donnent droit à l'accès à l'app : abonnement actif, période d'essai en
-// cours, ET les 3 jours de grâce en cas de paiement échoué (past_due) — annoncés
-// dans l'email envoyé automatiquement par le webhook. Centralisé ici pour ne jamais
-// oublier un cas dans l'un des 4 endroits qui vérifient l'accès.
+// L'app est actuellement 100% gratuite : accès toujours autorisé.
 function hasActiveAccess(){
- return true; // App temporairement 100% gratuite (pendant la mise en place du paiement in-app)
+ return true;
 }
 
 // Retourne la date locale (YYYY-MM-DD) au lieu de la date UTC.
@@ -1892,116 +1800,6 @@ function togglePwdVisibility(inputId,btn){
     : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>';
 }
 
-/* ═══ TUTORIEL DE BIENVENUE (WALKTHROUGH) ═══ */
-const WT_ICONS={
-  home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11.5l8-7.5 8 7.5"/><path d="M6 10v9.5a1 1 0 0 0 1 1h3.5v-6.5h3v6.5H17a1 1 0 0 0 1-1V10"/></svg>',
-  play:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l6 3.5-6 3.5z"/></svg>',
-  bowl:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18a9 8 0 0 1-18 0z"/><path d="M7 12V6M12 12V4M17 12V6"/></svg>',
-  leaf:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21c9 0 14-5 14-14V4h-3C7 4 3 9 3 18v3z"/><path d="M5 21C10 16 14 12 19 8"/></svg>',
-  people:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-4 3-6.5 6.5-6.5S15.5 16 15.5 20"/><circle cx="17.5" cy="9" r="2.6"/><path d="M15 13.6c2.7.3 4.5 2.3 4.5 5.4"/></svg>',
-  apple:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8.5c-2.5-2.5-6.5-1.5-7.5 2C3.5 14.5 6 20 9.5 20c1.2 0 1.8-.6 2.5-.6s1.3.6 2.5.6c3.2 0 6-4.8 6-8.5 0-3-2.5-5-5.5-4-.8.3-1.6.8-2 1.5"/><path d="M11.5 8c0-2 1-3.5 3-4"/></svg>',
-  user:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4.5 20c0-4.5 3.4-7 7.5-7s7.5 2.5 7.5 7"/></svg>',
-  pulse:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2-7 4 14 2-7h6"/></svg>',
-  moon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></svg>',
-  award:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M8.5 13.5L7 22l5-3 5 3-1.5-8.5"/></svg>',
-  sparkle:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg>'
-};
-
-const WT_STEPS=[
-  {icon:'sparkle',img:'',title:'Bienvenue sur Holistica Club',desc:"On te fait découvrir en détail chaque partie de l'application, pour que tu profites de tout ce qui est à ta disposition dès le premier jour."},
-  {icon:'home',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a8fe1751c4548.89635784_2.png',title:'Ton écran d\'accueil',desc:"C'est l'onglet du milieu, en bas de ton écran. Tu y retrouves chaque jour ton message personnalisé selon ton profil ayurvédique et la phase de la lune, ton cycle menstruel, ton sommeil et ton stress à renseigner, et ton parcours du jour pour visualiser d'un coup d'œil tout ce qu'il te reste à faire."},
-  {icon:'pulse',imgs:['https://d1yei2z3i6k35z.cloudfront.net/125337/6a92fece2b5884.99964832_IMG_3639.PNG','https://d1yei2z3i6k35z.cloudfront.net/125337/6a92feec1551f4.43205139_IMG_3640.PNG'],title:'Ton cycle menstruel',desc:"Sache exactement où tu en es : ta phase actuelle, ton énergie du moment, et la date précise de tes prochaines règles. Touche cette date pour ouvrir ton calendrier annuel complet, avec toutes tes périodes prévues, mois par mois."},
-  {icon:'pulse',imgs:['https://d1yei2z3i6k35z.cloudfront.net/125337/6a904abce7f133.72482179_preview4.webp','https://d1yei2z3i6k35z.cloudfront.net/125337/6a904ac528f1b6.60235866_preview3.webp'],title:'Ton conseil ménopause du jour',desc:"Si tu es en préménopause ou ménopause, un bouton dédié apparaît sur ton accueil, juste sous Sommeil & Stress. Il t'annonce un sujet différent chaque jour, bouffées de chaleur, sommeil, humeur, digestion, et bien d'autres, avec des recommandations naturopathie, nutrition et ayurvédiques pour t'accompagner au quotidien."},
-  {icon:'play',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a6b3d243c03f5.97813414_Screenshot2026-07-28at14.42.41.png',title:'Tes séances',desc:"C'est l'onglet tout à gauche, ton espace mouvement complet. Retrouve ta routine du matin et ta routine du soir, tes programmes à suivre pas à pas, et la bibliothèque complète des cours."},
-  {icon:'play',imgs:['https://d1yei2z3i6k35z.cloudfront.net/125337/6a8fe2e9dcd163.22958502_8.png','https://d1yei2z3i6k35z.cloudfront.net/125337/6a6b3d8c5978e0.91311556_IMG_1257.PNG'],title:'Tes routines, 5 à 7 minutes',desc:"Chaque matin et chaque soir, une routine de 5 à 7 minutes t'attend : un enchaînement de mouvements d'1 minute qui change tous les jours, drainage lymphatique, ancrage, souplesse, qi gong, respiration. Envie d'aller plus loin ? Tes séances complètes de yoga, pilates ou méditation durent entre 20 et 40 minutes."},
-  {icon:'award',img:'',title:'Tes programmes & ta bibliothèque',desc:"Suis une ligne directrice claire pour progresser en Pilates ou en méditation guidée, séance après séance, ou pioche librement dans la bibliothèque complète des cours de yoga, Pilates et méditation. Certains contenus se débloquent avec ton ancienneté et tes connexions régulières, et tu gagnes des points et des badges au fil de ta progression."},
-  {icon:'bowl',imgs:['https://d1yei2z3i6k35z.cloudfront.net/125337/6a8fe2c759ca56.80808725_12.png','https://d1yei2z3i6k35z.cloudfront.net/125337/6a8fe2d442ea98.27905247_10.png'],title:'Tes recettes',desc:"C'est le deuxième onglet en partant de la gauche. Retrouve des recettes classées par thème selon ton profil ayurvédique : végétarien, boissons, anti-inflammatoire, petit-déjeuner, et bien plus. Certaines se débloquent aussi selon ton assiduité."},
-  {icon:'leaf',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a6b3d32851aa3.79038288_Screenshot2026-07-28at14.42.25.png',title:'Tes dossiers bien-être',desc:"C'est le troisième onglet en partant de la gauche. Chaque semaine, un nouveau dossier complet t'attend sur un sujet naturopathie : soin des cheveux, soin de la peau, produits ménagers naturels, nutrition, aromathérapie, respiration, et bien d'autres thèmes pour prendre soin de toi au naturel, à ton rythme."},
-  {icon:'people',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a75937b502736.96000489_IMG_2240.jpg',title:'Communauté & challenges',desc:"À droite du bouton Accueil. Avec l'offre Immersion, rejoins le groupe WhatsApp pour échanger avec d'autres femmes et Maryne, participe à un cours de yoga en visio chaque mois avec correction et partage d'écran, à une conférence mensuelle, et à un nouveau challenge chaque mois pour avancer ensemble."},
-  {icon:'apple',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a759382331f63.37573717_IMG_2241.jpg',title:'Ta diététique',desc:"Deuxième onglet à droite du bouton Accueil, réservé à l'offre Immersion. Ton espace alimentation complet en 4 parties : ton plan alimentaire personnalisé, ton journal quotidien, tes conseils santé et ayurvédiques, et les aliments de saison."},
-  {icon:'apple',imgs:['https://d1yei2z3i6k35z.cloudfront.net/125337/6a8fe291192883.39196252_20.png','https://d1yei2z3i6k35z.cloudfront.net/125337/6a8fe298aa9d07.36789624_19.png'],title:'Ton plan alimentaire',desc:"Il change automatiquement toutes les 2 semaines, calculé selon tes propres paramètres, anti-inflammatoire, sans gluten et sans lactose, avec des grammages précis pour chaque aliment. 3 options te sont proposées pour chaque repas, matin, midi, collation et soir."},
-  {icon:'pulse',imgs:['https://d1yei2z3i6k35z.cloudfront.net/125337/6a8fe1f04bfb28.69768914_22.png','https://d1yei2z3i6k35z.cloudfront.net/125337/6a8fe2a808f545.46293256_15.png'],title:'Ton journal & tes conseils',desc:"Suis au jour le jour ton total calorique et la répartition entre protéines, glucides et lipides depuis ton journal quotidien. Retrouve aussi des conseils santé et ayurvédiques qui évoluent toutes les 2 semaines, avec des recommandations adaptées à la phase de ton cycle menstruel et à ton alimentation."},
-  {icon:'user',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a75955383bfe9.60451086_IMG_22422.jpg',title:'Ton profil',desc:"Dernier onglet à droite. Modifie tes informations personnelles et retrouve tout ce qui te concerne : ton profil ayurvédique, ton thème astral, ton historique bien-être et tes badges."},
-  {icon:'user',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a7593886569f7.29205270_IMG_2243.jpg',title:'Ton profil ayurvédique, le cœur de l\'app',desc:"C'est ton bilan ayurvédique, rempli lors de ton inscription, qui personnalise toute l'application : il adapte tes routines du matin et du soir, le choix de tes séances, et surtout ton alimentation. Retrouve le détail complet de ton dosha dominant, et explore aussi les 2 autres profils, Vata, Pitta et Kapha, en un clic."},
-  {icon:'moon',imgs:['https://d1yei2z3i6k35z.cloudfront.net/125337/6a8fe2280a0e77.33828538_34.png','https://d1yei2z3i6k35z.cloudfront.net/125337/6a8fe2751a9234.30994533_27.png'],title:'Ton thème astral',desc:"Depuis l'onglet Profil. Découvre ton astro du jour, de la semaine, du mois et de l'année, la lune du mois en cours, ainsi que les portails énergétiques et grandes dates du mois à retenir : dates à chiffres répétés, équinoxes, solstices. De quoi éclairer tes prises de décision au quotidien."},
-  {icon:'pulse',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a7593a90abc39.64516789_IMG_2246.jpg',title:'Ton historique bien-être',desc:"Depuis l'onglet Profil. Chaque routine remplie depuis l'accueil vient nourrir ton historique, un aperçu clair de ton évolution jour après jour."},
-  {icon:'award',img:'https://d1yei2z3i6k35z.cloudfront.net/125337/6a7593af5412f5.54951503_IMG_2247.jpg',title:'Tes badges & récompenses',desc:"Depuis l'onglet Profil. Débloque progressivement de nouvelles recettes, de nouveaux cours et séances, et de nouveaux dossiers naturopathie au fil de ta progression."},
-  {icon:'sparkle',imgs:['https://d1yei2z3i6k35z.cloudfront.net/125337/6a8fe1f04bfb28.69768914_22.png','https://d1yei2z3i6k35z.cloudfront.net/125337/6a8fe1e3c672f4.91334012_23.png'],title:'Envie d\'aller plus loin ?',desc:"Avec l'offre Immersion, tu débloques : ton plan alimentaire personnalisé, ton journal quotidien de macros et calories, tes conseils santé et ayurvédiques adaptés à ton cycle, les aliments de saison, l'accès au groupe WhatsApp privé avec Maryne et les autres membres, les défis réguliers, la conférence mensuelle, et les cours en visio. Change d'offre à tout moment depuis l'onglet Profil."}
-];
-let wtIndex=0;
-
-let wtFromDiscovery=false;
-function showWalkthrough(fromDiscovery){
-  wtFromDiscovery=!!fromDiscovery;
-  wtIndex=0;
-  document.getElementById('walkthroughOverlay').style.display='flex';
-  document.getElementById('wtDots').style.display='flex';
-  renderWtStep();
-}
-
-function renderWtStep(){
-  const step=WT_STEPS[wtIndex];
-  const imgEl=document.getElementById('wtImg');
-  const imgsWrap=document.getElementById('wtImgsWrap');
-  if(step.imgs&&step.imgs.length===2){
-    imgEl.style.display='none';
-    document.getElementById('wtImg1').src=step.imgs[0];
-    document.getElementById('wtImg2').src=step.imgs[1];
-    imgsWrap.style.display='flex';
-  } else if(step.img){
-    imgsWrap.style.display='none';
-    imgEl.src=step.img;imgEl.style.display='block';
-  } else {
-    imgEl.style.display='none';
-    imgsWrap.style.display='none';
-  }
-  document.getElementById('wtIcon').innerHTML=WT_ICONS[step.icon]||'';
-  document.getElementById('wtTitle').textContent=step.title;
-  document.getElementById('wtDesc').textContent=step.desc;
-  document.getElementById('wtDots').innerHTML=WT_STEPS.map((_,i)=>
-    `<div style="width:${i===wtIndex?'20px':'7px'};height:7px;border-radius:4px;background:${i===wtIndex?'white':'rgba(255,255,255,0.35)'};transition:all .25s;"></div>`
-  ).join('');
-  document.getElementById('wtNextBtn').textContent=wtIndex===WT_STEPS.length-1?"C'est parti !":'Suivant';
-  document.getElementById('wtScrollArea').scrollTop=0;
-}
-
-function wtNext(){
-  if(wtIndex<WT_STEPS.length-1){
-    wtIndex++;
-    renderWtStep();
-  } else {
-    wtFinish();
-  }
-}
-
-function wtSkip(){
-  wtFinish();
-}
-
-function wtFinish(){
-  // Si le tutoriel a été ouvert par curiosité (pas encore de compte), on propose de
-  // créer son compte sur le site plutôt que de simplement refermer l'écran.
-  if(wtFromDiscovery && !currentUser){
-    document.getElementById('wtScrollArea').innerHTML=`
-      <div style="width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,0.18);display:flex;align-items:center;justify-content:center;margin-bottom:18px;">
-        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-      </div>
-      <div style="font-family:'League Spartan',sans-serif;font-weight:800;font-size:24px;color:white;margin-bottom:10px;">Convaincue ?</div>
-      <div style="font-size:17px;color:white;line-height:1.55;max-width:340px;">Crée ton compte pour démarrer ton accompagnement.</div>
-    `;
-    document.getElementById('wtDots').style.display='none';
-    const btn=document.getElementById('wtNextBtn');
-    btn.textContent="Créer mon compte";
-    btn.onclick=function(){document.getElementById('walkthroughOverlay').style.display='none';go('signup');};
-    const skipBtn=document.querySelector('#walkthroughOverlay > button[onclick="wtSkip()"]');
-    if(skipBtn){skipBtn.textContent='← Retour';skipBtn.onclick=function(){document.getElementById('walkthroughOverlay').style.display='none';go('signin');};}
-    return;
-  }
-  document.getElementById('walkthroughOverlay').style.display='none';
-  userProfile.hasSeenWalkthrough=true;
-  localStorage.setItem('holistica_wt_seen_'+(userProfile.email||''),'1');
-  saveProfile();
-}
 
 async function handleSignIn(){
  const email=document.getElementById('siEmail').value.trim();
@@ -2280,14 +2078,14 @@ async function loadProfileAndEnter(){
  userProfile.subscriptionPlan=claimResult.plan;
  }
  if(!isDevAccount() && !hasActiveAccess()){
- go('offers');
+ go('dashboard');enterApp();
  document.getElementById('bnav').style.display='none';
  saveProfile();
  return;
  }
  go('dashboard');enterApp();addXP(0);checkBadges(true);
  const wtAlreadySeenLocally=localStorage.getItem('holistica_wt_seen_'+(userProfile.email||''))==='1';
- if(!userProfile.hasSeenWalkthrough&&!wtAlreadySeenLocally)setTimeout(showWalkthrough,600);
+ // Tutoriel retiré.
  saveProfile();
  } else {
  // Nouveau compte, aucun profil enregistré pour l'instant : on vérifie D'ABORD si un
@@ -2301,7 +2099,7 @@ async function loadProfileAndEnter(){
  userProfile.subscriptionPlan=claimResult.plan;
  }
  if(!isDevAccount() && !hasActiveAccess()){
- go('offers');
+ go('dashboard');enterApp();
  document.getElementById('bnav').style.display='none';
  return;
  }
@@ -2410,7 +2208,7 @@ window.addEventListener('load',async()=>{
 });
 
 /* ═══════ NAV ═══════ */
-const PROTECTED_SCREENS=['dashboard','mouvement','recettes','naturo','challenge','doshaProfile','editInfo','wellnessHistory','badgesScreen','cycleSettings','astroScreen','programDetail','dossierDetail','dietPlan','referralScreen','unsubscribeScreen','progressionScreen'];
+const PROTECTED_SCREENS=['dashboard','mouvement','recettes','naturo','doshaProfile','editInfo','wellnessHistory','badgesScreen','cycleSettings','astroScreen','programDetail','dossierDetail','progressionScreen'];
 
 // Sélectionne jusqu'à 3 idées repas correspondant au repas/dosha/régime, en élargissant
 // progressivement si rien de pile poil ne correspond (dosha ou régime = 'tous' en repli).
@@ -3611,7 +3409,7 @@ function obNext(){
  userProfile.subscriptionPlan='immersion';
  enterApp(); // Rafraîchit l'affichage (ex: "Mon abonnement") avec les nouvelles valeurs
  } else if(!hasActiveAccess()){
- go('offers');
+ go('dashboard');enterApp();
  document.getElementById('bnav').style.display='none';
  }
  return;
@@ -6857,10 +6655,6 @@ function renderFoodHistory(days){
  document.getElementById('foodHistChart').innerHTML=`<div class="food-hist-chart">${barsHtml}</div>`;
 }
 
-/* ═══════ CHECKOUT ═══════ */
-/* Retiré : l'app ne propose plus de paiement en direct (abonnement géré uniquement
- via holisticaclub.com, conformément aux règles Google Play pour une app gratuite). */
-
 /* ═══════ TOAST ═══════ */
 /* ═══════ PARRAINAGE ═══════ */
 function generateReferralCode(){
@@ -6920,61 +6714,6 @@ function shareReferralLink(){
  } else {
  navigator.clipboard.writeText(text).then(()=>toast('📋 Message copié, colle-le où tu veux !'));
  }
-}
-
-/* ═══════ DÉSABONNEMENT + OFFRE DE RÉTENTION ═══════ */
-const UNSUB_REASONS=['Trop chère','Pas d\'utilité pour moi','Manque de temps','Autre raison'];
-let selectedUnsubReason=null;
-
-function renderUnsubscribeReasons(){
- document.getElementById('unsubStep1').style.display='block';
- document.getElementById('unsubStep2').style.display='none';
- document.getElementById('unsubStep3').style.display='none';
- selectedUnsubReason=null;
- document.getElementById('unsubReasons').innerHTML=UNSUB_REASONS.map(r=>
- `<button class="btn-ob" style="margin-bottom:10px;background:white;color:var(--ink);border:1.5px solid var(--border);text-align:left;padding-left:18px;" onclick="selectUnsubReason('${r.replace(/'/g,"\\'")}')">${r}</button>`
- ).join('');
-}
-
-function selectUnsubReason(reason){
- selectedUnsubReason=reason;
- document.getElementById('unsubStep1').style.display='none';
- document.getElementById('unsubStep2').style.display='block';
-}
-
-async function acceptRetentionOffer(){
- toast('⏳ Application de la réduction...');
- try{
- const res=await fetch('/.netlify/functions/apply-retention-discount',{
- method:'POST',
- headers:{'Content-Type':'application/json'},
- body:JSON.stringify({userId:currentUser.id})
- });
- const data=await res.json();
- if(!res.ok||data.error)throw new Error(data.error||'Erreur inconnue');
- await sb.from('profiles').update({cancellation_reason:selectedUnsubReason}).eq('id',currentUser.id);
- document.getElementById('unsubStep2').style.display='none';
- document.getElementById('unsubStep3').style.display='block';
- document.getElementById('unsubFinalIcon').textContent='';
- document.getElementById('unsubFinalTitle').textContent='C\'est fait !';
- document.getElementById('unsubFinalBody').textContent='Ta réduction de -50% est appliquée sur ta prochaine facture. Merci de rester avec nous ';
- }catch(e){
- toast('❌ Une erreur est survenue, réessaie ou contacte-nous directement');
- }
-}
-
-async function confirmCancellation(){
- try{
- await sb.from('profiles').update({
- cancellation_reason:selectedUnsubReason,
- cancellation_requested_at:new Date().toISOString()
- }).eq('id',currentUser.id);
- }catch(e){}
- document.getElementById('unsubStep2').style.display='none';
- document.getElementById('unsubStep3').style.display='block';
- document.getElementById('unsubFinalIcon').textContent='';
- document.getElementById('unsubFinalTitle').textContent='Ta demande a bien été reçue';
- document.getElementById('unsubFinalBody').textContent='On finalise la résiliation sous 24h. Tu gardes l\'accès jusqu\'à la fin de la période déjà payée. Merci d\'avoir fait partie de l\'aventure ';
 }
 
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}

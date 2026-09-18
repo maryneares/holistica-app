@@ -1255,40 +1255,18 @@ document.addEventListener('DOMContentLoaded', function(){
 <button class="vd-back" onclick="go('challenge')" style="position:fixed;top:16px;left:16px;z-index:5;">←</button>
 <div class="scroll" style="padding:0 20px calc(env(safe-area-inset-bottom) + 100px);">
 <div class="ob-title" style="text-align:center;margin-top:60px;font-size:24px;">Ton <em>accompagnement</em></div>
-<div style="font-size:15.5px;color:var(--ink-l);text-align:center;margin-bottom:24px;">Deux formules pour avancer à ton rythme</div>
+<div style="font-size:15.5px;color:var(--ink-l);text-align:center;margin-bottom:24px;">Trois formules pour avancer à ton rythme</div>
 
-<div class="offer-card">
-<div class="offer-name">Plan Équilibre</div>
-<ul class="offer-list" style="margin-top:14px;">
-<li>Accès complet à l'application</li>
-<li>Toutes les recettes et séances vidéo</li>
-<li>Suivi de cycle et bilan ayurvédique</li>
-<li>Recommandations personnalisées</li>
-</ul>
+<div id="iapOffersWrap">
+<div style="text-align:center;padding:30px 0;color:var(--ink-l);">Chargement des offres...</div>
 </div>
 
-<div class="offer-card hl">
-<div class="offer-badge">Le plus populaire</div>
-<div class="offer-name">Plan Immersion</div>
-<ul class="offer-list" style="margin-top:14px;">
-<li>Tout le Plan Équilibre, inclus</li>
-<li>Plan alimentaire personnalisé selon ton profil Ayurvédique</li>
-<li>Groupe WhatsApp privé avec les autres membres</li>
-<li>Challenges hebdomadaires et mensuels</li>
-<li>Lives et cours en visio avec Maryne</li>
-<li>Conférence mensuelle questions-réponses</li>
-</ul>
-</div>
-
-<div class="offer-upgrade-box" id="offerUpgradeBox" style="display:none;">
-<div class="offer-info-t" style="color:white;">Envie d'aller plus loin ?</div>
-<div class="offer-info-txt" style="color:rgba(255,255,255,0.92);">Tu es actuellement sur le Plan Équilibre. Contacte-nous pour découvrir le Plan Immersion et débloquer ton plan alimentaire personnalisé, le groupe WhatsApp et les lives avec Maryne.</div>
-</div>
-
-<div class="offer-info-box">
+<div class="offer-info-box" id="offerReservedBox">
 <div class="offer-info-t">Réservé aux membres</div>
 <div class="offer-info-txt">Cet espace est réservé aux membres avec un abonnement actif.</div>
 </div>
+
+<button class="btn-glass" style="width:100%;margin-top:10px;" onclick="restoreIapPurchases()">Restaurer mes achats</button>
 
 
 <div class="unsub-link-wrap" id="unsubLinkWrap" style="display:none;padding:20px 0 20px;">
@@ -2229,6 +2207,99 @@ async function initGoogleSignInNative(){
  }catch(e){console.error('Erreur init GoogleSignIn:',e);}
 }
 document.addEventListener('DOMContentLoaded',initGoogleSignInNative);
+
+/* ═══════ REVENUECAT — ACHATS IN-APP ═══════ */
+const RC_API_KEY_IOS='appl_RybePfeJyvFeYCgkYUqajQofwoa';
+const RC_PLANS=[
+ {pkg:'equilibre',entitlement:'equilibre_access',plan:'equilibre',title:'Équilibre',desc:['Accès complet à l\'application','Toutes les recettes et séances vidéo','Suivi de cycle et bilan ayurvédique','Recommandations personnalisées']},
+ {pkg:'immersion',entitlement:'immersion_access',plan:'immersion',title:'Immersion',desc:['Tout Équilibre, inclus','Plan alimentaire personnalisé Ayurvédique','Groupe WhatsApp privé','Challenges hebdomadaires','Lives et visio avec Maryne'],highlight:true},
+ {pkg:'transformation',entitlement:'transformation_access',plan:'transformation',title:'Transformation',desc:['Bilan complet & programme 100% personnalisé','Visio toutes les 2 semaines','WhatsApp illimité','App Immersion incluse']}
+];
+let rcInitialized=false;
+
+async function initRevenueCat(){
+ const estAppNative=!!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
+ const rc=estAppNative && window.Capacitor.Plugins && window.Capacitor.Plugins.Purchases;
+ if(!rc || !currentUser || rcInitialized)return;
+ try{
+   await rc.configure({apiKey:RC_API_KEY_IOS,appUserID:currentUser.id});
+   rcInitialized=true;
+ }catch(e){console.error('Erreur init RevenueCat:',e);}
+}
+
+async function renderIapOffers(){
+ const wrap=document.getElementById('iapOffersWrap');
+ if(!wrap)return;
+ const estAppNative=!!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
+ const rc=estAppNative && window.Capacitor.Plugins && window.Capacitor.Plugins.Purchases;
+
+ if(!rc){
+   wrap.innerHTML='<div style="text-align:center;padding:20px;color:var(--ink-l);font-size:13.5px;">Les achats intégrés sont disponibles depuis l\'app iOS.</div>';
+   return;
+ }
+ await initRevenueCat();
+ try{
+   const {offerings}=await rc.getOfferings();
+   const current=offerings && offerings.current;
+   const packages=(current && current.availablePackages)||[];
+   wrap.innerHTML=RC_PLANS.map(p=>{
+     const pack=packages.find(pk=>pk.identifier===p.pkg);
+     const priceStr=pack ? pack.product.priceString : '—';
+     return `<div class="offer-card ${p.highlight?'hl':''}">
+       ${p.highlight?'<div class="offer-badge">Le plus populaire</div>':''}
+       <div class="offer-name">${p.title}</div>
+       <ul class="offer-list" style="margin-top:14px;">${p.desc.map(d=>`<li>${d}</li>`).join('')}</ul>
+       <button class="btn-add" style="width:100%;margin-top:16px;" onclick="purchaseIapPlan('${p.pkg}')">${priceStr!=='—'?priceStr+' — Choisir':'Indisponible'}</button>
+     </div>`;
+   }).join('');
+ }catch(e){
+   console.error('Erreur chargement offres:',e);
+   wrap.innerHTML='<div style="text-align:center;padding:20px;color:var(--ink-l);font-size:13.5px;">Impossible de charger les offres pour le moment.</div>';
+ }
+}
+
+async function purchaseIapPlan(packageId){
+ const estAppNative=!!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
+ const rc=estAppNative && window.Capacitor.Plugins && window.Capacitor.Plugins.Purchases;
+ if(!rc)return;
+ try{
+   const {offerings}=await rc.getOfferings();
+   const current=offerings && offerings.current;
+   const pack=current && current.availablePackages.find(pk=>pk.identifier===packageId);
+   if(!pack){toast('Offre indisponible');return;}
+   const {customerInfo}=await rc.purchasePackage({aPackage:pack});
+   const planInfo=RC_PLANS.find(p=>p.pkg===packageId);
+   const isActive=customerInfo && customerInfo.entitlements && customerInfo.entitlements.active && customerInfo.entitlements.active[planInfo.entitlement];
+   if(isActive){
+     // Mise à jour immédiate côté app ; le webhook RevenueCat confirme aussi côté serveur
+     await sb.from('profiles').update({subscription_status:'active',subscription_plan:planInfo.plan}).eq('id',currentUser.id);
+     toast('Abonnement activé, bienvenue !');
+     setTimeout(()=>location.reload(),1200);
+   }
+ }catch(e){
+   if(e && e.userCancelled)return;
+   toast('Erreur achat : '+(e.message||e));
+ }
+}
+
+async function restoreIapPurchases(){
+ const estAppNative=!!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
+ const rc=estAppNative && window.Capacitor.Plugins && window.Capacitor.Plugins.Purchases;
+ if(!rc)return;
+ try{
+   const {customerInfo}=await rc.restorePurchases();
+   const active=customerInfo && customerInfo.entitlements && customerInfo.entitlements.active;
+   const found=RC_PLANS.find(p=>active && active[p.entitlement]);
+   if(found){
+     await sb.from('profiles').update({subscription_status:'active',subscription_plan:found.plan}).eq('id',currentUser.id);
+     toast('Abonnement restauré');
+     setTimeout(()=>location.reload(),1200);
+   }else{
+     toast('Aucun achat à restaurer');
+   }
+ }catch(e){toast('Erreur : '+(e.message||e));}
+}
+
 
 
 async function signInWithApple(){
@@ -3178,15 +3249,9 @@ function go(id){
  if(id==='doshaProfile')renderDoshaProfile();
  if(id==='challenge')renderChallenge();
  if(id==='dietPlan')renderDietPlan();
- if(id==='offers')renderOffersUpgradeHint();
+ if(id==='offers')renderIapOffers();
 }
-// Affiche un encart d'incitation à passer en Immersion, uniquement pour les personnes
-// déjà abonnées au Plan Équilibre (les non-abonnées et les Immersion ne le voient pas).
-function renderOffersUpgradeHint(){
- const box=document.getElementById('offerUpgradeBox');
- if(!box)return;
- box.style.display=(userProfile.subscriptionStatus==='active'&&userProfile.subscriptionPlan==='equilibre')?'block':'none';
-}
+
 
 const ACTIVITY_MULTIPLIER={'sédentaire':1.2,'légère':1.375,'modérée':1.55,'active':1.725,'très active':1.9};
 function computeNutritionTargets(){

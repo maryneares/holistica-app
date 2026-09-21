@@ -1031,15 +1031,16 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="rc-m"><span class="rc-m-ic">Gluc.</span><div class="rc-m-v g" id="dMacroG" style="font-size:17px;">0g</div></div>
 <div class="rc-m"><span class="rc-m-ic">Lip.</span><div class="rc-m-v l" id="dMacroL" style="font-size:17px;">0g</div></div>
 </div>
-<div class="meta-note" style="margin-top:10px;">Pensé pour un poids sain, une masse grasse faible, une bonne masse musculaire et un équilibre hormonal stable.</div>
-<div style="text-align:center;margin-top:10px;"><a onclick="go('sources')" style="font-size:12px;color:var(--purple-m);text-decoration:underline;cursor:pointer;">Voir les sources de ce calcul</a></div>
+<div class="meta-note" style="margin-top:10px;">Repères nutritionnels estimés à partir de ton profil et de ton niveau d’activité. Ils ne constituent pas une prescription médicale ou diététique.</div>
+<div style="text-align:center;margin-top:10px;"><a onclick="openSources('dashboard')" style="font-size:12px;color:var(--purple-m);text-decoration:underline;cursor:pointer;">Méthodologie & sources scientifiques →</a></div>
 </div>
 <!-- Recovery & Hormonal -->
 <div class="sec"><h2>Ton équilibre <em>du jour</em></h2></div>
 <div class="duo-row">
 <div class="duo-card"><div class="gauge-wrap" id="dRecovGauge"></div><div class="duo-lbl"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--ink-l)" stroke-width="2" stroke-linecap="round" style="vertical-align:-1px;margin-right:3px;"><path d="M12 21c-4-3-8-6.5-8-11a5 5 0 0 1 8-4 5 5 0 0 1 8 4c0 4.5-4 8-8 11z"/></svg>Taux récupération</div><div class="duo-sub">Calculé via humeur + sommeil + stress</div></div>
-<div class="duo-card hl"><div class="gauge-wrap" id="dHormoGauge"></div><div class="duo-lbl"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--ink-l)" stroke-width="2" stroke-linecap="round" style="vertical-align:-1px;margin-right:3px;"><path d="M12 8a4 4 0 1 1 4 4 4 4 0 1 1-4 4 4 4 0 1 1-4-4 4 4 0 1 1 4-4z"/></svg>Équilibre hormonal</div><div class="duo-sub">Phase cycle + stress + sommeil</div></div>
+<div class="duo-card hl"><div class="gauge-wrap" id="dHormoGauge"></div><div class="duo-lbl"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--ink-l)" stroke-width="2" stroke-linecap="round" style="vertical-align:-1px;margin-right:3px;"><path d="M12 8a4 4 0 1 1 4 4 4 4 0 1 1-4 4 4 4 0 1 1-4-4 4 4 0 1 1 4-4z"/></svg>Indice bien-être féminin</div><div class="duo-sub">Sommeil + stress + humeur</div></div>
 </div>
+<div style="padding:8px 20px 0;text-align:center;font-size:11.5px;color:var(--ink-l);line-height:1.45;">Indices indicatifs de bien-être, calculés à partir de tes données déclarées. Ils ne mesurent pas tes hormones et ne constituent pas un diagnostic. <a onclick="openSources('dashboard')" style="color:var(--purple-m);text-decoration:underline;cursor:pointer;font-weight:700;">Méthodologie & sources →</a></div>
 <!-- Cycle -->
 <div id="cycleSectionWrap">
 <div class="sec"><h2 id="cycleSecTitle">Ton <em>cycle</em></h2></div>
@@ -1050,6 +1051,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="cycle-msg" id="cycleMsgBody"></div>
 <div class="cycle-energy" id="cycleEnergy"></div>
 </div>
+<div style="text-align:center;margin-top:8px;font-size:11.5px;color:var(--ink-l);line-height:1.45;">Phase estimée à partir des informations saisies ; ce suivi ne confirme pas l’ovulation et ne doit pas être utilisé comme méthode contraceptive. <a onclick="openSources('dashboard')" style="color:var(--purple-m);text-decoration:underline;cursor:pointer;font-weight:700;">Sources →</a></div>
 </div>
 
 <!-- Mood -->
@@ -1085,10 +1087,11 @@ document.addEventListener('DOMContentLoaded', function(){
 <div style="padding:2px 20px 4px;"><button class="btn-ob" style="padding:12px;font-size:14.5px;" onclick="saveWellnessToday()">Enregistrer</button></div>
 <div id="menopauseTipBtnWrap" style="display:none;padding:0 20px 8px;">
 <button class="menopause-tip-btn" onclick="openMenopauseTip()">
-<span class="menopause-tip-lbl">Mon conseil ménopause du jour</span>
+<span class="menopause-tip-lbl">Mon conseil bien-être ménopause du jour</span>
 <span class="menopause-tip-topic" id="menopauseTipTopic">Chargement…</span>
 <span class="menopause-tip-cta">Clique pour lire ton conseil du jour</span>
 </button>
+<div style="text-align:center;margin-top:8px;font-size:11.5px;color:var(--ink-l);">Conseils généraux de bien-être, non médicaux. <a onclick="openSources('dashboard')" style="color:var(--purple-m);text-decoration:underline;cursor:pointer;font-weight:700;">Sources scientifiques →</a></div>
 </div>
 <!-- Routine -->
 <div class="sec" id="secRoutine" style="display:block;"><h2>Routine <em>du jour</em></h2><div class="sec-sub">Selon ton profil ayurvédique</div></div>
@@ -1247,7 +1250,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="pa" id="buddyToggleRow" style="display:none;cursor:default;" onclick="event.stopPropagation();"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M1 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg></div><div class="pa-body"><div class="pa-t">Disponible comme binôme</div><div class="pa-s">Sois jumelée avec une autre membre pour vous soutenir mutuellement</div></div><label class="buddy-switch"><input type="checkbox" id="buddyToggleInput" onchange="toggleBuddyAvailable(this.checked)"><span class="buddy-switch-slider"></span></label></div>
 <div class="pa" onclick="openAstro()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/><circle cx="12" cy="12" r="4"/></svg></div><div class="pa-body"><div class="pa-t">Mon thème astral</div><div class="pa-s" id="paAstroSub">Renseigne ta date de naissance</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="go('privacy')"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div><div class="pa-body"><div class="pa-t">Politique de confidentialité</div><div class="pa-s">Comment tes données sont utilisées</div></div><span class="pa-arr">›</span></div>
-<div class="pa" onclick="go('sources')"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><div class="pa-body"><div class="pa-t">Sources & références</div><div class="pa-s">D'où viennent nos calculs et recommandations</div></div><span class="pa-arr">›</span></div>
+<div class="pa" onclick="openSources('profil')"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><div class="pa-body"><div class="pa-t">Ressources & sources scientifiques</div><div class="pa-s">Méthodologie, références et informations santé</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="handleSignOut()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg></div><div class="pa-body"><div class="pa-t">Déconnexion</div><div class="pa-s">Se déconnecter de mon compte</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="confirmDeleteAccount()" style="border:1px solid rgba(200,80,80,0.25);"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C85050" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M6 7l1 13a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-13"/><path d="M10 11v6M14 11v6"/></svg></div><div class="pa-body"><div class="pa-t" style="color:#C85050;">Supprimer mon compte</div><div class="pa-s">Effacer définitivement mes données · besoin d'aide ? info@maryneares.fr</div></div><span class="pa-arr">›</span></div>
 </div>
@@ -1497,31 +1500,56 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 </div>
 </div>
 
-<!-- ═══ SOURCES & RÉFÉRENCES ═══ -->
+<!-- ═══ RESSOURCES & SOURCES SCIENTIFIQUES ═══ -->
 <div id="sources" class="screen">
 <div class="ob-top" style="background:var(--ivory);padding:calc(env(safe-area-inset-top) + 30px) 20px 10px;">
-<button class="vd-back" onclick="go('profil')" style="position:static;">←</button>
+<button class="vd-back" onclick="closeSources()" style="position:static;">←</button>
 </div>
 <div class="scroll" style="padding:0 24px calc(env(safe-area-inset-bottom) + 100px);">
-<div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Sources & <em>références</em></div>
-<p style="font-size:14px;color:var(--ink-l);margin-top:8px;margin-bottom:20px;">Holistica Club ne remplace jamais un avis médical. Voici les bases sur lesquelles s'appuient nos calculs et recommandations.</p>
+<div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Ressources & <em>sources scientifiques</em></div>
 
-<div style="font-size:15.5px;color:var(--ink-m);line-height:1.7;">
+<div class="diet-info-card" style="margin:14px 0 14px;">
+<div class="diet-info-t">À propos de nos contenus santé</div>
+<div class="diet-guide-s">Holistica Club propose des informations de bien-être, d'éducation et d'accompagnement du mode de vie. L'application ne réalise pas de diagnostic médical, ne mesure pas les hormones et ne remplace pas une consultation avec un médecin, une sage-femme, un diététicien ou un autre professionnel de santé qualifié.</div>
+<div class="diet-guide-s" style="margin-top:8px;">Les scores affichés dans l'app sont des <strong>indicateurs internes de bien-être</strong> construits à partir des informations que tu renseignes (par exemple sommeil, stress, humeur ou cycle). Ils ne correspondent pas à des analyses biologiques.</div>
+</div>
 
-<p style="margin-bottom:6px;"><strong>🔥 Calcul de tes besoins caloriques (métabolisme de base)</strong></p>
-<p style="margin-bottom:16px;">Basé sur l'équation de Mifflin-St Jeor, une formule scientifique validée et largement utilisée en nutrition clinique. <a href="https://pubmed.ncbi.nlm.nih.gov/2305711/" target="_blank" rel="noopener" style="color:var(--purple-m);">Mifflin MD, St Jeor ST, et al. (1990), American Journal of Clinical Nutrition</a>. La répartition des macronutriments (protéines/lipides/glucides) suit les recommandations générales de nutrition sportive de l'<a href="https://jissn.biomedcentral.com/" target="_blank" rel="noopener" style="color:var(--purple-m);">International Society of Sports Nutrition (ISSN)</a>.</p>
+<div class="diet-info-card" style="margin:0 0 14px;">
+<div class="diet-info-t">Nutrition & calculs</div>
+<div class="diet-guide-s"><strong>Métabolisme de repos :</strong> l'application utilise l'équation de Harris-Benedict révisée par Roza & Shizgal (1984). Pour une femme : 447,593 + (9,247 × poids en kg) + (3,098 × taille en cm) − (4,330 × âge). <a href="https://pubmed.ncbi.nlm.nih.gov/6741850/" target="_blank" rel="noopener" style="color:var(--purple-m);font-weight:700;">Roza & Shizgal — American Journal of Clinical Nutrition</a>.</div>
+<div class="diet-guide-s" style="margin-top:8px;"><strong>Apport journalier estimé :</strong> l'app applique ensuite un coefficient lié au niveau d'activité déclaré, puis un ajustement de l'objectif énergétique. Il s'agit d'une estimation et non d'une prescription nutritionnelle individualisée.</div>
+<div class="diet-guide-s" style="margin-top:8px;"><strong>Protéines :</strong> les repères de l'app se situent dans une fourchette utilisée en nutrition sportive. L'ISSN indique qu'un apport total d'environ 1,4 à 2,0 g/kg/j peut convenir à la plupart des adultes en bonne santé qui s'entraînent. <a href="https://jissn.biomedcentral.com/articles/10.1186/s12970-017-0177-8" target="_blank" rel="noopener" style="color:var(--purple-m);font-weight:700;">ISSN Position Stand — Protein and Exercise</a>.</div>
+</div>
 
-<p style="margin-bottom:6px;"><strong>🕉️ Profil Ayurvédique (dosha)</strong></p>
-<p style="margin-bottom:16px;">L'Ayurveda est un système de médecine traditionnelle originaire d'Inde, vieux de plus de 3000 ans. Ton profil est établi selon les principes classiques décrits dans les textes fondateurs (Charaka Samhita, Sushruta Samhita). Pour en savoir plus : <a href="https://www.who.int/news-room/fact-sheets/detail/traditional-complementary-and-integrative-medicine" target="_blank" rel="noopener" style="color:var(--purple-m);">OMS — Médecines traditionnelles</a>. Ceci relève d'une approche complémentaire, non d'un diagnostic médical.</p>
+<div class="diet-info-card" style="margin:0 0 14px;">
+<div class="diet-info-t">Cycle menstruel</div>
+<div class="diet-guide-s">Les informations sur les phases du cycle s'appuient sur des références de santé reproductive. La date des règles et la durée du cycle permettent uniquement une <strong>estimation</strong> des phases : l'application ne confirme pas l'ovulation et ne doit pas être utilisée comme méthode contraceptive ou outil de diagnostic. <a href="https://www.acog.org/womens-health/infographics/the-menstrual-cycle" target="_blank" rel="noopener" style="color:var(--purple-m);font-weight:700;">ACOG — The Menstrual Cycle</a>.</div>
+</div>
 
-<p style="margin-bottom:6px;"><strong>🌸 Suivi de ton cycle menstruel</strong></p>
-<p style="margin-bottom:16px;">Les phases du cycle et leur durée moyenne (28 jours) s'appuient sur les données de référence en santé reproductive. Source : <a href="https://www.acog.org/womens-health" target="_blank" rel="noopener" style="color:var(--purple-m);">American College of Obstetricians and Gynecologists (ACOG)</a>.</p>
+<div class="diet-info-card" style="margin:0 0 14px;">
+<div class="diet-info-t">Périménopause & ménopause</div>
+<div class="diet-guide-s">Les conseils proposés sont des informations générales de bien-être et d'hygiène de vie. Ils ne remplacent ni un diagnostic ni un traitement. Les symptômes persistants, inhabituels ou gênants doivent être discutés avec un professionnel de santé.</div>
+<div class="diet-guide-s" style="margin-top:8px;"><a href="https://www.ameli.fr/assure/sante/themes/menopause/perimenopause-premenopause-symptomes-et-contraception" target="_blank" rel="noopener" style="color:var(--purple-m);font-weight:700;">Assurance Maladie — Périménopause : symptômes et contraception</a></div>
+<div class="diet-guide-s" style="margin-top:6px;"><a href="https://www.ameli.fr/assure/sante/themes/menopause/symptomes-diagnostic" target="_blank" rel="noopener" style="color:var(--purple-m);font-weight:700;">Assurance Maladie — Ménopause : définition, symptômes et diagnostic</a></div>
+</div>
 
-<p style="margin-bottom:6px;"><strong>🧘‍♀️ Gestion du stress & sommeil</strong></p>
-<p style="margin-bottom:16px;">Nos recommandations (respiration, routines, méditation) s'inspirent des pratiques de gestion du stress reconnues par l'<a href="https://www.who.int/news-room/fact-sheets/detail/mental-health-strengthening-our-response" target="_blank" rel="noopener" style="color:var(--purple-m);">Organisation Mondiale de la Santé (OMS)</a> pour le bien-être général.</p>
+<div class="diet-info-card" style="margin:0 0 14px;">
+<div class="diet-info-t">Stress & sommeil</div>
+<div class="diet-guide-s">Les contenus de respiration, relaxation, routines de sommeil et gestion du stress sont proposés à visée de bien-être général. <a href="https://www.who.int/fr/news-room/questions-and-answers/item/stress" target="_blank" rel="noopener" style="color:var(--purple-m);font-weight:700;">OMS — Stress</a> · <a href="https://www.inserm.fr/dossier/sommeil/" target="_blank" rel="noopener" style="color:var(--purple-m);font-weight:700;">Inserm — Sommeil</a>.</div>
+</div>
 
-<p style="margin-bottom:16px;background:var(--ivory);border-radius:12px;padding:14px;font-size:13.5px;color:var(--ink-l);">⚠️ Holistica Club propose un accompagnement bien-être général et ne diagnostique, ne traite ni ne surveille aucune condition médicale. Pour toute question de santé, consulte un professionnel de santé qualifié.</p>
+<div class="diet-info-card" style="margin:0 0 14px;">
+<div class="diet-info-t">Activité physique & mouvement</div>
+<div class="diet-guide-s">Les séances de yoga, Pilates, mobilité et renforcement sont des contenus généraux d'activité physique. Adapte toujours l'intensité à ta condition et demande un avis médical en cas de douleur, grossesse, maladie ou reprise après une longue interruption. <a href="https://www.who.int/fr/news-room/fact-sheets/detail/physical-activity" target="_blank" rel="noopener" style="color:var(--purple-m);font-weight:700;">OMS — Activité physique</a>.</div>
+</div>
 
+<div class="diet-info-card" style="margin:0 0 14px;">
+<div class="diet-info-t">Ayurveda & approches complémentaires</div>
+<div class="diet-guide-s">L'Ayurveda est présenté dans Holistica comme une approche traditionnelle complémentaire. Les doshas et recommandations ayurvédiques ne constituent pas des diagnostics biomédicaux et ne remplacent pas les soins conventionnels. L'OMS décrit les médecines traditionnelles, complémentaires et intégratives tout en insistant sur la sécurité et l'évaluation fondée sur les preuves. <a href="https://www.who.int/Health-Topics/Traditional-Complementary-and-Integrative-Medicine" target="_blank" rel="noopener" style="color:var(--purple-m);font-weight:700;">OMS — Traditional, Complementary and Integrative Medicine</a>.</div>
+</div>
+
+<div style="background:var(--lav-pale);border:1px solid var(--border);border-radius:14px;padding:15px 16px;font-size:13.5px;color:var(--ink-m);line-height:1.55;margin:4px 0 20px;">
+<strong>Important :</strong> en cas de symptôme nouveau, intense ou persistant, de saignement inhabituel, de malaise, de douleur importante ou de doute concernant ta santé, contacte un professionnel de santé. En cas d'urgence, utilise les services d'urgence de ton pays.
 </div>
 </div>
 </div>
@@ -2035,15 +2063,39 @@ async function signInWithApple(){
  });
  const identityToken=result && result.response && result.response.identityToken;
  if(!identityToken){toast('Connexion Apple annulée');return;}
- // Apple ne fournit le prénom/nom qu'une seule fois, lors de la toute première
- // autorisation — on le récupère ici pour ne jamais le redemander à l'utilisatrice
- // ensuite dans l'onboarding (exigence Apple, guideline 4 : Sign in with Apple).
- const givenName=result.response.givenName || (result.response.fullName && result.response.fullName.givenName) || '';
- const familyName=result.response.familyName || (result.response.fullName && result.response.fullName.familyName) || '';
+
+ // Marque explicitement ce flux comme une authentification Apple.
+ // Important : Apple ne renvoie le nom que lors de la toute première autorisation.
+ // On ne doit donc JAMAIS conditionner le saut de l'étape prénom à la présence de givenName.
+ window._appleAuthFlow=true;
+
+ const givenName=(result.response.givenName || (result.response.fullName && result.response.fullName.givenName) || '').trim();
+ const familyName=(result.response.familyName || (result.response.fullName && result.response.fullName.familyName) || '').trim();
  if(givenName)window._appleGivenName=givenName;
  if(familyName)window._appleFamilyName=familyName;
+
  const {error}=await sb.auth.signInWithIdToken({provider:'apple',token:identityToken});
- if(error){toast('Erreur : '+error.message);return;}
+ if(error){
+   window._appleAuthFlow=false;
+   toast('Erreur : '+error.message);
+   return;
+ }
+
+ // Sauvegarde immédiatement le nom fourni par Apple la première fois.
+ // Ainsi, si l'app est interrompue avant la fin de l'onboarding, on ne dépend pas
+ // d'une nouvelle transmission du nom lors de la prochaine connexion.
+ if(givenName || familyName){
+   try{
+     const metadata={};
+     if(givenName)metadata.given_name=givenName;
+     if(familyName)metadata.family_name=familyName;
+     const fullName=[givenName,familyName].filter(Boolean).join(' ');
+     if(fullName)metadata.full_name=fullName;
+     await sb.auth.updateUser({data:metadata});
+   }catch(metaErr){
+     console.warn('Impossible de mémoriser le nom Apple dans les métadonnées :',metaErr);
+   }
+ }
  // La session est ouverte, la page continue normalement (loadProfileAndEnter suit le flux existant)
  }catch(e){
  if(e && e.message && e.message.toLowerCase().includes('cancel'))return; // utilisateur a annulé, pas d'erreur à afficher
@@ -2150,12 +2202,30 @@ async function loadProfileAndEnter(){
  doshaAnswers={};
  doshaPage=0;
  retakeDoshaMode=false;
- // Si Apple nous a déjà donné le prénom (et parfois le nom), on ne redemande pas
- // cette info à l'utilisatrice : on la pré-remplit et on saute directement l'étape.
- if(window._appleGivenName){
- userProfile.name=window._appleGivenName;
- if(window._appleFamilyName)userProfile.lastName=window._appleFamilyName;
- obStep=1;
+ // Sign in with Apple : ne jamais redemander le prénom ou l'e-mail après authentification.
+ // Apple ne fournit le nom que lors de la première autorisation, donc on détecte Apple
+ // via le fournisseur d'authentification (et non via la présence du prénom).
+ const appleProviders=(currentUser && currentUser.app_metadata && Array.isArray(currentUser.app_metadata.providers))
+   ? currentUser.app_metadata.providers
+   : [];
+ const isAppleUser=!!(
+   window._appleAuthFlow===true ||
+   (currentUser && currentUser.app_metadata && currentUser.app_metadata.provider==='apple') ||
+   appleProviders.includes('apple')
+ );
+ window._isAppleUser=isAppleUser;
+
+ if(isAppleUser){
+   const meta=currentUser && currentUser.user_metadata ? currentUser.user_metadata : {};
+   const appleFirstName=(window._appleGivenName || meta.given_name || '').trim();
+   const appleLastName=(window._appleFamilyName || meta.family_name || '').trim();
+   if(appleFirstName)userProfile.name=appleFirstName;
+   if(appleLastName)userProfile.lastName=appleLastName;
+
+   // Étape 0 = "Comment tu t'appelles ?".
+   // Elle est systématiquement sautée pour un compte Apple, même si Apple ne renvoie
+   // plus le nom lors d'une connexion ultérieure.
+   obStep=1;
  }
  go('onboarding');
  renderOB();
@@ -2938,6 +3008,15 @@ function go(id){
  if(id==='offers')renderIapOffers();
 }
 
+let sourcesReturnScreen='profil';
+function openSources(fromScreen){
+ sourcesReturnScreen=fromScreen||'profil';
+ go('sources');
+}
+function closeSources(){
+ go(sourcesReturnScreen||'profil');
+}
+
 
 const ACTIVITY_MULTIPLIER={'sédentaire':1.2,'légère':1.375,'modérée':1.55,'active':1.725,'très active':1.9};
 function computeNutritionTargets(){
@@ -3367,8 +3446,8 @@ function obPrev(){
  return;
  }
  if(obStep<=0)return;
- // Si le prénom vient d'Apple, on ne repropose jamais l'étape "Comment tu t'appelles ?"
- if(window._appleGivenName && obStep<=1)return;
+ // Avec Sign in with Apple, ne jamais revenir à l'étape "Comment tu t'appelles ?".
+ if(window._isAppleUser && obStep<=1)return;
  obStep--;
  // Un profil "Homme" resaute la question menstruations (et sa date) si elle avait été sautée à l'aller
  if(userProfile.sexe==='homme' && OB_STEPS[obStep] && OB_STEPS[obStep].type==='date'){
@@ -3685,7 +3764,7 @@ function openMenopauseTip(){
  const sectionsHtml=(t.sections||[]).map(s=>
  `<div class="diet-info-t">${s.titre.toUpperCase()}</div><div class="diet-guide-s" style="margin-bottom:14px;">${s.texte}</div>`
  ).join('');
- document.getElementById('menopauseTipCard').innerHTML=`<div class="menopause-tip-title">${t.titre}</div>${sectionsHtml}`;
+ document.getElementById('menopauseTipCard').innerHTML=`<div class="menopause-tip-title">${t.titre}</div>${sectionsHtml}<div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border);font-size:12.5px;color:var(--ink-l);line-height:1.5;">Conseil général de bien-être, non médical. <a onclick="openSources('menopauseTipScreen')" style="color:var(--purple-m);text-decoration:underline;cursor:pointer;font-weight:700;">Sources scientifiques & précautions →</a></div>`;
  go('menopauseTipScreen');
 }
 

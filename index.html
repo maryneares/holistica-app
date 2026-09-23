@@ -560,9 +560,9 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .rc-srch input{flex:1;background:none;border:none;outline:none;font-size:15.5px;color:var(--ink);font-family:'League Spartan',sans-serif;}
 .rc-srch input::placeholder{color:var(--ink-l);}
 .rc-badge{background:var(--purple-m);color:white;font-size:12.5px;font-weight:700;padding:3px 8px;border-radius:50px;}
-.rc-filters{display:flex;gap:5px;padding:10px 20px;overflow-x:auto;scrollbar-width:none;}
+.rc-filters{display:flex;flex:0 0 auto;align-items:center;gap:6px;padding:12px 20px;min-height:62px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;}
 .rc-filters::-webkit-scrollbar{display:none;}
-.rf{flex-shrink:0;padding:6px 12px;border-radius:50px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:'League Spartan',sans-serif;transition:all .15s;border:none;}
+.rf{flex-shrink:0;min-height:38px;display:inline-flex;align-items:center;white-space:nowrap;line-height:1.25;padding:8px 12px;border-radius:50px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:'League Spartan',sans-serif;transition:all .15s;border:none;}
 .rf.act{background:var(--grad);color:white;}.rf.def{background:white;color:var(--ink-m);border:1px solid var(--border);}
 /* Recipe grid */
 .rg{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 20px;}
@@ -865,6 +865,21 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .rd-btn{width:100%;background:var(--grad);color:white;border:none;padding:14px;border-radius:14px;font-size:17px;font-weight:700;cursor:pointer;font-family:'League Spartan',sans-serif;}
 .rd-btn.added{background:var(--ink-l);}
 .vd-btn.done{background:var(--lav-pale);color:var(--purple);}
+
+/* Navigation et accueil restaurés d’après les captures de référence. */
+#nextStepBanner[hidden]{display:none!important;}
+#dashboard .journey-evo{display:none;}
+#dashboard>.d-top,#mouvement>.mv-top,#recettes>.rc-top,#naturo>.rc-top{position:sticky;top:0;z-index:5;}
+.ni{min-width:0;min-height:44px;}
+.ni-l{font-size:clamp(8px,2.3vw,10px);letter-spacing:0;}
+.ni:focus-visible,.ni-ctr:focus-visible{outline:2px solid var(--purple);outline-offset:2px;}
+
+/* Le contenu ne doit jamais comprimer les filtres entre la recherche et les recettes. */
+#recettes>.rc-srch,#recettes>.scroll{flex:0 0 auto;}
+#recettes .rc-srch input{min-width:0;width:100%;}
+.bnav-half{flex:0 0 calc((100% - 46px - 2px)/2);}
+.ni{flex:1 1 0;overflow:hidden;}
+.ni-l{font-size:clamp(7px,2.15vw,9px);white-space:nowrap;}
 </style>
 <script>
 /* ======== GOOGLE ANALYTICS + CONSENTEMENT ======== */
@@ -929,6 +944,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <button class="btn-glass" onclick="signInWithGoogleNative()" style="display:flex;align-items:center;justify-content:center;gap:10px;"><svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/></svg>Continuer avec Google</button><button class="btn-glass" onclick="signInWithApple()" style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:10px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.08l-.01-.01ZM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25Z"/></svg>Continuer avec Apple</button>
 
 <div class="si-btm">Pas de compte ? <a onclick="go('signup')">Créer un compte</a></div>
+<div class="si-btm" style="margin-top:6px;">Juste curieuse ? <a onclick="showWalkthrough(true)">Découvrir l'app en images</a></div>
 </div>
 <div class="si-bubbles"><div class="bubble bb1"></div><div class="bubble bb2"></div><div class="bubble bb3"></div></div>
 </div>
@@ -981,9 +997,10 @@ document.addEventListener('DOMContentLoaded', function(){
 <div id="dashboard" class="screen">
 <div class="d-top">
 <div class="blob b1"></div><div class="blob b2"></div>
+<div style="text-align:center;padding-top:calc(env(safe-area-inset-top) + 6px);"><span style="display:inline-block;background:rgba(255,255,255,0.22);color:white;font-size:11px;font-weight:700;padding:4px 14px;border-radius:20px;"><span id="accountLabel">Bienvenue Holistica</span></span></div>
 <div class="dz">
 <div class="d-row">
-<div><div class="d-greet" id="dGreet">Bonjour ☀️</div><div class="d-name">Bienvenue, <em id="dNameDisplay">Maryne</em></div></div>
+<div><div class="d-greet" id="dGreet">Bonjour ☀️</div><div class="d-name">Bienvenue, <em id="dNameDisplay">toi</em></div></div>
 <div class="d-av" id="dAvatar"></div>
 </div>
 <div class="d-pill"><div class="d-pill-dot"></div><div class="d-pill-txt" id="dPill">Profil Vata · Été</div></div>
@@ -995,17 +1012,17 @@ document.addEventListener('DOMContentLoaded', function(){
 </div>
 <div class="scroll">
 <!-- Commencer mon parcours du jour : fil conducteur unique, une seule action claire à la fois -->
-<div class="sec"><h2>Commencer <em>mon parcours du jour</em></h2></div>
+<div class="sec"><h2>Mon <em>parcours du jour</em></h2></div>
 <div class="journey-progress-wrap">
-<div class="next-step-banner" id="nextStepBanner"></div>
+<div class="next-step-banner" id="nextStepBanner" hidden></div>
 <div class="journey-progress-lbl"><span>Aujourd'hui</span><b id="journeyProgressLbl">0/5</b></div>
 <div class="journey-progress-bar"><div class="journey-progress-fill" id="journeyProgressFill" style="width:0%"></div></div>
-<button class="journey-replay-btn" onclick="openJourneyReplay()">Récap de tes étapes du jour</button>
+
 </div>
 <!-- La liste détaillée existe toujours en mémoire (utile pour le calcul de progression
  et la vue "Revoir toutes mes étapes"), mais n'est plus affichée en permanence : la
  bannière ci-dessus suffit à guider, sans surcharge visuelle ni double information. -->
-<div class="journey-strip" id="journeyStrip" style="display:none;"></div>
+<div class="journey-strip" id="journeyStrip"></div>
 <!-- Ta phrase du jour : premier contenu, juste après le message de bienvenue -->
 <div class="astro-widget" id="astroWidget"></div>
 <div class="weekly-recap" id="weeklyRecap" style="display:none;"></div>
@@ -1225,14 +1242,26 @@ document.addEventListener('DOMContentLoaded', function(){
 
 <!-- ═══ CHALLENGE ═══ -->
 
+<!-- ═══ COMMUNAUTÉ & CHALLENGES ═══ -->
+<div id="challenge" class="screen">
+<button class="vd-back" onclick="go('profil')" style="position:fixed;top:16px;left:16px;z-index:5;">←</button>
+<div class="ch-top">
+<div class="blob b1"></div><div class="blob b2"></div>
+<div class="ch-h1">Communauté & <em>Challenges</em></div>
+</div>
+<div class="scroll" style="padding-top:18px;">
+<div id="chCommunityCard"></div><div id="chUpgradeCard"></div>
+</div>
+</div>
+
 <!-- ═══ PROFIL ═══ -->
 <div id="profil" class="screen">
 <div class="pf-top">
 <div class="blob b1"></div><div class="blob b2"></div>
 <div class="pf-av" id="pfAvatar"></div>
-<div class="pf-name" id="pfName">Maryne Arès</div>
+<div class="pf-name" id="pfName">Mon profil</div>
 <div class="pf-dosha" id="pfDosha">Dosha Vata · Holistica Club</div>
-<div style="display:inline-block;background:rgba(255,255,255,0.22);color:white;font-size:11.5px;font-weight:700;padding:4px 12px;border-radius:20px;margin-bottom:8px;position:relative;z-index:1;">✨ App 100% gratuite</div>
+<div style="display:inline-block;background:rgba(255,255,255,0.22);color:white;font-size:11.5px;font-weight:700;padding:4px 12px;border-radius:20px;margin-bottom:8px;position:relative;z-index:1;"><span id="pfSubscription">Bienvenue Holistica · Compte gratuit</span></div>
 <div class="dosha-bar" id="doshaBar"><div class="dosha-bar-v" id="doshaBarV"></div><div class="dosha-bar-p" id="doshaBarP"></div><div class="dosha-bar-k" id="doshaBarK"></div></div>
 <div class="dosha-bar-lbl" id="doshaBarLbl"></div>
 <div class="pf-xp-t"><div class="pf-xp-f" id="xpFill" style="width:15%"></div></div>
@@ -1240,7 +1269,7 @@ document.addEventListener('DOMContentLoaded', function(){
 </div>
 <div class="scroll">
 <div class="sec"><h2>Mon <em>espace</em></h2></div>
-<div class="pf-acts">
+<div class="pf-acts"><div class="diet-info-card" style="margin:0 0 16px;"><div class="diet-info-t">Mon compte Holistica</div><div class="diet-guide-s">Ton compte standard est gratuit. Si tu as souscrit un plan Équilibre ou Immersion sur le site Holistica, utilise la même adresse e-mail puis actualise ton accès ici.</div><button class="btn-ob purple" id="refreshMembershipBtn" onclick="refreshMembership()">Actualiser mon accès</button></div>
 <div class="pa" onclick="openEditInfo()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.5 3-6.5 7-6.5s7 3 7 6.5"/></svg></div><div class="pa-body"><div class="pa-t">Modifier mes informations</div><div class="pa-s">Nom, poids, taille, activité</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="go('doshaProfile')"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1.5 3 2.5 5 2.5 8a2.5 2.5 0 0 1-5 0c0-3 1-5 2.5-8z"/><path d="M5 10c2 1 4 3 5 6"/><path d="M19 10c-2 1-4 3-5 6"/><path d="M4 15c2.5 3 5 4 8 4s5.5-1 8-4"/></svg></div><div class="pa-body"><div class="pa-t">Mon profil ayurvédique</div><div class="pa-s" id="pfDoshaDetail">Vata dominant</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="openWellnessHistory()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V10M9 19V5M14 19v-7M19 19V8"/></svg></div><div class="pa-body"><div class="pa-t">Historique bien-être</div><div class="pa-s">Sommeil · Stress · Humeur</div></div><span class="pa-arr">›</span></div>
@@ -1249,6 +1278,8 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="pa" onclick="openCycleSettings()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg></div><div class="pa-body"><div class="pa-t">Durée & suivi de mon cycle</div><div class="pa-s">Dernières règles, durée, comprendre les phases</div></div><span class="pa-arr">›</span></div>
 <div class="pa" id="buddyToggleRow" style="display:none;cursor:default;" onclick="event.stopPropagation();"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M1 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg></div><div class="pa-body"><div class="pa-t">Disponible comme binôme</div><div class="pa-s">Sois jumelée avec une autre membre pour vous soutenir mutuellement</div></div><label class="buddy-switch"><input type="checkbox" id="buddyToggleInput" onchange="toggleBuddyAvailable(this.checked)"><span class="buddy-switch-slider"></span></label></div>
 <div class="pa" onclick="openAstro()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/><circle cx="12" cy="12" r="4"/></svg></div><div class="pa-body"><div class="pa-t">Mon thème astral</div><div class="pa-s" id="paAstroSub">Renseigne ta date de naissance</div></div><span class="pa-arr">›</span></div>
+<div class="pa" onclick="showWalkthrough()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.5-2.5 2-2.5 3.5"/><path d="M12 17h.01"/></svg></div><div class="pa-body"><div class="pa-t">Revoir le tutoriel</div><div class="pa-s">Redécouvre toutes les fonctionnalités de l'app</div></div><span class="pa-arr">›</span></div>
+<div class="pa" id="profileChallenge" onclick="go('challenge')"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10v4a5 5 0 0 1-10 0V4z"/><path d="M7 5H4v2a3 3 0 0 0 3 3M17 5h3v2a3 3 0 0 1-3 3"/><path d="M12 13v3"/><path d="M9 20h6M10 17h4v3h-4z"/></svg></div><div class="pa-body"><div class="pa-t">Communauté & Challenges</div><div class="pa-s">Défis, motivation et entraide entre membres</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="go('privacy')"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div><div class="pa-body"><div class="pa-t">Politique de confidentialité</div><div class="pa-s">Comment tes données sont utilisées</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="openSources('profil')"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><div class="pa-body"><div class="pa-t">Ressources & sources scientifiques</div><div class="pa-s">Méthodologie, références et informations santé</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="handleSignOut()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg></div><div class="pa-body"><div class="pa-t">Déconnexion</div><div class="pa-s">Se déconnecter de mon compte</div></div><span class="pa-arr">›</span></div>
@@ -1489,7 +1520,7 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 <div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Politique de <em>confidentialité</em></div>
 <div style="font-size:15.5px;color:var(--ink-m);line-height:1.7;margin-top:12px;">
 <p style="margin-bottom:14px;"><strong>Dernière mise à jour :</strong> septembre 2026</p>
-<p style="margin-bottom:14px;">Holistica Club est actuellement une <strong>application 100% gratuite</strong>, sans aucun paiement ni abonnement.</p>
+<p style="margin-bottom:14px;">La création de compte et l’accès standard « Bienvenue Holistica » sont gratuits. Les plans Équilibre et Immersion sont souscrits sur le site Holistica. Nutrition personnalisée et Challenge sont inclus dans le plan Immersion.</p>
 <p style="margin-bottom:14px;">Nous collectons uniquement les données nécessaires au fonctionnement de l'app : ton prénom, ton profil Ayurvédique, ainsi que tes informations de bien-être au quotidien (gestion du stress, qualité du sommeil, humeur, cycle menstruel) et ta progression (séances complétées, points).</p>
 <p style="margin-bottom:14px;"><strong>Pourquoi :</strong> uniquement pour te proposer des recommandations personnalisées et garder ta progression d'une session à l'autre. Aucune donnée n'est vendue ni partagée avec des tiers.</p>
 <p style="margin-bottom:14px;"><strong>Hébergement :</strong> tes données sont stockées de façon sécurisée (Supabase), accessibles uniquement depuis ton propre compte.</p>
@@ -1565,7 +1596,7 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 <p style="margin-bottom:14px;"><strong>Dernière mise à jour :</strong> juillet 2026</p>
 <p style="margin-bottom:14px;"><strong>1. Objet.</strong> Holistica Club propose des contenus de bien-être (routines, séances de mouvement, recettes) à visée informative et de mieux-être. L'application ne fournit pas de diagnostic médical et ne remplace pas l'avis d'un professionnel de santé.</p>
 <p style="margin-bottom:14px;"><strong>2. Compte utilisateur.</strong> Tu es responsable de la confidentialité de tes identifiants de connexion. Les informations fournies lors de l'inscription doivent être exactes.</p>
-<p style="margin-bottom:14px;"><strong>3. Gratuité.</strong> Holistica Club est actuellement une application 100% gratuite, sans aucun abonnement ni paiement requis.</p>
+<p style="margin-bottom:14px;"><strong>3. Gratuité.</strong> La création de compte et l’accès standard sont gratuits. Les abonnements Équilibre et Immersion sont gérés sur le site Holistica ; aucun paiement n’est effectué dans cette application.</p>
 <p style="margin-bottom:14px;"><strong>4. Propriété intellectuelle.</strong> Les contenus (textes, vidéos, recettes, visuels) sont la propriété de Holistica Club et ne peuvent être reproduits sans autorisation.</p>
 <p style="margin-bottom:14px;"><strong>5. Responsabilité.</strong> Les conseils proposés sont d'ordre général. Consulte un professionnel de santé avant tout changement important d'alimentation ou d'activité physique, notamment en cas de grossesse ou de condition médicale particulière.</p>
 <p style="margin-bottom:14px;"><strong>6. Résiliation.</strong> Tu peux supprimer ton compte à tout moment depuis l'onglet Profil. Holistica Club se réserve le droit de suspendre un compte en cas d'usage abusif.</p>
@@ -1722,14 +1753,31 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 <div class="bnav-half">
 <button class="ni" id="ni-mouvement" onclick="go('mouvement')"><span class="ni-ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2"/><path d="M12 7.3v4.2"/><path d="M9.3 9c0 1.5.9 2.5 2.7 2.5s2.7-1 2.7-2.5"/><path d="M12 11.5c-1.4 0-2.2 1-2.6 2.3-.3 1.1-.9 1.9-1.9 2.5-1.3.8-2 1.6-1.8 2.5.2.7 1 1 2.1.7 1.6-.5 2.6-1 4.2-1 1.6 0 2.6.5 4.2 1 1.1.3 1.9 0 2.1-.7.2-.9-.5-1.7-1.8-2.5-1-.6-1.6-1.4-1.9-2.5-.4-1.3-1.2-2.3-2.6-2.3z"/></svg></span><span class="ni-l">Séances</span></button>
 <button class="ni" id="ni-recettes" onclick="go('recettes')"><span class="ni-ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v6c0 1.1.9 2 2 2h3a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M20 2a4 4 0 0 0-4 4v5c0 1.1.9 2 2 2h2M18 13v9"/></svg></span><span class="ni-l">Recettes</span></button>
+<button class="ni" id="ni-naturo" onclick="go('naturo')"><span class="ni-ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4C11 4 4 11 4 20c9 0 16-7 16-16z"/><path d="M8 20c0-6 4-10 10-12"/></svg></span><span class="ni-l">Naturo</span></button>
 </div>
 <div class="bnav-spacer"></div>
-<button class="ni-ctr" id="ni-dashboard" onclick="go('dashboard')"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11.5l8-7.5 8 7.5"/><path d="M6 10v9.5a1 1 0 0 0 1 1h3.5v-6.5h3v6.5H17a1 1 0 0 0 1-1V10"/></svg></button>
+<button class="ni-ctr" aria-label="Accueil" id="ni-dashboard" onclick="go('dashboard')"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11.5l8-7.5 8 7.5"/><path d="M6 10v9.5a1 1 0 0 0 1 1h3.5v-6.5h3v6.5H17a1 1 0 0 0 1-1V10"/></svg></button>
 <div class="bnav-half">
-<button class="ni" id="ni-naturo" onclick="go('naturo')"><span class="ni-ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4C11 4 4 11 4 20c9 0 16-7 16-16z"/><path d="M8 20c0-6 4-10 10-12"/></svg></span><span class="ni-l">Naturo</span></button>
+<button class="ni" id="ni-challenge" onclick="go('challenge')"><span class="ni-ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10v4a5 5 0 0 1-10 0V4z"/><path d="M7 5H4v2a3 3 0 0 0 3 3M17 5h3v2a3 3 0 0 1-3 3"/><path d="M12 13v3"/><path d="M9 20h6M10 17h4v3h-4z"/></svg></span><span class="ni-l">Challenge</span></button>
+<button class="ni" id="ni-dietPlan" onclick="go('dietPlan')"><span class="ni-ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7.5c1-1.8 2.8-2.3 4-1.8"/><path d="M12 7.5c-4 0-6.5 3-6.5 6.8 0 3.6 2.4 6.7 5 6.7.9 0 1.2-.4 1.5-.4s.6.4 1.5.4c2.6 0 5-3.1 5-6.7 0-3.8-2.5-6.8-6.5-6.8z"/></svg></span><span class="ni-l">Diététique</span></button>
 <button class="ni" id="ni-profil" onclick="go('profil')"><span class="ni-ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.5 3-6.5 7-6.5s7 3 7 6.5"/></svg></span><span class="ni-l">Profil</span></button>
 </div>
 </nav>
+
+<!-- ═══ TUTORIEL DE BIENVENUE ═══ -->
+<div id="walkthroughOverlay" style="display:none;position:fixed;inset:0;z-index:9999;background:linear-gradient(160deg,#5B4EA8,#8B6FC4);flex-direction:column;">
+<button onclick="wtSkip()" style="position:absolute;top:calc(env(safe-area-inset-top) + 16px);right:20px;background:rgba(255,255,255,0.18);color:white;border:none;border-radius:20px;padding:8px 16px;font-size:13px;font-weight:700;z-index:2;">Passer</button>
+<div id="wtScrollArea" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px 32px;">
+<div id="wtIcon" style="width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,0.18);display:flex;align-items:center;justify-content:center;margin-bottom:18px;color:white;"></div>
+<div id="wtTitle" style="font-family:'League Spartan',sans-serif;font-weight:800;font-size:24px;color:white;margin-bottom:10px;"></div>
+<div id="wtDesc" style="font-size:17px;color:white;line-height:1.55;max-width:340px;"></div>
+</div>
+<div id="wtDots" style="display:flex;justify-content:center;gap:8px;padding-bottom:18px;">
+</div>
+<div style="padding:0 32px calc(env(safe-area-inset-bottom) + 24px);">
+<button id="wtNextBtn" onclick="wtNext()" style="width:100%;background:white;color:#5B4EA8;border:none;border-radius:16px;padding:16px;font-family:'League Spartan',sans-serif;font-weight:800;font-size:16px;">Suivant</button>
+</div>
+</div>
 
 <div class="toast" id="toast"></div>
 
@@ -1769,16 +1817,84 @@ if(navigator.storage&&navigator.storage.persist){
 })();
 let currentUser=null;
 
-// ═══════ COMPTE(S) DÉVELOPPEUR : accès gratuit permanent ═══════
-// Ajoute ici toute adresse email qui doit toujours avoir accès.
-const DEV_EMAILS=['maryne.monnier@gmail.com'];
-function isDevAccount(){
- return !!(currentUser && currentUser.email && DEV_EMAILS.includes(currentUser.email.toLowerCase()));
+/* ═══ COMMUNAUTÉ & CHALLENGES ═══ */
+const CH_FEATURES=[
+ {t:'Un groupe qui se soutient',s:'Partage tes doutes, tes victoires et avance entourée par d\'autres membres qui vivent la même chose.'},
+ {t:'Des challenges réguliers',s:'Des défis courts pour rester motivée, sans pression, à ton rythme.'},
+ {t:'Des échanges avec Maryne',s:'Des moments dédiés pour poser tes questions et approfondir ta pratique.'}
+];
+const WHATSAPP_GROUP_LINK='https://chat.whatsapp.com/HahC8tXyBfRL91dMWpitOp?s=sh&p=i&mlu=4';
+function renderChallenge(){
+ const isImmersion=hasImmersionAccess();
+ if(!isImmersion)return;
+ const communityCard=document.getElementById('chCommunityCard');
+ const upgradeCard=document.getElementById('chUpgradeCard');
+ if(!communityCard||!upgradeCard)return;
+
+ const features=[
+ {ic:'👥',t:'Groupe WhatsApp privé',s:'Accès au groupe et motivation entre membres'},
+ {ic:'🏆',t:'Défis réguliers',s:'Chaque semaine et chaque mois, un nouveau challenge'},
+ {ic:'🎤',t:'Conférence mensuelle',s:'Maryne anime une session questions-réponses une fois par mois'},
+ {ic:'🧘',t:'Cours en visio',s:'Yoga ou pilates en direct, avec ajustements personnalisés'},
+ ];
+
+ communityCard.innerHTML=`
+ <div class="ch-hero">
+ <div class="ch-hero-ic"></div>
+ <div class="ch-hero-t">Bienvenue dans la communauté Holistica</div>
+ <div class="ch-hero-p">${isImmersion?'Ton accès au groupe WhatsApp est actif, les challenges y sont organisés avec les autres filles.':'La communauté et les challenges WhatsApp sont réservés au Plan Immersion.'}</div>
+ </div>
+ <div class="ch-feat-t">Ce qui t'attend</div>
+ ${features.map(f=>`<div class="ch-feature-row">
+ <div class="ch-feature-ic">${f.ic}</div>
+ <div class="ch-feature-body"><div class="ch-feature-t">${f.t}</div><div class="ch-feature-s">${f.s}</div></div>
+ </div>`).join('')}
+ <div class="ch-cta-wrap">
+ ${isImmersion
+ ?`<a class="btn-ch" style="display:block;text-align:center;text-decoration:none;" href="${WHATSAPP_GROUP_LINK}" target="_blank" rel="noopener">Rejoindre le groupe WhatsApp →</a>`
+ :`<button class="btn-ch" onclick="go('offers')" style="opacity:.6;"> Réservé au Plan Immersion</button>`
+ }
+ </div>`;
+
+ upgradeCard.innerHTML=isImmersion?'':`<div class="ch-upgrade">
+ <div class="ch-upgrade-t">Tu n'as pas accès ?</div>
+ <div class="ch-upgrade-p">La communauté et les challenges sont inclus dans l'offre supérieure. Passe à l'offre Immersion pour rejoindre les filles et bénéficier des lives avec Maryne.</div>
+ <button class="btn-ch" style="margin-top:12px;" onclick="go('offers')">Voir les offres →</button>
+ </div>`;
 }
 
-// L'app est actuellement 100% gratuite : accès toujours autorisé.
-function hasActiveAccess(){
- return true;
+// Tous les comptes disposent de l'espace standard gratuit.
+function isDevAccount(){return false;}
+function hasActiveAccess(){return true;}
+function accountPlan(){
+ const status=(userProfile.subscriptionStatus||'').toLowerCase();
+ const plan=(userProfile.subscriptionPlan||'').toLowerCase();
+ return ['active','trialing'].includes(status)&&['equilibre','immersion'].includes(plan)?plan:'standard';
+}
+function hasImmersionAccess(){return accountPlan()==='immersion';}
+function syncAccountUI(){
+ for(const id of ['ni-challenge','ni-dietPlan']){const el=document.getElementById(id);if(el)el.style.display='flex';}
+ const plan=accountPlan();
+ const label={standard:'Bienvenue Holistica · Compte gratuit',equilibre:'Plan Équilibre',immersion:'Plan Immersion'}[plan];
+ for(const id of ['accountLabel','pfSubscription']){const el=document.getElementById(id);if(el)el.textContent=label;}
+ for(const id of ['buddyToggleRow','profileChallenge']){
+ const el=document.getElementById(id);if(el)el.style.display=hasImmersionAccess()?'flex':'none';
+ }
+}
+async function refreshMembership(){
+ if(!currentUser)return;
+ const btn=document.getElementById('refreshMembershipBtn');
+ if(btn){btn.disabled=true;btn.textContent='Actualisation…';}
+ try{
+ await claimPendingSubscription();
+ const {data,error}=await sb.from('profiles').select('subscription_status,subscription_plan').eq('id',currentUser.id).single();
+ if(error)throw error;
+ userProfile.subscriptionStatus=data.subscription_status||'inactive';
+ userProfile.subscriptionPlan=data.subscription_plan||null;
+ syncAccountUI();renderJourneyStrip();
+ toast('Ton accès a été actualisé');
+ }catch(e){toast('Actualisation impossible. Réessaie dans un instant.');}
+ finally{if(btn){btn.disabled=false;btn.textContent='Actualiser mon accès';}}
 }
 
 // Retourne la date locale (YYYY-MM-DD) au lieu de la date UTC.
@@ -2181,8 +2297,7 @@ async function loadProfileAndEnter(){
  } else {
  // Nouveau compte, aucun profil enregistré pour l'instant : on vérifie D'ABORD si un
  // abonnement payé sur le site attend cet email, AVANT de proposer le questionnaire.
- // Le questionnaire ne doit être rempli qu'une fois l'abonnement actif (sans quoi
- // n'importe qui pourrait le remplir sans jamais avoir payé).
+ // Le questionnaire est accessible à tout nouveau compte, y compris gratuit.
  userProfile={name:'',lastName:'',email:currentUser.email||'',goal:'bien-être',sexe:'femme',age:30,weight:62,height:165,activity:'modérée',hasPeriod:true,menopause:false,perimenopause:false,contraception:false,dosha:'vata',lastPeriodStart:'',doshaV:33,doshaP:33,doshaK:34,cycleLength:28,birthDate:'',birthTime:'',birthPlace:'',subscriptionStatus:'inactive',subscriptionPlan:null,dietType:'flexitarien',allergies:'',referralCode:'',referredBy:null,hasSeenWalkthrough:false};
  const claimResult=await claimPendingSubscription();
  if(claimResult&&claimResult.applied){
@@ -2544,6 +2659,7 @@ function pickMealIdeas(mealType,doshaKey,dietType,week){
 }
 
 function switchDietTab(tab){
+ if(!hasImmersionAccess()){go('profil');return;}
  document.querySelectorAll('.diet-tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
  document.querySelectorAll('.diet-tab-panel').forEach(p=>p.classList.remove('active'));
  const panel=document.getElementById('dietPanel'+tab);
@@ -2765,7 +2881,8 @@ function buildLockedTabHtml(panelId,previewContentHtml){
 async function renderDietPlan(){
  const wrap=document.getElementById('dietScroll');
  if(!wrap)return;
- const isImmersion=true; // App temporairement 100% gratuite : tout débloqué
+ const isImmersion=hasImmersionAccess();
+ if(!isImmersion)return;
  const doshaKey=userProfile.dosha||'vata';
  const doshaLabel=doshaKey.split('-').map(p=>p.charAt(0).toUpperCase()+p.slice(1)).join('-');
  const dietLabel={flexitarien:'Flexitarienne',vegetarien:'Végétarienne',vegan:'Végane'}[userProfile.dietType]||'Flexitarienne';
@@ -2988,24 +3105,23 @@ function renderAddFoodPanelHtml(){
 }
 
 function go(id){
- // Garde-fou : impossible d'accéder aux écrans du contenu sans abonnement actif,
- // même en forçant la navigation (ex: via la console). Le profil, les offres,
- // la confidentialité et la déconnexion restent accessibles pour gérer son compte.
- if(PROTECTED_SCREENS.includes(id) && currentUser && !isDevAccount() && !hasActiveAccess()){
- id='offers';
- toast('Abonne-toi pour accéder à ton espace Holistica');
+ if(['dietPlan','challenge'].includes(id)&&!hasImmersionAccess()){
+ toast('Cet espace est réservé au plan Immersion');
+ id='profil';
  }
+ if(!document.getElementById(id))return;
+ syncAccountUI();
  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
  document.getElementById(id).classList.add('active');
- document.querySelectorAll('.ni').forEach(n=>n.classList.remove('act'));
- const ni=document.getElementById('ni-'+id);if(ni)ni.classList.add('act');
+ document.querySelectorAll('.ni,.ni-ctr').forEach(n=>{n.classList.remove('act');n.removeAttribute('aria-current');});
+ const ni=document.getElementById('ni-'+id);if(ni){ni.classList.add('act');ni.setAttribute('aria-current','page');}
  if(id==='mouvement')renderMv();
  if(id==='recettes')renderRec();
  if(id==='naturo')renderNaturo();
  if(id==='dashboard')refreshDash();
  if(id==='doshaProfile')renderDoshaProfile();
  if(id==='dietPlan')renderDietPlan();
- if(id==='offers')renderIapOffers();
+ if(id==='challenge')renderChallenge();
 }
 
 let sourcesReturnScreen='profil';
@@ -3278,14 +3394,14 @@ function enterApp(){
  applyPendingReferral();
  document.getElementById('bnav').style.display='flex';
  if(document.getElementById('pfSubscription')){
- document.getElementById('pfSubscription').textContent='Membre Holistica Club';
+ syncAccountUI();
  const unsubWrap=document.getElementById('unsubLinkWrap');
  if(unsubWrap)unsubWrap.style.display='none';
  }
  // Le jumelage binôme est ouvert à toutes les membres.
  const buddyRow=document.getElementById('buddyToggleRow');
  if(buddyRow){
- buddyRow.style.display='none';
+ buddyRow.style.display=hasImmersionAccess()?'flex':'none';
  document.getElementById('buddyToggleInput').checked=!!userProfile.buddyAvailable;
  }
  const h=new Date().getHours();
@@ -3529,7 +3645,7 @@ function obNext(){
  return;
  }
  enterApp();
- // Nouveau compte : jamais d'abonnement actif à ce stade → on bloque l'accès et on affiche les offres.
+ // Nouveau compte : l'espace standard reste accessible gratuitement.
  // enterApp() a déjà déclenché saveProfile() (via calcNutrition), donc le profil est bien enregistré.
  if(isDevAccount()){
  userProfile.subscriptionStatus='active';
@@ -3799,14 +3915,13 @@ function computeJourneySteps(){
  const seanceDone=todayVid?completedVids.has(todayVid.id):false;
 
  const steps=[
- {n:1,done:todoDone,t:'Ta to-do list du jour',s:'Selon ton profil ayurvédique',onclick:"scrollToSection('secRoutine')"},
- {n:2,done:matinDone,t:'Ta routine du matin',s:'Réveiller le corps',onclick:"startRoutineType('matin_reveil')"},
- {n:3,done:bienEtreDone,t:'Ton bien-être',s:'Humeur, sommeil, stress',onclick:"scrollToSection('secMood')"},
+ {done:todoDone,t:'Routine du jour',s:'Selon ton profil ayurvédique',onclick:"scrollToSection('secRoutine')"},
+ {done:seanceDone,t:'Séance du jour',s:todayVid?todayVid.title:'Découvrir tes séances',onclick:todayVid?`openVD('${todayVid.id}')`:"go('mouvement')"},
+ {done:bienEtreDone,t:'Ton bien-être',s:'Humeur, sommeil, stress',onclick:"scrollToSection('secMood')"}
  ];
- // Diététique temporairement désactivée.
- steps.push({n:steps.length+1,done:false,t:'Ton astrologie du jour',s:'Ton thème, ta lune, ton signe',onclick:"go('profil');setTimeout(openAstro,50)"});
- steps.push({n:steps.length+1,done:seanceDone,t:'Ta séance du jour',s:todayVid?todayVid.title:'Aucune séance disponible',onclick:todayVid?`openVD('${todayVid.id}')`:''});
- steps.push({n:steps.length+1,done:soirDone,t:'Ta routine du soir',s:'Ralentir et relâcher',onclick:"startRoutineType('soir_ralentir')"});
+ if(hasImmersionAccess())steps.push({done:repasDone,t:'Tes repas',s:'Journal alimentaire du jour',onclick:"go('dietPlan');switchDietTab('Journal')"});
+ steps.push({done:false,t:'Ton astrologie du jour',s:'Ton thème, ta lune, ton signe',onclick:"openAstro()"});
+ steps.forEach((step,i)=>step.n=i+1);
 
  return steps;
 }
@@ -5202,7 +5317,7 @@ function saveEditInfo(){
 }
 
 /* ═══════ MON PROFIL AYURVÉDIQUE ═══════ */
-/* ═══════ PLAN ALIMENTAIRE PERSONNALISÉ (onglet Diététique, temporairement désactivé) ═══════ */
+/* ═══════ PLAN ALIMENTAIRE PERSONNALISÉ — IMMERSION ═══════ */
 const MEAL_SLOTS=[
  {id:'pdj',label:'Petit-déjeuner',labelHtml:'Petit-<em>déjeuner</em>',pct:0.25},
  {id:'midi',label:'Déjeuner',labelHtml:'Ton <em>déjeuner</em>',pct:0.40},
@@ -6844,6 +6959,93 @@ function shareReferralLink(){
 }
 
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+
+async /* ═══ TUTORIEL DE BIENVENUE (WALKTHROUGH) ═══ */
+const WT_ICONS={
+ home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11.5l8-7.5 8 7.5"/><path d="M6 10v9.5a1 1 0 0 0 1 1h3.5v-6.5h3v6.5H17a1 1 0 0 0 1-1V10"/></svg>',
+ yoga:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2"/><path d="M12 7.3v4.2"/><path d="M9.3 9c0 1.5.9 2.5 2.7 2.5s2.7-1 2.7-2.5"/></svg>',
+ food:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v6c0 1.1.9 2 2 2h3a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M20 2a4 4 0 0 0-4 4v5c0 1.1.9 2 2 2h2M18 13v9"/></svg>',
+ naturo:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4C11 4 4 11 4 20c9 0 16-7 16-16z"/><path d="M8 20c0-6 4-10 10-12"/></svg>',
+ community:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10v4a5 5 0 0 1-10 0V4z"/><path d="M7 5H4v2a3 3 0 0 0 3 3M17 5h3v2a3 3 0 0 1-3 3"/></svg>',
+ profil:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.5 3-6.5 7-6.5s7 3 7 6.5"/></svg>'
+};
+const WT_STEPS=[
+ {icon:'home',title:'Bienvenue sur Holistica',desc:"Ta méthode holistique complète : yoga, Pilates, nutrition, naturopathie et communauté, réunis dans une seule app."},
+ {icon:'yoga',title:'Séances vidéo',desc:"Yoga, Pilates et mouvement, en programme complet ou à la carte, pour progresser à ton rythme."},
+ {icon:'food',title:'Recettes bien-être',desc:"Des recettes saines et simples, adaptées à ton profil ayurvédique et à la saison."},
+ {icon:'naturo',title:'Naturopathie & Ayurveda',desc:"Ton profil de dosha, ton bilan naturo, et des recommandations personnalisées pour ton équilibre."},
+ {icon:'community',title:'Communauté & Challenges',desc:"Rejoins la communauté, participe aux challenges et avance entourée par d'autres membres."},
+ {icon:'profil',title:'Ton Profil',desc:"Dernier onglet à droite. Modifie tes informations personnelles et retrouve tout ce qui te concerne : ton profil ayurvédique, ton thème astral, ton historique bien-être et tes badges."}
+];
+let wtStep=0;
+let wtFromDiscovery=false;
+function showWalkthrough(fromDiscovery){
+ wtStep=0;
+ wtFromDiscovery=!!fromDiscovery;
+ document.getElementById('walkthroughOverlay').style.display='flex';
+ renderWt();
+}
+function renderWtDots(){
+ document.getElementById('wtDots').innerHTML=WT_STEPS.map((_,i)=>`<div style="width:${i===wtStep?20:7}px;height:7px;border-radius:4px;background:rgba(255,255,255,${i===wtStep?1:0.4});transition:.2s;"></div>`).join('');
+ document.getElementById('wtDots').style.display='flex';
+}
+function renderWt(){
+ const step=WT_STEPS[wtStep];
+ document.getElementById('wtIcon').innerHTML=WT_ICONS[step.icon]||'';
+ document.getElementById('wtTitle').textContent=step.title;
+ document.getElementById('wtDesc').textContent=step.desc;
+ renderWtDots();
+ const btn=document.getElementById('wtNextBtn');
+ btn.textContent=wtStep<WT_STEPS.length-1?'Suivant':'Terminer';
+ btn.onclick=wtNext;
+}
+function wtNext(){
+ if(wtStep<WT_STEPS.length-1){
+ wtStep++;
+ renderWt();
+ }else{
+ wtFinish();
+ }
+}
+function wtSkip(){
+ wtFinish();
+}
+function wtFinish(){
+ if(currentUser){
+ sb.from('profiles').update({has_seen_walkthrough:true}).eq('id',currentUser.id).then(()=>{});
+ }
+ if(userProfile)userProfile.hasSeenWalkthrough=true;
+ try{localStorage.setItem('holistica_wt_seen_'+(userProfile&&userProfile.email||''),'1');}catch(e){}
+
+ if(wtFromDiscovery && !currentUser){
+ document.getElementById('wtScrollArea').innerHTML=`
+ <div style="width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,0.18);display:flex;align-items:center;justify-content:center;margin-bottom:18px;">
+ <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+ </div>
+ <div style="font-family:'League Spartan',sans-serif;font-weight:800;font-size:24px;color:white;margin-bottom:10px;">Convaincue ?</div>
+ <div style="font-size:17px;color:white;line-height:1.55;max-width:340px;">Crée ton compte pour démarrer ton accompagnement.</div>
+ `;
+ document.getElementById('wtDots').style.display='none';
+ const btn=document.getElementById('wtNextBtn');
+ btn.textContent="Créer mon compte";
+ btn.onclick=function(){document.getElementById('walkthroughOverlay').style.display='none';go('signup');};
+ const skipBtn=document.querySelector('#walkthroughOverlay > button[onclick="wtSkip()"]');
+ if(skipBtn){skipBtn.textContent='← Retour';skipBtn.onclick=function(){document.getElementById('walkthroughOverlay').style.display='none';go('signin');};}
+ return;
+ }
+ document.getElementById('walkthroughOverlay').style.display='none';
+}
+
+async function toggleBuddyAvailable(checked){
+ if(!hasImmersionAccess())return;
+ if(!currentUser)return;
+ try{
+ const {error}=await sb.from('profiles').update({buddy_available:checked}).eq('id',currentUser.id);
+ if(error){toast('Erreur : '+error.message);return;}
+ userProfile.buddyAvailable=checked;
+ toast(checked?'Tu es disponible comme binôme':'Tu ne recevras plus de propositions de binôme');
+ }catch(e){toast('Erreur : '+e.message);}
+}
 
 /* ═══════ FILET DE SÉCURITÉ CLAVIER iOS ═══════
    Le meta viewport "interactive-widget=resizes-content" corrige le problème sur iOS 17+,

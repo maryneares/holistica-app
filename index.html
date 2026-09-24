@@ -946,6 +946,74 @@ document.addEventListener('DOMContentLoaded', function(){
  }
 });
 </script>
+<style>
+/* ═══ PROGRAMME SPORT COACHING ═══ */
+.cp-entry{margin:16px 20px 0;background:linear-gradient(135deg,#2E2650,#5B4EA8);border-radius:20px;padding:16px 18px;color:white;display:flex;align-items:center;gap:14px;cursor:pointer;box-shadow:0 10px 26px rgba(91,78,168,.25);}
+.cp-entry-ic{width:46px;height:46px;border-radius:14px;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.cp-entry-t{font-weight:800;font-size:16px;}
+.cp-entry-s{font-size:13px;opacity:.9;margin-top:2px;}
+.cp-entry-go{margin-left:auto;font-size:20px;opacity:.9;}
+.cp-top{background:var(--grad-h);padding:calc(env(safe-area-inset-top) + 70px) 20px 22px;position:relative;overflow:hidden;flex-shrink:0;}
+.cp-h1{font-family:'League Spartan',sans-serif;font-size:26px;color:white;font-weight:800;position:relative;z-index:1;}
+.cp-sub{font-size:14.5px;color:rgba(255,255,255,.95);margin-top:3px;position:relative;z-index:1;}
+.cp-bar{height:7px;background:rgba(255,255,255,.28);border-radius:10px;margin-top:14px;overflow:hidden;position:relative;z-index:1;}
+.cp-bar>div{height:100%;background:white;border-radius:10px;}
+.cp-bar-l{font-size:12.5px;color:white;font-weight:700;margin-top:6px;position:relative;z-index:1;}
+.cp-months{display:flex;gap:8px;padding:16px 20px 4px;overflow-x:auto;}
+.cp-month{flex-shrink:0;border:1.5px solid var(--border);background:white;border-radius:50px;padding:9px 18px;font-weight:700;font-size:14px;color:var(--ink-m);font-family:inherit;}
+.cp-month.act{background:var(--purple);border-color:var(--purple);color:white;}
+.cp-week{margin:12px 20px 0;background:white;border-radius:20px;padding:16px;box-shadow:var(--sh);}
+.cp-week-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px;}
+.cp-week-h b{font-size:17px;font-weight:800;}
+.cp-week-h span{font-size:12.5px;color:var(--ink-l);font-weight:600;}
+.cp-pills{display:flex;flex-wrap:wrap;gap:10px;}
+.cp-pill{width:56px;height:56px;border-radius:50%;border:2px solid var(--border);background:var(--ivory);display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:inherit;color:var(--ink-m);cursor:pointer;}
+.cp-pill b{font-size:17px;font-weight:800;line-height:1;}
+.cp-pill small{font-size:9.5px;font-weight:700;color:var(--ink-l);margin-top:2px;}
+.cp-pill.done{background:linear-gradient(135deg,#5B4EA8,#9B6EC8);border-color:transparent;color:white;}
+.cp-pill.done small{color:rgba(255,255,255,.85);}
+.cp-pill.next{border-color:#E8701A;box-shadow:0 0 0 4px rgba(232,112,26,.15);}
+.cp-empty{margin:24px 20px;background:white;border-radius:20px;padding:26px 20px;text-align:center;color:var(--ink-l);font-size:14.5px;line-height:1.55;box-shadow:var(--sh);}
+.cp-detail{margin:14px 20px 0;}
+.cp-detail-h{background:white;border-radius:20px;padding:18px;box-shadow:var(--sh);margin-bottom:12px;}
+.cp-detail-h .k{font-size:12px;font-weight:800;color:#E8701A;text-transform:uppercase;letter-spacing:.5px;}
+.cp-detail-h .t{font-size:21px;font-weight:800;margin:3px 0 8px;}
+.cp-chips{display:flex;gap:6px;flex-wrap:wrap;}
+.cp-chip{background:var(--lav-pale);color:var(--purple);font-size:12.5px;font-weight:700;padding:6px 11px;border-radius:50px;}
+.cp-intro{font-size:14px;color:var(--ink-m);line-height:1.55;margin-top:10px;}
+.cp-ex{background:white;border-radius:16px;padding:14px 16px;box-shadow:var(--sh);margin-bottom:8px;display:flex;gap:12px;align-items:flex-start;}
+.cp-ex-n{width:30px;height:30px;border-radius:50%;background:var(--lav-pale);color:var(--purple);font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px;}
+.cp-ex-b{flex:1;min-width:0;}
+.cp-ex-b b{display:block;font-size:15.5px;text-transform:capitalize;}
+.cp-ex-b .v{font-size:14px;font-weight:800;color:#E8701A;margin-top:2px;}
+.cp-ex-b .nt{font-size:13px;color:var(--ink-l);margin-top:3px;}
+.cp-ex-b .ds{display:none;font-size:13px;color:var(--ink-m);line-height:1.55;margin-top:8px;white-space:pre-line;}
+.cp-ex-b .ds.open{display:block;}
+.cp-ex-i{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--border);background:white;color:var(--purple);font-weight:800;font-size:14px;flex-shrink:0;font-family:Georgia,serif;font-style:italic;}
+.cp-start{display:block;width:calc(100% - 40px);margin:16px 20px 0;background:linear-gradient(135deg,#E8701A,#F4A24C);color:white;border:none;border-radius:16px;padding:17px;font-family:'League Spartan',sans-serif;font-weight:800;font-size:17px;box-shadow:0 12px 26px rgba(232,112,26,.35);}
+.cp-back-link{background:none;border:none;color:var(--purple);font-weight:700;font-size:14.5px;padding:0;margin-bottom:10px;font-family:inherit;}
+/* lecteur */
+.cp-player{display:none;position:fixed;inset:0;z-index:9000;background:#1A1828;color:white;flex-direction:column;max-width:430px;margin:0 auto;}
+.cp-player.open{display:flex;}
+.cp-p-top{padding:calc(env(safe-area-inset-top) + 14px) 16px 10px;display:flex;align-items:center;gap:12px;}
+.cp-p-x{width:38px;height:38px;border-radius:12px;background:rgba(255,255,255,.14);border:none;color:white;font-size:17px;flex-shrink:0;}
+.cp-p-meta{flex:1;}
+.cp-p-meta div{font-size:12.5px;font-weight:700;opacity:.85;}
+.cp-p-prog{height:5px;background:rgba(255,255,255,.18);border-radius:6px;margin-top:6px;overflow:hidden;}
+.cp-p-prog>div{height:100%;background:linear-gradient(90deg,#9B6EC8,#F4A24C);}
+.cp-p-video{position:relative;width:100%;padding-bottom:100%;background:#000;}
+.cp-p-video iframe{position:absolute;inset:0;width:100%;height:100%;border:0;pointer-events:none;}
+.cp-p-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 22px;text-align:center;}
+.cp-p-name{font-size:22px;font-weight:800;text-transform:capitalize;}
+.cp-p-val{font-family:'League Spartan',sans-serif;font-size:56px;font-weight:800;line-height:1.05;margin-top:6px;background:linear-gradient(90deg,#C8BEED,#F4A24C);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.cp-p-note{font-size:14px;opacity:.85;margin-top:6px;}
+.cp-p-rest-l{font-size:15px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#F4A24C;}
+.cp-p-nextup{font-size:14px;opacity:.85;margin-top:10px;}
+.cp-p-btns{display:flex;gap:10px;padding:0 16px calc(env(safe-area-inset-bottom) + 18px);}
+.cp-p-btn{flex:1;border:none;border-radius:16px;padding:16px;font-family:'League Spartan',sans-serif;font-weight:800;font-size:16px;}
+.cp-p-btn.sec{flex:0 0 64px;background:rgba(255,255,255,.14);color:white;}
+.cp-p-btn.main{background:linear-gradient(135deg,#E8701A,#F4A24C);color:white;}
+</style>
 </head>
 <body>
 
@@ -1034,6 +1102,7 @@ document.addEventListener('DOMContentLoaded', function(){
 </div>
 <div class="scroll">
 <!-- Commencer mon parcours du jour : fil conducteur unique, une seule action claire à la fois -->
+<div id="coachProgEntryDash"></div>
 <div class="sec"><h2>Commencer <em>mon parcours du jour</em></h2></div>
 <div class="journey-progress-wrap">
 <div class="next-step-banner" id="nextStepBanner"></div>
@@ -1148,6 +1217,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="mv-sub">Par Maryne Arès · Yoga · Pilates · Méditation</div>
 <div class="d-pill" style="margin-top:10px;"><div class="d-pill-dot"></div><div class="d-pill-txt"><span id="dSessionsMonth">0</span> séance(s) complétée(s) ce mois-ci</div></div>
 </div>
+<div id="coachProgEntry"></div>
 <div class="wk-cal">
 <div class="wk-cal-head"><span class="wk-cal-title">Cette semaine</span></div>
 <div class="wk-cal-row" id="wkCalRow"></div>
@@ -1175,6 +1245,22 @@ document.addEventListener('DOMContentLoaded', function(){
 <div id="pdProgressCard"></div>
 <div id="pdWeeksList"></div>
 <div style="height:20px;"></div>
+</div>
+</div>
+
+
+<!-- ═══ PROGRAMME SPORT PERSONNALISÉ (coaching) ═══ -->
+<div id="coachProgramme" class="screen">
+<button class="vd-back" onclick="go('mouvement')" style="position:fixed;top:calc(env(safe-area-inset-top) + 16px);left:16px;z-index:20;background:rgba(255,255,255,0.25);" aria-label="Retour">←</button>
+<div class="cp-top">
+<div class="blob b1"></div><div class="blob b2"></div>
+<div class="cp-h1">Mon programme <em style="font-style:normal;">sport</em></div>
+<div class="cp-sub">Préparé par Maryne, rien que pour toi</div>
+<div id="cpBarWrap" style="display:none;"><div class="cp-bar"><div id="cpBarFill" style="width:0%"></div></div><div class="cp-bar-l" id="cpBarLbl"></div></div>
+</div>
+<div class="scroll" style="padding-top:0;">
+<div id="cpContent"></div>
+<div style="height:24px;"></div>
 </div>
 </div>
 
@@ -1791,6 +1877,13 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 <div style="padding:0 32px calc(env(safe-area-inset-bottom) + 24px);">
 <button id="wtNextBtn" onclick="wtNext()" style="width:100%;background:white;color:#5B4EA8;border:none;border-radius:16px;padding:16px;font-family:'League Spartan',sans-serif;font-weight:800;font-size:16px;">Suivant</button>
 </div>
+</div>
+
+<div class="cp-player" id="cpPlayer" role="dialog" aria-label="Séance en cours">
+<div class="cp-p-top"><button class="cp-p-x" onclick="cpClose()" aria-label="Quitter">✕</button><div class="cp-p-meta"><div id="cpPMeta"></div><div class="cp-p-prog"><div id="cpPProg" style="width:0%"></div></div></div></div>
+<div class="cp-p-video" id="cpPVideo"></div>
+<div class="cp-p-body" id="cpPBody"></div>
+<div class="cp-p-btns"><button class="cp-p-btn sec" onclick="cpPrev()" aria-label="Exercice précédent">←</button><button class="cp-p-btn main" id="cpPMain" onclick="cpMainBtn()">Suivant ✓</button></div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -3240,6 +3333,8 @@ function go(id){
  if(id==='doshaProfile')renderDoshaProfile();
  if(id==='dietPlan')renderDietPlan();
  if(id==='challenge')renderChallenge();
+ if(id==='coachProgramme')cpRender();
+ if(id==='mouvement'||id==='dashboard')cpRefreshEntry();
 }
 
 let sourcesReturnScreen='profil';
@@ -4788,6 +4883,180 @@ let routineQueue=[];
 let routineIndex=-1; // -1 = diapositive d'intro, 0..N-1 = clips
 let currentRoutineMeta=null;
 const BUNNY_LIBRARY_ID='730425';
+
+/* ═══════ PROGRAMME SPORT PERSONNALISÉ (clientes coaching) ═══════ */
+let CP_DATA=null;          // {client,workouts,done} ou null si pas cliente coaching
+let cpLoaded=false;
+let cpMonth=1;
+let cpClipsMap={};
+let cpPlay=null;           // état du lecteur
+function cpEsc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function cpVal(e){return e.mode==='duree'?(e.valeur||30)+' s':'× '+(e.valeur||10);}
+function cpFmtSec(s){s=Math.max(0,Math.round(s));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');}
+
+async function cpFetch(force){
+  if(cpLoaded&&!force)return CP_DATA;
+  if(!currentUser){CP_DATA=null;return null;}
+  try{
+    const {data,error}=await sb.rpc('get_my_coaching_programme');
+    if(error)throw error;
+    CP_DATA=data&&data.client?data:null;
+    if(CP_DATA){
+      CP_DATA.done=new Set(CP_DATA.done||[]);
+      const clips=await fetchMovementClips();
+      cpClipsMap={};(clips||[]).forEach(c=>{cpClipsMap[c.id]=c;});
+    }
+    cpLoaded=true;
+  }catch(e){console.error('programme coaching indisponible :',e);CP_DATA=null;}
+  return CP_DATA;
+}
+function cpStats(){
+  const w=CP_DATA?CP_DATA.workouts:[];
+  const done=w.filter(x=>CP_DATA.done.has(x.id)).length;
+  const next=w.find(x=>!CP_DATA.done.has(x.id));
+  return {total:w.length,done,next};
+}
+async function cpRefreshEntry(){
+  const els=[document.getElementById('coachProgEntry'),document.getElementById('coachProgEntryDash')].filter(Boolean);
+  const d=await cpFetch(false);
+  if(!d||!d.workouts.length){els.forEach(e=>e.innerHTML='');return;}
+  const st=cpStats();
+  const sub=st.next?`Prochaine : Mois ${st.next.mois} · Semaine ${st.next.semaine} · Séance ${st.next.seance_num}`:'Toutes tes séances sont faites, bravo !';
+  const html=`<div class="cp-entry" onclick="go('coachProgramme')">
+    <div class="cp-entry-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.9" stroke-linecap="round"><path d="M6.5 6.5v11M17.5 6.5v11M3.5 9v6M20.5 9v6M6.5 12h11"/></svg></div>
+    <div><div class="cp-entry-t">Mon programme sport</div><div class="cp-entry-s">${cpEsc(sub)}</div></div><div class="cp-entry-go">›</div></div>`;
+  els.forEach(e=>e.innerHTML=html);
+}
+
+async function cpRender(){
+  const wrap=document.getElementById('cpContent');
+  wrap.innerHTML='<div class="cp-empty">Chargement…</div>';
+  const d=await cpFetch(true);
+  cpRefreshEntry();
+  if(!d||!d.workouts.length){
+    document.getElementById('cpBarWrap').style.display='none';
+    wrap.innerHTML=`<div class="cp-empty">${d?'Maryne prépare ton programme. Tes séances apparaîtront ici très vite.':'Ce programme est réservé aux clientes du coaching personnalisé avec Maryne.'}</div>`;
+    return;
+  }
+  const st=cpStats();
+  document.getElementById('cpBarWrap').style.display='block';
+  document.getElementById('cpBarFill').style.width=(st.total?Math.round(st.done/st.total*100):0)+'%';
+  document.getElementById('cpBarLbl').textContent=st.done+' / '+st.total+' séances faites';
+  const months=[...new Set(d.workouts.map(w=>w.mois))].sort((a,b)=>a-b);
+  if(!months.includes(cpMonth))cpMonth=st.next?st.next.mois:months[0];
+  cpRenderMonth(months);
+}
+function cpRenderMonth(months){
+  const d=CP_DATA,st=cpStats();
+  months=months||[...new Set(d.workouts.map(w=>w.mois))].sort((a,b)=>a-b);
+  let html=`<div class="cp-months">${months.map(m=>`<button class="cp-month ${m===cpMonth?'act':''}" onclick="cpMonth=${m};cpRenderMonth()">Mois ${m}</button>`).join('')}</div>`;
+  const weeks=[...new Set(d.workouts.filter(w=>w.mois===cpMonth).map(w=>w.semaine))].sort((a,b)=>a-b);
+  weeks.forEach(s=>{
+    const list=d.workouts.filter(w=>w.mois===cpMonth&&w.semaine===s);
+    const nd=list.filter(w=>d.done.has(w.id)).length;
+    html+=`<div class="cp-week"><div class="cp-week-h"><b>Semaine ${s}</b><span>${nd}/${list.length} faite${nd>1?'s':''}</span></div>
+      <div class="cp-pills">${list.map(w=>{const dn=d.done.has(w.id),nx=st.next&&st.next.id===w.id;
+        return `<button class="cp-pill ${dn?'done':''} ${nx?'next':''}" onclick="cpOpenSession('${cpEsc(w.id)}')" aria-label="Séance ${w.seance_num}"><b>${dn?'✓':w.seance_num}</b><small>Séance</small></button>`;}).join('')}</div></div>`;
+  });
+  document.getElementById('cpContent').innerHTML=html;
+}
+function cpOpenSession(id){
+  const w=CP_DATA.workouts.find(x=>x.id===id);if(!w)return;
+  const ex=w.exercices||[];
+  const scr=document.getElementById('coachProgramme');if(scr)scr.scrollTop=0;
+  document.getElementById('cpContent').innerHTML=`<div class="cp-detail">
+    <button class="cp-back-link" onclick="cpRenderMonth()">← Mois ${w.mois}</button>
+    <div class="cp-detail-h"><div class="k">Semaine ${w.semaine} · Séance ${w.seance_num}${CP_DATA.done.has(w.id)?' · faite ✓':''}</div><div class="t">${cpEsc(w.titre)}</div>
+      <div class="cp-chips"><span class="cp-chip">${ex.length} exercice${ex.length>1?'s':''}</span><span class="cp-chip">${w.tours} tour${w.tours>1?'s':''}</span><span class="cp-chip">Repos ${w.repos_sec}s</span></div>
+      ${w.intro?`<div class="cp-intro">${cpEsc(w.intro)}</div>`:''}</div>
+    ${ex.map((e,i)=>{const c=cpClipsMap[e.clip_id]||{};return `<div class="cp-ex"><div class="cp-ex-n">${i+1}</div>
+      <div class="cp-ex-b"><b>${cpEsc(c.nom||'Mouvement')}</b><div class="v">${cpVal(e)}</div>${e.note?`<div class="nt">${cpEsc(e.note)}</div>`:''}
+      ${c.description?`<div class="ds" id="cpDs${i}">${cpEsc(c.description)}</div>`:''}</div>
+      ${c.description?`<button class="cp-ex-i" aria-label="Détails" onclick="document.getElementById('cpDs${i}').classList.toggle('open')">i</button>`:''}</div>`;}).join('')}
+    <button class="cp-start" onclick="cpStart('${cpEsc(w.id)}')">${CP_DATA.done.has(w.id)?'Refaire la séance':'Commencer la séance'}</button>
+  </div>`;
+}
+
+/* ── Lecteur de séance ── */
+function cpStart(id){
+  const w=CP_DATA.workouts.find(x=>x.id===id);if(!w||!(w.exercices||[]).length)return;
+  const steps=[];
+  for(let t=1;t<=w.tours;t++){
+    w.exercices.forEach((e,i)=>{
+      steps.push({type:'ex',e,tour:t,idx:i});
+      const lastOfTour=i===w.exercices.length-1;
+      if(!lastOfTour&&w.repos_sec>0)steps.push({type:'rest',sec:w.repos_sec,tour:t});
+      if(lastOfTour&&t<w.tours&&(w.repos_tour_sec||0)>0)steps.push({type:'rest',sec:w.repos_tour_sec,tour:t,between:true});
+    });
+  }
+  cpPlay={w,steps,i:0,timer:null,remaining:0,paused:false};
+  document.getElementById('cpPlayer').classList.add('open');
+  cpShowStep();
+}
+function cpClearTimer(){if(cpPlay&&cpPlay.timer){clearInterval(cpPlay.timer);cpPlay.timer=null;}}
+function cpNextEx(from){for(let j=from;j<cpPlay.steps.length;j++)if(cpPlay.steps[j].type==='ex')return cpPlay.steps[j];return null;}
+function cpShowStep(){
+  cpClearTimer();
+  const p=cpPlay,st=p.steps[p.i],w=p.w;
+  const nEx=w.exercices.length;
+  const lastEx=p.steps.slice(0,p.i+1).filter(s=>s.type==='ex').pop();
+  const exPos=st.type==='ex'?st.idx+1:(lastEx?lastEx.idx+1:1);
+  document.getElementById('cpPMeta').textContent=`Tour ${st.tour}/${w.tours} · Exercice ${exPos}/${nEx}`;
+  document.getElementById('cpPProg').style.width=Math.round(p.i/p.steps.length*100)+'%';
+  const vid=document.getElementById('cpPVideo'),body=document.getElementById('cpPBody'),main=document.getElementById('cpPMain');
+  if(st.type==='ex'){
+    const c=cpClipsMap[st.e.clip_id]||{};
+    vid.style.display='block';
+    vid.innerHTML=c.yt_id?`<iframe src="https://iframe.mediadelivery.net/embed/${BUNNY_LIBRARY_ID}/${encodeURIComponent(c.yt_id)}?autoplay=true&loop=true&muted=true&controls=false&preload=true" allow="autoplay;encrypted-media" loading="eager"></iframe>`:'';
+    const isTime=st.e.mode==='duree';
+    body.innerHTML=`<div class="cp-p-name">${cpEsc(c.nom||'Mouvement')}</div><div class="cp-p-val" id="cpPVal">${isTime?cpFmtSec(st.e.valeur||30):'× '+(st.e.valeur||10)}</div>${st.e.note?`<div class="cp-p-note">${cpEsc(st.e.note)}</div>`:''}`;
+    main.textContent=p.i===p.steps.length-1?'Terminer ✓':'Suivant ✓';
+    if(isTime)cpCountdown(st.e.valeur||30,'cpPVal',false);
+  }else{
+    vid.style.display='none';vid.innerHTML='';
+    const nx=cpNextEx(p.i+1);const nc=nx?(cpClipsMap[nx.e.clip_id]||{}):null;
+    body.innerHTML=`<div class="cp-p-rest-l">${st.between?'Repos avant le tour suivant':'Repos'}</div><div class="cp-p-val" id="cpPVal">${cpFmtSec(st.sec)}</div>${nc?`<div class="cp-p-nextup">À suivre : <b style="text-transform:capitalize;">${cpEsc(nc.nom||'')}</b> ${cpEsc(cpVal(nx.e))}</div>`:''}`;
+    main.textContent='Passer le repos';
+    cpCountdown(st.sec,'cpPVal',true);
+  }
+}
+function cpCountdown(sec,elId,autoNext){
+  const p=cpPlay;p.remaining=sec;
+  p.timer=setInterval(()=>{
+    p.remaining--;const el=document.getElementById(elId);if(el)el.textContent=cpFmtSec(p.remaining);
+    if(p.remaining<=0){cpClearTimer();if(navigator.vibrate)try{navigator.vibrate(200);}catch(e){}
+      if(autoNext)cpNext();else{const el2=document.getElementById(elId);if(el2)el2.textContent='✓';}}
+  },1000);
+}
+function cpNext(){if(!cpPlay)return;if(cpPlay.i>=cpPlay.steps.length-1){cpFinish();return;}cpPlay.i++;cpShowStep();}
+function cpPrev(){if(!cpPlay)return;let j=cpPlay.i-1;while(j>0&&cpPlay.steps[j].type!=='ex')j--;cpPlay.i=Math.max(0,j);cpShowStep();}
+function cpClose(){
+  if(cpPlay&&cpPlay.done){cpMainBtn();return;}
+  if(cpPlay&&cpPlay.i>0&&!confirm('Quitter la séance ? Elle ne sera pas comptée comme faite.'))return;
+  cpClearTimer();cpPlay=null;
+  document.getElementById('cpPVideo').innerHTML='';
+  document.getElementById('cpPlayer').classList.remove('open');
+}
+async function cpFinish(){
+  const w=cpPlay.w;cpClearTimer();
+  document.getElementById('cpPVideo').style.display='none';document.getElementById('cpPVideo').innerHTML='';
+  document.getElementById('cpPProg').style.width='100%';
+  document.getElementById('cpPBody').innerHTML='<div class="cp-p-rest-l">Bravo</div><div class="cp-p-name" style="margin-top:8px;text-transform:none;">Séance terminée</div><div class="cp-p-nextup">Enregistrement…</div>';
+  document.getElementById('cpPMain').textContent='Fermer';
+  let ok=false;
+  if(typeof personalDataMode!=='undefined'&&personalDataMode!=='paid'){ok=false;}
+  else{try{const {data,error}=await sb.rpc('complete_my_coaching_workout',{p_workout_id:w.id});ok=!error&&data===true;}catch(e){ok=false;}}
+  const n=document.querySelector('#cpPBody .cp-p-nextup');
+  if(ok){CP_DATA.done.add(w.id);if(n)n.textContent='Maryne voit ta séance dans ton suivi. Continue comme ça !';try{addXP(15);}catch(e){}}
+  else if(n)n.textContent='La séance n\'a pas pu être enregistrée. Vérifie ta connexion.';
+  cpPlay={done:true,w,steps:[],i:0};
+}
+function cpMainBtn(){
+  if(!cpPlay)return;
+  if(cpPlay.done){cpPlay=null;document.getElementById('cpPlayer').classList.remove('open');cpRenderMonth();cpRefreshEntry();return;}
+  cpNext();
+}
+
 async function playRoutine(clipIds,routineTypeId){
  if(isFreeDemo())return;
  const clips=await fetchMovementClips();

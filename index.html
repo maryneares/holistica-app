@@ -2,6 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -868,7 +869,7 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 
 /* Navigation et accueil restaurés d’après les captures de référence. */
 #nextStepBanner[hidden]{display:none!important;}
-#dashboard .journey-evo{display:none;}
+#dashboard .journey-evo{display:block;}
 #dashboard>.d-top,#mouvement>.mv-top,#recettes>.rc-top,#naturo>.rc-top{position:sticky;top:0;z-index:5;}
 .ni{min-width:0;min-height:44px;}
 .ni-l{font-size:clamp(8px,2.3vw,10px);letter-spacing:0;}
@@ -880,6 +881,15 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .bnav-half{flex:0 0 calc((100% - 46px - 2px)/2);}
 .ni{flex:1 1 0;overflow:hidden;}
 .ni-l{font-size:clamp(7px,2.15vw,9px);white-space:nowrap;}
+
+.profile-legal-link{border:0;background:none;text-decoration:underline;text-underline-offset:3px;color:var(--ink-l);font:inherit;font-size:12px;cursor:pointer;padding:8px;}
+#journeyStrip[hidden],#vdPlaybackMessage[hidden]{display:none!important;}
+.journey-progress-lbl{display:flex;justify-content:space-between;gap:16px;}
+
+.demo-notice{margin:16px 20px;padding:12px;border:1px solid var(--border);border-radius:14px;background:var(--lav-pale);color:var(--purple);font-size:13px;line-height:1.5;}
+.demo-details{margin-top:14px;color:var(--purple);}.demo-details summary{padding:14px;background:var(--lav-pale);border-radius:14px;cursor:pointer;font-weight:700;}
+.demo-profile-row{display:flex;justify-content:space-between;width:calc(100% - 40px);margin:10px 20px;padding:18px;border:1px solid var(--border);border-radius:16px;background:white;font:inherit;color:var(--ink);text-align:left;cursor:pointer;}
+.demo-footer{padding:20px;text-align:center;}#freeDemoScreen .d-top{position:relative;}#freeDemoScreen .scroll{flex-shrink:0;}
 </style>
 <script>
 /* ======== GOOGLE ANALYTICS + CONSENTEMENT ======== */
@@ -1012,17 +1022,18 @@ document.addEventListener('DOMContentLoaded', function(){
 </div>
 <div class="scroll">
 <!-- Commencer mon parcours du jour : fil conducteur unique, une seule action claire à la fois -->
-<div class="sec"><h2>Mon <em>parcours du jour</em></h2></div>
+<div class="sec"><h2>Commencer <em>mon parcours du jour</em></h2></div>
 <div class="journey-progress-wrap">
-<div class="next-step-banner" id="nextStepBanner" hidden></div>
+<div class="next-step-banner" id="nextStepBanner"></div>
 <div class="journey-progress-lbl"><span>Aujourd'hui</span><b id="journeyProgressLbl">0/5</b></div>
 <div class="journey-progress-bar"><div class="journey-progress-fill" id="journeyProgressFill" style="width:0%"></div></div>
+<button class="journey-replay-btn" onclick="openJourneyReplay()">Récap de tes étapes du jour</button>
 
 </div>
 <!-- La liste détaillée existe toujours en mémoire (utile pour le calcul de progression
  et la vue "Revoir toutes mes étapes"), mais n'est plus affichée en permanence : la
  bannière ci-dessus suffit à guider, sans surcharge visuelle ni double information. -->
-<div class="journey-strip" id="journeyStrip"></div>
+<div class="journey-strip" id="journeyStrip" hidden></div>
 <!-- Ta phrase du jour : premier contenu, juste après le message de bienvenue -->
 <div class="astro-widget" id="astroWidget"></div>
 <div class="weekly-recap" id="weeklyRecap" style="display:none;"></div>
@@ -1049,7 +1060,6 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="rc-m"><span class="rc-m-ic">Lip.</span><div class="rc-m-v l" id="dMacroL" style="font-size:17px;">0g</div></div>
 </div>
 <div class="meta-note" style="margin-top:10px;">Repères nutritionnels estimés à partir de ton profil et de ton niveau d’activité. Ils ne constituent pas une prescription médicale ou diététique.</div>
-<div style="text-align:center;margin-top:10px;"><a onclick="openSources('dashboard')" style="font-size:12px;color:var(--purple-m);text-decoration:underline;cursor:pointer;">Méthodologie & sources scientifiques →</a></div>
 </div>
 <!-- Recovery & Hormonal -->
 <div class="sec"><h2>Ton équilibre <em>du jour</em></h2></div>
@@ -1057,7 +1067,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="duo-card"><div class="gauge-wrap" id="dRecovGauge"></div><div class="duo-lbl"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--ink-l)" stroke-width="2" stroke-linecap="round" style="vertical-align:-1px;margin-right:3px;"><path d="M12 21c-4-3-8-6.5-8-11a5 5 0 0 1 8-4 5 5 0 0 1 8 4c0 4.5-4 8-8 11z"/></svg>Taux récupération</div><div class="duo-sub">Calculé via humeur + sommeil + stress</div></div>
 <div class="duo-card hl"><div class="gauge-wrap" id="dHormoGauge"></div><div class="duo-lbl"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--ink-l)" stroke-width="2" stroke-linecap="round" style="vertical-align:-1px;margin-right:3px;"><path d="M12 8a4 4 0 1 1 4 4 4 4 0 1 1-4 4 4 4 0 1 1-4-4 4 4 0 1 1 4-4z"/></svg>Indice bien-être féminin</div><div class="duo-sub">Sommeil + stress + humeur</div></div>
 </div>
-<div style="padding:8px 20px 0;text-align:center;font-size:11.5px;color:var(--ink-l);line-height:1.45;">Indices indicatifs de bien-être, calculés à partir de tes données déclarées. Ils ne mesurent pas tes hormones et ne constituent pas un diagnostic. <a onclick="openSources('dashboard')" style="color:var(--purple-m);text-decoration:underline;cursor:pointer;font-weight:700;">Méthodologie & sources →</a></div>
+<div style="padding:8px 20px 0;text-align:center;font-size:11.5px;color:var(--ink-l);line-height:1.45;">Indices indicatifs de bien-être, calculés à partir de tes données déclarées. Ils ne mesurent pas tes hormones et ne constituent pas un diagnostic. </div>
 <!-- Cycle -->
 <div id="cycleSectionWrap">
 <div class="sec"><h2 id="cycleSecTitle">Ton <em>cycle</em></h2></div>
@@ -1068,7 +1078,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="cycle-msg" id="cycleMsgBody"></div>
 <div class="cycle-energy" id="cycleEnergy"></div>
 </div>
-<div style="text-align:center;margin-top:8px;font-size:11.5px;color:var(--ink-l);line-height:1.45;">Phase estimée à partir des informations saisies ; ce suivi ne confirme pas l’ovulation et ne doit pas être utilisé comme méthode contraceptive. <a onclick="openSources('dashboard')" style="color:var(--purple-m);text-decoration:underline;cursor:pointer;font-weight:700;">Sources →</a></div>
+<div style="text-align:center;margin-top:8px;font-size:11.5px;color:var(--ink-l);line-height:1.45;">Phase estimée à partir des informations saisies ; ce suivi ne confirme pas l’ovulation et ne doit pas être utilisé comme méthode contraceptive. </div>
 </div>
 
 <!-- Mood -->
@@ -1108,7 +1118,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <span class="menopause-tip-topic" id="menopauseTipTopic">Chargement…</span>
 <span class="menopause-tip-cta">Clique pour lire ton conseil du jour</span>
 </button>
-<div style="text-align:center;margin-top:8px;font-size:11.5px;color:var(--ink-l);">Conseils généraux de bien-être, non médicaux. <a onclick="openSources('dashboard')" style="color:var(--purple-m);text-decoration:underline;cursor:pointer;font-weight:700;">Sources scientifiques →</a></div>
+<div style="text-align:center;margin-top:8px;font-size:11.5px;color:var(--ink-l);">Conseils généraux de bien-être, non médicaux. </div>
 </div>
 <!-- Routine -->
 <div class="sec" id="secRoutine" style="display:block;"><h2>Routine <em>du jour</em></h2><div class="sec-sub">Selon ton profil ayurvédique</div></div>
@@ -1269,7 +1279,7 @@ document.addEventListener('DOMContentLoaded', function(){
 </div>
 <div class="scroll">
 <div class="sec"><h2>Mon <em>espace</em></h2></div>
-<div class="pf-acts"><div class="diet-info-card" style="margin:0 0 16px;"><div class="diet-info-t">Mon compte Holistica</div><div class="diet-guide-s">Ton compte standard est gratuit. Si tu as souscrit un plan Équilibre ou Immersion sur le site Holistica, utilise la même adresse e-mail puis actualise ton accès ici.</div><button class="btn-ob purple" id="refreshMembershipBtn" onclick="refreshMembership()">Actualiser mon accès</button></div>
+<div class="pf-acts"><div class="diet-info-card" style="margin:0 0 16px;"><div class="diet-info-t">Mon compte Holistica</div><div class="diet-guide-s">Ton compte standard est gratuit. Si tu as souscrit un plan Équilibre ou Immersion sur Holistica, utilise la même adresse e-mail puis actualise ton accès ici.</div><button class="btn-ob purple" id="refreshMembershipBtn" onclick="refreshMembership()">Actualiser mon accès</button></div>
 <div class="pa" onclick="openEditInfo()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.5 3-6.5 7-6.5s7 3 7 6.5"/></svg></div><div class="pa-body"><div class="pa-t">Modifier mes informations</div><div class="pa-s">Nom, poids, taille, activité</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="go('doshaProfile')"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1.5 3 2.5 5 2.5 8a2.5 2.5 0 0 1-5 0c0-3 1-5 2.5-8z"/><path d="M5 10c2 1 4 3 5 6"/><path d="M19 10c-2 1-4 3-5 6"/><path d="M4 15c2.5 3 5 4 8 4s5.5-1 8-4"/></svg></div><div class="pa-body"><div class="pa-t">Mon profil ayurvédique</div><div class="pa-s" id="pfDoshaDetail">Vata dominant</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="openWellnessHistory()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V10M9 19V5M14 19v-7M19 19V8"/></svg></div><div class="pa-body"><div class="pa-t">Historique bien-être</div><div class="pa-s">Sommeil · Stress · Humeur</div></div><span class="pa-arr">›</span></div>
@@ -1280,11 +1290,10 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="pa" onclick="openAstro()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/><circle cx="12" cy="12" r="4"/></svg></div><div class="pa-body"><div class="pa-t">Mon thème astral</div><div class="pa-s" id="paAstroSub">Renseigne ta date de naissance</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="showWalkthrough()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.5-2.5 2-2.5 3.5"/><path d="M12 17h.01"/></svg></div><div class="pa-body"><div class="pa-t">Revoir le tutoriel</div><div class="pa-s">Redécouvre toutes les fonctionnalités de l'app</div></div><span class="pa-arr">›</span></div>
 <div class="pa" id="profileChallenge" onclick="go('challenge')"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10v4a5 5 0 0 1-10 0V4z"/><path d="M7 5H4v2a3 3 0 0 0 3 3M17 5h3v2a3 3 0 0 1-3 3"/><path d="M12 13v3"/><path d="M9 20h6M10 17h4v3h-4z"/></svg></div><div class="pa-body"><div class="pa-t">Communauté & Challenges</div><div class="pa-s">Défis, motivation et entraide entre membres</div></div><span class="pa-arr">›</span></div>
-<div class="pa" onclick="go('privacy')"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div><div class="pa-body"><div class="pa-t">Politique de confidentialité</div><div class="pa-s">Comment tes données sont utilisées</div></div><span class="pa-arr">›</span></div>
-<div class="pa" onclick="openSources('profil')"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><div class="pa-body"><div class="pa-t">Ressources & sources scientifiques</div><div class="pa-s">Méthodologie, références et informations santé</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="handleSignOut()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg></div><div class="pa-body"><div class="pa-t">Déconnexion</div><div class="pa-s">Se déconnecter de mon compte</div></div><span class="pa-arr">›</span></div>
-<div class="pa" onclick="confirmDeleteAccount()" style="border:1px solid rgba(200,80,80,0.25);"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C85050" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M6 7l1 13a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-13"/><path d="M10 11v6M14 11v6"/></svg></div><div class="pa-body"><div class="pa-t" style="color:#C85050;">Supprimer mon compte</div><div class="pa-s">Effacer définitivement mes données · besoin d'aide ? info@maryneares.fr</div></div><span class="pa-arr">›</span></div>
+<div class="pa" onclick="confirmDeleteAccount()" style="border:1px solid rgba(200,80,80,0.25);"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C85050" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M6 7l1 13a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-13"/><path d="M10 11v6M14 11v6"/></svg></div><div class="pa-body"><div class="pa-t" style="color:#C85050;">Supprimer mon compte</div><div class="pa-s">Effacer définitivement mes données</div></div><span class="pa-arr">›</span></div>
 </div>
+<div style="text-align:center;padding:20px 20px 0;"><button class="profile-legal-link" onclick="openSources('profil')">Confidentialité & ressources scientifiques</button></div>
 <div style="text-align:center;padding:24px 20px 10px;font-size:11.5px;color:var(--ink-l);">Contact & support : <a href="mailto:info@maryneares.fr" style="color:var(--ink-l);text-decoration:underline;">info@maryneares.fr</a></div>
 </div>
 </div>
@@ -1352,7 +1361,6 @@ document.addEventListener('DOMContentLoaded', function(){
 </div>
 <div id="doshaLongProfileWrap"></div>
 <button class="btn-ob" style="margin-top:18px;" onclick="retakeDoshaQuiz()">Refaire le test</button>
-<div style="text-align:center;margin-top:12px;"><a onclick="go('sources')" style="font-size:12px;color:var(--purple-m);text-decoration:underline;cursor:pointer;">Voir les sources de l'Ayurveda</a></div>
 <button class="btn-ob" style="margin-top:10px;background:transparent;border:1.5px solid var(--purple-m);color:var(--purple-m);display:flex;align-items:center;justify-content:center;gap:8px;" onclick="shareDoshaProfile()">
 <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
 Partager mon profil
@@ -1512,15 +1520,16 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 </div>
 
 <!-- ═══ POLITIQUE DE CONFIDENTIALITÉ ═══ -->
-<div id="privacy" class="screen">
+<!-- ═══ RESSOURCES & SOURCES SCIENTIFIQUES ═══ -->
+<div id="sources" class="screen">
 <div class="ob-top" style="background:var(--ivory);padding:calc(env(safe-area-inset-top) + 30px) 20px 10px;">
-<button class="vd-back" onclick="go('profil')" style="position:static;">←</button>
+<button class="vd-back" onclick="closeSources()" style="position:static;">←</button>
 </div>
 <div class="scroll" style="padding:0 24px calc(env(safe-area-inset-bottom) + 100px);">
 <div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Politique de <em>confidentialité</em></div>
 <div style="font-size:15.5px;color:var(--ink-m);line-height:1.7;margin-top:12px;">
 <p style="margin-bottom:14px;"><strong>Dernière mise à jour :</strong> septembre 2026</p>
-<p style="margin-bottom:14px;">La création de compte et l’accès standard « Bienvenue Holistica » sont gratuits. Les plans Équilibre et Immersion sont souscrits sur le site Holistica. Nutrition personnalisée et Challenge sont inclus dans le plan Immersion.</p>
+<p style="margin-bottom:14px;">La création de compte et la démonstration « Bienvenue Holistica » sont gratuites. En mode gratuit, les informations affichées sont fictives et fixes ; aucun suivi personnalisé n’est enregistré. Les plans Équilibre et Immersion sont souscrits sur le site Holistica. Nutrition personnalisée et Challenge sont inclus dans le plan Immersion.</p>
 <p style="margin-bottom:14px;">Nous collectons uniquement les données nécessaires au fonctionnement de l'app : ton prénom, ton profil Ayurvédique, ainsi que tes informations de bien-être au quotidien (gestion du stress, qualité du sommeil, humeur, cycle menstruel) et ta progression (séances complétées, points).</p>
 <p style="margin-bottom:14px;"><strong>Pourquoi :</strong> uniquement pour te proposer des recommandations personnalisées et garder ta progression d'une session à l'autre. Aucune donnée n'est vendue ni partagée avec des tiers.</p>
 <p style="margin-bottom:14px;"><strong>Hébergement :</strong> tes données sont stockées de façon sécurisée (Supabase), accessibles uniquement depuis ton propre compte.</p>
@@ -1528,15 +1537,7 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 <p style="margin-bottom:14px;"><strong>Suppression de compte :</strong> en supprimant ton compte, ton profil ET tes identifiants de connexion sont définitivement effacés — cette action est immédiate et irréversible, aucune de tes données personnelles n'est conservée.</p>
 <p style="margin-bottom:14px;"><strong>Cookies :</strong> uniquement des identifiants techniques nécessaires à l'authentification (aucun cookie publicitaire ou de tracking).</p>
 </div>
-</div>
-</div>
-
-<!-- ═══ RESSOURCES & SOURCES SCIENTIFIQUES ═══ -->
-<div id="sources" class="screen">
-<div class="ob-top" style="background:var(--ivory);padding:calc(env(safe-area-inset-top) + 30px) 20px 10px;">
-<button class="vd-back" onclick="closeSources()" style="position:static;">←</button>
-</div>
-<div class="scroll" style="padding:0 24px calc(env(safe-area-inset-bottom) + 100px);">
+<hr style="border:0;border-top:1px solid var(--border);margin:28px 0;">
 <div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Ressources & <em>sources scientifiques</em></div>
 
 <div class="diet-info-card" style="margin:14px 0 14px;">
@@ -1666,6 +1667,8 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 <div class="vdetail" id="vdetail">
 <button class="vd-back" onclick="closeVD()">←</button>
 <div class="vd-player" id="vdPlayerWrap"><div id="vdIframe"></div><button class="vd-fs-btn" onclick="toggleVideoFullscreen()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M8 21H5a2 2 0 0 1-2-2v-3"/></svg> Plein écran</button></div>
+<div id="vdPlaybackMessage" hidden style="padding:14px 20px;background:var(--lav-pale);"><p id="vdPlaybackText" role="status"></p><button class="journey-replay-btn" onclick="if(currentVid)openVD(currentVid)">Réessayer la lecture</button></div>
+<div style="padding:10px 20px;font-size:12px;"><a id="vdYoutubeLink" target="_blank" rel="noopener" style="color:var(--purple);text-decoration:underline;">Ouvrir sur YouTube si la vidéo ne démarre pas</a></div>
 <div class="vd-title" id="vdTitle"></div>
 <div class="vd-stats"><div class="vd-stats-row"><div class="vds"><div class="vds-l">Durée</div><div class="vds-v" id="vdDur">—</div></div><div class="vds"><div class="vds-l">Catégorie</div><div class="vds-v" id="vdCat">—</div></div><div class="vds"><div class="vds-l">Dosha</div><div class="vds-v" id="vdDosha">—</div></div></div></div>
 <div class="vd-bens"><div class="vd-sec">Bénéfices</div><div id="vdBens"></div></div>
@@ -1863,6 +1866,107 @@ function renderChallenge(){
  </div>`;
 }
 
+// FREE is a read-only showcase, independent of account history and calendar time.
+function freezeDemo(value){Object.values(value).forEach(v=>{if(v&&typeof v==='object')freezeDemo(v);});return Object.freeze(value);}
+const FREE_DEMO_DATA=freezeDemo({
+ displayName:'ESSAI',greeting:'Bonjour',avatar:'E',season:'Été',dosha:'Vata',
+ profile:{name:'ESSAI',lastName:'',email:'',goal:'bien-être',sexe:'femme',age:30,weight:62,height:165,activity:'modérée',hasPeriod:true,menopause:false,perimenopause:false,contraception:false,dosha:'vata',doshaV:60,doshaP:25,doshaK:15,cycleLength:28,lastPeriodStart:'',birthDate:'',birthTime:'',birthPlace:'',dietType:'flexitarien',allergies:'',subscriptionStatus:'inactive',subscriptionPlan:null},
+ cycle:{day:14,length:28,phase:'Phase ovulatoire',remaining:14},
+ stats:{wellbeing:72,recovery:72,sleep:'7h30',sleepHours:7.5,bedtime:'23:00',wake:'06:30',stress:4,hydration:'1,5 L',movement:'20 min',mood:'En forme',bmr:1400,kcal:2000,protein:100,carbs:250,fat:67,xp:0,sessions:0,streak:0,recipes:0,journeyDone:0,journeyTotal:5},
+ phrase:'Accorde-toi un moment de douceur et avance à ton rythme.',
+ steps:['Mes routines matin & soir','Ma to-do list du jour','Ma séance du jour','Mon bien-être','Mon astrologie'],
+ routines:[{title:'Routine du matin',detail:'Réveiller le corps · 6 min'},{title:'Routine du soir',detail:'Ralentir et relâcher · 6 min'}],
+ sessions:[{title:'Pilates débutant',detail:'Pilates · 20 min'},{title:'Yoga doux',detail:'Yoga · 15 min'},{title:'Pause respiration',detail:'Respiration · 5 min'}],
+ recipes:[{title:'Saumon, quinoa et légumes verts',detail:'510 kcal · P 34 g · G 40 g · L 22 g'},{title:'Quinoa aux fruits doux',detail:'245 kcal · P 8 g · G 34 g · L 7 g'},{title:'Compote pomme-banane aux noix',detail:'255 kcal · P 3 g · G 35 g · L 11 g'}],
+ naturo:[{title:'Mon rituel bien-être',detail:'Une pause calme, une respiration douce et quelques mouvements confortables.'},{title:'Découvrir mon profil ayurvédique',detail:'Profil Vata de démonstration : 60 % Vata · 25 % Pitta · 15 % Kapha.'}],
+ meals:[{title:'Petit-déjeuner',detail:'Exemple : porridge et fruits'},{title:'Déjeuner',detail:'Exemple : quinoa, légumes et saumon'},{title:'Dîner',detail:'Exemple : soupe de légumes et tartines'}],
+ history:[{title:'Journée de démonstration',detail:'Bien-être : 72 · Sommeil : 7h30 · Mouvement : 20 min'}],
+ titles:{dashboard:'Mon parcours du jour',mouvement:'Mes séances',recettes:'Recettes',naturo:'Dossiers Naturo',challenge:'Communauté & Challenges',dietPlan:'Mon plan alimentaire',profil:'Mon profil',wellnessHistory:'Historique bien-être',progressionScreen:'Ma progression',badgesScreen:'Mes badges',cycleSettings:'Mon cycle',doshaProfile:'Mon profil ayurvédique',astroScreen:'Mon astrologie',editInfo:'Mon profil de démonstration'},
+ notice:'Démonstration · Données fictives fixes. Aucun suivi personnalisé ni enregistrement en mode gratuit.',
+ locked:'Cette action est disponible avec le plan correspondant. La démonstration reste inchangée.',
+ community:'Aperçu Immersion : défis de saison, communauté et rendez-vous mensuel.',
+ badges:'0 badge débloqué · Niveau 1 · 0 point',astro:'Aperçu astrologique fictif, sans calcul à partir de tes informations.'
+});
+let personalDataMode='unknown',demoRoute='dashboard',membershipCheckRunning=false;
+function isFreeDemo(){return personalDataMode==='free';}
+function demoNotice(){toast(FREE_DEMO_DATA.locked);}
+// All database mutations from the app are rejected outside a confirmed paid session.
+// Authentication and explicit account deletion remain available separately.
+function appTable(table){
+ let mutation=false;
+ function wrap(builder){return new Proxy(builder,{get(target,prop){
+ if(prop==='then')return(resolve,reject)=>{
+  if(mutation&&personalDataMode!=='paid')return Promise.resolve({data:null,error:{message:'Mode démonstration : aucune sauvegarde personnelle.'}}).then(resolve,reject);
+  return target.then(resolve,reject);
+ };
+ const method=target[prop];
+ if(typeof method!=='function')return method;
+ return(...args)=>{if(['insert','update','upsert','delete'].includes(prop))mutation=true;const result=method.apply(target,args);return result&&typeof result==='object'?wrap(result):result;};
+ }});}
+ return wrap(sb.from(table));
+}
+function activateFreeDemo(){
+ personalDataMode='free';clearTimeout(saveTimer);
+ userProfile=structuredClone(FREE_DEMO_DATA.profile);
+ xp=0;sessions=0;streak=0;moodScore=0;sleepScore=FREE_DEMO_DATA.stats.sleepHours;stressScore=FREE_DEMO_DATA.stats.stress;
+ completedVids=new Set();triedRecipes=new Set();unlockedBadges=new Set();readDossiers=new Set();loginDates=new Set();
+ sessionDates=[];wellnessLog=[];foodLog=[];videoStartDates={};
+ if(typeof closeVD==='function')closeVD();
+ if(typeof closeRoutinePlayer==='function')closeRoutinePlayer();
+ document.querySelectorAll('.open').forEach(el=>el.classList.remove('open'));
+ document.getElementById('walkthroughOverlay').style.display='none';
+ renderFreeDemo('dashboard');
+}
+function demoCard(title,detail){return `<div class="diet-info-card"><div class="diet-info-t">${title}</div><div class="diet-guide-s">${detail}</div></div>`;}
+function demoList(items){return items.map(item=>demoCard(item.title,item.detail)).join('');}
+function renderFreeDemo(route){
+ demoRoute=route;
+ let screen=document.getElementById('freeDemoScreen');
+ if(!screen){screen=document.createElement('div');screen.id='freeDemoScreen';screen.className='screen';document.body.appendChild(screen);}
+ const d=FREE_DEMO_DATA,t=d.stats;
+ let content='';
+ if(route==='dashboard'){
+ content=`<div class="sec"><h2>Mon <em>parcours du jour</em></h2></div><div class="journey-progress-wrap"><button class="next-step-banner" onclick="go('mouvement')"><span class="journey-num">1</span><span class="next-step-body"><span class="next-step-lbl">Ta prochaine étape</span><span class="next-step-t">${d.steps[0]}</span></span><span>›</span></button><div class="journey-progress-lbl"><span>Aujourd’hui · Démonstration</span><b>${t.journeyDone}/${t.journeyTotal}</b></div><div class="journey-progress-bar"><div class="journey-progress-fill" style="width:0%"></div></div><details class="demo-details"><summary>Récap de tes étapes du jour</summary>${d.steps.map((s,i)=>`<div class="journey-step"><span class="journey-num">${i+1}</span><span>${s}</span></div>`).join('')}</details></div>`;
+ content+=demoCard('Ta phrase de démonstration',d.phrase);
+ content+=demoCard('Mon équilibre nutritionnel',`Métabolisme : ${t.bmr} kcal · Apport : ${t.kcal} kcal<br>Protéines ${t.protein} g · Glucides ${t.carbs} g · Lipides ${t.fat} g`);
+ content+=demoCard('Mon bien-être',`Score ${t.wellbeing}/100 · Récupération ${t.recovery} %`);
+ content+=demoCard('Mon cycle',`Jour ${d.cycle.day}/${d.cycle.length} · ${d.cycle.phase}<br>Prochaines règles fictives dans ${d.cycle.remaining} jours`);
+ content+=demoCard('Sommeil & stress',`${t.sleep} · ${t.bedtime} → ${t.wake}<br>Stress ${t.stress}/10 · Humeur : ${t.mood}`);
+ content+=demoCard('Hydratation & mouvement',`${t.hydration} · ${t.movement}`);
+ }else if(route==='mouvement')content=demoCard('Mes séances terminées',String(t.sessions))+demoList(d.routines)+demoList(d.sessions);
+ else if(route==='recettes')content=demoCard('Recettes essayées',String(t.recipes))+demoList(d.recipes);
+ else if(route==='naturo'||route==='doshaProfile')content=demoList(d.naturo);
+ else if(route==='dietPlan')content=demoCard('Aperçu de démonstration','Exemples fixes, sans personnalisation. Les plans personnels sont réservés à Immersion.')+demoList(d.meals);
+ else if(route==='challenge')content=demoCard('Découvrir la communauté',d.community);
+ else if(route==='profil'){
+ content=demoCard('Mon compte Holistica','Mode gratuit : découverte avec des données fictives fixes. Les plans Équilibre et Immersion utilisent ton vrai profil.')+`<div style="padding:0 20px"><button class="journey-replay-btn" onclick="refreshMembership()">Actualiser mon accès</button></div>`;
+ for(const [id,label] of [['editInfo','Mes informations de démonstration'],['doshaProfile','Mon profil ayurvédique'],['wellnessHistory','Historique bien-être'],['progressionScreen','Ma progression'],['badgesScreen','Mes badges'],['cycleSettings','Mon cycle'],['astroScreen','Mon astrologie']])content+=`<button class="demo-profile-row" onclick="go('${id}')">${label}<span>›</span></button>`;
+ content+=`<div class="demo-footer"><button class="profile-legal-link" onclick="openSources('profil')">Confidentialité & ressources scientifiques</button><button class="journey-replay-btn" onclick="handleSignOut()">Déconnexion</button><button class="profile-legal-link" onclick="confirmDeleteAccount()">Supprimer mon compte</button></div>`;
+ }else if(route==='cycleSettings')content=demoCard('Cycle de démonstration',`Jour ${d.cycle.day}/${d.cycle.length} · ${d.cycle.phase}`);
+ else if(route==='editInfo')content=demoCard('Profil fictif',`${d.displayName} · ${d.profile.age} ans · ${d.profile.weight} kg · ${d.profile.height} cm`);
+ else if(route==='astroScreen')content=demoCard('Astrologie',d.astro);
+ else if(route==='badgesScreen')content=demoCard('Mes badges',d.badges);
+ else content=demoList(d.history);
+ screen.innerHTML=`<div class="d-top"><div class="blob b1"></div><div class="blob b2"></div><div class="dz"><div class="d-name">${route==='dashboard'?d.greeting+' '+d.displayName:d.titles[route]||'Démonstration'}</div><div class="d-pill">Profil ${d.dosha} · ${d.season} · Démonstration</div></div></div><div class="scroll"><p class="demo-notice">${d.notice}</p>${content}</div>`;
+ document.querySelectorAll('.screen').forEach(el=>el.classList.remove('active'));screen.classList.add('active');screen.scrollTop=0;
+ document.getElementById('bnav').style.display='flex';
+ document.querySelectorAll('.ni,.ni-ctr').forEach(el=>{const active=el.id==='ni-'+route;el.classList.toggle('act',active);if(active)el.setAttribute('aria-current','page');else el.removeAttribute('aria-current');});
+ for(const id of ['ni-challenge','ni-dietPlan'])document.getElementById(id).style.display='flex';
+}
+async function checkMembershipChange(){
+ if(!currentUser||!profileLoaded||membershipCheckRunning)return;
+ const id=currentUser.id;membershipCheckRunning=true;
+ try{
+ const {data,error}=await appTable('profiles').select('subscription_status,subscription_plan').eq('id',id).maybeSingle();
+ if(error||currentUser?.id!==id)return;
+ const next=['active','trialing'].includes(data?.subscription_status)&&['equilibre','immersion'].includes(data?.subscription_plan)?data.subscription_plan:'standard';
+ if(next!==accountPlan())await loadProfileAndEnter();
+ }catch(e){/* Keep the last confirmed mode on a network error. */}
+ finally{membershipCheckRunning=false;}
+}
+setInterval(()=>{if(!document.hidden)checkMembershipChange();},30000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkMembershipChange();});
+
 // Tous les comptes disposent de l'espace standard gratuit.
 function isDevAccount(){return false;}
 function hasActiveAccess(){return true;}
@@ -1885,15 +1989,8 @@ async function refreshMembership(){
  if(!currentUser)return;
  const btn=document.getElementById('refreshMembershipBtn');
  if(btn){btn.disabled=true;btn.textContent='Actualisation…';}
- try{
- await claimPendingSubscription();
- const {data,error}=await sb.from('profiles').select('subscription_status,subscription_plan').eq('id',currentUser.id).single();
- if(error)throw error;
- userProfile.subscriptionStatus=data.subscription_status||'inactive';
- userProfile.subscriptionPlan=data.subscription_plan||null;
- syncAccountUI();renderJourneyStrip();
- toast('Ton accès a été actualisé');
- }catch(e){toast('Actualisation impossible. Réessaie dans un instant.');}
+ try{await loadProfileAndEnter();toast('Ton accès a été actualisé');}
+ catch(e){toast('Actualisation impossible. Réessaie dans un instant.');}
  finally{if(btn){btn.disabled=false;btn.textContent='Actualiser mon accès';}}
 }
 
@@ -1919,11 +2016,11 @@ let currentDossierId=null;
 async function loadContent(){
  try{
  const [{data:vids,error:vErr},{data:recs,error:rErr},{data:doss,error:dErr},{data:progs,error:pErr},{data:meals,error:mErr}]=await Promise.all([
- sb.from('videos').select('*'),
- sb.from('recipes').select('*'),
- sb.from('dossiers').select('*').order('publish_date',{ascending:false}),
- sb.from('programs').select('*').order('sort_order',{ascending:true}),
- sb.from('meal_ideas').select('*').eq('active',true)
+ appTable('videos').select('*'),
+ appTable('recipes').select('*'),
+ appTable('dossiers').select('*').order('publish_date',{ascending:false}),
+ appTable('programs').select('*').order('sort_order',{ascending:true}),
+ appTable('meal_ideas').select('*').eq('active',true)
  ]);
  if(vErr)console.error('Erreur chargement vidéos:',vErr);
  if(rErr)console.error('Erreur chargement recettes:',rErr);
@@ -2220,11 +2317,15 @@ async function signInWithApple(){
 }
 
 async function loadProfileAndEnter(){
+ if(!currentUser)return;
+ const loadingUserId=currentUser.id;
+ await claimPendingSubscription();
+ if(currentUser?.id!==loadingUserId)return;
  let data,error;
  try{
  const timeout=new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')),12000));
  ({data,error}=await Promise.race([
- sb.from('profiles').select('*').eq('id',currentUser.id).maybeSingle(),
+ appTable('profiles').select('*').eq('id',currentUser.id).maybeSingle(),
  timeout
  ]));
  }catch(e){
@@ -2232,6 +2333,7 @@ async function loadProfileAndEnter(){
  toast(e.message==='timeout'?' La connexion à Holistica prend trop de temps, réessaie dans un instant':' Erreur réseau : '+e.message);
  return;
  }
+ if(currentUser?.id!==loadingUserId)return;
  const profile=data;
  if(error){
  console.error('Erreur profil:',error);
@@ -2243,8 +2345,12 @@ async function loadProfileAndEnter(){
  return; // Important : on ne redirige JAMAIS vers l'onboarding sur une erreur —
  // seulement quand il est confirmé qu'aucun profil n'existe (voir plus bas).
  }
+ const paidProfile=profile&&['active','trialing'].includes(profile.subscription_status)&&['equilibre','immersion'].includes(profile.subscription_plan);
+ if(!paidProfile){activateFreeDemo();return;}
+ personalDataMode='paid';
+ document.getElementById('freeDemoScreen')?.classList.remove('active');
  if(profile){
- userProfile={name:profile.name||'',lastName:profile.last_name||'',email:profile.email||'',goal:profile.goal||'bien-être',sexe:profile.sexe||'femme',age:profile.age||30,weight:profile.weight||62,height:profile.height||165,activity:profile.activity||'modérée',hasPeriod:profile.has_period,menopause:profile.menopause,perimenopause:profile.perimenopause||false,contraception:profile.contraception||false,dosha:profile.dosha||'vata',lastPeriodStart:profile.last_period_start||'',doshaV:profile.dosha_v??33,doshaP:profile.dosha_p??33,doshaK:profile.dosha_k??34,cycleLength:profile.cycle_length||28,birthDate:profile.birth_date||'',birthTime:profile.birth_time||'',birthPlace:profile.birth_place||'',subscriptionStatus:profile.subscription_status||'inactive',subscriptionPlan:profile.subscription_plan||null,dietType:profile.diet_type||'flexitarien',allergies:profile.allergies||'',referralCode:profile.referral_code||'',referredBy:profile.referred_by||null,hasSeenWalkthrough:profile.has_seen_walkthrough||false,journeyStartDate:profile.subscription_started_at||profile.created_at||new Date().toISOString(),lastMonthlyEvalAt:profile.last_monthly_eval_at||null};
+ userProfile={name:profile.name||'',lastName:profile.last_name||'',email:profile.email||'',goal:profile.goal||'bien-être',sexe:profile.sexe||'femme',age:profile.age||30,weight:profile.weight||62,height:profile.height||165,activity:profile.activity||'modérée',hasPeriod:profile.has_period,menopause:profile.menopause,perimenopause:profile.perimenopause||false,contraception:profile.contraception||false,dosha:profile.dosha||'vata',lastPeriodStart:profile.last_period_start||'',doshaV:profile.dosha_v??33,doshaP:profile.dosha_p??33,doshaK:profile.dosha_k??34,cycleLength:profile.cycle_length||28,birthDate:profile.birth_date||'',birthTime:profile.birth_time||'',birthPlace:profile.birth_place||'',subscriptionStatus:profile.subscription_status||'inactive',subscriptionPlan:profile.subscription_plan||null,dietType:profile.diet_type||'flexitarien',allergies:profile.allergies||'',referralCode:profile.referral_code||'',referredBy:profile.referred_by||null,hasSeenWalkthrough:profile.has_seen_walkthrough||false,journeyStartDate:profile.subscription_started_at||profile.created_at||new Date().toISOString(),lastMonthlyEvalAt:profile.last_monthly_eval_at||null,buddyAvailable:profile.buddy_available||false};
  if(isDevAccount()){
  // Accès complet en mémoire uniquement pour tester (n'écrase jamais la vraie valeur en base)
  userProfile.subscriptionStatus='active';
@@ -2279,7 +2385,7 @@ async function loadProfileAndEnter(){
  // Avant de trancher, tente de récupérer un éventuel abonnement payé sur le site
  // avant la création de ce compte (même email) : sans ça, quelqu'un qui a payé
  // sur le site puis crée son compte dans l'app resterait bloqué à tort.
- const claimResult=await claimPendingSubscription();
+ const claimResult=null;
  if(claimResult&&claimResult.applied){
  userProfile.subscriptionStatus=claimResult.status||'active';
  userProfile.subscriptionPlan=claimResult.plan;
@@ -2290,6 +2396,7 @@ async function loadProfileAndEnter(){
  saveProfile();
  return;
  }
+ if(!profile.name){obStep=0;obChoiceIdx=-1;doshaAnswers={};doshaPage=0;retakeDoshaMode=false;document.getElementById('bnav').style.display='none';go('onboarding');renderOB();return;}
  go('dashboard');enterApp();addXP(0);checkBadges(true);
  const wtAlreadySeenLocally=localStorage.getItem('holistica_wt_seen_'+(userProfile.email||''))==='1';
  // Tutoriel retiré.
@@ -2299,7 +2406,7 @@ async function loadProfileAndEnter(){
  // abonnement payé sur le site attend cet email, AVANT de proposer le questionnaire.
  // Le questionnaire est accessible à tout nouveau compte, y compris gratuit.
  userProfile={name:'',lastName:'',email:currentUser.email||'',goal:'bien-être',sexe:'femme',age:30,weight:62,height:165,activity:'modérée',hasPeriod:true,menopause:false,perimenopause:false,contraception:false,dosha:'vata',lastPeriodStart:'',doshaV:33,doshaP:33,doshaK:34,cycleLength:28,birthDate:'',birthTime:'',birthPlace:'',subscriptionStatus:'inactive',subscriptionPlan:null,dietType:'flexitarien',allergies:'',referralCode:'',referredBy:null,hasSeenWalkthrough:false};
- const claimResult=await claimPendingSubscription();
+ const claimResult=null;
  if(claimResult&&claimResult.applied){
  userProfile.subscriptionStatus=claimResult.status||'active';
  userProfile.subscriptionPlan=claimResult.plan;
@@ -2350,10 +2457,14 @@ async function loadProfileAndEnter(){
 let saveTimer=null;
 let saveRetryCount=0;
 function saveProfile(){
+ if(isFreeDemo())return;
  if(!currentUser)return;
  clearTimeout(saveTimer);
+ const savingUserId=currentUser.id;
  saveTimer=setTimeout(async()=>{
- const {error}=await sb.from('profiles').upsert({
+ if(currentUser?.id!==savingUserId)return;
+ if(personalDataMode!=='paid')return;
+ const {error}=await appTable('profiles').upsert({
  id:currentUser.id,
  name:userProfile.name,age:userProfile.age,weight:userProfile.weight,height:userProfile.height,
  activity:userProfile.activity,sexe:userProfile.sexe,has_period:userProfile.hasPeriod,menopause:userProfile.menopause,perimenopause:userProfile.perimenopause,contraception:userProfile.contraception,dosha:userProfile.dosha,
@@ -2395,14 +2506,18 @@ sb.auth.onAuthStateChange((event,session)=>{
  go('resetPassword');
  return;
  }
+ if(event==='TOKEN_REFRESHED'&&profileLoaded)checkMembershipChange();
+ if(session&&currentUser&&currentUser.id!==session.user.id){profileLoaded=false;personalDataMode='unknown';clearTimeout(saveTimer);}
  if(session&&!profileLoaded){
  profileLoaded=true;
  currentUser=session.user;
  loadProfileAndEnter();
  }
  if(event==='SIGNED_OUT'){
+ personalDataMode='unknown';document.getElementById('freeDemoScreen')?.classList.remove('active');
  profileLoaded=false;
  currentUser=null;
+ document.getElementById('bnav').style.display='none';go('signin');
  }
  },0);
 });
@@ -2462,7 +2577,7 @@ async function getPlanAlimentaireMoisCourant(doshaKeySnapshot){
  const mois=getMoisCourantFrance();
  const cacheKey=profil+'-'+mois;
  if(_planMoisCache&&_planMoisCacheKey===cacheKey)return _planMoisCache;
- const {data,error}=await sb.from('plans_alimentaires').select('*').eq('profil',profil).eq('mois',mois).single();
+ const {data,error}=await appTable('plans_alimentaires').select('*').eq('profil',profil).eq('mois',mois).single();
  if(error){console.error('Erreur récupération plan alimentaire du mois :',error);return null;}
  _planMoisCache=data;_planMoisCacheKey=cacheKey;
  return data;
@@ -2742,18 +2857,12 @@ async function fetchSeasonalAndTips(doshaKey){
  const {mois,quinzaine}=currentMealPlanPeriod();
  async function tryFetch(table,m,q){
  try{
- const {data,error}=await sb.from(table).select('*').eq('dosha',primaryDosha).eq('diet_type',dietTypeKey).eq('mois',m).eq('quinzaine',q);
+ const {data,error}=await appTable(table).select('*').eq('dosha',primaryDosha).eq('diet_type',dietTypeKey).eq('mois',m).eq('quinzaine',q);
  return (!error&&data&&data.length)?data:null;
  }catch(e){return null;}
  }
  async function fetchWithFallback(table){
- let rows=await tryFetch(table,mois,quinzaine);
- if(!rows)rows=await tryFetch(table,mois,quinzaine===1?2:1);
- if(!rows){
- const moisPrec=mois===1?12:mois-1;
- rows=await tryFetch(table,moisPrec,1)||await tryFetch(table,moisPrec,2);
- }
- return rows||[];
+ return await tryFetch(table,mois,quinzaine)||[];
  }
  const [foodsRows,tipsRows]=await Promise.all([fetchWithFallback('monthly_seasonal_foods'),fetchWithFallback('monthly_diet_tips')]);
 
@@ -2787,12 +2896,12 @@ async function fetchSeasonalAndTips(doshaKey){
  const MOIS_NOMS=['','janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
  async function tryFetchBiweekly(m,q){
  try{
- const {data,error}=await sb.from('biweekly_nutrition_tips').select('*').eq('mois',m).eq('quinzaine',q).maybeSingle();
+ const {data,error}=await appTable('biweekly_nutrition_tips').select('*').eq('mois',m).eq('quinzaine',q).maybeSingle();
  return (!error&&data)?data:null;
  }catch(e){return null;}
  }
  let biweekly=await tryFetchBiweekly(mois,quinzaine);
- if(!biweekly)biweekly=await tryFetchBiweekly(mois,quinzaine===1?2:1);
+
  if(biweekly){
  tips+=`<div class="diet-info-card" style="margin-bottom:10px;">
  <div class="diet-info-t">${MOIS_NOMS[mois]}, ${quinzaine===1?'1ère':'2ème'} quinzaine</div>
@@ -2807,7 +2916,7 @@ async function fetchSeasonalAndTips(doshaKey){
  const phaseKey=PHASE_KEY_MAP[cycleInfo.phase];
  if(phaseKey){
  try{
- const {data:phaseData,error:phaseErr}=await sb.from('cycle_phase_nutrition_tips').select('*').eq('phase',phaseKey).maybeSingle();
+ const {data:phaseData,error:phaseErr}=await appTable('cycle_phase_nutrition_tips').select('*').eq('phase',phaseKey).maybeSingle();
  if(!phaseErr&&phaseData){
  const saisonNom=(phaseData.saison_titre||'').split('—')[0].trim();
  const detailTitreClean=(phaseData.detail_titre||'').replace(/\s*—\s*/g,' : ');
@@ -2879,6 +2988,7 @@ function buildLockedTabHtml(panelId,previewContentHtml){
  </div>`;
 }
 async function renderDietPlan(){
+ if(isFreeDemo()){if(document.getElementById('freeDemoScreen')?.classList.contains('active')&&demoRoute==='dietPlan')renderFreeDemo('dietPlan');return;}
  const wrap=document.getElementById('dietScroll');
  if(!wrap)return;
  const isImmersion=hasImmersionAccess();
@@ -2979,7 +3089,7 @@ async function renderDietPlan(){
  ${bodyHtml}
  </div>`;
  });
- planHtml+=`<div class="diet-week-note"> De nouvelles idées reviennent toutes les 2 semaines</div>`;
+ planHtml+=`<div class="diet-week-note"> Menus renouvelés le 1er et le 16 du mois, selon la saison</div>`;
  planHtml+=`<div class="diet-info-card" style="margin-top:14px;">
  <div class="diet-info-t">D'où viennent tes macronutriments ?</div>
  <table class="plan-table">${MACRO_SOURCES_INFO.map(m=>`<tr><td>${m.t}</td><td>${m.s}</td></tr>`).join('')}</table>
@@ -3014,9 +3124,8 @@ async function renderDietPlan(){
 }
 
 /* ═══════ PLAN ALIMENTAIRE MENSUEL (table monthly_meal_plans, change toutes les 2 semaines) ═══════ */
-function currentMealPlanPeriod(){
- const d=new Date();
- return {mois:d.getMonth()+1,quinzaine:d.getDate()<=15?1:2};
+function currentMealPlanPeriod(d=new Date()){
+ return {annee:d.getFullYear(),mois:d.getMonth()+1,quinzaine:d.getDate()<=15?1:2};
 }
 let _monthlyPlanCache={};
 async function fetchMonthlyMealPlan(doshaKey){
@@ -3024,29 +3133,34 @@ async function fetchMonthlyMealPlan(doshaKey){
  // Le régime végane n'a pas de contenu dédié : on utilise le contenu végétarien à la place.
  const dietTypeKey=userProfile.dietType==='vegan'?'vegetarien':(userProfile.dietType||'flexitarien');
  const {mois,quinzaine}=currentMealPlanPeriod();
- const cacheKey=primaryDosha+'-'+dietTypeKey+'-'+mois+'-'+quinzaine;
+ const cacheKey=new Date().getFullYear()+'-'+primaryDosha+'-'+dietTypeKey+'-'+mois+'-'+quinzaine;
  if(_monthlyPlanCache[cacheKey])return _monthlyPlanCache[cacheKey];
  async function tryFetch(m,q){
  try{
- const {data,error}=await sb.from('monthly_meal_plans').select('*').eq('dosha',primaryDosha).eq('diet_type',dietTypeKey).eq('mois',m).eq('quinzaine',q);
+ const {data,error}=await appTable('monthly_meal_plans').select('*').eq('dosha',primaryDosha).eq('diet_type',dietTypeKey).eq('mois',m).eq('quinzaine',q);
  return (!error&&data&&data.length)?data:null;
  }catch(e){return null;}
  }
- // Repli en cascade si la combinaison exacte n'existe pas encore : l'autre quinzaine du même mois,
- // puis le mois précédent — pour ne jamais laisser un écran vide.
- let rows=await tryFetch(mois,quinzaine);
- if(!rows)rows=await tryFetch(mois,quinzaine===1?2:1);
- if(!rows){
- const moisPrec=mois===1?12:mois-1;
- rows=await tryFetch(moisPrec,1)||await tryFetch(moisPrec,2);
- }
- if(!rows)rows=[];
+ // La quinzaine exacte évite de conserver un ancien menu au changement de période.
+ const rows=await tryFetch(mois,quinzaine)||[];
  const grouped={};
  rows.forEach(r=>{ (grouped[r.meal_type]=grouped[r.meal_type]||[]).push(r); });
  Object.values(grouped).forEach(arr=>arr.sort((a,b)=>a.option_num-b.option_num));
- _monthlyPlanCache[cacheKey]=grouped;
+ if(rows.length)_monthlyPlanCache[cacheKey]=grouped;
  return grouped;
 }
+let displayedMealPeriod=JSON.stringify(currentMealPlanPeriod());
+function refreshMealPeriod(){
+ const key=JSON.stringify(currentMealPlanPeriod());
+ if(key===displayedMealPeriod)return;
+ displayedMealPeriod=key;_monthlyPlanCache={};
+ if(document.getElementById('dietPlan').classList.contains('active')&&hasImmersionAccess()){
+ renderDietPlan().catch(()=>toast('Impossible de charger le nouveau menu. Réessaie.'));
+ }
+}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshMealPeriod();});
+setInterval(refreshMealPeriod,60000);
+
 // Ajuste les quantités chiffrées (grammes/ml) d'une ligne d'ingrédient selon un ratio, sans toucher
 // aux quantités non chiffrées ("Quelques amandes", "½ pomme"...) qui restent telles quelles.
 function scaleIngredientLine(line,ratio){
@@ -3105,6 +3219,8 @@ function renderAddFoodPanelHtml(){
 }
 
 function go(id){
+ if(isFreeDemo()&&!['sources','privacy','signin','signup','resetPassword'].includes(id)){renderFreeDemo(id);return;}
+ if(id==='privacy')id='sources';
  if(['dietPlan','challenge'].includes(id)&&!hasImmersionAccess()){
  toast('Cet espace est réservé au plan Immersion');
  id='profil';
@@ -3155,6 +3271,7 @@ function computeNutritionTargets(){
  return {bmr,maintenanceCal,kcal:dailyCalGoal,proteinG,carbG,fatG};
 }
 function calcNutrition(){
+ if(isFreeDemo())return;
  const t=computeNutritionTargets();
  dailyCalGoal=t.kcal;
  if(document.getElementById('pfMeta'))document.getElementById('pfMeta').innerHTML=t.bmr.toLocaleString('fr-FR')+' <span class="meta-unit">kcal/jour</span>';
@@ -3194,6 +3311,7 @@ function formatDossierText(text){
 function backToCurrentDossier(){naturoViewId=null;renderNaturo();}
 
 function renderNaturo(){
+ if(isFreeDemo()){if(document.getElementById('freeDemoScreen')?.classList.contains('active')&&demoRoute==='naturo')renderFreeDemo('naturo');return;}
  const body=document.getElementById('naturoBody');
  if(!body)return;
  const today=new Date();today.setHours(0,0,0,0);
@@ -3265,6 +3383,7 @@ function renderNaturo(){
 }
 
 function openDossierDetail(id){
+ if(isFreeDemo())return;
  currentDossierId=id;
  const d=DOSSIERS.find(x=>x.id===id);
  if(!d)return;
@@ -3280,6 +3399,7 @@ function openDossierDetail(id){
  go('dossierDetail');
 }
 function markDossierRead(id){
+ if(isFreeDemo())return;
  if(readDossiers.has(id))return;
  readDossiers.add(id);
  const d=DOSSIERS.find(x=>x.id===id);
@@ -3295,6 +3415,7 @@ function markDossierRead(id){
 // qui recommence ensuite — pour toujours donner un horizon proche et motivant, plutôt
 // qu'un compteur qui grandit indéfiniment et perd son sens avec le temps.
 function renderJourneyEvolution(){
+ if(isFreeDemo())return;
  const el=document.getElementById('journeyEvo');
  if(!el||!userProfile.journeyStartDate)return;
  const start=new Date(userProfile.journeyStartDate);
@@ -3313,6 +3434,7 @@ function renderJourneyEvolution(){
 // à faire. Ne s'affiche que s'il y a au moins un peu de contenu (évite une carte
 // vide et décourageante pour une toute nouvelle inscrite).
 function renderWeeklyRecap(){
+ if(isFreeDemo())return;
  const el=document.getElementById('weeklyRecap');
  if(!el)return;
  const now=new Date();
@@ -3342,6 +3464,7 @@ function renderWeeklyRecap(){
 // mois écoulé au précédent pour donner un vrai sentiment de progression dans le temps,
 // pas juste des tâches du jour isolées les unes des autres.
 function checkMonthlyEval(){
+ if(isFreeDemo())return;
  if(!userProfile.journeyStartDate)return;
  const lastEval=userProfile.lastMonthlyEvalAt?new Date(userProfile.lastMonthlyEvalAt):new Date(userProfile.journeyStartDate);
  const daysSinceEval=Math.floor((new Date()-lastEval)/86400000);
@@ -3390,6 +3513,7 @@ function closeMonthlyEval(){
 }
 
 function enterApp(){
+ if(isFreeDemo()){renderFreeDemo('dashboard');return;}
  ensureReferralCode();
  applyPendingReferral();
  document.getElementById('bnav').style.display='flex';
@@ -3415,7 +3539,7 @@ function enterApp(){
  document.getElementById('pfAvatar').textContent=initial;
  document.getElementById('pfName').textContent=userProfile.name||'Mon Profil';
  const d=userProfile.dosha.split('-').map(p=>p.charAt(0).toUpperCase()+p.slice(1)).join('-');
- document.getElementById('dPill').textContent='Profil '+d+' · Été';
+ document.getElementById('dPill').textContent='Profil '+d+' · '+getSeasonName(new Date().getMonth()+1);
  document.getElementById('pfDosha').textContent='Dosha '+d+' · Holistica Club';
  document.getElementById('pfDoshaDetail').textContent='Vata '+userProfile.doshaV+'% · Pitta '+userProfile.doshaP+'% · Kapha '+userProfile.doshaK+'%';
  document.getElementById('doshaBarV').style.width=userProfile.doshaV+'%';
@@ -3582,6 +3706,7 @@ function obPrev(){
 }
 
 function obNext(){
+ if(isFreeDemo())return;
  const s=OB_STEPS[obStep];
  // Save current step data
  if(s.type==='input'){
@@ -3638,7 +3763,7 @@ function obNext(){
  renderDoshaProfile();
  // Rafraîchit aussi les libellés dosha affichés ailleurs (dashboard, header profil)
  const d=userProfile.dosha.split('-').map(p=>p.charAt(0).toUpperCase()+p.slice(1)).join('-');
- document.getElementById('dPill').textContent='Profil '+d+' · Été';
+ document.getElementById('dPill').textContent='Profil '+d+' · '+getSeasonName(new Date().getMonth()+1);
  document.getElementById('pfDosha').textContent='Dosha '+d+' · Holistica Club';
  document.getElementById('pfDoshaDetail').textContent='Vata '+userProfile.doshaV+'% · Pitta '+userProfile.doshaP+'% · Kapha '+userProfile.doshaK+'%';
  buildRoutine();
@@ -3712,6 +3837,7 @@ function getDoshaWeights(){
 }
 
 function renderAstroWidget(targetId){
+ if(isFreeDemo())return;
  targetId=targetId||'astroWidget';
  const el=document.getElementById(targetId);
  if(!el)return;
@@ -3829,6 +3955,7 @@ function renderAstroDetail(){
 }
 
 function refreshDash(){
+ if(isFreeDemo()){renderFreeDemo('dashboard');return;}
  document.getElementById('dSleep').innerHTML=sleepScore+'<span class="quick-unit">h</span>';
  const stressSlider=document.getElementById('stressSlider');
  if(stressSlider)stressSlider.value=stressScore;
@@ -3867,7 +3994,7 @@ async function refreshMenopauseTipButton(){
  wrap.style.display='block';
  const id=getTodayMenopauseTipId();
  try{
- const {data,error}=await sb.from('menopause_daily_tips').select('*').eq('id',id).maybeSingle();
+ const {data,error}=await appTable('menopause_daily_tips').select('*').eq('id',id).maybeSingle();
  if(!error&&data){
  _menopauseTipCache=data;
  document.getElementById('menopauseTipTopic').textContent=data.titre;
@@ -3880,7 +4007,7 @@ function openMenopauseTip(){
  const sectionsHtml=(t.sections||[]).map(s=>
  `<div class="diet-info-t">${s.titre.toUpperCase()}</div><div class="diet-guide-s" style="margin-bottom:14px;">${s.texte}</div>`
  ).join('');
- document.getElementById('menopauseTipCard').innerHTML=`<div class="menopause-tip-title">${t.titre}</div>${sectionsHtml}<div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border);font-size:12.5px;color:var(--ink-l);line-height:1.5;">Conseil général de bien-être, non médical. <a onclick="openSources('menopauseTipScreen')" style="color:var(--purple-m);text-decoration:underline;cursor:pointer;font-weight:700;">Sources scientifiques & précautions →</a></div>`;
+ document.getElementById('menopauseTipCard').innerHTML=`<div class="menopause-tip-title">${t.titre}</div>${sectionsHtml}<div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border);font-size:12.5px;color:var(--ink-l);line-height:1.5;">Conseil général de bien-être, non médical. </div>`;
  go('menopauseTipScreen');
 }
 
@@ -3892,12 +4019,14 @@ function scrollToSection(id){
 // Lance directement une routine vidéo précise (matin ou soir), utilisé depuis le
 // sommaire des étapes du jour, sans passer par l'écran intermédiaire des séances.
 async function startRoutineType(routineTypeId){
+ if(isFreeDemo())return;
  const clips=await fetchMovementClips();
  const doshaKey=typeof getProfileDoshaKey==='function'?getProfileDoshaKey():userProfile.dosha;
  const rt=ROUTINE_TYPES.find(r=>r.id===routineTypeId);
  if(!rt)return;
  const playlist=buildRoutinePlaylist(clips,rt,doshaKey);
  if(playlist.length)playRoutine(playlist.map(c=>c.id),rt.id);
+ else toast('Cette routine est indisponible pour le moment. Réessaie dans un instant.');
 }
 
 // Calcule les 7 étapes du jour et leur état — factorisé pour être utilisé à la fois
@@ -3915,7 +4044,8 @@ function computeJourneySteps(){
  const seanceDone=todayVid?completedVids.has(todayVid.id):false;
 
  const steps=[
- {done:todoDone,t:'Routine du jour',s:'Selon ton profil ayurvédique',onclick:"scrollToSection('secRoutine')"},
+ {done:matinDone&&soirDone,t:'Mes routines matin & soir',s:(matinDone?'Matin ✓':'Morning routine')+' · '+(soirDone?'Soir ✓':'Routine du soir'),onclick:"openDailyRoutines()"},
+ {done:todoDone,t:'Ta to-do list du jour',s:'Selon ton profil ayurvédique',onclick:"scrollToSection('secRoutine')"},
  {done:seanceDone,t:'Séance du jour',s:todayVid?todayVid.title:'Découvrir tes séances',onclick:todayVid?`openVD('${todayVid.id}')`:"go('mouvement')"},
  {done:bienEtreDone,t:'Ton bien-être',s:'Humeur, sommeil, stress',onclick:"scrollToSection('secMood')"}
  ];
@@ -3927,6 +4057,7 @@ function computeJourneySteps(){
 }
 
 function renderJourneyStrip(){
+ if(isFreeDemo())return;
  const wrap=document.getElementById('journeyStrip');
  if(!wrap)return;
  const steps=computeJourneySteps();
@@ -3974,6 +4105,13 @@ function renderJourneyStrip(){
 // veulent reparcourir leur journée dans l'ordre depuis le début (ou revoir ce qui a
 // déjà été fait) — sans jamais surcharger la vue principale, qui reste sur la seule
 // prochaine action.
+function openDailyRoutines(){
+ document.getElementById('journeyReplayList').innerHTML=`
+ <button class="journey-replay-btn" onclick="closeJourneyReplay();startRoutineType('matin_reveil').catch(()=>toast('Impossible de charger la routine. Réessaie.'))">☀ Ma morning routine du matin</button>
+ <button class="journey-replay-btn" onclick="closeJourneyReplay();startRoutineType('soir_ralentir').catch(()=>toast('Impossible de charger la routine. Réessaie.'))">☾ Ma routine du soir</button>`;
+ document.getElementById('journeyReplayOverlay').classList.add('open');
+}
+
 function openJourneyReplay(){
  const steps=computeJourneySteps();
  document.getElementById('journeyReplayList').innerHTML=steps.map((st,i)=>`
@@ -3989,6 +4127,7 @@ function closeJourneyReplay(){
 }
 
 function setMood(btn,label,score){
+ if(isFreeDemo())return;
  document.querySelectorAll('.mo').forEach(b=>b.classList.remove('sel'));
  btn.classList.add('sel');
  moodScore=score;
@@ -4007,6 +4146,7 @@ function gaugeSVG(percent,color){
 }
 
 function calcSleepHours(){
+ if(isFreeDemo())return;
  const startEl=document.getElementById('sleepStart');
  const endEl=document.getElementById('sleepEnd');
  if(!startEl.value||!endEl.value)return;
@@ -4029,6 +4169,7 @@ function updateRecoveryGauges(){
 // Appelée uniquement suite à une vraie action de la personne (slider, sommeil, humeur) —
 // c'est ce qui marque réellement l'étape "Ton bien-être" comme faite dans le parcours du jour.
 function calcRecovery(){
+ if(isFreeDemo())return;
  updateRecoveryGauges();
  logWellnessToday();
  saveProfile();
@@ -4040,17 +4181,20 @@ function calcRecovery(){
 // à chaque changement (voir calcRecovery), ce bouton sert surtout à confirmer clairement
 // à la personne que c'est bien pris en compte dans son journal de bord.
 function saveWellnessToday(){
+ if(isFreeDemo())return;
  calcRecovery();
  toast('Bien-être enregistré dans ton journal ✓');
 }
 // Bouton "Enregistrer" sous la routine du jour : les cases sont déjà sauvegardées à chaque
 // clic, ce bouton confirme l'enregistrement et comptabilise la routine dans le parcours du jour.
 function saveRoutineToday(){
+ if(isFreeDemo())return;
  renderJourneyStrip();
  checkBadges();
  toast('Routine enregistrée dans ton journal ✓');
 }
 function logWellnessToday(){
+ if(isFreeDemo())return;
  const today=localDateStr();
  const existing=wellnessLog.find(w=>w.date===today);
  if(existing){
@@ -4105,11 +4249,11 @@ async function fetchDailyRoutine(){
  const cacheKey=categorie+'-'+dosha+'-'+mois;
  if(_routineCache[cacheKey])return _routineCache[cacheKey];
  try{
- const {data,error}=await sb.from('daily_routines').select('texte').eq('categorie',categorie).eq('dosha',dosha).eq('mois',mois).maybeSingle();
+ const {data,error}=await appTable('daily_routines').select('texte').eq('categorie',categorie).eq('dosha',dosha).eq('mois',mois).maybeSingle();
  if(error||!data){
  // Repli : essaie le mois précédent avant d'abandonner (certaines combinaisons peuvent manquer)
  const moisPrec=mois===1?12:mois-1;
- const {data:data2}=await sb.from('daily_routines').select('texte').eq('categorie',categorie).eq('dosha',dosha).eq('mois',moisPrec).maybeSingle();
+ const {data:data2}=await appTable('daily_routines').select('texte').eq('categorie',categorie).eq('dosha',dosha).eq('mois',moisPrec).maybeSingle();
  if(!data2)throw new Error('routine indisponible');
  _routineCache[cacheKey]=data2.texte;
  return data2.texte;
@@ -4123,6 +4267,7 @@ async function fetchDailyRoutine(){
 }
 
 async function buildRoutine(){
+ if(isFreeDemo())return;
  const routineText=await fetchDailyRoutine();
  const items=routineText.split('\n').map(l=>' '+l.replace(/^\d+\.\s*/,'').trim()).filter(Boolean);
  // Les conseils du dosha, du cycle, de la saison et de l'âge sont déjà affichés dans
@@ -4144,9 +4289,11 @@ function getRoutineChecks(){
  }catch(e){return [];}
 }
 function saveRoutineChecks(items){
+ if(isFreeDemo())return;
  localStorage.setItem('holistica-routine-checks',JSON.stringify({date:todayStr(),items}));
 }
 function toggleTodo(el,text){
+ if(isFreeDemo())return;
  el.classList.toggle('done');
  el.nextElementSibling.querySelector('.todo-t').classList.toggle('done');
  const checked=getRoutineChecks();
@@ -4210,6 +4357,7 @@ const BADGES=[
 ];
 
 function checkBadges(silent){
+ if(isFreeDemo())return;
  BADGES.forEach(b=>{
  if(!unlockedBadges.has(b.id) && b.cond()){
  unlockedBadges.add(b.id);
@@ -4235,6 +4383,7 @@ function showBadgeCelebration(b){
 }
 
 function renderBadges(){
+ if(isFreeDemo()){if(document.getElementById('freeDemoScreen')?.classList.contains('active')&&demoRoute==='badgesScreen')renderFreeDemo('badgesScreen');return;}
  const grid=document.getElementById('badgesGrid');
  if(!grid)return;
  grid.innerHTML=BADGES.map(b=>{
@@ -4272,7 +4421,8 @@ function showLevelCelebration(level){
  setTimeout(()=>{el.classList.remove('show');setTimeout(()=>el.remove(),400);},3200);
 }
 
-function addXP(n){xp+=n;document.getElementById('xpCount').textContent=xp;if(document.getElementById('pfXp'))document.getElementById('pfXp').textContent=xp;document.getElementById('xpFill').style.width=Math.min(xp%100,100)+'%';updateLevel();saveProfile();checkLevelMilestone();}
+function addXP(n){
+ if(isFreeDemo())return;xp+=n;document.getElementById('xpCount').textContent=xp;if(document.getElementById('pfXp'))document.getElementById('pfXp').textContent=xp;document.getElementById('xpFill').style.width=Math.min(xp%100,100)+'%';updateLevel();saveProfile();checkLevelMilestone();}
 function updateLevel(){
  const level=Math.floor(xp/100)+1;
  const el=document.getElementById('pfLevel');
@@ -4281,6 +4431,7 @@ function updateLevel(){
 
 /* ═══════ SUIVI DE CYCLE ═══════ */
 function updateCycleLength(v){
+ if(isFreeDemo())return;
  const len=parseInt(v)||28;
  userProfile.cycleLength=Math.min(45,Math.max(21,len));
  if(document.getElementById('cycleLenInput'))document.getElementById('cycleLenInput').value=userProfile.cycleLength;
@@ -4332,6 +4483,7 @@ function getCurrentCycleInfo(){
 
 /* ═══ Calendrier annuel du cycle (règles prévues sur toute l'année) ═══ */
 function openCycleCalendar(){
+ if(isFreeDemo()){renderFreeDemo('cycleSettings');return;}
  const c=getCurrentCycleInfo();
  if(!c){toast('Renseigne la date de tes dernières règles dans ton profil');return;}
  const year=new Date().getFullYear();
@@ -4399,7 +4551,7 @@ function getMoisCourantFrance(){
 async function getConseilMenopauseDuMois(){
  const mois=getMoisCourantFrance();
  if(_menopauseConseilCache&&_menopauseConseilMois===mois)return _menopauseConseilCache;
- const {data,error}=await sb.from('conseils_menopause').select('*').eq('mois',mois).single();
+ const {data,error}=await appTable('conseils_menopause').select('*').eq('mois',mois).single();
  if(error){console.error('Erreur récupération conseil ménopause :',error);return null;}
  _menopauseConseilCache=data;_menopauseConseilMois=mois;
  return data;
@@ -4414,6 +4566,7 @@ function energyExtraNotes(){
 }
 
 async function renderCycle(){
+ if(isFreeDemo())return;
  if(document.getElementById('cycleLenInput'))document.getElementById('cycleLenInput').value=userProfile.cycleLength;
 
  // Trois profils sans cycle actif suivi, chacun avec son propre contenu :
@@ -4515,7 +4668,7 @@ let _movementClipsCache=null;
 async function fetchMovementClips(){
  if(_movementClipsCache)return _movementClipsCache;
  try{
- const {data,error}=await sb.from('movement_clips').select('*');
+ const {data,error}=await appTable('movement_clips').select('*');
  if(error||!data||!data.length)throw error||new Error('vide');
  _movementClipsCache=data;
  return data;
@@ -4597,12 +4750,14 @@ function getRoutineCompletionToday(){
  }catch(e){return [];}
 }
 function markRoutineCompletionToday(routineId){
+ if(isFreeDemo())return;
  const done=getRoutineCompletionToday();
  if(!done.includes(routineId))done.push(routineId);
  localStorage.setItem('holistica-routines-done',JSON.stringify({date:todayStr(),ids:done}));
 }
 const ROUTINE_CARD_PHOTOS=[]; // conservé pour compatibilité, plus utilisé (chaque routine a désormais sa propre image)
 async function renderRoutinesSection(){
+ if(isFreeDemo())return;
  const wrap=document.getElementById('routinesWrap');
  if(!wrap)return;
  const clips=await fetchMovementClips();
@@ -4632,6 +4787,7 @@ let routineIndex=-1; // -1 = diapositive d'intro, 0..N-1 = clips
 let currentRoutineMeta=null;
 const BUNNY_LIBRARY_ID='730425';
 async function playRoutine(clipIds,routineTypeId){
+ if(isFreeDemo())return;
  const clips=await fetchMovementClips();
  routineQueue=clipIds.map(id=>clips.find(c=>c.id===id)).filter(Boolean);
  routineIndex=-1;
@@ -4931,6 +5087,7 @@ function recordWatchedTime(clip){
 }
 
 function renderMvCalendar(){
+ if(isFreeDemo())return;
  if(!VIDEOS.length){
  document.getElementById('wkCalRow').innerHTML='';
  document.getElementById('wkTodayCard').innerHTML='<div style="padding:16px;color:var(--ink-l);font-size:15.5px;">Chargement des séances...</div>';
@@ -5019,12 +5176,14 @@ function renderPrograms(){
 }
 
 function openProgram(programId){
+ if(isFreeDemo())return;
  currentProgramId=programId;
  renderProgramDetail();
  go('programDetail');
 }
 
 function renderProgramDetail(){
+ if(isFreeDemo())return;
  const p=PROGRAMS.find(x=>x.id===currentProgramId);
  if(!p)return;
  const prog=getProgramProgress(p.id);
@@ -5100,6 +5259,7 @@ function renderProgramDetail(){
 }
 
 function renderMv(){
+ if(isFreeDemo()){if(document.getElementById('freeDemoScreen')?.classList.contains('active')&&demoRoute==='mouvement')renderFreeDemo('mouvement');return;}
  renderMvCalendar();
  renderRoutinesSection();
  renderPrograms();
@@ -5125,25 +5285,50 @@ function renderMv(){
  }).join('')||'<div style="text-align:center;padding:40px 20px;color:var(--ink-l);">Aucune séance dans ce filtre</div>';
 }
 
+let ytApiPromise=null,videoOpenToken=0,videoReadyTimer=null;
 function loadYouTubeApi(){
- return new Promise(resolve=>{
- if(ytApiReady||window.YT&&window.YT.Player){ytApiReady=true;resolve();return;}
- window.onYouTubeIframeAPIReady=()=>{ytApiReady=true;resolve();};
+ if(window.YT&&window.YT.Player)return Promise.resolve();
+ if(ytApiPromise)return ytApiPromise;
+ ytApiPromise=new Promise((resolve,reject)=>{
  const tag=document.createElement('script');
- tag.src='https://www.youtube.com/iframe_api';
- document.head.appendChild(tag);
+ const timer=setTimeout(()=>fail(),15000);
+ function fail(){clearTimeout(timer);tag.remove();ytApiPromise=null;reject(new Error('YouTube indisponible'));}
+ window.onYouTubeIframeAPIReady=()=>{clearTimeout(timer);ytApiReady=true;resolve();};
+ tag.onerror=fail;tag.src='https://www.youtube.com/iframe_api';document.head.appendChild(tag);
  });
+ return ytApiPromise;
+}
+function resetVideoMount(){
+ clearTimeout(videoReadyTimer);stopWatchTracking();
+ if(ytPlayer&&ytPlayer.destroy){try{ytPlayer.destroy();}catch(e){}}
+ ytPlayer=null;
+ document.getElementById('vdIframe')?.remove();
+ const mount=document.createElement('div');mount.id='vdIframe';
+ document.getElementById('vdPlayerWrap').prepend(mount);
+}
+function showVideoError(code){
+ clearTimeout(videoReadyTimer);stopWatchTracking();
+ const box=document.getElementById('vdPlaybackMessage');box.hidden=false;
+ document.getElementById('vdPlaybackText').textContent=
+ [100,101,150].includes(code)?'Cette vidéo est indisponible ou sa lecture intégrée est désactivée.':
+ code===153?'YouTube ne peut pas identifier cette application. Tu peux ouvrir la vidéo sur YouTube.':
+ 'Le lecteur ne répond pas. Vérifie ta connexion puis réessaie.';
 }
 
 async function openVD(id){
+ if(isFreeDemo())return;
  const v=VIDEOS.find(x=>x.id===id);if(!v)return;
  if(isContentLocked(v)){const b=badgeById(v.unlock_badge);toast('🔒 Débloque le badge « '+(b?.n||'?')+' » pour accéder à cette séance');return;}
+ const requestToken=++videoOpenToken;
+ resetVideoMount();
  currentVid=id;
+ document.getElementById('vdPlaybackMessage').hidden=true;
+ document.getElementById('vdYoutubeLink').href='https://www.youtube.com/watch?v='+encodeURIComponent(v.ytId);
  document.getElementById('vdTitle').textContent=v.title;
  document.getElementById('vdDur').textContent=v.dur;
  document.getElementById('vdCat').textContent=v.cat;
  document.getElementById('vdDosha').textContent=v.dosha;
- document.getElementById('vdBens').innerHTML=v.bens.map((b,i)=>`<div class="vd-ben"><div class="vd-ben-ic">${['','','',''][i]}</div><div class="vd-ben-t">${b}</div></div>`).join('');
+ document.getElementById('vdBens').innerHTML=(Array.isArray(v.bens)?v.bens:[]).map((b,i)=>`<div class="vd-ben"><div class="vd-ben-ic">${['','','',''][i]}</div><div class="vd-ben-t">${b}</div></div>`).join('');
  document.getElementById('vdBtn').style.display='';
  const done=completedVids.has(id);
  const btn=document.getElementById('vdBtn');
@@ -5168,14 +5353,19 @@ async function openVD(id){
  saveProfile();
  }
 
- await loadYouTubeApi();
- if(ytPlayer&&ytPlayer.destroy)ytPlayer.destroy();
+ try{await loadYouTubeApi();}catch(e){if(requestToken===videoOpenToken)showVideoError();return;}
+ if(requestToken!==videoOpenToken||currentVid!==id)return;
+ videoReadyTimer=setTimeout(()=>{if(requestToken===videoOpenToken)showVideoError();},15000);
  ytPlayer=new YT.Player('vdIframe',{
  videoId:v.ytId,
  width:'100%',height:'100%',
- playerVars:{autoplay:1,rel:0,modestbranding:1},
+ playerVars:{autoplay:0,rel:0,playsinline:1,...(/^https?:$/.test(location.protocol)?{origin:location.origin}:{})},
  events:{
+ onReady:()=>{if(requestToken!==videoOpenToken)return;clearTimeout(videoReadyTimer);document.getElementById('vdPlaybackMessage').hidden=true;},
+ onError:(e)=>{if(requestToken===videoOpenToken)showVideoError(e.data);},
+ onAutoplayBlocked:()=>{if(requestToken===videoOpenToken)toast('Appuie sur ▶ dans la vidéo pour démarrer.');},
  onStateChange:(e)=>{
+ if(requestToken!==videoOpenToken)return;
  if(e.data===YT.PlayerState.PLAYING)startWatchTracking();
  else stopWatchTracking();
  }
@@ -5211,9 +5401,8 @@ function stopWatchTracking(){
 }
 
 function closeVD(){
- stopWatchTracking();
- if(ytPlayer&&ytPlayer.destroy){ytPlayer.destroy();ytPlayer=null;}
- document.getElementById('vdIframe').innerHTML='';
+ ++videoOpenToken;
+ resetVideoMount();
  document.getElementById('vdetail').classList.remove('open');
  currentVid=null;
  if(document.fullscreenElement)document.exitFullscreen?.();
@@ -5250,6 +5439,7 @@ function calcStreak(){
 }
 
 function markVDone(){
+ if(isFreeDemo())return;
  if(!currentVid||completedVids.has(currentVid))return;
  // Garde-fou : impossible de valider (même via clic manuel) sans avoir regardé au moins 50%.
  if(ytPlayer&&ytPlayer.getDuration){
@@ -5279,6 +5469,7 @@ function markVDone(){
 }
 
 function updateSessionsMonth(){
+ if(isFreeDemo())return;
  const el=document.getElementById('dSessionsMonth');
  if(!el)return;
  const now=new Date();
@@ -5289,6 +5480,7 @@ function updateSessionsMonth(){
 
 /* ═══════ MODIFIER MES INFORMATIONS ═══════ */
 function openEditInfo(){
+ if(isFreeDemo()){renderFreeDemo('editInfo');return;}
  document.getElementById('eiName').value=userProfile.name||'';
  document.getElementById('eiLastName').value=userProfile.lastName||'';
  document.getElementById('eiEmail').value=userProfile.email||(currentUser?currentUser.email:'')||'';
@@ -5301,6 +5493,7 @@ function openEditInfo(){
  go('editInfo');
 }
 function saveEditInfo(){
+ if(isFreeDemo())return;
  userProfile.name=document.getElementById('eiName').value.trim();
  userProfile.lastName=document.getElementById('eiLastName').value.trim();
  userProfile.email=document.getElementById('eiEmail').value.trim();
@@ -5557,6 +5750,7 @@ function doshaBlockHtml(key,label){
  </div>`;
 }
 function renderDoshaProfile(){
+ if(isFreeDemo()){if(document.getElementById('freeDemoScreen')?.classList.contains('active')&&demoRoute==='doshaProfile')renderFreeDemo('doshaProfile');return;}
  document.getElementById('doshaIntroText').textContent=DOSHA_INTRO_TEXT;
  document.getElementById('dpBarV').style.width=userProfile.doshaV+'%';
  document.getElementById('dpBarP').style.width=userProfile.doshaP+'%';
@@ -5606,6 +5800,7 @@ function showDoshaLongProfile(doshaKey){
 }
 /* ═══════ MA PROGRESSION ═══════ */
 function renderProgression(){
+ if(isFreeDemo()){if(document.getElementById('freeDemoScreen')?.classList.contains('active')&&demoRoute==='progressionScreen')renderFreeDemo('progressionScreen');return;}
   const now=new Date();
   const ym=now.toISOString().slice(0,7); // "2026-08"
 
@@ -5665,6 +5860,7 @@ function renderProgression(){
 
 /* ═══════ PARTAGE SOCIAL DU PROFIL AYURVÉDIQUE ═══════ */
 async function shareDoshaProfile(){
+ if(isFreeDemo())return;
   toast('Génération de ton image...');
   try{
     const blob=await generateDoshaShareImage();
@@ -5792,6 +5988,7 @@ function wrapCenteredText(ctx,text,x,y,maxWidth,lineHeight){
 }
 
 function retakeDoshaQuiz(){
+ if(isFreeDemo()){renderFreeDemo('editInfo');return;}
  retakeDoshaMode=true;
  doshaAnswers={};
  doshaPage=0;
@@ -5905,6 +6102,7 @@ const HOUSES=[
  'Maison 12, Intériorité : l\'inconscient, le spirituel et les épreuves plus discrètes.',
 ];
 function openAstro(){
+ if(isFreeDemo()){renderFreeDemo('astroScreen');return;}
  document.getElementById('astroDate').value=userProfile.birthDate||'';
  document.getElementById('astroTime').value=userProfile.birthTime||'';
  document.getElementById('astroPlace').value=userProfile.birthPlace||'';
@@ -5946,6 +6144,7 @@ function selectBirthCity(idx){
 
 /* ═══════ CALCUL DU THÈME ASTRAL ═══════ */
 async function calculateAstro(){
+ if(isFreeDemo())return;
   const dateVal=document.getElementById('astroDate').value;
   if(!dateVal){toast('Renseigne au moins ta date de naissance');return;}
 
@@ -6096,6 +6295,7 @@ function renderAstralClimate(){
 }
 
 function renderAstroResult(){
+ if(isFreeDemo()){if(document.getElementById('freeDemoScreen')?.classList.contains('active')&&demoRoute==='astroScreen')renderFreeDemo('astroScreen');return;}
   const data=window._astroData;
   if(!data)return;
   const d=new Date(userProfile.birthDate+'T00:00:00');
@@ -6224,7 +6424,7 @@ async function fetchDailyTip(statut){
  const cacheKey=statut+'-'+dosha+'-'+mois;
  if(_dailyTipCache[cacheKey])return _dailyTipCache[cacheKey][dayOfMonth%_dailyTipCache[cacheKey].length];
  try{
- const {data,error}=await sb.from('daily_tips').select('rotation,titre,niveau,texte').eq('statut',statut).eq('dosha',dosha).eq('mois',mois).order('rotation',{ascending:true});
+ const {data,error}=await appTable('daily_tips').select('rotation,titre,niveau,texte').eq('statut',statut).eq('dosha',dosha).eq('mois',mois).order('rotation',{ascending:true});
  if(error||!data||!data.length)throw error||new Error('vide');
  _dailyTipCache[cacheKey]=data;
  return data[dayOfMonth%data.length];
@@ -6303,6 +6503,7 @@ function wellnessScore(w){
  return Math.round((sleepPart+stressPart+moodPart)*10)/10;
 }
 function openWellnessHistory(){
+ if(isFreeDemo()){renderFreeDemo('wellnessHistory');return;}
  const sorted=[...wellnessLog].sort((a,b)=>b.date.localeCompare(a.date));
  const last14=sorted.slice(0,14);
  const moodLabel=['','Fatiguée','Un peu bas','Normal','En forme','Énergique'];
@@ -6336,6 +6537,7 @@ function openWellnessHistory(){
 
 /* ═══════ CYCLE SETTINGS ═══════ */
 function openCycleSettings(){
+ if(isFreeDemo()){renderFreeDemo('cycleSettings');return;}
  document.getElementById('csLastPeriod').value=userProfile.lastPeriodStart||'';
  document.getElementById('csCycleLength').value=userProfile.cycleLength||28;
  const c=getCurrentCycleInfo();
@@ -6349,6 +6551,7 @@ function openCycleSettings(){
  go('cycleSettings');
 }
 function saveCycleSettings(){
+ if(isFreeDemo())return;
  userProfile.lastPeriodStart=document.getElementById('csLastPeriod').value||'';
  const len=parseInt(document.getElementById('csCycleLength').value)||28;
  userProfile.cycleLength=Math.min(45,Math.max(21,len));
@@ -6369,6 +6572,7 @@ function renderRcFilters(){
 function setRcFilter(f){activeRcFilter=f;renderRcFilters();renderRec();}
 
 function renderRec(){
+ if(isFreeDemo()){if(document.getElementById('freeDemoScreen')?.classList.contains('active')&&demoRoute==='recettes')renderFreeDemo('recettes');return;}
  if(document.getElementById('dRecipesTried'))document.getElementById('dRecipesTried').textContent=triedRecipes.size;
  renderRcFilters();
  const q=(document.getElementById('rcSrch')?.value||'').toLowerCase();
@@ -6452,6 +6656,7 @@ function renderRecipeServings(){
 }
 
 function openRC(id){
+ if(isFreeDemo())return;
  const r=RECIPES.find(x=>x.id===id);if(!r)return;
  if(isContentLocked(r)){const b=badgeById(r.unlock_badge);toast('🔒 Débloque le badge « '+(b?.n||'?')+' » pour accéder à cette recette');return;}
  currentRC=r;
@@ -6485,6 +6690,7 @@ function sumFoodEntries(entries){
 }
 
 function addRecipeToday(){
+ if(isFreeDemo())return;
  if(!currentRC)return;
  const servings=selectedServings||1;
  foodLog.push({
@@ -6789,6 +6995,7 @@ async function handleFoodPhoto(event){
 }
 
 function addCustomFoodToday(){
+ if(isFreeDemo())return;
  const name=document.getElementById('cfName').value.trim();
  const cal=parseInt(document.getElementById('cfCal').value)||0;
  const p=parseInt(document.getElementById('cfP').value)||0;
@@ -6816,6 +7023,7 @@ function addCustomFoodToday(){
 }
 
 function removeFoodEntry(ts){
+ if(isFreeDemo())return;
  foodLog=foodLog.filter(e=>e.ts!==ts);
  saveProfile();
  renderFoodJournal();
@@ -6823,6 +7031,7 @@ function removeFoodEntry(ts){
 }
 
 function renderFoodJournal(){
+ if(isFreeDemo())return;
  const wrap=document.getElementById('foodJournalWrap');
  if(!wrap)return;
  const entries=todaysFoodEntries();
@@ -6874,6 +7083,7 @@ function renderFoodJournal(){
 }
 
 function renderFoodHistory(days){
+ if(isFreeDemo())return;
  document.getElementById('foodHist7').classList.toggle('active',days===7);
  document.getElementById('foodHist30').classList.toggle('active',days===30);
  const today=new Date();
@@ -6906,12 +7116,14 @@ function generateReferralCode(){
 }
 
 function ensureReferralCode(){
+ if(isFreeDemo())return;
  if(userProfile.referralCode)return;
  userProfile.referralCode=generateReferralCode();
  saveProfile();
 }
 
 function applyPendingReferral(){
+ if(isFreeDemo())return;
  if(userProfile.referredBy)return; // déjà défini, on ne touche plus jamais à cette valeur
  const pending=localStorage.getItem('pendingReferralCode');
  if(!pending)return;
@@ -6927,13 +7139,15 @@ function applyPendingReferral(){
 }
 
 async function refreshReferralCount(){
+ if(isFreeDemo())return;
  if(!userProfile.referralCode)return;
- const {count}=await sb.from('profiles').select('id',{count:'exact',head:true}).eq('referred_by',userProfile.referralCode);
+ const {count}=await appTable('profiles').select('id',{count:'exact',head:true}).eq('referred_by',userProfile.referralCode);
  referralCount=count||0;
  checkBadges();
 }
 
 async function renderReferralScreen(){
+ if(isFreeDemo()){if(document.getElementById('freeDemoScreen')?.classList.contains('active')&&demoRoute==='profil')renderFreeDemo('profil');return;}
  const el=document.getElementById('referralScreen');
  if(!el)return;
  const link='https://app.holisticaclub.com/?ref='+userProfile.referralCode;
@@ -7011,8 +7225,9 @@ function wtSkip(){
  wtFinish();
 }
 function wtFinish(){
+ if(isFreeDemo())return;
  if(currentUser){
- sb.from('profiles').update({has_seen_walkthrough:true}).eq('id',currentUser.id).then(()=>{});
+ appTable('profiles').update({has_seen_walkthrough:true}).eq('id',currentUser.id).then(()=>{});
  }
  if(userProfile)userProfile.hasSeenWalkthrough=true;
  try{localStorage.setItem('holistica_wt_seen_'+(userProfile&&userProfile.email||''),'1');}catch(e){}
@@ -7037,10 +7252,11 @@ function wtFinish(){
 }
 
 async function toggleBuddyAvailable(checked){
+ if(isFreeDemo())return;
  if(!hasImmersionAccess())return;
  if(!currentUser)return;
  try{
- const {error}=await sb.from('profiles').update({buddy_available:checked}).eq('id',currentUser.id);
+ const {error}=await appTable('profiles').update({buddy_available:checked}).eq('id',currentUser.id);
  if(error){toast('Erreur : '+error.message);return;}
  userProfile.buddyAvailable=checked;
  toast(checked?'Tu es disponible comme binôme':'Tu ne recevras plus de propositions de binôme');

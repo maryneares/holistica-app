@@ -768,7 +768,7 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .ni-ctr{position:absolute;left:50%;top:-13px;transform:translateX(-50%);width:42px;height:42px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;flex-shrink:0;font-size:19px;box-shadow:0 4px 14px rgba(91,78,168,0.4);}
 
 /* ═══ TOAST ═══ */
-.toast{position:fixed;bottom:86px;left:50%;transform:translateX(-50%) translateY(8px);background:var(--purple);color:white;padding:8px 16px;border-radius:50px;font-size:14.5px;font-weight:600;opacity:0;transition:all .3s;z-index:400;white-space:nowrap;box-shadow:0 4px 20px rgba(91,78,168,0.4);}
+.toast{position:fixed;bottom:calc(env(safe-area-inset-bottom) + 96px);left:50%;transform:translateX(-50%) translateY(8px);background:#2E2650;color:white;padding:12px 18px;border-radius:16px;font-size:15px;font-weight:600;line-height:1.4;opacity:0;transition:all .3s;z-index:10000;white-space:normal;text-align:center;width:max-content;max-width:calc(100% - 32px);box-shadow:0 8px 28px rgba(46,38,80,0.45);pointer-events:none;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
 /* Video detail modal */
@@ -2384,10 +2384,20 @@ async function signInWithGoogleNative(){
  }
 
  try{
-   const result=await googlePlugin.signIn();
+   const plat=(window.Capacitor.getPlatform&&window.Capacitor.getPlatform())||'';
+   let rawNonce=null,signInOpts={};
+   if(plat==='android'&&window.crypto&&crypto.subtle){
+     // Android : on fournit un nonce haché à Google et le nonce brut à Supabase (vérification anti-rejeu)
+     rawNonce=Array.from(crypto.getRandomValues(new Uint8Array(16)),b=>b.toString(16).padStart(2,'0')).join('');
+     const h=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(rawNonce));
+     signInOpts={nonce:Array.from(new Uint8Array(h),b=>b.toString(16).padStart(2,'0')).join('')};
+   }
+   const result=await googlePlugin.signIn(signInOpts);
    const idToken=result && result.idToken;
    if(!idToken){toast('Connexion Google annulée');return;}
-   const {error}=await sb.auth.signInWithIdToken({provider:'google',token:idToken});
+   const creds={provider:'google',token:idToken};
+   if(rawNonce)creds.nonce=rawNonce;
+   const {error}=await sb.auth.signInWithIdToken(creds);
    if(error){toast('Erreur : '+error.message);return;}
    // La session est ouverte, la page continue normalement (loadProfileAndEnter suit le flux existant)
  }catch(e){
@@ -7617,7 +7627,33 @@ function shareReferralLink(){
  }
 }
 
-function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+// Traduit en français les messages d'erreur techniques (Supabase, réseau…) avant de les afficher.
+function frMessage(msg){
+ msg=String(msg==null?'':msg);
+ const rules=[
+  [/nonce/i,'La connexion Google n\'a pas pu être validée. Réessaie, ou connecte-toi avec ton e-mail et ton mot de passe.'],
+  [/invalid login credentials/i,'E-mail ou mot de passe incorrect.'],
+  [/email not confirmed/i,'Ton adresse e-mail n\'est pas encore confirmée. Vérifie ta boîte mail (et tes spams).'],
+  [/user already registered|already been registered/i,'Un compte existe déjà avec cette adresse e-mail. Connecte-toi.'],
+  [/password should be at least|password.*(short|characters)/i,'Le mot de passe doit contenir au moins 6 caractères.'],
+  [/same password|different from the old/i,'Choisis un mot de passe différent de l\'ancien.'],
+  [/invalid format|valid email|unable to validate email/i,'Cette adresse e-mail n\'est pas valide.'],
+  [/rate limit|too many|security purposes/i,'Trop de tentatives. Patiente quelques minutes puis réessaie.'],
+  [/expired|invalid.*token|otp/i,'Ce lien a expiré. Recommence la demande.'],
+  [/failed to fetch|network|load failed|timeout/i,'Problème de connexion internet. Vérifie ton réseau et réessaie.'],
+  [/user not found/i,'Aucun compte ne correspond à cette adresse e-mail.'],
+  [/signups not allowed|signup.*disabled/i,'Les inscriptions sont momentanément fermées.'],
+  [/popup|cancel/i,'Connexion annulée.'],
+ ];
+ for(const [re,fr] of rules){ if(re.test(msg)){ const pre=msg.match(/^(Erreur[^:]*:)/); return (pre&&!/annulée/.test(fr)?'':'')+fr; } }
+ // message technique en anglais non reconnu : on affiche un message clair en français
+ const body=msg.replace(/^Erreur[^:]*:\s*/,'');
+ if(body!==msg && /^[\x20-\x7E]+$/.test(body) && /\b(the|is|and|not|should|invalid|error|failed|unable|must|exist|happened|something|could|cannot|request|user|found|missing|required|denied|forbidden|unauthorized)\b/i.test(body))
+  return 'Une erreur est survenue. Réessaie dans un instant.';
+ return msg;
+}
+let _toastTimer=null;
+function toast(msg){const t=document.getElementById('toast');const m=frMessage(msg);t.textContent=m;t.classList.add('show');clearTimeout(_toastTimer);_toastTimer=setTimeout(()=>t.classList.remove('show'),Math.min(7000,Math.max(2500,m.length*55)));}
 
 async /* ═══ TUTORIEL DE BIENVENUE (WALKTHROUGH) ═══ */
 const WT_ICONS={

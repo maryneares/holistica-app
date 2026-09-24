@@ -998,6 +998,20 @@ body.rp-open .bnav{z-index:700;}
 body.rp-open.rp-fullscreen .bnav{display:none !important;}
 .rp-confirm-btn-ghost{background:var(--peach);color:#2A1E1E;text-decoration:none;border-radius:50px;padding:16px 32px;font-family:'League Spartan',sans-serif;font-weight:800;font-size:17px;width:100%;max-width:320px;opacity:.88;}
 </style>
+<style>.cycle-card{padding:22px 20px 20px;}
+.cycle-head{align-items:center;margin-bottom:14px;}
+.cycle-head-l{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.cycle-cal-btn{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,0.24);border:1.5px solid rgba(255,255,255,0.45);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;padding:0;}
+.cycle-cal-btn:active{background:rgba(255,255,255,0.4);}
+.cycle-day{text-align:right;line-height:1.25;}
+.cycle-day b{display:block;font-size:17px;font-weight:800;color:white;}
+.cycle-day span{display:block;font-size:13px;font-weight:600;color:rgba(255,255,255,0.92);white-space:nowrap;}
+.cyc-day.ovu{background:rgba(232,165,112,0.35);color:#8A4B12;font-weight:700;}
+.cyc-cal-dot.ovu{background:rgba(232,165,112,0.6);}
+.pf-notes{margin:14px 20px 0;padding:14px 16px;background:var(--lav-pale);border-radius:14px;font-size:12px;line-height:1.55;color:var(--ink-l);text-align:left;}
+.pf-notes p+p{margin-top:8px;}
+.pf-notes b{color:var(--ink-m);}
+</style>
 <style>
 /* ═══ PROGRAMME SPORT COACHING ═══ */
 .cp-entry{margin:16px 20px 0;background:linear-gradient(135deg,#2E2650,#5B4EA8);border-radius:20px;padding:16px 18px;color:white;display:flex;align-items:center;gap:14px;cursor:pointer;box-shadow:0 10px 26px rgba(91,78,168,.25);}
@@ -1078,8 +1092,8 @@ body.rp-open.rp-fullscreen .bnav{display:none !important;}
 <div class="si-tagline">Prête à prendre soin de toi ?</div>
 </div>
 <div class="si-form">
-<input class="si-input" id="siEmail" type="email" placeholder="e-mail">
-<div class="si-pwd-wrap"><input class="si-input" id="siPassword" type="password" placeholder="mot de passe"><button type="button" class="si-pwd-toggle" onclick="togglePwdVisibility('siPassword',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
+<input class="si-input" id="siEmail" type="email" inputmode="email" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="e-mail">
+<div class="si-pwd-wrap"><input class="si-input" id="siPassword" type="password" autocomplete="current-password" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="mot de passe"><button type="button" class="si-pwd-toggle" onclick="togglePwdVisibility('siPassword',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
 <div class="si-forgot" onclick="handleForgotPassword()">Mot de passe oublié ?</div>
 <button class="btn-w" id="siLoginBtn" onclick="handleSignIn()">Se connecter</button>
 <div class="si-div">ou</div>
@@ -1101,7 +1115,7 @@ body.rp-open.rp-fullscreen .bnav{display:none !important;}
 <div class="si-tagline">Rejoins Holistica Club</div>
 </div>
 <div class="si-form">
-<input class="si-input" id="suEmail" type="email" placeholder="e-mail">
+<input class="si-input" id="suEmail" type="email" inputmode="email" autocomplete="email" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="e-mail">
 <div class="si-pwd-wrap"><input class="si-input" id="suPassword" type="password" placeholder="mot de passe (6 car. min)"><button type="button" class="si-pwd-toggle" onclick="togglePwdVisibility('suPassword',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
 <button class="btn-w" id="suSignupBtn" onclick="handleSignUp()">Créer mon compte</button>
 <div class="si-div">ou</div>
@@ -1200,18 +1214,16 @@ body.rp-open.rp-fullscreen .bnav{display:none !important;}
 <div class="duo-card"><div class="gauge-wrap" id="dRecovGauge"></div><div class="duo-lbl"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--ink-l)" stroke-width="2" stroke-linecap="round" style="vertical-align:-1px;margin-right:3px;"><path d="M12 21c-4-3-8-6.5-8-11a5 5 0 0 1 8-4 5 5 0 0 1 8 4c0 4.5-4 8-8 11z"/></svg>Taux récupération</div><div class="duo-sub">Calculé via humeur + sommeil + stress</div></div>
 <div class="duo-card hl"><div class="gauge-wrap" id="dHormoGauge"></div><div class="duo-lbl"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--ink-l)" stroke-width="2" stroke-linecap="round" style="vertical-align:-1px;margin-right:3px;"><path d="M12 8a4 4 0 1 1 4 4 4 4 0 1 1-4 4 4 4 0 1 1-4-4 4 4 0 1 1 4-4z"/></svg>Indice bien-être féminin</div><div class="duo-sub">Sommeil + stress + humeur</div></div>
 </div>
-<div style="padding:8px 20px 0;text-align:center;font-size:11.5px;color:var(--ink-l);line-height:1.45;">Indices indicatifs de bien-être, calculés à partir de tes données déclarées. Ils ne mesurent pas tes hormones et ne constituent pas un diagnostic. </div>
 <!-- Cycle -->
 <div id="cycleSectionWrap">
 <div class="sec"><h2 id="cycleSecTitle">Ton <em>cycle</em></h2></div>
 <div class="cycle-card" id="cycleCard">
-<div class="cycle-head"><span class="cycle-badge" id="cycleBadge"> Cycle</span><span class="cycle-day" id="cycleDayLbl" onclick="openCycleCalendar()" style="cursor:pointer;">Jour 1</span></div>
+<div class="cycle-head"><div class="cycle-head-l"><span class="cycle-badge" id="cycleBadge"> Cycle</span><button class="cycle-cal-btn" id="cycleCalBtn" onclick="openCycleCalendar()" aria-label="Ouvrir le calendrier de mon cycle"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/><circle cx="12" cy="15" r="1.3" fill="white" stroke="none"/></svg></button></div><div class="cycle-day" id="cycleDayLbl">Jour 1</div></div>
 <div class="cycle-bar"><div class="cycle-bar-fill" id="cycleBarFill" style="width:0%"></div></div>
 <div class="cycle-msg-t" id="cycleMsgTitle"></div>
 <div class="cycle-msg" id="cycleMsgBody"></div>
 <div class="cycle-energy" id="cycleEnergy"></div>
 </div>
-<div style="text-align:center;margin-top:8px;font-size:11.5px;color:var(--ink-l);line-height:1.45;">Phase estimée à partir des informations saisies ; ce suivi ne confirme pas l’ovulation et ne doit pas être utilisé comme méthode contraceptive. </div>
 </div>
 
 <!-- Mood -->
@@ -1443,6 +1455,7 @@ body.rp-open.rp-fullscreen .bnav{display:none !important;}
 <div class="pa" onclick="confirmDeleteAccount()" style="border:1px solid rgba(200,80,80,0.25);"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C85050" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M6 7l1 13a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-13"/><path d="M10 11v6M14 11v6"/></svg></div><div class="pa-body"><div class="pa-t" style="color:#C85050;">Supprimer mon compte</div><div class="pa-s">Effacer définitivement mes données</div></div><span class="pa-arr">›</span></div>
 </div>
 <div style="text-align:center;padding:20px 20px 0;"><button class="profile-legal-link" onclick="openSources('profil')">Confidentialité & ressources scientifiques</button></div>
+<div class="pf-notes"><p><b>Indices du jour :</b> indices indicatifs de bien-être, calculés à partir de tes données déclarées. Ils ne mesurent pas tes hormones et ne constituent pas un diagnostic.</p><p><b>Suivi du cycle :</b> phase estimée à partir des informations saisies ; ce suivi ne confirme pas l’ovulation et ne doit pas être utilisé comme méthode contraceptive.</p></div>
 <div style="text-align:center;padding:24px 20px 10px;font-size:11.5px;color:var(--ink-l);">Contact & support : <a href="mailto:info@maryneares.fr" style="color:var(--ink-l);text-decoration:underline;">info@maryneares.fr</a></div>
 </div>
 </div>
@@ -1579,7 +1592,7 @@ Partager mon profil
 <div class="scroll" style="padding:0 24px calc(env(safe-area-inset-bottom) + 100px);">
 <div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Mon <em>cycle</em></div>
 <div class="f-row-app"><label>Premier jour de tes dernières règles</label><input type="date" id="csLastPeriod" class="ob-input dt-input"></div>
-<div class="f-row-app"><label>Durée moyenne de ton cycle</label><div class="cycle-len-input" style="width:100%;justify-content:center;"><input type="number" id="csCycleLength" min="21" max="45" value="28" style="width:50px;font-size:19px;"><span>jours</span></div></div>
+<div class="f-row-app"><label>Durée moyenne de ton cycle</label><div class="cycle-len-input" style="width:100%;justify-content:center;"><input type="number" id="csCycleLength" min="15" max="60" value="28" style="width:50px;font-size:19px;"><span>jours</span></div></div>
 <button class="btn-ob" style="margin-top:6px;" onclick="saveCycleSettings()">Enregistrer</button>
 
 <div id="csCycleSummary" style="display:none;margin-top:18px;background:linear-gradient(160deg,#7B6EC8,#C98FB0);border-radius:16px;padding:16px 18px;text-align:center;cursor:pointer;" onclick="openCycleCalendar()">
@@ -2257,7 +2270,7 @@ function togglePwdVisibility(inputId,btn){
 
 
 async function handleSignIn(){
- const email=document.getElementById('siEmail').value.trim();
+ const email=document.getElementById('siEmail').value.trim().toLowerCase();
  const password=document.getElementById('siPassword').value;
  if(!email||!password){toast('Entre ton email et mot de passe');return;}
  const btn=document.getElementById('siLoginBtn');btn.textContent='Connexion...';
@@ -2283,7 +2296,7 @@ async function confirmNewPassword(){
 }
 
 async function handleForgotPassword(){
- const email=document.getElementById('siEmail').value.trim();
+ const email=document.getElementById('siEmail').value.trim().toLowerCase();
  if(!email){toast('Entre d\'abord ton email ci-dessus, puis reclique');return;}
  const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+window.location.pathname});
  if(error){toast('Erreur : '+error.message);return;}
@@ -2307,7 +2320,7 @@ async function claimPendingSubscription(){
 }
 
 async function handleSignUp(){
- const email=document.getElementById('suEmail').value.trim();
+ const email=document.getElementById('suEmail').value.trim().toLowerCase();
  const password=document.getElementById('suPassword').value;
  if(!email||!password){toast('Entre un email et un mot de passe (6 car. min)');return;}
  if(password.length<6){toast('Le mot de passe doit faire au moins 6 caractères');return;}
@@ -4628,14 +4641,16 @@ function updateLevel(){
 function updateCycleLength(v){
  if(isFreeDemo())return;
  const len=parseInt(v)||28;
- userProfile.cycleLength=Math.min(45,Math.max(21,len));
+ userProfile.cycleLength=Math.min(60,Math.max(15,len));
  if(document.getElementById('cycleLenInput'))document.getElementById('cycleLenInput').value=userProfile.cycleLength;
  saveProfile();
  renderCycle();
  toast('Durée de cycle mise à jour ✓');
 }
+// Ovulation estimée vers la moitié du cycle, quelle que soit sa durée (15 à 60 jours).
+function getOvulationDay(len){len=len||28;return Math.max(6,Math.min(len-3,Math.round(len/2)));}
 function getCyclePhaseInfo(cycleDay,daysUntilNext,cycleLength){
- const ovDay=Math.max(11,cycleLength-14); // jour d'ovulation estimé (phase lutéale ~14j, constante)
+ const ovDay=getOvulationDay(cycleLength); // jour d'ovulation estimé, vers le milieu du cycle
  if(cycleDay===1)return{phase:'Menstruelle',emoji:'',energy:'Basse',title:'Jour 1, Début du cycle',text:'Ton cycle commence aujourd\'hui. C\'est une phase de renouvellement : ton corps élimine l\'ancienne muqueuse utérine. Ton énergie peut être plus basse, alors privilégie le repos, l\'écoute de toi et des activités douces (marche lente, étirements). Crampes, fatigue ou maux de tête sont fréquents ces premiers jours, rien d\'anormal. Pense aux infusions de gingembre, d\'achillée millefeuille ou de feuilles de framboisier pour soulager les douleurs, et repose-toi, ralentis.'};
  if(cycleDay<=3)return{phase:'Menstruelle',emoji:'',energy:'Basse',title:'Jour '+cycleDay+', Phase menstruelle',text:'Ton corps travaille activement. Accorde-toi plus de pauses, hydrate-toi bien et choisis des mouvements doux comme la marche, le yoga ou les étirements. Crampes, tension dans le bas du ventre ou fatigue peuvent encore être présentes. Continue les infusions de gingembre, d\'achillée millefeuille ou de feuilles de framboisier pour les douleurs, repose-toi, ralentis.'};
  if(cycleDay<=5)return{phase:'Menstruelle',emoji:'',energy:'Basse à moyenne',title:'Jour '+cycleDay+', Fin des règles',text:'Ton énergie revient progressivement. C\'est un bon moment pour reprendre doucement tes projets, avec un mouvement un peu plus soutenu (marche active, yoga dynamique léger).'};
@@ -4664,6 +4679,7 @@ function getCycleSummaryText(c){
  const nextPeriodLbl=nextPeriodDate.toLocaleDateString('fr-FR',{day:'numeric',month:'long'});
  return 'Jour '+c.cycleDay+'/'+c.len+' - règles dans '+c.daysUntilNext+' j le '+nextPeriodLbl;
 }
+function rpSyncCycleCalBtn(show){const b=document.getElementById('cycleCalBtn');if(b)b.style.display=show?'flex':'none';}
 function getCurrentCycleInfo(){
  if(!userProfile.hasPeriod||userProfile.menopause||!userProfile.lastPeriodStart)return null;
  const len=userProfile.cycleLength||28;
@@ -4696,10 +4712,17 @@ function openCycleCalendar(){
  // Avance ensuite jusqu'à après la fin de l'année, en gardant toutes les dates dans la plage utile
  while(cursor<=yearEnd){
  const periodEnd=new Date(cursor);periodEnd.setDate(periodEnd.getDate()+4);
- if(periodEnd>=yearStart)periodStarts.push(new Date(cursor));
+ periodStarts.push(new Date(cursor)); // on garde aussi le cycle à cheval sur le 1er janvier (ovulation)
  cursor=new Date(cursor);cursor.setDate(cursor.getDate()+len);
  }
 
+ const ovD=getOvulationDay(len);
+ function isOvuDay(date){
+ return periodStarts.some(start=>{
+ const diff=Math.floor((date-start)/86400000)+1;
+ return diff>=ovD-1 && diff<=ovD+1;
+ });
+ }
  function isPeriodDay(date){
  return periodStarts.some(start=>{
  const diff=Math.floor((date-start)/86400000);
@@ -4721,6 +4744,7 @@ function openCycleCalendar(){
  const date=new Date(year,m,d);
  const classes=['cyc-day'];
  if(isPeriodDay(date))classes.push('period');
+ else if(isOvuDay(date))classes.push('ovu');
  if(date.getTime()===today.getTime())classes.push('today');
  daysHtml+='<div class="'+classes.join(' ')+'">'+d+'</div>';
  }
@@ -4762,6 +4786,7 @@ function energyExtraNotes(){
 
 async function renderCycle(){
  if(isFreeDemo())return;
+ rpSyncCycleCalBtn(!!(!userProfile.menopause&&!userProfile.perimenopause&&!userProfile.contraception&&getCurrentCycleInfo()));
  if(document.getElementById('cycleLenInput'))document.getElementById('cycleLenInput').value=userProfile.cycleLength;
 
  // Trois profils sans cycle actif suivi, chacun avec son propre contenu :
@@ -4827,7 +4852,9 @@ async function renderCycle(){
  return;
  }
  document.getElementById('cycleBadge').textContent=c.emoji+' '+c.phase;
- document.getElementById('cycleDayLbl').textContent=getCycleSummaryText(c);
+ {const nd=new Date();nd.setHours(0,0,0,0);nd.setDate(nd.getDate()+c.daysUntilNext);
+ const lbl=nd.toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'long'}).replace('.','');
+ document.getElementById('cycleDayLbl').innerHTML='<b>Jour '+c.cycleDay+'/'+c.len+'</b><span>Règles dans '+c.daysUntilNext+' j · '+lbl+'</span>';}
  document.getElementById('cycleBarFill').style.width=Math.round(c.cycleDay/c.len*100)+'%';
  document.getElementById('cycleMsgTitle').textContent=c.title;
  document.getElementById('cycleMsgBody').textContent=c.text;
@@ -7009,7 +7036,7 @@ function saveCycleSettings(){
  if(isFreeDemo())return;
  userProfile.lastPeriodStart=document.getElementById('csLastPeriod').value||'';
  const len=parseInt(document.getElementById('csCycleLength').value)||28;
- userProfile.cycleLength=Math.min(45,Math.max(21,len));
+ userProfile.cycleLength=Math.min(60,Math.max(15,len));
  saveProfile();
  renderCycle();
  buildRoutine();
@@ -7793,7 +7820,7 @@ go = function(id){
 <div class="cyc-cal-title">Ton calendrier <em>annuel</em></div>
 <button class="cyc-cal-close" onclick="closeCycleCalendar()">✕</button>
 </div>
-<div class="cyc-cal-legend"><span class="cyc-cal-dot"></span> Règles prévues (5 jours)</div>
+<div class="cyc-cal-legend"><span class="cyc-cal-dot"></span> Règles prévues (5 jours) <span class="cyc-cal-dot ovu" style="margin-left:12px;"></span> Ovulation estimée</div>
 <div class="cyc-cal-grid" id="cycCalGrid"></div>
 </div>
 </div>

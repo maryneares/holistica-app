@@ -590,6 +590,9 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .ch-week h3{font-size:15px;color:var(--purple-m);margin:0;}
 .ch-badges{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0;}
 .ch-badges span{background:var(--lav-pale);color:var(--purple-m);padding:7px 10px;border-radius:20px;font-size:12px;font-weight:700;}
+.ch-signature{margin:24px auto 32px;text-align:center;width:160px;max-width:60%;}
+.ch-signature img{display:block;width:100%;height:auto;max-height:190px;object-fit:contain;margin:0 auto;}
+.ch-signature figcaption{margin-top:8px;font-size:13px;color:var(--ink-l);}
 .ch-closing{margin:24px 20px 32px;color:var(--ink-l);font-size:14px;line-height:1.65;text-align:center;}
 .ch-top{background:var(--grad-h);padding:48px 20px 22px;flex-shrink:0;position:relative;overflow:hidden;}
 .ch-h1{font-family:'League Spartan',sans-serif;font-size:26px;color:white;font-weight:800;letter-spacing:-.01em;position:relative;z-index:1;}
@@ -878,7 +881,8 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 /* Navigation et accueil restaurés d’après les captures de référence. */
 #nextStepBanner[hidden]{display:none!important;}
 #dashboard .journey-evo{display:block;}
-#dashboard>.d-top,#mouvement>.mv-top,#recettes>.rc-top,#naturo>.rc-top{position:sticky;top:0;z-index:5;}
+.screen>.d-top,.screen>.mv-top,.screen>.rc-top,.screen>.ch-top,.screen>.pf-top{position:relative;top:auto;}
+.screen>.scroll{flex-shrink:0;}
 .ni{min-width:0;min-height:44px;}
 .ni-l{font-size:clamp(8px,2.3vw,10px);letter-spacing:0;}
 .ni:focus-visible,.ni-ctr:focus-visible{outline:2px solid var(--purple);outline-offset:2px;}
@@ -1860,7 +1864,7 @@ function renderChallenge(){
  <p>Tu n’avances pas seule. Les échanges, les partages, les questions, les réussites et les petits coups de motivation se retrouvent dans notre groupe.</p>
  <div class="ch-badges"><span>Pas de spam</span><span>Pas envahissant</span><span>Tu participes quand tu le souhaites</span></div>
  <p>Retrouve les échanges et les informations du mois dans notre groupe Immersion.</p></section>
- <p class="ch-closing">Envie d’aller plus loin ? Retrouve les échanges, les détails des challenges, les annonces et les nouveautés directement dans notre groupe Immersion.</p>`;
+ <p class="ch-closing">Envie d’aller plus loin ? Retrouve les échanges, les détails des challenges, les annonces et les nouveautés directement dans notre groupe Immersion.</p><figure class="ch-signature"><img src="https://d1yei2z3i6k35z.cloudfront.net/125337/6a6b68a0e66b11.10456858_6a462a575b9503.59317668_dfghn.png" alt="Maryne Ares" loading="lazy" decoding="async"><figcaption>par Maryne Ares</figcaption></figure>`;
  upgrade.innerHTML='';
 }
 
@@ -1935,7 +1939,7 @@ function renderFreeDemo(route){
  else if(route==='recettes')content=demoCard('Recettes essayées',String(t.recipes))+demoList(d.recipes);
  else if(route==='naturo'||route==='doshaProfile')content=demoList(d.naturo);
  else if(route==='dietPlan')content=demoCard('Aperçu de démonstration','Exemples fixes, sans personnalisation. Les plans personnels sont réservés à Immersion.')+demoList(d.meals);
- else if(route==='challenge')content=demoCard('Découvrir la communauté',d.community);
+ else if(route==='challenge')content=demoCard('Découvrir la communauté',d.community)+`<figure class="ch-signature"><img src="https://d1yei2z3i6k35z.cloudfront.net/125337/6a6b68a0e66b11.10456858_6a462a575b9503.59317668_dfghn.png" alt="Maryne Ares" loading="lazy" decoding="async"><figcaption>par Maryne Ares</figcaption></figure>`;
  else if(route==='profil'){
  content=demoCard('Mon compte Holistica','Mode gratuit : découverte avec des données fictives fixes. Les plans Équilibre et Immersion utilisent ton vrai profil.')+`<div style="padding:0 20px"><button class="journey-replay-btn" onclick="refreshMembership()">Actualiser mon accès</button></div>`;
  for(const [id,label] of [['editInfo','Mes informations de démonstration'],['doshaProfile','Mon profil ayurvédique'],['wellnessHistory','Historique bien-être'],['progressionScreen','Ma progression'],['badgesScreen','Mes badges'],['cycleSettings','Mon cycle'],['astroScreen','Mon astrologie']])content+=`<button class="demo-profile-row" onclick="go('${id}')">${label}<span>›</span></button>`;

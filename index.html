@@ -946,6 +946,56 @@ document.addEventListener('DOMContentLoaded', function(){
  }
 });
 </script>
+<style>/* ═══ Lecteur routine v2 : bandes blanches, menu visible, plein écran à la demande ═══ */
+.routine-player{background:#fff;bottom:var(--rp-bottom,0px);}
+.routine-player.rp-full{bottom:0;z-index:600;background:#000;}
+.rp-topband{flex-shrink:0;background:#fff;padding:calc(env(safe-area-inset-top) + 8px) 16px 10px;position:relative;z-index:6;}
+.rp-topband .rp-progress{position:relative;top:auto;left:auto;right:auto;height:5px;border-radius:6px;background:var(--lav-pale);overflow:hidden;}
+.rp-topband-row{display:flex;align-items:center;justify-content:space-between;margin-top:9px;min-height:34px;}
+.rp-counter{font-family:'League Spartan',sans-serif;font-weight:800;font-size:14px;color:var(--purple);}
+.rp-topband-right{display:flex;align-items:center;gap:8px;}
+.rp-topband .rp-duree-badge{position:static;background:var(--lav-pale);color:var(--purple);backdrop-filter:none;}
+.rp-topband .rp-duree-badge svg{stroke:var(--purple);}
+.rp-topband .rp-mute-btn{position:static;background:var(--lav-pale);backdrop-filter:none;width:36px;height:36px;}
+.rp-topband .rp-mute-btn svg{stroke:var(--purple);}
+.rp-video-area{position:relative;flex:1;min-height:0;overflow:hidden;background:#fff;}
+.rp-video-area .rp-stage{position:absolute;inset:0;}
+.rp-clip video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;background:#fff;}
+.rp-clip iframe{position:absolute;inset:0;pointer-events:none;}
+.rp-title{top:14px;left:64px;right:64px;font-size:26px;line-height:1.15;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;pointer-events:none;}
+.rp-title.long{font-size:20px;}
+.rp-home{top:12px;left:12px;width:44px;height:44px;background:var(--purple-m);backdrop-filter:none;box-shadow:0 6px 16px rgba(91,78,168,.4);z-index:7;}
+.rp-pause-ind{position:absolute;left:50%;top:50%;width:76px;height:76px;margin:-38px 0 0 -38px;border-radius:50%;background:rgba(91,78,168,.75);display:none;align-items:center;justify-content:center;z-index:6;pointer-events:none;}
+.routine-player.rp-paused .rp-pause-ind{display:flex;}
+.rp-countdown{z-index:15;}
+.rp-bottomband{flex-shrink:0;background:#fff;display:flex;align-items:center;justify-content:space-between;padding:12px 16px 22px;position:relative;z-index:6;}
+.rp-bb-side{width:48px;display:flex;}
+.rp-bb-side.right{justify-content:flex-end;}
+.rp-bottomband .rp-nav-col{position:static;flex-direction:row;gap:22px;}
+.rp-bottomband .rp-nav-btn{width:58px;height:58px;background:var(--lav-pale);border:none;backdrop-filter:none;}
+.rp-bottomband .rp-nav-btn svg{stroke:var(--purple);}
+.rp-bottomband .rp-nav-btn-next{background:var(--grad-warm);box-shadow:0 8px 20px rgba(91,78,168,.35);}
+.rp-bottomband .rp-nav-btn-next svg{stroke:#fff;}
+.rp-full-btn,.rp-full-exit{width:44px;height:44px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.rp-full-btn{background:var(--lav-pale);}
+.rp-full-btn svg{stroke:var(--purple);}
+.rp-full-exit{position:absolute;top:12px;right:12px;z-index:7;background:rgba(0,0,0,.45);display:none;}
+/* plein écran : la vidéo occupe tout l'écran, les boutons passent par-dessus */
+.routine-player.rp-full .rp-topband{display:none;}
+.routine-player.rp-full .rp-video-area{background:#000;}
+.routine-player.rp-full .rp-home{top:calc(env(safe-area-inset-top) + 12px);}
+.routine-player.rp-full .rp-title{top:calc(env(safe-area-inset-top) + 16px);}
+.routine-player.rp-full .rp-full-exit{display:flex;top:calc(env(safe-area-inset-top) + 12px);}
+.routine-player.rp-full .rp-bottomband{position:absolute;left:0;right:0;bottom:0;background:transparent;padding-bottom:calc(env(safe-area-inset-bottom) + 22px);}
+.routine-player.rp-full .rp-full-btn{display:none;}
+.routine-player.rp-full .rp-bottomband .rp-nav-btn:not(.rp-nav-btn-next){background:rgba(255,255,255,.85);}
+/* écran d'intro : dégradé plein cadre, pas de bandes */
+.routine-player.rp-intro-mode .rp-topband,.routine-player.rp-intro-mode .rp-bottomband{display:none;}
+.routine-player.rp-intro-mode .rp-home{top:calc(env(safe-area-inset-top) + 12px);}
+.rp-intro-start{background:var(--peach);color:#2A1E1E;border:none;border-radius:50px;padding:16px 32px;font-family:'League Spartan',sans-serif;font-weight:800;font-size:17px;cursor:pointer;width:100%;max-width:320px;box-shadow:0 10px 24px rgba(42,30,30,.18);flex-shrink:0;}
+/* boutons secondaires des écrans de fin : orange aussi */
+.rp-confirm-btn-ghost{background:var(--peach);color:#2A1E1E;text-decoration:none;border-radius:50px;padding:16px 32px;font-family:'League Spartan',sans-serif;font-weight:800;font-size:17px;width:100%;max-width:320px;opacity:.88;}
+</style>
 <style>
 /* ═══ PROGRAMME SPORT COACHING ═══ */
 .cp-entry{margin:16px 20px 0;background:linear-gradient(135deg,#2E2650,#5B4EA8);border-radius:20px;padding:16px 18px;color:white;display:flex;align-items:center;gap:14px;cursor:pointer;box-shadow:0 10px 26px rgba(91,78,168,.25);}
@@ -1002,7 +1052,7 @@ document.addEventListener('DOMContentLoaded', function(){
 .cp-p-prog{height:5px;background:rgba(255,255,255,.18);border-radius:6px;margin-top:6px;overflow:hidden;}
 .cp-p-prog>div{height:100%;background:linear-gradient(90deg,#9B6EC8,#F4A24C);}
 .cp-p-video{position:relative;width:100%;padding-bottom:100%;background:#000;}
-.cp-p-video iframe{position:absolute;inset:0;width:100%;height:100%;border:0;pointer-events:none;}
+.cp-p-video iframe,.cp-p-video video{position:absolute;inset:0;width:100%;height:100%;border:0;pointer-events:none;object-fit:cover;background:#1A1828;}
 .cp-p-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 22px;text-align:center;}
 .cp-p-name{font-size:22px;font-weight:800;text-transform:capitalize;}
 .cp-p-val{font-family:'League Spartan',sans-serif;font-size:56px;font-weight:800;line-height:1.05;margin-top:6px;background:linear-gradient(90deg,#C8BEED,#F4A24C);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
@@ -1774,33 +1824,46 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 </div>
 </div>
 
-<!-- LECTEUR ROUTINE PLEIN ÉCRAN (format vertical, façon Reels/TikTok) -->
+<!-- LECTEUR ROUTINE (bandes blanches, menu de l'app visible, plein écran à la demande) -->
 <div class="routine-player" id="routinePlayer">
+<div class="rp-topband">
 <div class="rp-progress"><div class="rp-progress-fill" id="rpProgressFill"></div></div>
-<button class="rp-home" id="rpHomeBtn" onclick="handleTopLeftButton()">
-<svg id="rpHomeIconHouse" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
-<svg id="rpHomeIconBack" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><path d="M19 12H5"/><path d="M11 18l-6-6 6-6"/></svg>
-</button>
-<div class="rp-edge-gradient-top"></div>
-<div class="rp-edge-gradient-bottom"></div>
-<div class="rp-title" id="rpTitle"></div>
+<div class="rp-topband-row">
+<span class="rp-counter" id="rpCounter"></span>
+<div class="rp-topband-right">
 <div class="rp-duree-badge" id="rpDureeBadge" style="display:none;">
 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
 <span id="rpDureeTxt"></span>
 </div>
-<button class="rp-mute-btn" id="rpMuteBtn" onclick="toggleRoutineMute()">
-<svg id="rpMuteIconOn" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
-<svg id="rpMuteIconOff" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+<button class="rp-mute-btn" id="rpMuteBtn" onclick="toggleRoutineMute()" aria-label="Activer ou couper le son">
+<svg id="rpMuteIconOn" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+<svg id="rpMuteIconOff" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
 </button>
+</div>
+</div>
+</div>
+<div class="rp-video-area" id="rpVideoArea">
 <div class="rp-stage" id="rpStage"></div>
+<div class="rp-title" id="rpTitle"></div>
+<button class="rp-home" id="rpHomeBtn" onclick="handleTopLeftButton()" aria-label="Retour">
+<svg id="rpHomeIconHouse" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
+<svg id="rpHomeIconBack" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><path d="M19 12H5"/><path d="M11 18l-6-6 6-6"/></svg>
+</button>
+<div class="rp-pause-ind" id="rpPauseInd"><svg width="34" height="34" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div>
+<button class="rp-full-exit" onclick="rpToggleFull()" aria-label="Quitter le plein écran"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg></button>
 <div class="rp-countdown" id="rpCountdown"><div class="rp-countdown-num" id="rpCountdownNum">3</div></div>
+</div>
+<div class="rp-bottomband">
+<div class="rp-bb-side"></div>
 <div class="rp-nav-col">
-<button class="rp-nav-btn" id="rpPrevBtn" onclick="goToPreviousClip()">
-<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+<button class="rp-nav-btn" id="rpPrevBtn" onclick="goToPreviousClip()" aria-label="Mouvement précédent">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
 </button>
-<button class="rp-nav-btn rp-nav-btn-next" id="rpNextBtn" onclick="advanceRoutineManually()">
-<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+<button class="rp-nav-btn rp-nav-btn-next" id="rpNextBtn" onclick="advanceRoutineManually()" aria-label="Mouvement suivant">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
 </button>
+</div>
+<div class="rp-bb-side right"><button class="rp-full-btn" onclick="rpToggleFull()" aria-label="Plein écran"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button></div>
 </div>
 <div class="rp-exit-confirm" id="rpExitConfirm">
 <div class="rp-confirm-title" id="rpConfirmTitle">Fin de la séance</div>
@@ -3314,6 +3377,7 @@ function renderAddFoodPanelHtml(){
 }
 
 function go(id){
+ {const _rp=document.getElementById('routinePlayer');if(_rp&&_rp.classList.contains('open'))closeRoutinePlayer();}
  if(isFreeDemo()&&!['sources','privacy','signin','signup','resetPassword'].includes(id)){renderFreeDemo(id);return;}
  if(id==='privacy')id='sources';
  if(['dietPlan','challenge'].includes(id)&&!hasImmersionAccess()){
@@ -5007,7 +5071,10 @@ function cpShowStep(){
   if(st.type==='ex'){
     const c=cpClipsMap[st.e.clip_id]||{};
     vid.style.display='block';
-    vid.innerHTML=c.yt_id?`<iframe src="https://iframe.mediadelivery.net/embed/${BUNNY_LIBRARY_ID}/${encodeURIComponent(c.yt_id)}?autoplay=true&loop=true&muted=true&controls=false&preload=true" allow="autoplay;encrypted-media" loading="eager"></iframe>`:'';
+    const base=c.yt_id?`https://${BUNNY_CDN_HOST}/${encodeURIComponent(c.yt_id)}`:'';
+    vid.innerHTML=c.yt_id?`<video src="${base}/play_720p.mp4" poster="${base}/thumbnail.jpg" playsinline webkit-playsinline muted loop autoplay preload="auto"></video>`:'';
+    const ve=vid.querySelector('video');
+    if(ve){ve.muted=true;ve.play().catch(()=>{});ve.addEventListener('error',()=>{vid.innerHTML=`<iframe src="https://iframe.mediadelivery.net/embed/${BUNNY_LIBRARY_ID}/${encodeURIComponent(c.yt_id)}?autoplay=true&loop=true&muted=true&preload=true" allow="autoplay;encrypted-media"></iframe>`;},{once:true});}
     const isTime=st.e.mode==='duree';
     body.innerHTML=`<div class="cp-p-name">${cpEsc(c.nom||'Mouvement')}</div><div class="cp-p-val" id="cpPVal">${isTime?cpFmtSec(st.e.valeur||30):'× '+(st.e.valeur||10)}</div>${st.e.note?`<div class="cp-p-note">${cpEsc(st.e.note)}</div>`:''}`;
     main.textContent=p.i===p.steps.length-1?'Terminer ✓':'Suivant ✓';
@@ -5057,6 +5124,75 @@ function cpMainBtn(){
   cpNext();
 }
 
+/* ═══ Lecteur routine v2 : vidéo MP4 nette (Bunny, 720p), pause au toucher, plein écran, menu visible ═══ */
+const BUNNY_CDN_HOST='vz-324eb4c7-4ea.b-cdn.net';
+function bunnyVideoHtml(clip){
+ const base=`https://${BUNNY_CDN_HOST}/${encodeURIComponent(clip.yt_id)}`;
+ return `<video class="rp-vid" data-clip="${clip.id}" src="${base}/play_720p.mp4" poster="${base}/thumbnail.jpg" playsinline webkit-playsinline preload="auto" ${rpIsMuted?'muted':''} autoplay></video>`;
+}
+function rpCurrentMedia(){
+ const clips=document.querySelectorAll('#rpStage .rp-clip');
+ const last=clips[clips.length-1];
+ return last?(last.querySelector('video')||last.querySelector('iframe')):null;
+}
+function rpAttachVideo(clip,onEnded){
+ const v=rpCurrentMedia();
+ if(!v||v.tagName!=='VIDEO')return;
+ v.muted=rpIsMuted;
+ v.addEventListener('ended',()=>{ if(_bunnyEndedCallback===onEnded)onEnded(); });
+ let fellBack=false;
+ v.addEventListener('error',()=>{
+  // si le MP4 n'est pas disponible, on revient au lecteur Bunny classique
+  if(fellBack)return;fellBack=true;
+  const wrap=v.parentElement;if(wrap)wrap.innerHTML=bunnyIframeHtml(clip);
+ });
+ const p=v.play();
+ if(p&&p.catch)p.catch(()=>{ v.muted=true;rpIsMuted=true;rpSyncMuteIcons();v.play().catch(()=>{}); });
+}
+function rpSyncMuteIcons(){
+ document.getElementById('rpMuteIconOn').style.display=rpIsMuted?'none':'block';
+ document.getElementById('rpMuteIconOff').style.display=rpIsMuted?'block':'none';
+}
+let rpPaused=false;
+function rpSetPaused(p){
+ rpPaused=p;
+ document.getElementById('routinePlayer').classList.toggle('rp-paused',p);
+}
+function rpTogglePause(){
+ if(routineIndex<0)return;
+ const clip=routineQueue[routineIndex];if(!clip)return;
+ const m=rpCurrentMedia();
+ if(!rpPaused){
+  if(m&&m.tagName==='VIDEO')m.pause();
+  else if(m&&m.contentWindow)try{m.contentWindow.postMessage(JSON.stringify({context:'player.js',version:'0.0.11',method:'pause'}),'*');}catch(e){}
+  clearRoutineAutoTimer();
+  recordWatchedTime(clip);
+  rpSetPaused(true);
+ }else{
+  if(m&&m.tagName==='VIDEO')m.play().catch(()=>{});
+  else if(m&&m.contentWindow)try{m.contentWindow.postMessage(JSON.stringify({context:'player.js',version:'0.0.11',method:'play'}),'*');}catch(e){}
+  clipStartTimestamp=Date.now();
+  // filet de sécurité : relance l'avance automatique sur le temps restant
+  const remaining=(m&&m.tagName==='VIDEO'&&m.duration)?(m.duration-m.currentTime):clip.duree_sec;
+  if(_bunnyEndedCallback)_rpAutoTimer=setTimeout(_bunnyEndedCallback,(Math.max(1,remaining)+2)*1000);
+  rpSetPaused(false);
+ }
+}
+function rpToggleFull(){
+ document.getElementById('routinePlayer').classList.toggle('rp-full');
+}
+// Le lecteur s'arrête au-dessus du menu de l'app, pour que le menu reste visible pendant les vidéos.
+function rpFitAboveMenu(){
+ const nav=document.getElementById('bnav');
+ const pl=document.getElementById('routinePlayer');
+ if(!pl)return;
+ if(nav&&getComputedStyle(nav).display!=='none'){
+  const top=nav.getBoundingClientRect().top;
+  pl.style.setProperty('--rp-bottom',Math.max(0,Math.round(window.innerHeight-top))+'px');
+ }else pl.style.setProperty('--rp-bottom','0px');
+}
+window.addEventListener('resize',()=>{ if(document.getElementById('routinePlayer').classList.contains('open'))rpFitAboveMenu(); });
+
 async function playRoutine(clipIds,routineTypeId){
  if(isFreeDemo())return;
  const clips=await fetchMovementClips();
@@ -5067,14 +5203,16 @@ async function playRoutine(clipIds,routineTypeId){
  totalWatchedSec=0;
  clipStartTimestamp=null;
  if(!routineQueue.length)return;
+ document.getElementById('routinePlayer').classList.remove('rp-full','rp-paused');rpPaused=false;
  document.getElementById('routinePlayer').classList.add('open');
+ rpFitAboveMenu();
  setupRoutineSwipe();
  showIntroSlide(false);
 }
 let currentRoutineTypeId=null;
 function closeRoutinePlayer(){
  clearRoutineAutoTimer();
- document.getElementById('routinePlayer').classList.remove('open');
+ document.getElementById('routinePlayer').classList.remove('open','rp-full','rp-paused','rp-intro-mode');rpPaused=false;
  document.getElementById('rpExitConfirm').classList.remove('open');
  document.getElementById('rpWarnModal').classList.remove('open');
  document.getElementById('rpStage').innerHTML='';
@@ -5201,6 +5339,8 @@ function toggleRoutineMute(){
  document.getElementById('rpMuteIconOn').style.display=rpIsMuted?'none':'block';
  document.getElementById('rpMuteIconOff').style.display=rpIsMuted?'block':'none';
  // recharge le clip en cours avec le nouvel état du son
+ const _m=rpCurrentMedia();
+ if(_m&&_m.tagName==='VIDEO'){_m.muted=rpIsMuted;if(!rpIsMuted&&!rpPaused)_m.play().catch(()=>{});return;}
  if(routineIndex>=0)openRoutineClip(false);
 }
 function advanceRoutineManually(){
@@ -5238,6 +5378,7 @@ function setupRoutineSwipe(){
  if(deltaY>50)advanceRoutineManually(); // doigt qui remonte = suivant
  else if(deltaY<-50)goToPreviousClip(); // doigt qui descend = précédent
  };
+ stage.onclick=(e)=>{ if(routineIndex>=0&&!e.target.closest('button'))rpTogglePause(); };
 }
 function appendStageSlide(html,animate){
  const stage=document.getElementById('rpStage');
@@ -5256,6 +5397,8 @@ function appendStageSlide(html,animate){
 function showIntroSlide(animate){
  clearRoutineAutoTimer();
  routineIndex=-1;
+ rpSetPaused(false);
+ document.getElementById('routinePlayer').classList.add('rp-intro-mode');
  updateTopLeftButtonIcon();
  const totalMin=Math.round(routineQueue.reduce((s,c)=>s+c.duree_sec,0)/60);
  document.getElementById('rpTitle').textContent='';
@@ -5266,12 +5409,12 @@ function showIntroSlide(animate){
  const titre=currentRoutineMeta?currentRoutineMeta.titre:'Ta routine';
  const theme=currentRoutineMeta?currentRoutineMeta.sous:'';
  const sommaire=routineQueue.map((c,i)=>`<div class="rp-intro-item" onclick="event.stopPropagation();showMovementDescription('${c.id}')"><span class="rp-intro-num">${i+1}</span><span class="rp-intro-item-nom">${c.nom}</span></div>`).join('');
- const html=`<div class="rp-intro" onclick="advanceRoutineManually()">
+ const html=`<div class="rp-intro">
  <div class="rp-intro-titre">${titre}</div>
  <div class="rp-intro-theme">${theme}</div>
  <div class="rp-intro-duree">${totalMin} min · ${routineQueue.length} mouvements</div>
  <div class="rp-intro-list">${sommaire}</div>
- <div class="rp-intro-cta">Balaie vers le haut ou touche l'écran pour commencer ↑</div>
+ <button class="rp-intro-start" onclick="event.stopPropagation();advanceRoutineManually()">Démarrer ma routine</button>
  </div>
  <div class="rp-desc-modal" id="rpDescModal" onclick="event.stopPropagation();closeMovementDescription()">
  <div class="rp-desc-card" onclick="event.stopPropagation()">
@@ -5313,7 +5456,10 @@ function openRoutineClip(animate){
  document.getElementById('rpDureeTxt').textContent=(dureeMin<1?'< 1':dureeMin)+' min';
  document.getElementById('rpProgressFill').style.width=Math.round(((routineIndex+1)/routineQueue.length)*100)+'%';
  document.getElementById('rpPrevBtn').style.visibility='visible';
- appendStageSlide(bunnyIframeHtml(clip),animate);
+ document.getElementById('routinePlayer').classList.remove('rp-intro-mode');
+ rpSetPaused(false);
+ document.getElementById('rpCounter').textContent='Mouvement '+(routineIndex+1)+'/'+routineQueue.length;
+ appendStageSlide(bunnyVideoHtml(clip),animate);
  clipStartTimestamp=Date.now();
  const advance=()=>{
  clearRoutineAutoTimer();
@@ -5323,6 +5469,7 @@ function openRoutineClip(animate){
  else showRoutineEndScreen(true);
  };
  _bunnyEndedCallback=advance;
+ rpAttachVideo(clip,advance);
  // Filet de sécurité : si le message "fin de vidéo" de Bunny ne remonte pas (ça peut arriver selon
  // le navigateur), on avance quand même automatiquement en se basant sur la durée déclarée du clip.
  _rpAutoTimer=setTimeout(advance,(clip.duree_sec+1)*1000);

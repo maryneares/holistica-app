@@ -583,6 +583,14 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 
 /* ═══ CHALLENGE ═══ */
 #challenge{background:var(--ivory);}
+.ch-summary{margin:16px 20px;padding:20px;background:white;border:1px solid var(--border);border-radius:20px;box-shadow:var(--sh);}
+.ch-summary h2{font-size:19px;line-height:1.3;color:var(--ink);margin:0 0 10px;}
+.ch-summary p{font-size:14px;line-height:1.65;color:var(--ink-l);margin:8px 0;}
+.ch-week{padding:14px 0;border-top:1px solid var(--border);margin-top:12px;}
+.ch-week h3{font-size:15px;color:var(--purple-m);margin:0;}
+.ch-badges{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0;}
+.ch-badges span{background:var(--lav-pale);color:var(--purple-m);padding:7px 10px;border-radius:20px;font-size:12px;font-weight:700;}
+.ch-closing{margin:24px 20px 32px;color:var(--ink-l);font-size:14px;line-height:1.65;text-align:center;}
 .ch-top{background:var(--grad-h);padding:48px 20px 22px;flex-shrink:0;position:relative;overflow:hidden;}
 .ch-h1{font-family:'League Spartan',sans-serif;font-size:26px;color:white;font-weight:800;letter-spacing:-.01em;position:relative;z-index:1;}
 .ch-h1 em{font-style:normal;font-weight:800;color:var(--peach);}
@@ -1254,7 +1262,6 @@ document.addEventListener('DOMContentLoaded', function(){
 
 <!-- ═══ COMMUNAUTÉ & CHALLENGES ═══ -->
 <div id="challenge" class="screen">
-<button class="vd-back" onclick="go('profil')" style="position:fixed;top:16px;left:16px;z-index:5;">←</button>
 <div class="ch-top">
 <div class="blob b1"></div><div class="blob b2"></div>
 <div class="ch-h1">Communauté & <em>Challenges</em></div>
@@ -1821,49 +1828,40 @@ if(navigator.storage&&navigator.storage.persist){
 let currentUser=null;
 
 /* ═══ COMMUNAUTÉ & CHALLENGES ═══ */
-const CH_FEATURES=[
- {t:'Un groupe qui se soutient',s:'Partage tes doutes, tes victoires et avance entourée par d\'autres membres qui vivent la même chose.'},
- {t:'Des challenges réguliers',s:'Des défis courts pour rester motivée, sans pression, à ton rythme.'},
- {t:'Des échanges avec Maryne',s:'Des moments dédiés pour poser tes questions et approfondir ta pratique.'}
-];
-const WHATSAPP_GROUP_LINK='https://chat.whatsapp.com/HahC8tXyBfRL91dMWpitOp?s=sh&p=i&mlu=4';
+// Editorial showcase only: practical details and participation stay in the group.
+const CHALLENGE_PROGRAM={
+ cap:'Des habitudes simples, à ton rythme',
+ conferenceTitle:'Le thème de la prochaine conférence sera annoncé dans notre groupe Immersion.',
+ weeks:[
+  {title:'Semaine 1 · Je commence petit',text:'Explorer une routine courte et trouver un moment qui convient à mon quotidien.'},
+  {title:'Semaine 2 · Je simplifie mes repas',text:'Explorer une recette et partager mes idées pour cuisiner plus simplement.'},
+  {title:'Semaine 3 · Je trouve mon rythme',text:'Garder une habitude qui me fait du bien et échanger sur mon expérience.'}
+ ]
+};
 function renderChallenge(){
- const isImmersion=hasImmersionAccess();
- if(!isImmersion)return;
- const communityCard=document.getElementById('chCommunityCard');
- const upgradeCard=document.getElementById('chUpgradeCard');
- if(!communityCard||!upgradeCard)return;
-
- const features=[
- {ic:'👥',t:'Groupe WhatsApp privé',s:'Accès au groupe et motivation entre membres'},
- {ic:'🏆',t:'Défis réguliers',s:'Chaque semaine et chaque mois, un nouveau challenge'},
- {ic:'🎤',t:'Conférence mensuelle',s:'Maryne anime une session questions-réponses une fois par mois'},
- {ic:'🧘',t:'Cours en visio',s:'Yoga ou pilates en direct, avec ajustements personnalisés'},
- ];
-
- communityCard.innerHTML=`
- <div class="ch-hero">
- <div class="ch-hero-ic"></div>
- <div class="ch-hero-t">Bienvenue dans la communauté Holistica</div>
- <div class="ch-hero-p">${isImmersion?'Ton accès au groupe WhatsApp est actif, les challenges y sont organisés avec les autres filles.':'La communauté et les challenges WhatsApp sont réservés au Plan Immersion.'}</div>
- </div>
- <div class="ch-feat-t">Ce qui t'attend</div>
- ${features.map(f=>`<div class="ch-feature-row">
- <div class="ch-feature-ic">${f.ic}</div>
- <div class="ch-feature-body"><div class="ch-feature-t">${f.t}</div><div class="ch-feature-s">${f.s}</div></div>
- </div>`).join('')}
- <div class="ch-cta-wrap">
- ${isImmersion
- ?`<a class="btn-ch" style="display:block;text-align:center;text-decoration:none;" href="${WHATSAPP_GROUP_LINK}" target="_blank" rel="noopener">Rejoindre le groupe WhatsApp →</a>`
- :`<button class="btn-ch" onclick="go('offers')" style="opacity:.6;"> Réservé au Plan Immersion</button>`
- }
- </div>`;
-
- upgradeCard.innerHTML=isImmersion?'':`<div class="ch-upgrade">
- <div class="ch-upgrade-t">Tu n'as pas accès ?</div>
- <div class="ch-upgrade-p">La communauté et les challenges sont inclus dans l'offre supérieure. Passe à l'offre Immersion pour rejoindre les filles et bénéficier des lives avec Maryne.</div>
- <button class="btn-ch" style="margin-top:12px;" onclick="go('offers')">Voir les offres →</button>
- </div>`;
+ if(!hasImmersionAccess())return;
+ const card=document.getElementById('chCommunityCard');
+ const upgrade=document.getElementById('chUpgradeCard');
+ if(!card||!upgrade)return;
+ const p=CHALLENGE_PROGRAM;
+ const section=(title,text)=>`<section class="ch-summary"><h2>${title}</h2><p>${text}</p></section>`;
+ card.innerHTML=`
+ <div class="ch-hero"><div class="ch-hero-t">${p.cap}</div>
+ <div class="ch-hero-p">L’application te montre le cap du mois. Le groupe te permet de vivre l’expérience avec les autres.</div></div>
+ ${section('La prochaine conférence',`<strong>${p.conferenceTitle}</strong><br>Un rendez-vous par mois avec Maryne : 45 minutes pour explorer un thème, puis 15 minutes de questions-réponses.<br>Pour les dates, horaires et détails pratiques, vérifie les informations dans notre groupe.`)}
+ <section class="ch-summary"><h2>Les challenges du mois</h2><p>Trois intentions pour avancer sans pression. Retrouve le programme détaillé et les échanges dans le groupe.</p>
+ ${p.weeks.map(w=>`<div class="ch-week"><h3>${w.title}</h3><p>${w.text}</p></div>`).join('')}
+ <p>Tu participes à ton rythme. Les détails des challenges et les rappels se retrouvent dans notre groupe.</p></section>
+ ${section('La recette du mois','Une idée de saison à explorer ensemble. La recette sélectionnée, les variantes et les partages sont annoncés dans notre groupe.')}
+ ${section('La posture du mois','Un mouvement à découvrir à ton rythme. La posture sélectionnée et les indications de pratique sont présentées dans notre groupe.')}
+ ${section('Le challenge du mois','Choisir une petite habitude et lui faire une place dans son quotidien. Les consignes du mois, les encouragements et les retours d’expérience se retrouvent dans le groupe Immersion.')}
+ ${section('Quelques thèmes à explorer','Routines du quotidien · Cuisine de saison · Mouvement doux · Repos · Motivation.<br>Les nouveautés du mois sont annoncées dans notre groupe.')}
+ <section class="ch-summary"><h2>Motivation, soutien, rencontre et partage</h2>
+ <p>Tu n’avances pas seule. Les échanges, les partages, les questions, les réussites et les petits coups de motivation se retrouvent dans notre groupe.</p>
+ <div class="ch-badges"><span>Pas de spam</span><span>Pas envahissant</span><span>Tu participes quand tu le souhaites</span></div>
+ <p>Retrouve les échanges et les informations du mois dans notre groupe Immersion.</p></section>
+ <p class="ch-closing">Envie d’aller plus loin ? Retrouve les échanges, les détails des challenges, les annonces et les nouveautés directement dans notre groupe Immersion.</p>`;
+ upgrade.innerHTML='';
 }
 
 // FREE is a read-only showcase, independent of account history and calendar time.
@@ -1884,7 +1882,7 @@ const FREE_DEMO_DATA=freezeDemo({
  titles:{dashboard:'Mon parcours du jour',mouvement:'Mes séances',recettes:'Recettes',naturo:'Dossiers Naturo',challenge:'Communauté & Challenges',dietPlan:'Mon plan alimentaire',profil:'Mon profil',wellnessHistory:'Historique bien-être',progressionScreen:'Ma progression',badgesScreen:'Mes badges',cycleSettings:'Mon cycle',doshaProfile:'Mon profil ayurvédique',astroScreen:'Mon astrologie',editInfo:'Mon profil de démonstration'},
  notice:'Démonstration · Données fictives fixes. Aucun suivi personnalisé ni enregistrement en mode gratuit.',
  locked:'Cette action est disponible avec le plan correspondant. La démonstration reste inchangée.',
- community:'Aperçu Immersion : défis de saison, communauté et rendez-vous mensuel.',
+ community:'Aperçu Immersion : conférence mensuelle, challenges, recette et posture du mois. L’application présente le cap du mois. Les échanges, les détails et les annonces se retrouvent dans notre groupe Immersion.',
  badges:'0 badge débloqué · Niveau 1 · 0 point',astro:'Aperçu astrologique fictif, sans calcul à partir de tes informations.'
 });
 let personalDataMode='unknown',demoRoute='dashboard',membershipCheckRunning=false;

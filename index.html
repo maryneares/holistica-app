@@ -994,6 +994,8 @@ document.addEventListener('DOMContentLoaded', function(){
 .routine-player.rp-intro-mode .rp-home{top:calc(env(safe-area-inset-top) + 12px);}
 .rp-intro-start{background:var(--peach);color:#2A1E1E;border:none;border-radius:50px;padding:16px 32px;font-family:'League Spartan',sans-serif;font-weight:800;font-size:17px;cursor:pointer;width:100%;max-width:320px;box-shadow:0 10px 24px rgba(42,30,30,.18);flex-shrink:0;}
 /* boutons secondaires des écrans de fin : orange aussi */
+body.rp-open .bnav{z-index:700;}
+body.rp-open.rp-fullscreen .bnav{display:none !important;}
 .rp-confirm-btn-ghost{background:var(--peach);color:#2A1E1E;text-decoration:none;border-radius:50px;padding:16px 32px;font-family:'League Spartan',sans-serif;font-weight:800;font-size:17px;width:100%;max-width:320px;opacity:.88;}
 </style>
 <style>
@@ -1960,12 +1962,33 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 /* ═══════ SUPABASE ═══════ */
 const SUPABASE_URL='https://lsoddhgahdfcpmuydmbt.supabase.co';
 const SUPABASE_KEY='sb_publishable_GheUBnXhhcVRyqYchb-ZQg_5MFbhv_x';
+// Stockage de session : dans les apps installées (iOS/Android via Capacitor), la session est aussi
+// gardée dans le stockage natif du téléphone (module Preferences), qui ne s'efface pas comme le
+// stockage du navigateur. L'utilisatrice reste donc connectée d'une ouverture à l'autre.
+const HC_AUTH_STORAGE=(function(){
+ const nativePrefs=()=>{try{const C=window.Capacitor;if(C&&C.isNativePlatform&&C.isNativePlatform()&&C.isPluginAvailable&&C.isPluginAvailable('Preferences'))return C.Plugins.Preferences;}catch(e){}return null;};
+ const ls={get:k=>{try{return window.localStorage.getItem(k);}catch(e){return null;}},set:(k,v)=>{try{window.localStorage.setItem(k,v);}catch(e){}},del:k=>{try{window.localStorage.removeItem(k);}catch(e){}}};
+ return{
+  async getItem(k){
+   const p=nativePrefs();
+   if(p){
+    try{const r=await p.get({key:k});if(r&&r.value!=null){ls.set(k,r.value);return r.value;}}catch(e){}
+    const v=ls.get(k);
+    if(v!=null){try{await p.set({key:k,value:v});}catch(e){}}
+    return v;
+   }
+   return ls.get(k);
+  },
+  async setItem(k,v){ls.set(k,v);const p=nativePrefs();if(p){try{await p.set({key:k,value:v});}catch(e){}}},
+  async removeItem(k){ls.del(k);const p=nativePrefs();if(p){try{await p.remove({key:k});}catch(e){}}}
+ };
+})();
 const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{
  auth:{
  persistSession:true,
  autoRefreshToken:true,
  detectSessionInUrl:true,
- storage:window.localStorage,
+ storage:HC_AUTH_STORAGE,
  storageKey:'holistica-auth'
  }
 });
@@ -2139,9 +2162,10 @@ function syncAccountUI(){
  const plan=accountPlan();
  const label={standard:'Bienvenue Holistica · Compte gratuit',equilibre:'Plan Équilibre',immersion:'Plan Immersion'}[plan];
  for(const id of ['accountLabel','pfSubscription']){const el=document.getElementById(id);if(el)el.textContent=label;}
- for(const id of ['buddyToggleRow','profileChallenge']){
+ for(const id of ['profileChallenge']){
  const el=document.getElementById(id);if(el)el.style.display=hasImmersionAccess()?'flex':'none';
  }
+ {const b=document.getElementById('buddyToggleRow');if(b)b.style.display='none';}
 }
 async function refreshMembership(){
  if(!currentUser)return;
@@ -3686,7 +3710,7 @@ function enterApp(){
  // Le jumelage binôme est ouvert à toutes les membres.
  const buddyRow=document.getElementById('buddyToggleRow');
  if(buddyRow){
- buddyRow.style.display=hasImmersionAccess()?'flex':'none';
+ buddyRow.style.display='none'; // fonctionnalité binôme retirée
  document.getElementById('buddyToggleInput').checked=!!userProfile.buddyAvailable;
  }
  const h=new Date().getHours();
@@ -5179,7 +5203,8 @@ function rpTogglePause(){
  }
 }
 function rpToggleFull(){
- document.getElementById('routinePlayer').classList.toggle('rp-full');
+ const on=document.getElementById('routinePlayer').classList.toggle('rp-full');
+ document.body.classList.toggle('rp-fullscreen',on);
 }
 // Le lecteur s'arrête au-dessus du menu de l'app, pour que le menu reste visible pendant les vidéos.
 function rpFitAboveMenu(){
@@ -5205,6 +5230,7 @@ async function playRoutine(clipIds,routineTypeId){
  if(!routineQueue.length)return;
  document.getElementById('routinePlayer').classList.remove('rp-full','rp-paused');rpPaused=false;
  document.getElementById('routinePlayer').classList.add('open');
+ document.body.classList.add('rp-open');document.body.classList.remove('rp-fullscreen');
  rpFitAboveMenu();
  setupRoutineSwipe();
  showIntroSlide(false);
@@ -5213,6 +5239,7 @@ let currentRoutineTypeId=null;
 function closeRoutinePlayer(){
  clearRoutineAutoTimer();
  document.getElementById('routinePlayer').classList.remove('open','rp-full','rp-paused','rp-intro-mode');rpPaused=false;
+ document.body.classList.remove('rp-open','rp-fullscreen');
  document.getElementById('rpExitConfirm').classList.remove('open');
  document.getElementById('rpWarnModal').classList.remove('open');
  document.getElementById('rpStage').innerHTML='';

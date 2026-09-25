@@ -1,16 +1,13 @@
-# Configuration Netlify — indique où se trouvent les fonctions serverless (le webhook Stripe)
 [build]
-  command = "node scripts/prepare-functions.cjs"
+  command = "node -e 'const fs=require(\"fs\");fs.mkdirSync(\"scripts\",{recursive:true});fs.mkdirSync(\"netlify/functions/_shared\",{recursive:true});for(const n of [\"stripe-webhook\",\"claim-pending-subscription\",\"create-portal-session\",\"delete-account\",\"send-account-email\",\"send-lifecycle-emails\",\"send-upsell-emails\"]){if(fs.existsSync(n+\".mts\"))fs.copyFileSync(n+\".mts\",\"netlify/functions/\"+n+\".mts\");}for(const n of [\"customer-flow.mjs\",\"runtime.mts\",\"stripe-webhook-legacy.mjs\",\"lifecycle.mjs\"]){if(fs.existsSync(n))fs.copyFileSync(n,\"netlify/functions/_shared/\"+n);}if(fs.existsSync(\"prepare-functions.cjs\"))fs.copyFileSync(\"prepare-functions.cjs\",\"scripts/prepare-functions.cjs\");require(\"./scripts/prepare-functions.cjs\");'"
   publish = "public"
   functions = "netlify/functions"
 
 [functions]
   node_bundler = "esbuild"
 
-# Exécute automatiquement l'email de cycle de vie chaque jour à 8h UTC
 [functions."send-lifecycle-emails"]
   schedule = "0 8 * * *"
 
-# Vérifie toutes les 15 minutes si une campagne CRM programmée doit partir
 [functions."crm-send-scheduled-campaigns"]
   schedule = "*/15 * * * *"

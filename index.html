@@ -2312,10 +2312,11 @@ async function claimPendingSubscription(){
  headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token}
  });
  const json=await res.json();
- return json; // { applied: true/false, plan?: 'equilibre'|'immersion' }
+ if(!res.ok || json.error)throw new Error(json.error||"Actualisation indisponible");
+ return json;
  }catch(e){
  console.error('Erreur vérification abonnement en attente:',e);
- return null;
+ throw new Error('Impossible de vérifier ton accès. Réessaie depuis Profil.');
  }
 }
 
@@ -2368,20 +2369,13 @@ async function deleteAccount(){
  const accessToken=sessionData && sessionData.session && sessionData.session.access_token;
  if(!accessToken){toast('Session expirée, reconnecte-toi puis réessaie');return;}
  try{
- const res=await fetch('https://lsoddhgahdfcpmuydmbt.supabase.co/functions/v1/delete-account',{
+ const res=await fetch('https://app.holisticaclub.com/.netlify/functions/delete-account',{
  method:'POST',
  headers:{'Authorization':'Bearer '+accessToken,'Content-Type':'application/json'}
  });
  const result=await res.json();
  if(!res.ok||result.error){toast('Erreur : '+(result.error||'suppression impossible'));return;}
  }catch(e){toast('Erreur : '+e.message);return;}
- // Envoi de la confirmation par email (best-effort, on ne bloque jamais la suppression si l'email échoue)
- if(emailToNotify){
- fetch('/.netlify/functions/send-account-email',{
- method:'POST',
- body:JSON.stringify({type:'account_deleted',email:emailToNotify,name:nameToNotify})
- }).catch(()=>{});
- }
  await sb.auth.signOut();
  toast('✅ Ton compte et toutes tes données personnelles ont été définitivement supprimés');
  setTimeout(()=>location.reload(),1200);
@@ -2524,7 +2518,7 @@ async function signInWithApple(){
 async function loadProfileAndEnter(){
  if(!currentUser)return;
  const loadingUserId=currentUser.id;
- await claimPendingSubscription();
+ try{await claimPendingSubscription();}catch(e){profileLoaded=false;toast(e.message);return;}
  if(currentUser?.id!==loadingUserId)return;
  let data,error;
  try{

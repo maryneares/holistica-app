@@ -1,5 +1,7 @@
 # Configuration Netlify — indique où se trouvent les fonctions serverless (le webhook Stripe)
 [build]
+  command = "node scripts/prepare-functions.cjs"
+  publish = "public"
   functions = "netlify/functions"
 
 [functions]

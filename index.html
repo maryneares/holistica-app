@@ -1096,11 +1096,13 @@ body.rp-open.rp-fullscreen .bnav{display:none !important;}
 <div class="si-pwd-wrap"><input class="si-input" id="siPassword" type="password" autocomplete="current-password" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="mot de passe"><button type="button" class="si-pwd-toggle" onclick="togglePwdVisibility('siPassword',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
 <div class="si-forgot" onclick="handleForgotPassword()">Mot de passe oublié ?</div>
 <button class="btn-w" id="siLoginBtn" onclick="handleSignIn()">Se connecter</button>
+<p id="confirmationNotice" role="status" aria-live="polite" hidden style="color:white;font-size:13px;line-height:1.5;text-align:center;margin:12px 0;"></p>
+<button type="button" id="resendConfirmationBtn" onclick="resendSignupConfirmation()" style="display:block;margin:12px auto;background:transparent;border:0;color:white;text-decoration:underline;font:inherit;font-size:13px;cursor:pointer;">Renvoyer l’e-mail de confirmation</button>
 <div class="si-div">ou</div>
 <button class="btn-glass" onclick="signInWithGoogleNative()" style="display:flex;align-items:center;justify-content:center;gap:10px;"><svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/></svg>Continuer avec Google</button><button class="btn-glass" onclick="signInWithApple()" style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:10px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.08l-.01-.01ZM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25Z"/></svg>Continuer avec Apple</button>
 
 <div class="si-btm">Pas de compte ? <a onclick="go('signup')">Créer un compte</a></div>
-<div class="si-btm" style="margin-top:6px;">Juste curieuse ? <a onclick="showWalkthrough(true)">Découvrir l'app en images</a></div>
+
 </div>
 <div class="si-bubbles"><div class="bubble bb1"></div><div class="bubble bb2"></div><div class="bubble bb3"></div></div>
 </div>
@@ -1212,7 +1214,7 @@ body.rp-open.rp-fullscreen .bnav{display:none !important;}
 <div class="sec"><h2>Ton équilibre <em>du jour</em></h2></div>
 <div class="duo-row">
 <div class="duo-card"><div class="gauge-wrap" id="dRecovGauge"></div><div class="duo-lbl"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--ink-l)" stroke-width="2" stroke-linecap="round" style="vertical-align:-1px;margin-right:3px;"><path d="M12 21c-4-3-8-6.5-8-11a5 5 0 0 1 8-4 5 5 0 0 1 8 4c0 4.5-4 8-8 11z"/></svg>Taux récupération</div><div class="duo-sub">Calculé via humeur + sommeil + stress</div></div>
-<div class="duo-card hl"><div class="gauge-wrap" id="dHormoGauge"></div><div class="duo-lbl"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--ink-l)" stroke-width="2" stroke-linecap="round" style="vertical-align:-1px;margin-right:3px;"><path d="M12 8a4 4 0 1 1 4 4 4 4 0 1 1-4 4 4 4 0 1 1-4-4 4 4 0 1 1 4-4z"/></svg>Indice bien-être féminin</div><div class="duo-sub">Sommeil + stress + humeur</div></div>
+<div class="duo-card hl"><div class="gauge-wrap" id="dHormoGauge"></div><div class="duo-lbl"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--ink-l)" stroke-width="2" stroke-linecap="round" style="vertical-align:-1px;margin-right:3px;"><path d="M12 8a4 4 0 1 1 4 4 4 4 0 1 1-4 4 4 4 0 1 1-4-4 4 4 0 1 1 4-4z"/></svg>Indice de bien-être</div><div class="duo-sub">Sommeil + stress + humeur</div></div>
 </div>
 <!-- Cycle -->
 <div id="cycleSectionWrap">
@@ -1237,12 +1239,12 @@ body.rp-open.rp-fullscreen .bnav{display:none !important;}
 <button class="mo" onclick="setMood(this,'Normal',3)">
 <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="9" cy="10" r="1.3" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="1.3" fill="currentColor" stroke="none"/><path d="M8.5 15h7"/></svg>
 <span class="mo-l">Normal</span></button>
-<button class="mo" onclick="setMood(this,'Un peu fatiguée',2)">
+<button class="mo" onclick="setMood(this,'Un peu de fatigue',2)">
 <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M7.7 10h2.6M13.7 10h2.6"/><path d="M8.5 16c1.1-1.1 2.2-1.7 3.5-1.7s2.4.6 3.5 1.7"/></svg>
-<span class="mo-l">Un peu fatiguée</span></button>
-<button class="mo" onclick="setMood(this,'Très fatiguée',1)">
+<span class="mo-l">Un peu de fatigue</span></button>
+<button class="mo" onclick="setMood(this,'Grande fatigue',1)">
 <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M7.6 10.3c.6-.6 1.6-.6 2.2 0M14.2 10.3c.6-.6 1.6-.6 2.2 0"/><path d="M8 17.2c1.2-2.2 2.5-3.2 4-3.2s2.8 1 4 3.2"/></svg>
-<span class="mo-l">Très fatiguée</span></button>
+<span class="mo-l">Grande fatigue</span></button>
 </div>
 </div>
 <!-- Sleep & Stress -->
@@ -1446,7 +1448,7 @@ body.rp-open.rp-fullscreen .bnav{display:none !important;}
 <div class="pa" onclick="openWellnessHistory()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V10M9 19V5M14 19v-7M19 19V8"/></svg></div><div class="pa-body"><div class="pa-t">Historique bien-être</div><div class="pa-s">Sommeil · Stress · Humeur</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="go('progressionScreen');renderProgression();"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18l5-6 4 3 5-8 4 5"/></svg></div><div class="pa-body"><div class="pa-t">Ma progression</div><div class="pa-s">Bilan mensuel de tes séances et de ton bien-être</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="go('badgesScreen');renderBadges();"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M8.5 13.5L7 22l5-3 5 3-1.5-8.5"/></svg></div><div class="pa-body"><div class="pa-t">Mes badges</div><div class="pa-s" id="pfBadgesDetail">0/9 débloqués</div></div><span class="pa-arr">›</span></div>
-<div class="pa" onclick="openCycleSettings()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg></div><div class="pa-body"><div class="pa-t">Durée & suivi de mon cycle</div><div class="pa-s">Dernières règles, durée, comprendre les phases</div></div><span class="pa-arr">›</span></div>
+<div class="pa cycle-specific" onclick="openCycleSettings()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg></div><div class="pa-body"><div class="pa-t">Durée & suivi de mon cycle</div><div class="pa-s">Dernières règles, durée, comprendre les phases</div></div><span class="pa-arr">›</span></div>
 <div class="pa" id="buddyToggleRow" style="display:none;cursor:default;" onclick="event.stopPropagation();"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M1 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg></div><div class="pa-body"><div class="pa-t">Disponible comme binôme</div><div class="pa-s">Sois jumelée avec une autre membre pour vous soutenir mutuellement</div></div><label class="buddy-switch"><input type="checkbox" id="buddyToggleInput" onchange="toggleBuddyAvailable(this.checked)"><span class="buddy-switch-slider"></span></label></div>
 <div class="pa" onclick="openAstro()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/><circle cx="12" cy="12" r="4"/></svg></div><div class="pa-body"><div class="pa-t">Mon thème astral</div><div class="pa-s" id="paAstroSub">Renseigne ta date de naissance</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="showWalkthrough()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.5-2.5 2-2.5 3.5"/><path d="M12 17h.01"/></svg></div><div class="pa-body"><div class="pa-t">Revoir le tutoriel</div><div class="pa-s">Redécouvre toutes les fonctionnalités de l'app</div></div><span class="pa-arr">›</span></div>
@@ -1455,7 +1457,7 @@ body.rp-open.rp-fullscreen .bnav{display:none !important;}
 <div class="pa" onclick="confirmDeleteAccount()" style="border:1px solid rgba(200,80,80,0.25);"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C85050" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M6 7l1 13a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-13"/><path d="M10 11v6M14 11v6"/></svg></div><div class="pa-body"><div class="pa-t" style="color:#C85050;">Supprimer mon compte</div><div class="pa-s">Effacer définitivement mes données</div></div><span class="pa-arr">›</span></div>
 </div>
 <div style="text-align:center;padding:20px 20px 0;"><button class="profile-legal-link" onclick="openSources('profil')">Confidentialité & ressources scientifiques</button></div>
-<div class="pf-notes"><p><b>Indices du jour :</b> indices indicatifs de bien-être, calculés à partir de tes données déclarées. Ils ne mesurent pas tes hormones et ne constituent pas un diagnostic.</p><p><b>Suivi du cycle :</b> phase estimée à partir des informations saisies ; ce suivi ne confirme pas l’ovulation et ne doit pas être utilisé comme méthode contraceptive.</p></div>
+<div class="pf-notes"><p><b>Indices du jour :</b> indices indicatifs de bien-être, calculés à partir de tes données déclarées. Ils ne mesurent pas tes hormones et ne constituent pas un diagnostic.</p><p class="cycle-specific"><b>Suivi du cycle :</b> phase estimée à partir des informations saisies ; ce suivi ne confirme pas l’ovulation et ne doit pas être utilisé comme méthode contraceptive.</p></div>
 <div style="text-align:center;padding:24px 20px 10px;font-size:11.5px;color:var(--ink-l);">Contact & support : <a href="mailto:info@maryneares.fr" style="color:var(--ink-l);text-decoration:underline;">info@maryneares.fr</a></div>
 </div>
 </div>
@@ -1473,14 +1475,15 @@ body.rp-open.rp-fullscreen .bnav{display:none !important;}
 <div class="f-row-app"><label>Adresse e-mail</label><input type="email" id="eiEmail" class="ob-input dt-input" placeholder="ton@email.com"></div>
 <div class="f-row-app"><label>Poids (kg)</label><input type="number" id="eiWeight" class="ob-input dt-input"></div>
 <div class="f-row-app"><label>Taille (cm)</label><input type="number" id="eiHeight" class="ob-input dt-input"></div>
+<div class="f-row-app"><label for="eiSexe">Ton sexe</label><select id="eiSexe" class="ob-input dt-input"><option value="femme">Femme</option><option value="homme">Homme</option></select></div>
 <div class="f-row-app"><label>Âge</label><input type="number" id="eiAge" class="ob-input dt-input"></div>
 <div class="f-row-app"><label>Niveau d'activité</label>
 <select id="eiActivity" class="ob-input dt-input">
 <option value="sédentaire">Sédentaire (bureau, peu de mouvement)</option>
-<option value="légère">Légèrement active (marche, ménage)</option>
+<option value="légère">Activité légère (marche, ménage)</option>
 <option value="modérée">Modérée (sport 2-3x/semaine)</option>
 <option value="active">Active (sport 4-5x/semaine)</option>
-<option value="très active">Très active (sport quotidien intense)</option>
+<option value="très active">Activité très intense (sport quotidien intense)</option>
 </select></div>
 <div class="f-row-app"><label>Régime alimentaire</label>
 <select id="eiDietType" class="ob-input dt-input">
@@ -1710,7 +1713,7 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 
 <div class="diet-info-card" style="margin:0 0 14px;">
 <div class="diet-info-t">Nutrition & calculs</div>
-<div class="diet-guide-s"><strong>Métabolisme de repos :</strong> l'application utilise l'équation de Harris-Benedict révisée par Roza & Shizgal (1984). Pour une femme : 447,593 + (9,247 × poids en kg) + (3,098 × taille en cm) − (4,330 × âge). <a href="https://pubmed.ncbi.nlm.nih.gov/6741850/" target="_blank" rel="noopener" style="color:var(--purple-m);font-weight:700;">Roza & Shizgal — American Journal of Clinical Nutrition</a>.</div>
+<div class="diet-guide-s"><strong>Métabolisme de repos :</strong> l'application utilise l'équation de Harris-Benedict révisée par Roza & Shizgal (1984). Pour une femme : 447,593 + (9,247 × poids en kg) + (3,098 × taille en cm) − (4,330 × âge). Pour un homme : 88,362 + (13,397 × poids en kg) + (4,799 × taille en cm) − (5,677 × âge). <a href="https://pubmed.ncbi.nlm.nih.gov/6741850/" target="_blank" rel="noopener" style="color:var(--purple-m);font-weight:700;">Roza & Shizgal — American Journal of Clinical Nutrition</a>.</div>
 <div class="diet-guide-s" style="margin-top:8px;"><strong>Apport journalier estimé :</strong> l'app applique ensuite un coefficient lié au niveau d'activité déclaré, puis un ajustement de l'objectif énergétique. Il s'agit d'une estimation et non d'une prescription nutritionnelle individualisée.</div>
 <div class="diet-guide-s" style="margin-top:8px;"><strong>Protéines :</strong> les repères de l'app se situent dans une fourchette utilisée en nutrition sportive. L'ISSN indique qu'un apport total d'environ 1,4 à 2,0 g/kg/j peut convenir à la plupart des adultes en bonne santé qui s'entraînent. <a href="https://jissn.biomedcentral.com/articles/10.1186/s12970-017-0177-8" target="_blank" rel="noopener" style="color:var(--purple-m);font-weight:700;">ISSN Position Stand — Protein and Exercise</a>.</div>
 </div>
@@ -2053,7 +2056,7 @@ function renderChallenge(){
  ${section('Le challenge du mois','Choisir une petite habitude et lui faire une place dans son quotidien. Les consignes du mois, les encouragements et les retours d’expérience se retrouvent dans le groupe Immersion.')}
  ${section('Quelques thèmes à explorer','Routines du quotidien · Cuisine de saison · Mouvement doux · Repos · Motivation.<br>Les nouveautés du mois sont annoncées dans notre groupe.')}
  <section class="ch-summary"><h2>Motivation, soutien, rencontre et partage</h2>
- <p>Tu n’avances pas seule. Les échanges, les partages, les questions, les réussites et les petits coups de motivation se retrouvent dans notre groupe.</p>
+ <p>Tu avances avec du soutien. Les échanges, les partages, les questions, les réussites et les petits coups de motivation se retrouvent dans notre groupe.</p>
  <div class="ch-badges"><span>Pas de spam</span><span>Pas envahissant</span><span>Tu participes quand tu le souhaites</span></div>
  <p>Retrouve les échanges et les informations du mois dans notre groupe Immersion.</p></section>
  <p class="ch-closing">Envie d’aller plus loin ? Retrouve les échanges, les détails des challenges, les annonces et les nouveautés directement dans notre groupe Immersion.</p><figure class="ch-signature"><img src="https://d1yei2z3i6k35z.cloudfront.net/125337/6a6b68a0e66b11.10456858_6a462a575b9503.59317668_dfghn.png" alt="Maryne Ares" loading="lazy" decoding="async"><figcaption>par Maryne Ares</figcaption></figure>`;
@@ -2100,7 +2103,7 @@ function appTable(table){
  return wrap(sb.from(table));
 }
 function activateFreeDemo(){
- personalDataMode='free';clearTimeout(saveTimer);
+ personalDataMode='free';resetProfilePersistence();
  userProfile=structuredClone(FREE_DEMO_DATA.profile);
  xp=0;sessions=0;streak=0;moodScore=0;sleepScore=FREE_DEMO_DATA.stats.sleepHours;stressScore=FREE_DEMO_DATA.stats.stress;
  completedVids=new Set();triedRecipes=new Set();unlockedBadges=new Set();readDossiers=new Set();loginDates=new Set();
@@ -2114,6 +2117,8 @@ function activateFreeDemo(){
 function demoCard(title,detail){return `<div class="diet-info-card"><div class="diet-info-t">${title}</div><div class="diet-guide-s">${detail}</div></div>`;}
 function demoList(items){return items.map(item=>demoCard(item.title,item.detail)).join('');}
 function renderFreeDemo(route){
+ if(route==='cycleSettings'&&isMaleProfile())route='profil';
+ syncGenderUI();
  demoRoute=route;
  let screen=document.getElementById('freeDemoScreen');
  if(!screen){screen=document.createElement('div');screen.id='freeDemoScreen';screen.className='screen';document.body.appendChild(screen);}
@@ -2124,7 +2129,7 @@ function renderFreeDemo(route){
  content+=demoCard('Ta phrase de démonstration',d.phrase);
  content+=demoCard('Mon équilibre nutritionnel',`Métabolisme : ${t.bmr} kcal · Apport : ${t.kcal} kcal<br>Protéines ${t.protein} g · Glucides ${t.carbs} g · Lipides ${t.fat} g`);
  content+=demoCard('Mon bien-être',`Score ${t.wellbeing}/100 · Récupération ${t.recovery} %`);
- content+=demoCard('Mon cycle',`Jour ${d.cycle.day}/${d.cycle.length} · ${d.cycle.phase}<br>Prochaines règles fictives dans ${d.cycle.remaining} jours`);
+ if(!isMaleProfile())content+=demoCard('Mon cycle',`Jour ${d.cycle.day}/${d.cycle.length} · ${d.cycle.phase}<br>Prochaines règles fictives dans ${d.cycle.remaining} jours`);
  content+=demoCard('Sommeil & stress',`${t.sleep} · ${t.bedtime} → ${t.wake}<br>Stress ${t.stress}/10 · Humeur : ${t.mood}`);
  content+=demoCard('Hydratation & mouvement',`${t.hydration} · ${t.movement}`);
  }else if(route==='mouvement')content=demoCard('Mes séances terminées',String(t.sessions))+demoList(d.routines)+demoList(d.sessions);
@@ -2133,8 +2138,8 @@ function renderFreeDemo(route){
  else if(route==='dietPlan')content=demoCard('Aperçu de démonstration','Exemples fixes, sans personnalisation. Les plans personnels sont réservés à Immersion.')+demoList(d.meals);
  else if(route==='challenge')content=demoCard('Découvrir la communauté',d.community)+`<figure class="ch-signature"><img src="https://d1yei2z3i6k35z.cloudfront.net/125337/6a6b68a0e66b11.10456858_6a462a575b9503.59317668_dfghn.png" alt="Maryne Ares" loading="lazy" decoding="async"><figcaption>par Maryne Ares</figcaption></figure>`;
  else if(route==='profil'){
- content=demoCard('Mon compte Holistica','Mode gratuit : découverte avec des données fictives fixes. Les plans Équilibre et Immersion utilisent ton vrai profil.')+`<div style="padding:0 20px"><button class="journey-replay-btn" onclick="refreshMembership()">Actualiser mon accès</button></div>`;
- for(const [id,label] of [['editInfo','Mes informations de démonstration'],['doshaProfile','Mon profil ayurvédique'],['wellnessHistory','Historique bien-être'],['progressionScreen','Ma progression'],['badgesScreen','Mes badges'],['cycleSettings','Mon cycle'],['astroScreen','Mon astrologie']])content+=`<button class="demo-profile-row" onclick="go('${id}')">${label}<span>›</span></button>`;
+ content=demoCard('Présentation de la démonstration',`<button onclick="setDemoAudience('femme')" aria-pressed="${demoAudience==='femme'}">Femme</button> <button onclick="setDemoAudience('homme')" aria-pressed="${demoAudience==='homme'}">Homme</button><p>Les données de démonstration restent fictives et fixes.</p>`)+demoCard('Mon compte Holistica','Mode gratuit : découverte avec des données fictives fixes. Les plans Équilibre et Immersion utilisent ton vrai profil.')+`<div style="padding:0 20px"><button class="journey-replay-btn" onclick="refreshMembership()">Actualiser mon accès</button></div>`;
+ for(const [id,label] of [['editInfo','Mes informations de démonstration'],['doshaProfile','Mon profil ayurvédique'],['wellnessHistory','Historique bien-être'],['progressionScreen','Ma progression'],['badgesScreen','Mes badges'],['cycleSettings','Mon cycle'],['astroScreen','Mon astrologie']].filter(([id])=>id!=='cycleSettings'||!isMaleProfile()))content+=`<button class="demo-profile-row" onclick="go('${id}')">${label}<span>›</span></button>`;
  content+=`<div class="demo-footer"><button class="profile-legal-link" onclick="openSources('profil')">Confidentialité & ressources scientifiques</button><button class="journey-replay-btn" onclick="handleSignOut()">Déconnexion</button><button class="profile-legal-link" onclick="confirmDeleteAccount()">Supprimer mon compte</button></div>`;
  }else if(route==='cycleSettings')content=demoCard('Cycle de démonstration',`Jour ${d.cycle.day}/${d.cycle.length} · ${d.cycle.phase}`);
  else if(route==='editInfo')content=demoCard('Profil fictif',`${d.displayName} · ${d.profile.age} ans · ${d.profile.weight} kg · ${d.profile.height} cm`);
@@ -2151,10 +2156,10 @@ async function checkMembershipChange(){
  if(!currentUser||!profileLoaded||membershipCheckRunning)return;
  const id=currentUser.id;membershipCheckRunning=true;
  try{
- const {data,error}=await appTable('profiles').select('subscription_status,subscription_plan').eq('id',id).maybeSingle();
+ const {data,error}=await appTable('profiles').select('subscription_status,subscription_plan,transformation_expires_at').eq('id',id).maybeSingle();
  if(error||currentUser?.id!==id)return;
- const next=['active','trialing'].includes(data?.subscription_status)&&['equilibre','immersion'].includes(data?.subscription_plan)?data.subscription_plan:'standard';
- if(next!==accountPlan())await loadProfileAndEnter();
+ const next=(!data?.transformation_expires_at||new Date(data.transformation_expires_at)>new Date())&&['active','trialing'].includes(data?.subscription_status)&&['equilibre','immersion'].includes(data?.subscription_plan)?data.subscription_plan:'standard';
+ if(next!==accountPlan()||(next==='standard'&&!isFreeDemo()))await loadProfileAndEnter();
  }catch(e){/* Keep the last confirmed mode on a network error. */}
  finally{membershipCheckRunning=false;}
 }
@@ -2165,12 +2170,26 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkMembe
 function isDevAccount(){return false;}
 function hasActiveAccess(){return true;}
 function accountPlan(){
+ if(userProfile.transformationExpiresAt&&new Date(userProfile.transformationExpiresAt)<=new Date())return 'standard';
  const status=(userProfile.subscriptionStatus||'').toLowerCase();
  const plan=(userProfile.subscriptionPlan||'').toLowerCase();
  return ['active','trialing'].includes(status)&&['equilibre','immersion'].includes(plan)?plan:'standard';
 }
 function hasImmersionAccess(){return accountPlan()==='immersion';}
+let demoAudience='femme';
+try{demoAudience=localStorage.getItem('holistica-demo-audience')==='homme'?'homme':'femme';}catch(e){}
+function isMaleProfile(){return isFreeDemo()?demoAudience==='homme':userProfile.sexe==='homme';}
+function setDemoAudience(value){demoAudience=value==='homme'?'homme':'femme';try{localStorage.setItem('holistica-demo-audience',demoAudience);}catch(e){}renderFreeDemo(demoRoute||'profil');}
+function syncGenderUI(){
+ const male=isMaleProfile();
+ document.querySelectorAll('.cycle-specific').forEach(el=>{el.hidden=male;el.style.display=male?'none':'';});
+ const link=document.querySelector('a[href*="the-menstrual-cycle"]');
+ if(link){const card=link.closest('.diet-info-card');if(card){card.hidden=male;card.style.display=male?'none':'';}}
+ const wrap=document.getElementById('cycleSectionWrap');if(wrap)wrap.style.display=male?'none':'';
+}
+
 function syncAccountUI(){
+ syncGenderUI();
  for(const id of ['ni-challenge','ni-dietPlan']){const el=document.getElementById(id);if(el)el.style.display='flex';}
  const plan=accountPlan();
  const label={standard:'Bienvenue Holistica · Compte gratuit',equilibre:'Plan Équilibre',immersion:'Plan Immersion'}[plan];
@@ -2269,15 +2288,48 @@ function togglePwdVisibility(inputId,btn){
 }
 
 
+const AUTH_EMAIL_REDIRECT='https://app.holisticaclub.com/';
+let confirmationBusy=false;
+const confirmationCooldown=new Map();
+function authEmailMessage(error){
+ if(error?.status===429||/rate.limit|too many|security purposes/i.test(error?.message||''))return 'Trop de demandes rapprochées. Attends quelques minutes avant de réessayer.';
+ if(/email.*not.*confirmed/i.test(error?.message||'')||error?.code==='email_not_confirmed')return 'Confirme ton adresse e-mail avant de te connecter. Tu peux renvoyer la confirmation ci-dessous.';
+ return 'La demande n’a pas abouti. Vérifie ta connexion et réessaie. Si le problème persiste, contacte info@maryneares.fr.';
+}
+function showConfirmationNotice(message){
+ const el=document.getElementById('confirmationNotice');
+ if(el){el.hidden=false;el.textContent=message;}
+}
+async function resendSignupConfirmation(){
+ if(confirmationBusy)return;
+ const input=document.getElementById('siEmail');
+ const email=input.value.trim().toLowerCase();
+ if(!email||!input.checkValidity()){showConfirmationNotice('Entre une adresse e-mail valide dans le champ ci-dessus.');return;}
+ if(Date.now()<(confirmationCooldown.get(email)||0)){showConfirmationNotice('Attends au moins une minute entre deux demandes de confirmation.');return;}
+ confirmationBusy=true;
+ const btn=document.getElementById('resendConfirmationBtn');btn.disabled=true;btn.textContent='Demande en cours…';
+ try{
+  const {error}=await sb.auth.resend({type:'signup',email,options:{emailRedirectTo:AUTH_EMAIL_REDIRECT}});
+  if(error)throw error;
+  confirmationCooldown.set(email,Date.now()+60000);
+  showConfirmationNotice('Si ce compte attend une confirmation, un nouvel e-mail a été demandé. Vérifie aussi les indésirables et utilise le lien le plus récent.');
+ }catch(error){showConfirmationNotice(authEmailMessage(error));}
+ finally{confirmationBusy=false;btn.disabled=false;btn.textContent='Renvoyer l’e-mail de confirmation';}
+}
 async function handleSignIn(){
  const email=document.getElementById('siEmail').value.trim().toLowerCase();
  const password=document.getElementById('siPassword').value;
  if(!email||!password){toast('Entre ton email et mot de passe');return;}
- const btn=document.getElementById('siLoginBtn');btn.textContent='Connexion...';
- const {error}=await sb.auth.signInWithPassword({email,password});
- btn.textContent='Se connecter';
- if(error){toast('Erreur : '+error.message);return;}
- // La navigation est gérée par onAuthStateChange ci-dessous
+ const btn=document.getElementById('siLoginBtn');if(btn.disabled)return;
+ btn.disabled=true;btn.textContent='Connexion…';
+ try{
+  const {error}=await sb.auth.signInWithPassword({email,password});
+  if(error){
+   if(error.code==='email_not_confirmed'||/email.*not.*confirmed/i.test(error.message||''))showConfirmationNotice(authEmailMessage(error));
+   else toast(error.code==='invalid_credentials'?'E-mail ou mot de passe incorrect.':authEmailMessage(error));
+  }
+ }catch(error){toast(authEmailMessage(error));}
+ finally{btn.disabled=false;btn.textContent='Se connecter';}
 }
 
 async function confirmNewPassword(){
@@ -2321,37 +2373,32 @@ async function claimPendingSubscription(){
 }
 
 async function handleSignUp(){
- const email=document.getElementById('suEmail').value.trim().toLowerCase();
+ const input=document.getElementById('suEmail');
+ const email=input.value.trim().toLowerCase();
  const password=document.getElementById('suPassword').value;
- if(!email||!password){toast('Entre un email et un mot de passe (6 car. min)');return;}
+ if(!email||!input.checkValidity()){toast('Entre une adresse e-mail valide');return;}
  if(password.length<6){toast('Le mot de passe doit faire au moins 6 caractères');return;}
- const btn=document.getElementById('suSignupBtn');btn.textContent='Création...';
- const {data,error}=await sb.auth.signUp({email,password});
- btn.textContent='Créer mon compte';
- if(error){
- if(error.message.includes('already registered')||error.message.includes('already exists')){
- toast('Un compte existe déjà avec cet email, connecte-toi plutôt');
- go('signin');
- document.getElementById('siEmail').value=email;
- } else {
- toast('Erreur : '+error.message);
- }
- return;
- }
- trackEvent('inscription');
- if(!data.session){
- // La confirmation par email est activée côté Supabase : pas de session tant que le lien n'est pas cliqué
- go('signin');
- document.getElementById('siEmail').value=email;
- toast('Vérifie tes emails pour confirmer ton compte avant de te connecter');
- return;
- }
- toast('Compte créé Complète ton profil');
- // La navigation est gérée par onAuthStateChange ci-dessous
+ const btn=document.getElementById('suSignupBtn');if(btn.disabled)return;
+ btn.disabled=true;btn.textContent='Création…';
+ try{
+  const {data,error}=await sb.auth.signUp({email,password,options:{emailRedirectTo:AUTH_EMAIL_REDIRECT}});
+  if(error)throw error;
+  trackEvent('inscription');
+  if(!data?.session){
+   go('signin');document.getElementById('siEmail').value=email;
+   confirmationCooldown.set(email,Date.now()+60000);
+   showConfirmationNotice('Vérifie ta boîte e-mail et les indésirables pour confirmer ton adresse. Si tu as déjà un compte, connecte-toi ou utilise « Mot de passe oublié ».');
+   return;
+  }
+  toast('Compte créé. Bienvenue dans Holistica !');
+ }catch(error){toast(authEmailMessage(error));}
+ finally{btn.disabled=false;btn.textContent='Créer mon compte';}
 }
 
 async function handleSignOut(){
- await sb.auth.signOut();
+ await flushProfileSave();
+ const {error}=await sb.auth.signOut({scope:'local'});
+ if(error){toast('Déconnexion impossible, réessaie lorsque la connexion revient.');return;}
  location.reload();
 }
 
@@ -2376,6 +2423,7 @@ async function deleteAccount(){
  const result=await res.json();
  if(!res.ok||result.error){toast('Erreur : '+(result.error||'suppression impossible'));return;}
  }catch(e){toast('Erreur : '+e.message);return;}
+ discardProfilePersistence(currentUser.id);
  await sb.auth.signOut();
  toast('✅ Ton compte et toutes tes données personnelles ont été définitivement supprimés');
  setTimeout(()=>location.reload(),1200);
@@ -2518,6 +2566,7 @@ async function signInWithApple(){
 async function loadProfileAndEnter(){
  if(!currentUser)return;
  const loadingUserId=currentUser.id;
+ if(profileSaveFlight)await profileSaveFlight;
  try{await claimPendingSubscription();}catch(e){profileLoaded=false;toast(e.message);return;}
  if(currentUser?.id!==loadingUserId)return;
  let data,error;
@@ -2533,7 +2582,7 @@ async function loadProfileAndEnter(){
  return;
  }
  if(currentUser?.id!==loadingUserId)return;
- const profile=data;
+ let profile=data;
  if(error){
  console.error('Erreur profil:',error);
  profileLoaded=false;
@@ -2544,19 +2593,21 @@ async function loadProfileAndEnter(){
  return; // Important : on ne redirige JAMAIS vers l'onboarding sur une erreur —
  // seulement quand il est confirmé qu'aucun profil n'existe (voir plus bas).
  }
- const paidProfile=profile&&['active','trialing'].includes(profile.subscription_status)&&['equilibre','immersion'].includes(profile.subscription_plan);
+ const paidProfile=profile&&(!profile.transformation_expires_at||new Date(profile.transformation_expires_at)>new Date())&&['active','trialing'].includes(profile.subscription_status)&&['equilibre','immersion'].includes(profile.subscription_plan);
  if(!paidProfile){activateFreeDemo();return;}
  personalDataMode='paid';
+ profile=restorePendingProfile(profile);
+ routineState=profile.routine_state||{};
  document.getElementById('freeDemoScreen')?.classList.remove('active');
  if(profile){
- userProfile={name:profile.name||'',lastName:profile.last_name||'',email:profile.email||'',goal:profile.goal||'bien-être',sexe:profile.sexe||'femme',age:profile.age||30,weight:profile.weight||62,height:profile.height||165,activity:profile.activity||'modérée',hasPeriod:profile.has_period,menopause:profile.menopause,perimenopause:profile.perimenopause||false,contraception:profile.contraception||false,dosha:profile.dosha||'vata',lastPeriodStart:profile.last_period_start||'',doshaV:profile.dosha_v??33,doshaP:profile.dosha_p??33,doshaK:profile.dosha_k??34,cycleLength:profile.cycle_length||28,birthDate:profile.birth_date||'',birthTime:profile.birth_time||'',birthPlace:profile.birth_place||'',subscriptionStatus:profile.subscription_status||'inactive',subscriptionPlan:profile.subscription_plan||null,dietType:profile.diet_type||'flexitarien',allergies:profile.allergies||'',referralCode:profile.referral_code||'',referredBy:profile.referred_by||null,hasSeenWalkthrough:profile.has_seen_walkthrough||false,journeyStartDate:profile.subscription_started_at||profile.created_at||new Date().toISOString(),lastMonthlyEvalAt:profile.last_monthly_eval_at||null,buddyAvailable:profile.buddy_available||false};
+ userProfile={name:profile.name||'',lastName:profile.last_name||'',email:profile.email||'',goal:profile.goal||'bien-être',sexe:profile.sexe||'femme',age:profile.age||30,weight:profile.weight||62,height:profile.height||165,activity:profile.activity||'modérée',hasPeriod:profile.has_period,menopause:profile.menopause,perimenopause:profile.perimenopause||false,contraception:profile.contraception||false,dosha:profile.dosha||'vata',lastPeriodStart:profile.last_period_start||'',doshaV:profile.dosha_v??33,doshaP:profile.dosha_p??33,doshaK:profile.dosha_k??34,cycleLength:profile.cycle_length||28,birthDate:profile.birth_date||'',birthTime:profile.birth_time||'',birthPlace:profile.birth_place||'',transformationExpiresAt:profile.transformation_expires_at||null,subscriptionStatus:profile.subscription_status||'inactive',subscriptionPlan:profile.subscription_plan||null,dietType:profile.diet_type||'flexitarien',allergies:profile.allergies||'',referralCode:profile.referral_code||'',referredBy:profile.referred_by||null,hasSeenWalkthrough:profile.has_seen_walkthrough||false,journeyStartDate:profile.subscription_started_at||profile.created_at||new Date().toISOString(),lastMonthlyEvalAt:profile.last_monthly_eval_at||null,buddyAvailable:profile.buddy_available||false};
  if(isDevAccount()){
  // Accès complet en mémoire uniquement pour tester (n'écrase jamais la vraie valeur en base)
  userProfile.subscriptionStatus='active';
  userProfile.subscriptionPlan='immersion';
  }
  xp=profile.xp||0;sessions=profile.sessions||0;
- moodScore=profile.mood_score||0;sleepScore=profile.sleep_score||7;stressScore=profile.stress_score||5;
+ moodScore=profile.mood_score??0;sleepScore=profile.sleep_score??7;stressScore=profile.stress_score??5;
  completedVids=new Set(profile.completed_videos||[]);
  sessionDates=profile.session_dates||[];
  wellnessLog=profile.wellness_log||[];
@@ -2566,6 +2617,9 @@ async function loadProfileAndEnter(){
  unlockedBadges=new Set(profile.badges_unlocked||[]);
  readDossiers=new Set(profile.read_dossiers||[]);
  loginDates=new Set(profile.login_dates||[]);
+ profileSaveBaseline=collectProfilePayload();
+ displayedLocalDay=localDateStr();
+ restoreSleepInputs();
  // Détection d'un "retour" : y avait-il déjà une connexion avant aujourd'hui, avec un
  // écart d'au moins 20 jours ? (avant d'ajouter la date du jour, pour comparer correctement)
  if(loginDates.size>0){
@@ -2653,18 +2707,176 @@ async function loadProfileAndEnter(){
  }
 }
 
+// Sauvegarde durable par compte : aucune donnée de démonstration dans cette file.
 let saveTimer=null;
-let saveRetryCount=0;
+let routineState={};
+let profileSaveBaseline=null;
+let pendingProfileSave=null;
+let profileSaveFlight=null;
+let profileRetryDelay=2000;
+let storageWarningShown=false;
+const cloneProfileValue=v=>JSON.parse(JSON.stringify(v));
+const equalProfileValue=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
+const profileQueueKey=id=>'holistica-profile-pending-v1:'+id;
+
+// Fusion à trois versions : conserve les ajouts distants et applique les changements locaux.
+function mergeProfileValue(base,local,remote,key=''){
+ if(equalProfileValue(base,local))return remote;
+ if(['xp','sessions'].includes(key)&&Number.isFinite(base)&&Number.isFinite(local)&&Number.isFinite(remote))return Math.max(0,Math.max(remote,local));
+ if(Array.isArray(local)){
+  base=Array.isArray(base)?base:[];remote=Array.isArray(remote)?remote:[];
+  const identity=v=>v&&typeof v==='object'?String(v.ts??v.date??JSON.stringify(v)):JSON.stringify(v);
+  const before=new Map(base.map(v=>[identity(v),v]));
+  const after=new Map(local.map(v=>[identity(v),v]));
+  const merged=new Map(remote.map(v=>[identity(v),v]));
+  for(const id of before.keys())if(!after.has(id))merged.delete(id);
+  for(const [id,value] of after)if(!before.has(id)||!equalProfileValue(before.get(id),value))merged.set(id,value);
+  // Les dates de séances peuvent contenir plusieurs séances le même jour.
+  if(key==='session_dates'){
+   const result=[...remote];const count=(arr,v)=>arr.filter(x=>x===v).length;
+   for(const day of new Set(local))for(let n=Math.max(0,count(local,day)-Math.max(count(base,day),count(remote,day)));n>0;n--)result.push(day);
+   return result;
+  }
+  return [...merged.values()];
+ }
+ if(local&&typeof local==='object'){
+  const result={...(remote||{})};base=base||{};
+  for(const k of Object.keys(local)){
+   if(!equalProfileValue(base[k],local[k]))result[k]=mergeProfileValue(base[k],local[k],result[k],k);
+  }
+  for(const k of Object.keys(base))if(!(k in local))delete result[k];
+  return result;
+ }
+ return local;
+}
+function readPendingProfile(id){
+ try{const saved=JSON.parse(localStorage.getItem(profileQueueKey(id))||'null');return saved&&saved.userId===id&&saved.base&&saved.value?saved:null;}catch(e){return null;}
+}
+function persistPendingProfile(){
+ if(!pendingProfileSave)return;
+ try{localStorage.setItem(profileQueueKey(pendingProfileSave.userId),JSON.stringify(pendingProfileSave));}
+ catch(e){if(!storageWarningShown){storageWarningShown=true;toast('Stockage local indisponible : garde l’app ouverte jusqu’à la sauvegarde en ligne.');}}
+}
+function restorePendingProfile(profile){
+ pendingProfileSave=readPendingProfile(profile.id);
+ if(!pendingProfileSave)return profile;
+ const restored={...profile};
+ // Seules les colonnes de données personnelles écrites par cette application sont restaurées.
+ for(const key of Object.keys(collectProfilePayload())){
+  if(key in pendingProfileSave.value)restored[key]=mergeProfileValue(pendingProfileSave.base[key],pendingProfileSave.value[key],profile[key],key);
+ }
+ pendingProfileSave.base=cloneProfileValue(Object.fromEntries(Object.keys(pendingProfileSave.value).map(k=>[k,profile[k]??null])));
+ pendingProfileSave.value=cloneProfileValue(Object.fromEntries(Object.keys(pendingProfileSave.value).map(k=>[k,restored[k]??null])));
+ persistPendingProfile();
+ return restored;
+}
 function saveProfile(){
  if(isFreeDemo())return;
- if(!currentUser)return;
+ if(!currentUser||personalDataMode!=='paid'||!profileSaveBaseline)return;
+ const value=collectProfilePayload();
+ if(equalProfileValue(value,profileSaveBaseline)&&!pendingProfileSave)return;
+ if(!pendingProfileSave||pendingProfileSave.userId!==currentUser.id)pendingProfileSave={userId:currentUser.id,base:cloneProfileValue(profileSaveBaseline),value};
+ else pendingProfileSave.value=value;
+ persistPendingProfile(); // Synchrone : survit à une fermeture avant la requête réseau.
  clearTimeout(saveTimer);
- const savingUserId=currentUser.id;
- saveTimer=setTimeout(async()=>{
- if(currentUser?.id!==savingUserId)return;
- if(personalDataMode!=='paid')return;
- const {error}=await appTable('profiles').upsert({
- id:currentUser.id,
+ saveTimer=setTimeout(()=>flushProfileSave(),400);
+}
+async function flushProfileSave(){
+ clearTimeout(saveTimer);
+ if(profileSaveFlight)return profileSaveFlight;
+ if(!currentUser||personalDataMode!=='paid')return false;
+ if(!pendingProfileSave)return true;
+ if(pendingProfileSave.userId!==currentUser.id)return false;
+ if(navigator.onLine===false)return false;
+ const owner=currentUser.id;
+ profileSaveFlight=(async()=>{
+  try{
+   while(pendingProfileSave&&currentUser?.id===owner&&personalDataMode==='paid'){
+    const sent=cloneProfileValue(pendingProfileSave);
+    const {data:remote,error:readError}=await appTable('profiles').select('*').eq('id',owner).single().abortSignal(AbortSignal.timeout(15000));
+    if(readError||!remote)throw readError||new Error('Profil introuvable');
+    if(currentUser?.id!==owner||personalDataMode!=='paid')return false;
+    const patch={};
+    for(const key of Object.keys(collectProfilePayload()))if(key in sent.value&&!equalProfileValue(sent.base[key],sent.value[key]))patch[key]=mergeProfileValue(sent.base[key],sent.value[key],remote[key],key);
+    if(Object.keys(patch).length){
+     patch.updated_at=new Date().toISOString();
+     let query=appTable('profiles').update(patch).eq('id',owner);
+     query=remote.updated_at?query.eq('updated_at',remote.updated_at):query.is('updated_at',null);
+     const {data:written,error}=await query.select('id').abortSignal(AbortSignal.timeout(15000));
+     if(error)throw error;
+     if(!written?.length)throw new Error('Profil modifié ailleurs : nouvelle synchronisation nécessaire');
+    }
+    if(currentUser?.id!==owner)return false;
+    profileSaveBaseline=cloneProfileValue(sent.value);
+    if(pendingProfileSave&&equalProfileValue(pendingProfileSave.value,sent.value)){
+     pendingProfileSave=null;
+     localStorage.removeItem(profileQueueKey(owner));
+    }else if(pendingProfileSave){
+     pendingProfileSave.base=cloneProfileValue(sent.value);persistPendingProfile();
+    }
+   }
+   profileRetryDelay=2000;return true;
+  }catch(e){
+   console.warn('Synchronisation différée du profil:',e.message||e);
+   if(currentUser?.id===owner&&pendingProfileSave){
+    persistPendingProfile();
+    saveTimer=setTimeout(()=>flushProfileSave(),profileRetryDelay);
+    profileRetryDelay=Math.min(profileRetryDelay*2,60000);
+   }
+   return false;
+  }
+ })();
+ try{return await profileSaveFlight;}finally{profileSaveFlight=null;}
+}
+function resetProfilePersistence(){
+ clearTimeout(saveTimer);profileSaveBaseline=null;pendingProfileSave=null;routineState={};
+}
+function discardProfilePersistence(id){
+ resetProfilePersistence();try{localStorage.removeItem(profileQueueKey(id));}catch(e){}
+}
+function getRoutineDay(){return routineState[localDateStr()]||{};}
+function updateRoutineDay(patch){
+ if(isFreeDemo()||!currentUser)return;
+ const day=localDateStr();routineState[day]={...(routineState[day]||{}),...patch};saveProfile();
+}
+function restoreSleepInputs(){
+ const days=Object.keys(routineState).sort();
+ const latest=[...days].reverse().map(d=>routineState[d]).find(d=>d.sleepStart&&d.sleepEnd);
+ const start=document.getElementById('sleepStart'),end=document.getElementById('sleepEnd');
+ if(start)start.value=latest?.sleepStart||'23:00';
+ if(end)end.value=latest?.sleepEnd||'07:00';
+}
+let displayedLocalDay=localDateStr();
+function refreshLocalDay(){
+ const day=localDateStr();if(day===displayedLocalDay||!currentUser||personalDataMode!=='paid')return;
+ displayedLocalDay=day;loginDates.add(day);streak=calcStreak();saveProfile();
+ refreshDash();renderJourneyStrip();renderMvCalendar();renderWeeklyRecap();renderFoodJournal();
+}
+window.addEventListener('pagehide',()=>{persistPendingProfile();void flushProfileSave();});
+window.addEventListener('online',()=>{void resumeMemberSession();});
+document.addEventListener('visibilitychange',()=>{
+ if(document.hidden){persistPendingProfile();void flushProfileSave();}
+ else{refreshLocalDay();void resumeMemberSession();}
+});
+setInterval(()=>{if(!document.hidden)refreshLocalDay();},30000);
+let resumeSessionFlight=null;
+async function resumeMemberSession(){
+ if(resumeSessionFlight)return resumeSessionFlight;
+ resumeSessionFlight=(async()=>{
+  try{
+   const {data,error}=await sb.auth.getSession();
+   if(error)return; // Une interruption réseau n'est pas une demande de déconnexion.
+   if(data.session){
+    if(!profileLoaded){profileLoaded=true;currentUser=data.session.user;await loadProfileAndEnter();}
+    else await flushProfileSave();
+   }
+  }catch(e){console.warn('Reprise en attente du réseau');}
+ })();
+ try{await resumeSessionFlight;}finally{resumeSessionFlight=null;}
+}
+
+function collectProfilePayload(){
+ return cloneProfileValue({
  name:userProfile.name,age:userProfile.age,weight:userProfile.weight,height:userProfile.height,
  activity:userProfile.activity,sexe:userProfile.sexe,has_period:userProfile.hasPeriod,menopause:userProfile.menopause,perimenopause:userProfile.perimenopause,contraception:userProfile.contraception,dosha:userProfile.dosha,
  last_period_start:userProfile.lastPeriodStart||null,dosha_v:userProfile.doshaV,dosha_p:userProfile.doshaP,dosha_k:userProfile.doshaK,cycle_length:userProfile.cycleLength,
@@ -2673,22 +2885,8 @@ function saveProfile(){
  diet_type:userProfile.dietType,allergies:userProfile.allergies||null,
  xp,sessions,streak,mood_score:moodScore,sleep_score:sleepScore,stress_score:stressScore,
  completed_videos:Array.from(completedVids),session_dates:sessionDates,wellness_log:wellnessLog,food_log:foodLog,video_start_dates:videoStartDates,
- tried_recipes:Array.from(triedRecipes),badges_unlocked:Array.from(unlockedBadges),last_celebrated_level:lastCelebratedLevel,read_dossiers:Array.from(readDossiers),login_dates:Array.from(loginDates),referral_code:userProfile.referralCode||null,referred_by:userProfile.referredBy||null,has_seen_walkthrough:userProfile.hasSeenWalkthrough||false,last_monthly_eval_at:userProfile.lastMonthlyEvalAt||null,updated_at:new Date().toISOString()
+ tried_recipes:Array.from(triedRecipes),badges_unlocked:Array.from(unlockedBadges),last_celebrated_level:lastCelebratedLevel,read_dossiers:Array.from(readDossiers),login_dates:Array.from(loginDates),referral_code:userProfile.referralCode||null,referred_by:userProfile.referredBy||null,has_seen_walkthrough:userProfile.hasSeenWalkthrough||false,last_monthly_eval_at:userProfile.lastMonthlyEvalAt||null,routine_state:routineState
  });
- if(error){
- console.error('Erreur sauvegarde profil :',error);
- if(saveRetryCount<2){
- // Nouvelle tentative silencieuse (réseau instable, latence...) avant d'alerter l'utilisatrice
- saveRetryCount++;
- saveTimer=setTimeout(()=>{saveRetryCount=0;saveProfile();},2000);
- } else {
- saveRetryCount=0;
- toast('Ta dernière modification n\'a pas pu être enregistrée, vérifie ta connexion');
- }
- } else {
- saveRetryCount=0;
- }
- },600);
 }
 
 // Point d'entrée unique pour toute connexion réussie : email/mdp, Google, Apple, ou session déjà active
@@ -2706,13 +2904,14 @@ sb.auth.onAuthStateChange((event,session)=>{
  return;
  }
  if(event==='TOKEN_REFRESHED'&&profileLoaded)checkMembershipChange();
- if(session&&currentUser&&currentUser.id!==session.user.id){profileLoaded=false;personalDataMode='unknown';clearTimeout(saveTimer);}
+ if(session&&currentUser&&currentUser.id!==session.user.id){profileLoaded=false;personalDataMode='unknown';resetProfilePersistence();}
  if(session&&!profileLoaded){
  profileLoaded=true;
  currentUser=session.user;
  loadProfileAndEnter();
  }
  if(event==='SIGNED_OUT'){
+ resetProfilePersistence();
  personalDataMode='unknown';document.getElementById('freeDemoScreen')?.classList.remove('active');
  profileLoaded=false;
  currentUser=null;
@@ -2721,26 +2920,13 @@ sb.auth.onAuthStateChange((event,session)=>{
  },0);
 });
 
-// Sur mobile (app installée notamment), le navigateur met en pause le JS
-// quand l'app passe en arrière-plan, le rafraîchissement automatique du
-// jeton peut donc ne pas se déclencher à temps. On force une vérification
-// dès que l'app redevient visible, pour éviter toute déconnexion silencieuse.
-document.addEventListener('visibilitychange',async()=>{
- if(document.visibilityState==='visible'&&currentUser){
- const {data,error}=await sb.auth.getSession();
- if(error||!data.session){
- console.log('[Auth] session invalide au retour au premier plan, tentative de restauration...');
- }
- }
-});
-
 // Filet de sécurité : si le listener n'a rien capté après le chargement (ex: retour OAuth raté),
 // on vérifie manuellement s'il existe une session active.
 window.addEventListener('load',async()=>{
  setTimeout(async()=>{
  if(!profileLoaded){
  const {data,error}=await sb.auth.getSession();
- console.log('[Auth] fallback getSession:',data.session,error);
+ console.log('[Auth] fallback session:',!!data.session,!!error);
  if(data.session&&!profileLoaded){
  profileLoaded=true;
  currentUser=data.session.user;
@@ -3418,6 +3604,7 @@ function renderAddFoodPanelHtml(){
 }
 
 function go(id){
+ if(id==='cycleSettings'&&isMaleProfile())id='profil';
  {const _rp=document.getElementById('routinePlayer');if(_rp&&_rp.classList.contains('open'))closeRoutinePlayer();}
  if(isFreeDemo()&&!['sources','privacy','signin','signup','resetPassword'].includes(id)){renderFreeDemo(id);return;}
  if(id==='privacy')id='sources';
@@ -3454,7 +3641,10 @@ function closeSources(){
 
 const ACTIVITY_MULTIPLIER={'sédentaire':1.2,'légère':1.375,'modérée':1.55,'active':1.725,'très active':1.9};
 function computeNutritionTargets(){
- const bmr=Math.round(447.593+(9.247*userProfile.weight)+(3.098*userProfile.height)-(4.33*userProfile.age));
+ // Harris–Benedict révisée : Roza & Shizgal, 1984. Estimation, pas prescription.
+ const bmr=Math.round(userProfile.sexe==='homme'
+ ?88.362+13.397*userProfile.weight+4.799*userProfile.height-5.677*userProfile.age
+ :447.593+9.247*userProfile.weight+3.098*userProfile.height-4.33*userProfile.age);
  const mult=ACTIVITY_MULTIPLIER[userProfile.activity]||1.375;
  const maintenanceCal=Math.round(bmr*mult);
  // Formule unique, la même pour toutes les utilisatrices : perte de masse grasse globale, maintien
@@ -3914,7 +4104,9 @@ function obNext(){
  if(s.type==='input'){
  userProfile.name=document.getElementById('obName')?.value||'';
  } else if(s.type==='choice' && OB_STEPS[obStep].title.includes('sexe')){
+ if(![0,1].includes(obChoiceIdx)){toast('Choisis Femme ou Homme pour continuer.');return;}
  userProfile.sexe=obChoiceIdx===1?'homme':'femme';
+ syncGenderUI();
  } else if(s.type==='slider'){
  const v=+document.getElementById(s.id).value;
  if(s.id==='obAge') userProfile.age=v;
@@ -4157,6 +4349,7 @@ function renderAstroDetail(){
 }
 
 function refreshDash(){
+ syncGenderUI();
  if(isFreeDemo()){renderFreeDemo('dashboard');return;}
  document.getElementById('dSleep').innerHTML=sleepScore+'<span class="quick-unit">h</span>';
  const stressSlider=document.getElementById('stressSlider');
@@ -4235,7 +4428,7 @@ async function startRoutineType(routineTypeId){
 // par la bannière "prochaine étape" et par le récap "Tes étapes du jour".
 function computeJourneySteps(){
  const today=localDateStr();
- const todoDone=!!document.querySelector('#todoWrap .tck.done');
+ const todoDone=getRoutineChecks().length>0;
  const routinesDoneToday=getRoutineCompletionToday();
  const matinDone=routinesDoneToday.includes('matin_reveil');
  const soirDone=routinesDoneToday.includes('soir_ralentir');
@@ -4252,7 +4445,7 @@ function computeJourneySteps(){
  {done:bienEtreDone,t:'Ton bien-être',s:'Humeur, sommeil, stress',onclick:"scrollToSection('secMood')"}
  ];
  if(hasImmersionAccess())steps.push({done:repasDone,t:'Tes repas',s:'Journal alimentaire du jour',onclick:"go('dietPlan');switchDietTab('Journal')"});
- steps.push({done:false,t:'Ton astrologie du jour',s:'Ton thème, ta lune, ton signe',onclick:"openAstro()"});
+ steps.push({done:!!getRoutineDay().astroRead,t:'Ton astrologie du jour',s:'Ton thème, ta lune, ton signe',onclick:"openAstro()"});
  steps.forEach((step,i)=>step.n=i+1);
 
  return steps;
@@ -4359,6 +4552,7 @@ function calcSleepHours(){
  const hours=Math.round((diff/60)*10)/10;
  document.getElementById('dSleep').innerHTML=hours+'<span class="quick-unit">h</span>';
  sleepScore=hours;
+ updateRoutineDay({sleepStart:startEl.value,sleepEnd:endEl.value});
  calcRecovery();
 }
 
@@ -4382,18 +4576,20 @@ function calcRecovery(){
 // Bouton "Enregistrer" sous Sommeil & Stress : la sauvegarde se fait déjà automatiquement
 // à chaque changement (voir calcRecovery), ce bouton sert surtout à confirmer clairement
 // à la personne que c'est bien pris en compte dans son journal de bord.
-function saveWellnessToday(){
+async function saveWellnessToday(){
  if(isFreeDemo())return;
  calcRecovery();
- toast('Bien-être enregistré dans ton journal ✓');
+ const synced=await flushProfileSave();
+ toast(synced?'Bien-être enregistré dans ton compte ✓':'Bien-être conservé sur cet appareil ; synchronisation dès le retour du réseau.');
 }
 // Bouton "Enregistrer" sous la routine du jour : les cases sont déjà sauvegardées à chaque
 // clic, ce bouton confirme l'enregistrement et comptabilise la routine dans le parcours du jour.
-function saveRoutineToday(){
+async function saveRoutineToday(){
  if(isFreeDemo())return;
  renderJourneyStrip();
  checkBadges();
- toast('Routine enregistrée dans ton journal ✓');
+ const synced=await flushProfileSave();
+ toast(synced?'Routine enregistrée dans ton compte ✓':'Routine conservée sur cet appareil ; synchronisation dès le retour du réseau.');
 }
 function logWellnessToday(){
  if(isFreeDemo())return;
@@ -4404,8 +4600,7 @@ function logWellnessToday(){
  } else {
  wellnessLog.push({date:today,sleep:sleepScore,stress:stressScore,mood:moodScore});
  }
- // Garde seulement les 60 derniers jours pour rester léger
- wellnessLog=wellnessLog.slice(-60);
+ // Chaque journée est conservée dans le compte, sans limite arbitraire à 60 jours.
 }
 
 const CYCLE_DOSHA_TIP={
@@ -4445,6 +4640,8 @@ function getRoutineCategory(){
 }
 let _routineCache={};
 async function fetchDailyRoutine(){
+ if(isMaleProfile())return "1. Commence la journée par un verre d'eau.\n2. Choisis une courte séance de mouvement adaptée à ton énergie.\n3. Prends quelques minutes à la lumière du jour.\n4. Garde des horaires de repas réguliers.\n5. Accorde-toi une pause de respiration.\n6. Prépare un moment calme avant le coucher.";
+
  const categorie=getRoutineCategory();
  const dosha=getProfileDoshaKey();
  const mois=new Date().getMonth()+1;
@@ -4483,16 +4680,11 @@ async function buildRoutine(){
  }).join('');
 }
 
-function todayStr(){return new Date().toISOString().slice(0,10);}
-function getRoutineChecks(){
- try{
- const raw=JSON.parse(localStorage.getItem('holistica-routine-checks')||'{}');
- return raw.date===todayStr()?raw.items:[];
- }catch(e){return [];}
-}
+function todayStr(){return localDateStr();}
+function getRoutineChecks(){return isFreeDemo()?[]:[...(getRoutineDay().checks||[])];}
 function saveRoutineChecks(items){
  if(isFreeDemo())return;
- localStorage.setItem('holistica-routine-checks',JSON.stringify({date:todayStr(),items}));
+ updateRoutineDay({checks:[...items]});
 }
 function toggleTodo(el,text){
  if(isFreeDemo())return;
@@ -4633,6 +4825,7 @@ function updateLevel(){
 
 /* ═══════ SUIVI DE CYCLE ═══════ */
 function updateCycleLength(v){
+ if(isMaleProfile())return null;
  if(isFreeDemo())return;
  const len=parseInt(v)||28;
  userProfile.cycleLength=Math.min(60,Math.max(15,len));
@@ -4675,6 +4868,7 @@ function getCycleSummaryText(c){
 }
 function rpSyncCycleCalBtn(show){const b=document.getElementById('cycleCalBtn');if(b)b.style.display=show?'flex':'none';}
 function getCurrentCycleInfo(){
+ if(isMaleProfile())return null;
  if(!userProfile.hasPeriod||userProfile.menopause||!userProfile.lastPeriodStart)return null;
  const len=userProfile.cycleLength||28;
  const start=new Date(userProfile.lastPeriodStart+'T00:00:00');
@@ -4688,6 +4882,7 @@ function getCurrentCycleInfo(){
 
 /* ═══ Calendrier annuel du cycle (règles prévues sur toute l'année) ═══ */
 function openCycleCalendar(){
+ if(isMaleProfile())return null;
  if(isFreeDemo()){renderFreeDemo('cycleSettings');return;}
  const c=getCurrentCycleInfo();
  if(!c){toast('Renseigne la date de tes dernières règles dans ton profil');return;}
@@ -4779,6 +4974,7 @@ function energyExtraNotes(){
 }
 
 async function renderCycle(){
+ if(isMaleProfile())return null;
  if(isFreeDemo())return;
  rpSyncCycleCalBtn(!!(!userProfile.menopause&&!userProfile.perimenopause&&!userProfile.contraception&&getCurrentCycleInfo()));
  if(document.getElementById('cycleLenInput'))document.getElementById('cycleLenInput').value=userProfile.cycleLength;
@@ -4959,17 +5155,12 @@ function buildRoutinePlaylist(clips,routineType,doshaKey){
 
  return [...chosenFirst,...chosenMiddle,...chosenLast].filter(Boolean);
 }
-function getRoutineCompletionToday(){
- try{
- const raw=JSON.parse(localStorage.getItem('holistica-routines-done')||'{}');
- return raw.date===todayStr()?(raw.ids||[]):[];
- }catch(e){return [];}
-}
+function getRoutineCompletionToday(){return isFreeDemo()?[]:[...(getRoutineDay().completed||[])];}
 function markRoutineCompletionToday(routineId){
  if(isFreeDemo())return;
  const done=getRoutineCompletionToday();
  if(!done.includes(routineId))done.push(routineId);
- localStorage.setItem('holistica-routines-done',JSON.stringify({date:todayStr(),ids:done}));
+ updateRoutineDay({completed:done});
 }
 const ROUTINE_CARD_PHOTOS=[]; // conservé pour compatibilité, plus utilisé (chaque routine a désormais sa propre image)
 async function renderRoutinesSection(){
@@ -5963,6 +6154,7 @@ function openEditInfo(){
  document.getElementById('eiWeight').value=userProfile.weight;
  document.getElementById('eiHeight').value=userProfile.height;
  document.getElementById('eiAge').value=userProfile.age;
+ document.getElementById('eiSexe').value=userProfile.sexe||'femme';
  document.getElementById('eiActivity').value=userProfile.activity;
  document.getElementById('eiDietType').value=userProfile.dietType||'flexitarien';
  document.getElementById('eiAllergies').value=userProfile.allergies||'';
@@ -5976,6 +6168,8 @@ function saveEditInfo(){
  userProfile.weight=parseFloat(document.getElementById('eiWeight').value)||userProfile.weight;
  userProfile.height=parseFloat(document.getElementById('eiHeight').value)||userProfile.height;
  userProfile.age=parseInt(document.getElementById('eiAge').value)||userProfile.age;
+ userProfile.sexe=document.getElementById('eiSexe').value==='homme'?'homme':'femme';
+ syncGenderUI();
  userProfile.activity=document.getElementById('eiActivity').value;
  userProfile.dietType=document.getElementById('eiDietType').value;
  userProfile.allergies=document.getElementById('eiAllergies').value.trim();
@@ -6105,7 +6299,10 @@ function generateMealPlan(){
  const proteinList=PROTEIN_BY_DIET[userProfile.dietType]||PROTEIN_BY_DIET.flexitarien;
  // Recalcule les macros du jour (même formule que le tableau de bord), riche en protéines et
  // équilibré en lipides, pensé pour la santé globale, le maintien musculaire et l'équilibre hormonal.
- const bmr=Math.round(447.593+(9.247*userProfile.weight)+(3.098*userProfile.height)-(4.33*userProfile.age));
+ // Harris–Benedict révisée : Roza & Shizgal, 1984. Estimation, pas prescription.
+ const bmr=Math.round(userProfile.sexe==='homme'
+ ?88.362+13.397*userProfile.weight+4.799*userProfile.height-5.677*userProfile.age
+ :447.593+9.247*userProfile.weight+3.098*userProfile.height-4.33*userProfile.age);
  const mult=ACTIVITY_MULTIPLIER[userProfile.activity]||1.375;
  const dailyCal=Math.round(bmr*mult);
  const proteinPerKg={'sédentaire':1.6,'légère':1.7,'modérée':1.8,'active':1.9,'très active':2.0}[userProfile.activity]||1.7;
@@ -6579,6 +6776,7 @@ const HOUSES=[
 ];
 function openAstro(){
  if(isFreeDemo()){renderFreeDemo('astroScreen');return;}
+ updateRoutineDay({astroRead:true});
  document.getElementById('astroDate').value=userProfile.birthDate||'';
  document.getElementById('astroTime').value=userProfile.birthTime||'';
  document.getElementById('astroPlace').value=userProfile.birthPlace||'';
@@ -7013,6 +7211,7 @@ function openWellnessHistory(){
 
 /* ═══════ CYCLE SETTINGS ═══════ */
 function openCycleSettings(){
+ if(isMaleProfile())return null;
  if(isFreeDemo()){renderFreeDemo('cycleSettings');return;}
  document.getElementById('csLastPeriod').value=userProfile.lastPeriodStart||'';
  document.getElementById('csCycleLength').value=userProfile.cycleLength||28;
@@ -7027,6 +7226,7 @@ function openCycleSettings(){
  go('cycleSettings');
 }
 function saveCycleSettings(){
+ if(isMaleProfile())return null;
  if(isFreeDemo())return;
  userProfile.lastPeriodStart=document.getElementById('csLastPeriod').value||'';
  const len=parseInt(document.getElementById('csCycleLength').value)||28;
@@ -7676,7 +7876,7 @@ function frMessage(msg){
 let _toastTimer=null;
 function toast(msg){const t=document.getElementById('toast');const m=frMessage(msg);t.textContent=m;t.classList.add('show');clearTimeout(_toastTimer);_toastTimer=setTimeout(()=>t.classList.remove('show'),Math.min(7000,Math.max(2500,m.length*55)));}
 
-async /* ═══ TUTORIEL DE BIENVENUE (WALKTHROUGH) ═══ */
+/* ═══ TUTORIEL DE BIENVENUE (WALKTHROUGH) ═══ */
 const WT_ICONS={
  home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11.5l8-7.5 8 7.5"/><path d="M6 10v9.5a1 1 0 0 0 1 1h3.5v-6.5h3v6.5H17a1 1 0 0 0 1-1V10"/></svg>',
  yoga:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2"/><path d="M12 7.3v4.2"/><path d="M9.3 9c0 1.5.9 2.5 2.7 2.5s2.7-1 2.7-2.5"/></svg>',
@@ -7728,10 +7928,8 @@ function wtSkip(){
 }
 function wtFinish(){
  if(isFreeDemo())return;
- if(currentUser){
- appTable('profiles').update({has_seen_walkthrough:true}).eq('id',currentUser.id).then(()=>{});
- }
  if(userProfile)userProfile.hasSeenWalkthrough=true;
+ saveProfile();
  try{localStorage.setItem('holistica_wt_seen_'+(userProfile&&userProfile.email||''),'1');}catch(e){}
 
  if(wtFromDiscovery && !currentUser){

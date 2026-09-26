@@ -2156,6 +2156,8 @@ async function checkMembershipChange(){
  if(!currentUser||!profileLoaded||membershipCheckRunning)return;
  const id=currentUser.id;membershipCheckRunning=true;
  try{
+ if(isFreeDemo())await claimPendingSubscription();
+ if(currentUser?.id!==id)return;
  const {data,error}=await appTable('profiles').select('subscription_status,subscription_plan,transformation_expires_at').eq('id',id).maybeSingle();
  if(error||currentUser?.id!==id)return;
  const next=(!data?.transformation_expires_at||new Date(data.transformation_expires_at)>new Date())&&['active','trialing'].includes(data?.subscription_status)&&['equilibre','immersion'].includes(data?.subscription_plan)?data.subscription_plan:'standard';

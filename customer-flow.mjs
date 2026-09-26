@@ -5,7 +5,9 @@ const ORIGINS = new Set([APP_URL, 'https://holistica-app.netlify.app', 'https://
 export const emailOf = value => String(value || '').trim().toLowerCase();
 export const idOf = value => typeof value === 'string' ? value : value?.id;
 export function checked(result) { if (result.error) throw new Error('Database operation failed: ' + result.error.code); return result.data; }
+const HOLISTICA_PRODUCT_PLANS = Object.freeze({"prod_VKehBhL0z1Lg8A": "equilibre", "prod_VKejMfn1SmXgJd": "equilibre", "prod_VKeodH49GYNHjm": "immersion", "prod_VKf30mO4rpZITF": "immersion"});
 export function planOf(product) {
+  if (HOLISTICA_PRODUCT_PLANS[idOf(product)]) return HOLISTICA_PRODUCT_PLANS[idOf(product)];
   const name = String(product?.name || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
   if (name.includes('transformation')) return null;
   if (name.includes('immersion')) return 'immersion';

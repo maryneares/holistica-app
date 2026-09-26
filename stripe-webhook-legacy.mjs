@@ -116,9 +116,11 @@ function wrapEmail(title, bodyHtml) {
 // aux tarifs annuels (montant élevé mais Équilibre) et aux offres promotionnelles
 // (ex: 39€ de lancement pour Immersion, en dessous du seuil "Immersion" habituel).
 // Le produit associé, lui, ne change jamais, peu importe le prix ou la remise.
+const HOLISTICA_PRODUCT_PLANS = Object.freeze({"prod_VKehBhL0z1Lg8A": "equilibre", "prod_VKejMfn1SmXgJd": "equilibre", "prod_VKeodH49GYNHjm": "immersion", "prod_VKf30mO4rpZITF": "immersion"});
 async function planFromPriceItem(priceItem) {
   try {
     const productId = typeof priceItem?.product === 'string' ? priceItem.product : priceItem?.product?.id;
+    if (HOLISTICA_PRODUCT_PLANS[productId]) return HOLISTICA_PRODUCT_PLANS[productId];
     if (!productId) return planFromAmountFallback(priceItem?.unit_amount);
     const product = await stripe.products.retrieve(productId);
     const name = (product.name || '').toLowerCase();
@@ -137,7 +139,7 @@ async function planFromPriceItem(priceItem) {
 // Équilibre (montant élevé) soit mal classé comme Immersion.
 function planFromAmountFallback(amount) {
   const immersionAmounts = [4900, 3900, 47000]; // 49€, 39€ (lancement), 470€/an
-  const equilibreAmounts = [2900, 27900]; // 29€, 279€/an
+  const equilibreAmounts = [2490, 23900, 2900, 27900]; // 29€, 279€/an
   if (immersionAmounts.includes(amount)) return 'immersion';
   if (equilibreAmounts.includes(amount)) return 'equilibre';
   // Montant totalement inconnu (ex: nouveau tarif jamais vu) : dernier recours,

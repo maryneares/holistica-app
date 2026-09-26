@@ -4,7 +4,7 @@ const fs=require('node:fs');
 const path=require('node:path');
 const root=path.resolve(__dirname,'..');
 const functions=path.join(root,'netlify/functions');
-for(const name of ['stripe-webhook','claim-pending-subscription','send-account-email','send-lifecycle-emails','send-upsell-emails']){
+for(const name of ['stripe-webhook','claim-pending-subscription','send-account-email','send-lifecycle-emails','send-upsell-emails','crm-send-scheduled-campaigns','expire-transformation']){
   if(!fs.existsSync(path.join(functions,name+'.mts')))throw new Error('Missing corrected function: '+name);
   const old=path.join(functions,name+'.js');
   if(fs.existsSync(old))fs.unlinkSync(old);

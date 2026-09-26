@@ -1,3 +1,4 @@
+import { sendOnce, ACCOUNT_EMAIL_NOTICE, EMAIL_FOOTER } from './customer-flow.mjs';
 // netlify/functions/stripe-webhook.js
 //
 // Webhook Stripe pour Holistica Club — version corrigée pour bien gérer l'essai
@@ -47,16 +48,8 @@ function normEmail(email) {
 
 const FROM = '"Holistica Club - Maryne Arès" <info@maryneares.fr>';
 
-async function sendEmail(to, subject, html) {
-  try {
-    await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: { 'Authorization': `Bearer ${Netlify.env.get('RESEND_API_KEY')}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ from: FROM, to: [to], subject, html })
-    });
-  } catch (e) {
-    console.error('Erreur envoi email:', e);
-  }
+async function sendEmail(to,subject,html,key){
+ await sendOnce({db:supabase,fetcher:fetch,apiKey:Netlify.env.get('RESEND_API_KEY'),from:FROM},key,{to:[to],subject,html});
 }
 
 // ═══ Synchronisation Brevo, pour déclencher tes propres tunnels d'automatisation ═══
@@ -109,10 +102,10 @@ function wrapEmail(title, bodyHtml) {
     </tr>
     <tr><td style="padding:36px 32px 8px;">
       <div style="font-size:19px;font-weight:700;color:#1A1828;margin-bottom:14px;">${title}</div>
-      ${bodyHtml}
+      ${bodyHtml}${ACCOUNT_EMAIL_NOTICE}
     </td></tr>
     <tr><td style="padding:24px 32px 36px;">
-      <div style="font-size:12px;color:#8A85A8;line-height:1.6;text-align:center;">Pour toute demande, envoie un email à <a href="mailto:info@maryneares.fr" style="color:#8A85A8;">info@maryneares.fr</a>.<br>Ne réponds pas directement à cet email automatique.<br>À très vite sur Holistica Club 🪷</div>
+      ${EMAIL_FOOTER}
     </td></tr>
   </table>
 </div>`;
@@ -322,7 +315,7 @@ export const handler = async (event) => {
 
             <div style="font-size:12.5px;line-height:1.6;color:#8A85A8;margin-top:16px;">Tu peux annuler à tout moment avant la fin de ton essai, sans aucun frais, directement depuis ton espace membre.</div>
           `);
-          await sendEmail(recipientEmail, 'Ton essai gratuit Holistica Club commence 🌸', html);
+          await sendEmail(recipientEmail, 'Bienvenue dans Holistica Club', wrapEmail('Bienvenue dans Holistica Club','<p>Retrouve le statut de ton accès et les détails de ta formule dans ton espace membre.</p>'), 'legacy-welcome-'+String(session.subscription?.id||session.subscription||session.id));
           await syncToBrevo(recipientEmail, 'essai_demarre', { PLAN: plan, STATUT: status });
         }
         break;
@@ -391,7 +384,7 @@ export const handler = async (event) => {
             </div>
             <div style="font-size:12.5px;line-height:1.6;color:#8A85A8;margin-top:16px;">Tu peux annuler à tout moment avant la fin de ton essai, sans aucun frais, directement depuis ton espace membre sur holisticaclub.com.</div>
           `);
-          await sendEmail(recipientEmail, 'Ton essai gratuit Holistica Club commence 🌸', html);
+          await sendEmail(recipientEmail, 'Bienvenue dans Holistica Club', wrapEmail('Bienvenue dans Holistica Club','<p>Retrouve le statut de ton accès et les détails de ta formule dans ton espace membre.</p>'), 'legacy-welcome-'+sub.id);
           await syncToBrevo(recipientEmail, 'essai_demarre', { PLAN: plan, STATUT: status });
         }
         break;
@@ -429,7 +422,7 @@ export const handler = async (event) => {
             </div>
             ${invoice.hosted_invoice_url ? `<div style="text-align:center;margin-top:20px;"><a href="${invoice.hosted_invoice_url}" style="display:inline-block;background:#5B4EA8;color:#ffffff;text-decoration:none;font-weight:700;font-size:15px;padding:14px 32px;border-radius:14px;">Voir ma facture</a></div>` : ''}
           `);
-          await sendEmail(profile.email, 'Paiement confirmé — Holistica Club', html);
+          await sendEmail(profile.email, 'Paiement confirmé — Holistica Club', wrapEmail('Paiement confirmé','<p>Ton paiement a bien été reçu. Merci pour ta confiance.</p>'), 'legacy-paid-'+invoice.id);
         }
         break;
       }
@@ -448,7 +441,7 @@ export const handler = async (event) => {
             <div style="font-size:14px;line-height:1.7;color:#3D3860;margin-top:10px;"><b>Sans mise à jour, ton accès sera automatiquement coupé dans 3 jours.</b></div>
             ${invoice.hosted_invoice_url ? `<div style="text-align:center;margin-top:20px;"><a href="${invoice.hosted_invoice_url}" style="display:inline-block;background:#5B4EA8;color:#ffffff;text-decoration:none;font-weight:700;font-size:15px;padding:14px 32px;border-radius:14px;">Mettre à jour mon paiement</a></div>` : ''}
           `);
-          await sendEmail(profile.email, 'Action requise pour ton abonnement Holistica Club', html);
+          await sendEmail(profile.email, 'Vérifie ton paiement — Holistica Club', wrapEmail('Vérifie ton paiement','<p>Ton paiement n’a pas abouti. Vérifie ton moyen de paiement dans ton espace membre sur le site.</p>'), 'legacy-failed-'+invoice.id+'-'+(invoice.attempt_count||0));
           await supabase.from('profiles').update({ payment_warning_sent_at: new Date().toISOString() }).eq('id', profile.id);
           // Synchronise dès le premier échec, pour que Brevo démarre sa propre
           // relance de paiement sans attendre l'annulation définitive à J+3.
@@ -479,7 +472,7 @@ export const handler = async (event) => {
               ? wrapEmail('Ton abonnement a été annulé', `<div style="font-size:14px;line-height:1.7;color:#3D3860;">Ton abonnement Holistica Club a bien été annulé, comme demandé. Ton accès reste actif jusqu'à la fin de la période déjà payée.</div>`)
               : wrapEmail('Ton accès a été suspendu', `<div style="font-size:14px;line-height:1.7;color:#3D3860;">Faute de paiement régularisé, ton accès à Holistica Club vient d'être suspendu. Tu peux te réabonner à tout moment.</div>`);
           const subject = wasTrialing ? "Confirmation d'annulation de ton essai" : (isVoluntary ? "Confirmation d'annulation — Holistica Club" : 'Ton accès Holistica Club a été suspendu');
-          await sendEmail(profile.email, subject, html);
+          await sendEmail(profile.email, subject, wrapEmail('Fin de ton accès','<p>Ton accès a pris fin. Retrouve le statut de ton abonnement dans ton espace membre.</p>'), 'legacy-ended-'+sub.id);
 
           // Synchronise vers la bonne liste Brevo selon le cas précis, pour que
           // chacune puisse déclencher un tunnel d'automatisation différent :

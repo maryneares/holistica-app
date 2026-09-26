@@ -1,3 +1,4 @@
+import {claimTransformation,handleTransformation} from './transformation.mjs';
 export const APP_URL = 'https://app.holisticaclub.com';
 export const ACCOUNT_URL = 'https://www.holisticaclub.com/?slug=mon-compte';
 const ORIGINS = new Set([APP_URL, 'https://holistica-app.netlify.app', 'https://www.holisticaclub.com', 'https://holisticaclub.com', 'capacitor://localhost', 'http://localhost', 'https://localhost']);
@@ -60,7 +61,7 @@ export async function applyToProfile(db,stripe,profile,state) {
     const previous = await stripe.subscriptions.retrieve(profile.stripe_subscription_id);
     if (!['canceled','incomplete_expired'].includes(previous.status)) throw new Error('A different subscription is already linked');
   }
-  let query=db.from('profiles').update(state.payload).eq('id',profile.id);
+  let query=db.from('profiles').update({...state.payload,transformation_order_id:null,transformation_expires_at:null}).eq('id',profile.id);
   query=profile.stripe_subscription_id ? query.eq('stripe_subscription_id',profile.stripe_subscription_id) : query.is('stripe_subscription_id',null);
   const rows=checked(await query.select('id'));
   if (!rows?.length) throw new Error('Profile changed concurrently; retry');
@@ -93,7 +94,7 @@ export function makeClaimHandler({db,stripe}) {
     try {
       const user=await authenticated(req,db);if(!user)return response(req,401,{error:'Connecte-toi avec une adresse e-mail confirmée.'});
       const profile=await ensureProfile(db,user);
-      if(profile.subscription_plan==='transformation')return response(req,200,{applied:false});
+      if(await claimTransformation({db,stripe,user}))return response(req,200,{applied:true,plan:'immersion',status:'active',profileReady:true});
       const pending=checked(await db.from('pending_subscriptions').select('*').eq('email',emailOf(user.email)).maybeSingle());
       const subId=profile.stripe_subscription_id || pending?.stripe_subscription_id;
       if(!subId)return response(req,200,{applied:false,profileReady:true});
@@ -111,7 +112,8 @@ export function makePortalHandler({db,stripe}) {
     const early=preflight(req);if(early)return early;
     try {
       const user=await authenticated(req,db);if(!user)return response(req,401,{error:'Connexion requise'});
-      const profile=checked(await db.from('profiles').select('stripe_customer_id,stripe_subscription_id').eq('id',user.id).maybeSingle());
+      const profile=checked(await db.from('profiles').select('stripe_customer_id,stripe_subscription_id,transformation_order_id').eq('id',user.id).maybeSingle());
+      if(profile?.transformation_order_id&&!profile.stripe_subscription_id)return response(req,409,{error:'Ton programme Transformation a été payé en une fois : aucun abonnement Transformation à résilier. Pour toute question, contacte info@maryneares.fr.'});
       if(!profile?.stripe_customer_id || !profile.stripe_subscription_id)return response(req,409,{error:'Actualise ton accès avant de gérer ton abonnement.'});
       const sub=await stripe.subscriptions.retrieve(profile.stripe_subscription_id);
       if(idOf(sub.customer)!==profile.stripe_customer_id)throw new Error('Customer mismatch');
@@ -130,7 +132,7 @@ export function makeDeleteHandler({db,deleteUser,mailer}) {
       if(!result.ok || !data.success)return response(req,result.ok?502:result.status,{error:data.error||'Suppression non confirmée.'});
       let emailSent=false;
       try {
-        await sendOnce(mailer,'account-deleted-'+user.id,{to:[user.email],subject:'Ton compte Holistica Club a été supprimé',html:'<p>La suppression de ton compte Holistica Club est confirmée.</p><p>Pour toute question : info@maryneares.fr.</p>'});
+        await sendOnce(mailer,'account-deleted-'+user.id,{to:[user.email],subject:'Ton compte Holistica Club a été supprimé',html:withEmailFooter('<p>Bonjour,</p><p>La suppression de ton compte Holistica Club est confirmée.</p><p>Merci d’avoir fait partie de Holistica.</p>'+ACCOUNT_EMAIL_NOTICE)});
         emailSent=true;
       }catch(e){console.error('Deletion completed; confirmation email failed',e.message);}
       return response(req,200,{success:true,emailSent});
@@ -138,34 +140,41 @@ export function makeDeleteHandler({db,deleteUser,mailer}) {
   };
 }
 const escapeHtml = value => String(value || '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+export const MEMBER_SITE_URL='https://www.holisticaclub.com/accueil';
+export const EMAIL_FOOTER='<p data-holistica-email-footer="v1" style="font-size:12px;line-height:1.6;color:#625878">Pour toute question, contactez-nous à : <a href="mailto:info@maryneares.fr">info@maryneares.fr</a><br>Merci de ne pas répondre directement à cet email.</p>';
+export const ACCOUNT_EMAIL_NOTICE=`<p>Pour gérer ton compte, modifier ou résilier ton abonnement, ou supprimer ton compte, connecte-toi à ton espace membre sur <a href="${MEMBER_SITE_URL}">le site Holistica</a>. Ces démarches se font uniquement sur le site internet, et non dans l’application.</p>`;
+export function withEmailFooter(html){
+ if(html.includes('data-holistica-email-footer'))return html;
+ return html.includes('</body>')?html.replace('</body>',EMAIL_FOOTER+'</body>'):html+EMAIL_FOOTER;
+}
 export function membershipEmail(kind,state,invoice) {
-  const label=state.plan==='immersion'?'Immersion':'Équilibre';
-  let subject,content;
-  if(kind==='welcome') {
-    const trial=state.sub.status==='trialing' && state.sub.trial_end;
-    subject=trial?'Ton essai Holistica Club a commencé':'Ton accès Holistica Club est activé';
-    content=trial?`Ton essai du Plan ${label} est actif jusqu’au ${new Date(state.sub.trial_end*1000).toLocaleDateString('fr-FR',{timeZone:'Europe/Paris'})}.`:`Ton Plan ${label} est actif.`;
-    content+='<p>Ouvre l’application, puis connecte-toi ou crée ton compte avec cette même adresse e-mail. Choisis ton mot de passe et confirme ton adresse si cela t’est demandé. Dans Profil, tu peux actualiser ton accès.</p>';
-  } else if(kind==='paid') {
-    subject='Paiement confirmé — Holistica Club';
-    const amount=new Intl.NumberFormat('fr-FR',{style:'currency',currency:invoice.currency||'eur'}).format(invoice.amount_paid/100);
-    content=`Ton paiement de ${escapeHtml(amount)} pour le Plan ${label} a été confirmé.`;
-  } else if(kind==='failed') {
-    subject='Vérifie ton paiement — Holistica Club';
-    content='Un paiement a échoué. Vérifie ton moyen de paiement dans ton espace abonnement. Ton accès dépend du statut de ton abonnement.';
-  } else {
-    subject='Ton abonnement Holistica Club est terminé';
-    content=`Ton abonnement au Plan ${label} est terminé. Ton compte reste disponible en mode découverte.`;
-  }
-  return {to:[state.email],subject,html:`<div style="font-family:Arial,sans-serif;max-width:520px;margin:auto;color:#3D3860"><h1 style="color:#7B6EC8">Holistica Club</h1><p>${content}</p><p><a href="${APP_URL}">Ouvrir l’application</a></p><p><a href="${ACCOUNT_URL}">Gérer mon abonnement et mes factures</a></p><p>À bientôt,<br>Maryne Arès</p></div>`};
+ const label=state.plan==='immersion'?'Immersion':'Équilibre';
+ let subject,content;
+ if(kind==='welcome'){
+  const trial=state.sub.status==='trialing'&&state.sub.trial_end;
+  subject=trial?'Ton essai Holistica Club a commencé':'Bienvenue dans Holistica Club';
+  content=trial?`Ton essai du Plan ${label} est actif jusqu’au ${new Date(state.sub.trial_end*1000).toLocaleDateString('fr-FR',{timeZone:'Europe/Paris'})}.`:`Ton Plan ${label} est actif. Bienvenue !`;
+  content+='<p>Utilise la même adresse e-mail que lors du paiement pour retrouver ton accès.</p>';
+ }else if(kind==='paid'){
+  subject='Paiement confirmé — Holistica Club';
+  const amount=new Intl.NumberFormat('fr-FR',{style:'currency',currency:invoice.currency||'eur'}).format(invoice.amount_paid/100);
+  content=`Ton paiement de ${escapeHtml(amount)} pour le Plan ${label} est confirmé. Merci pour ta confiance.`;
+ }else if(kind==='failed'){
+  subject='Ton paiement nécessite une vérification — Holistica Club';
+  content='Ton dernier paiement n’a pas abouti. Connecte-toi à ton espace membre sur le site pour vérifier ton moyen de paiement et le statut de ton abonnement.';
+ }else{
+  subject='Fin de ton abonnement — Holistica Club';
+  content=`Ton abonnement au Plan ${label} est terminé. Merci d’avoir partagé cette expérience avec nous. Ton compte reste disponible en mode découverte.`;
+ }
+ return {to:[state.email],subject,html:withEmailFooter(`<div style="font-family:Arial,sans-serif;max-width:520px;margin:auto;line-height:1.6;color:#3D3860"><h1>Holistica Club</h1><p>Bonjour,</p><p>${content}</p>${ACCOUNT_EMAIL_NOTICE}<p>À bientôt,<br>Maryne Arès</p></div>`)};
 }
 export async function sendOnce({db,fetcher,apiKey,from},key,message) {
   if(!apiKey)throw new Error('RESEND_API_KEY is missing');
-  const payload={from,...message};
+  const payload={from,...message,html:withEmailFooter(message.html)};
   const delivery=checked(await db.rpc('claim_holistica_transactional_email',{p_key:key,p_payload:payload}));
   if(!delivery)return;
   try {
-    const result=await fetcher('https://api.resend.com/emails',{method:'POST',headers:{Authorization:`Bearer ${apiKey}`,'Content-Type':'application/json','Idempotency-Key':key},body:JSON.stringify(delivery)});
+    const result=await fetcher('https://api.resend.com/emails',{method:'POST',headers:{Authorization:`Bearer ${apiKey}`,'Content-Type':'application/json','Idempotency-Key':key},body:JSON.stringify(delivery),signal:AbortSignal.timeout(8000)});
     if(!result.ok)throw new Error(`Resend refused delivery (${result.status})`);
     const receipt=await result.json();if(!receipt.id)throw new Error('Resend receipt missing');
     checked(await db.from('holistica_transactional_emails').update({sent_at:new Date().toISOString(),resend_id:receipt.id,lease_until:null,payload:{}}).eq('delivery_key',key));
@@ -180,13 +189,14 @@ export function makeWebhookHandler({db,stripe,secret,mailer,legacy}) {
     const raw=await req.text();let event;
     try{event=stripe.webhooks.constructEvent(raw,req.headers.get('stripe-signature')||'',secret);}catch{return new Response('Invalid signature',{status:400});}
     try {
+      if(await handleTransformation({event,db,stripe,send:(key,message)=>sendOnce(mailer,key,message)}))return Response.json({received:true});
       const obj=event.data.object;
-      const supported=['checkout.session.completed','checkout.session.async_payment_succeeded','customer.subscription.created','customer.subscription.updated','customer.subscription.deleted','invoice.paid','invoice.payment_failed'];
+      const supported=['checkout.session.completed','checkout.session.async_payment_succeeded','checkout.session.async_payment_failed','customer.subscription.created','customer.subscription.updated','customer.subscription.deleted','invoice.paid','invoice.payment_failed'];
       if(!supported.includes(event.type))return Response.json({received:true});
       const subId=event.type.startsWith('customer.subscription.')?obj.id:idOf(obj.subscription||obj.parent?.subscription_details?.subscription);
-      if(!subId)return legacy(req,raw);
+      if(!subId)return Response.json({received:true});
       const state=await subscriptionState(stripe,subId);
-      if(!state.plan)return /transformation/i.test(state.product?.name||'') ? legacy(req,raw) : Response.json({received:true});
+      if(!state.plan)return Response.json({received:true});
       await syncMembership(db,stripe,state);
       let kind,key;
       if(['checkout.session.completed','checkout.session.async_payment_succeeded','customer.subscription.created'].includes(event.type)&&state.active){kind='welcome';key=`welcome-${subId}`;}

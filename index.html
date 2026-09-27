@@ -125,7 +125,7 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 #onboarding{background:var(--grad-h);position:relative;overflow:hidden;}
 #onboarding::before{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,0.08);}
 #onboarding::after{content:'';position:absolute;bottom:-80px;left:-60px;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,0.06);}
-.ob-top{padding:calc(env(safe-area-inset-top) + 30px) 20px 10px;flex-shrink:0;position:relative;z-index:1;}
+.ob-top{padding:calc(var(--app-safe-top) + 30px) 20px 10px;flex-shrink:0;position:relative;z-index:1;}
 .ob-progress{height:4px;background:rgba(255,255,255,0.2);border-radius:2px;margin:0 4px;}
 .ob-fill{height:100%;background:white;border-radius:2px;transition:width .4s;}
 .ob-content{flex:1;overflow-y:auto;padding:0 24px;display:flex;flex-direction:column;position:relative;z-index:1;}
@@ -774,7 +774,7 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 /* Video detail modal */
 .vdetail{position:fixed;inset:0;background:var(--ivory);z-index:200;display:none;flex-direction:column;overflow-y:auto;max-width:430px;margin:0 auto;}
 .vdetail.open{display:flex;}
-.vd-back{position:absolute;top:calc(env(safe-area-inset-top) + 26px);left:14px;z-index:10;width:38px;height:38px;background:rgba(0,0,0,0.4);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;border:none;color:white;}
+.vd-back{position:absolute;top:calc(var(--app-safe-top) + 26px);left:14px;z-index:10;width:38px;height:38px;background:rgba(0,0,0,0.4);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;border:none;color:white;}
 .vd-player{width:100%;height:220px;background:#000;position:relative;}
 .vd-player:fullscreen,.vd-player:-webkit-full-screen{height:100vh;width:100vw;}
 .vd-player:fullscreen iframe,.vd-player:-webkit-full-screen iframe{width:100%;height:100%;}
@@ -902,6 +902,18 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .demo-details{margin-top:14px;color:var(--purple);}.demo-details summary{padding:14px;background:var(--lav-pale);border-radius:14px;cursor:pointer;font-weight:700;}
 .demo-profile-row{display:flex;justify-content:space-between;width:calc(100% - 40px);margin:10px 20px;padding:18px;border:1px solid var(--border);border-radius:16px;background:white;font:inherit;color:var(--ink);text-align:left;cursor:pointer;}
 .demo-footer{padding:20px;text-align:center;}#freeDemoScreen .d-top{position:relative;}#freeDemoScreen .scroll{flex-shrink:0;}
+
+/* Keep touch controls below the iOS status bar, including edge-to-edge WebViews. */
+:root{--native-safe-top:0px;--app-safe-top:max(env(safe-area-inset-top,0px),var(--native-safe-top));}
+.diet-back-btn{margin:calc(var(--app-safe-top) + 12px) 20px 8px;min-height:48px;min-width:100px;padding:12px 10px;flex-shrink:0;align-self:flex-start;touch-action:manipulation;position:relative;z-index:10;}
+.vd-back{width:48px;height:48px;min-width:48px;min-height:48px;flex-shrink:0;touch-action:manipulation;}
+.vd-back:not([style*="position:static"]):not([style*="position:relative"]){top:calc(var(--app-safe-top) + 12px)!important;}
+.screen>.d-top,.screen>.mv-top,.screen>.rc-top,.screen>.ch-top,.screen>.pf-top{padding-top:calc(var(--app-safe-top) + 32px);}
+.screen>.ob-top{padding-top:calc(var(--app-safe-top) + 12px)!important;padding-bottom:16px;}
+#dietPlan{scroll-padding-top:calc(var(--app-safe-top) + 72px);}
+.diet-tab-panel{min-width:0;overflow-wrap:break-word;}
+button:focus-visible,a:focus-visible{outline:3px solid var(--purple-m);outline-offset:3px;}
+
 </style>
 <script>
 /* ======== GOOGLE ANALYTICS + CONSENTEMENT ======== */
@@ -949,7 +961,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <style>/* ═══ Lecteur routine v2 : bandes blanches, menu visible, plein écran à la demande ═══ */
 .routine-player{background:#fff;bottom:var(--rp-bottom,0px);}
 .routine-player.rp-full{bottom:0;z-index:600;background:#000;}
-.rp-topband{flex-shrink:0;background:#fff;padding:calc(env(safe-area-inset-top) + 8px) 16px 10px;position:relative;z-index:6;}
+.rp-topband{flex-shrink:0;background:#fff;padding:calc(var(--app-safe-top) + 8px) 16px 10px;position:relative;z-index:6;}
 .rp-topband .rp-progress{position:relative;top:auto;left:auto;right:auto;height:5px;border-radius:6px;background:var(--lav-pale);overflow:hidden;}
 .rp-topband-row{display:flex;align-items:center;justify-content:space-between;margin-top:9px;min-height:34px;}
 .rp-counter{font-family:'League Spartan',sans-serif;font-weight:800;font-size:14px;color:var(--purple);}
@@ -983,15 +995,15 @@ document.addEventListener('DOMContentLoaded', function(){
 /* plein écran : la vidéo occupe tout l'écran, les boutons passent par-dessus */
 .routine-player.rp-full .rp-topband{display:none;}
 .routine-player.rp-full .rp-video-area{background:#000;}
-.routine-player.rp-full .rp-home{top:calc(env(safe-area-inset-top) + 12px);}
-.routine-player.rp-full .rp-title{top:calc(env(safe-area-inset-top) + 16px);}
-.routine-player.rp-full .rp-full-exit{display:flex;top:calc(env(safe-area-inset-top) + 12px);}
+.routine-player.rp-full .rp-home{top:calc(var(--app-safe-top) + 12px);}
+.routine-player.rp-full .rp-title{top:calc(var(--app-safe-top) + 16px);}
+.routine-player.rp-full .rp-full-exit{display:flex;top:calc(var(--app-safe-top) + 12px);}
 .routine-player.rp-full .rp-bottomband{position:absolute;left:0;right:0;bottom:0;background:transparent;padding-bottom:calc(env(safe-area-inset-bottom) + 22px);}
 .routine-player.rp-full .rp-full-btn{display:none;}
 .routine-player.rp-full .rp-bottomband .rp-nav-btn:not(.rp-nav-btn-next){background:rgba(255,255,255,.85);}
 /* écran d'intro : dégradé plein cadre, pas de bandes */
 .routine-player.rp-intro-mode .rp-topband,.routine-player.rp-intro-mode .rp-bottomband{display:none;}
-.routine-player.rp-intro-mode .rp-home{top:calc(env(safe-area-inset-top) + 12px);}
+.routine-player.rp-intro-mode .rp-home{top:calc(var(--app-safe-top) + 12px);}
 .rp-intro-start{background:var(--peach);color:#2A1E1E;border:none;border-radius:50px;padding:16px 32px;font-family:'League Spartan',sans-serif;font-weight:800;font-size:17px;cursor:pointer;width:100%;max-width:320px;box-shadow:0 10px 24px rgba(42,30,30,.18);flex-shrink:0;}
 /* boutons secondaires des écrans de fin : orange aussi */
 body.rp-open .bnav{z-index:700;}
@@ -1019,7 +1031,7 @@ body.rp-open.rp-fullscreen .bnav{display:none !important;}
 .cp-entry-t{font-weight:800;font-size:16px;}
 .cp-entry-s{font-size:13px;opacity:.9;margin-top:2px;}
 .cp-entry-go{margin-left:auto;font-size:20px;opacity:.9;}
-.cp-top{background:var(--grad-h);padding:calc(env(safe-area-inset-top) + 70px) 20px 22px;position:relative;overflow:hidden;flex-shrink:0;}
+.cp-top{background:var(--grad-h);padding:calc(var(--app-safe-top) + 70px) 20px 22px;position:relative;overflow:hidden;flex-shrink:0;}
 .cp-h1{font-family:'League Spartan',sans-serif;font-size:26px;color:white;font-weight:800;position:relative;z-index:1;}
 .cp-sub{font-size:14.5px;color:rgba(255,255,255,.95);margin-top:3px;position:relative;z-index:1;}
 .cp-bar{height:7px;background:rgba(255,255,255,.28);border-radius:10px;margin-top:14px;overflow:hidden;position:relative;z-index:1;}
@@ -1061,7 +1073,7 @@ body.rp-open.rp-fullscreen .bnav{display:none !important;}
 /* lecteur */
 .cp-player{display:none;position:fixed;inset:0;z-index:9000;background:#1A1828;color:white;flex-direction:column;max-width:430px;margin:0 auto;}
 .cp-player.open{display:flex;}
-.cp-p-top{padding:calc(env(safe-area-inset-top) + 14px) 16px 10px;display:flex;align-items:center;gap:12px;}
+.cp-p-top{padding:calc(var(--app-safe-top) + 14px) 16px 10px;display:flex;align-items:center;gap:12px;}
 .cp-p-x{width:38px;height:38px;border-radius:12px;background:rgba(255,255,255,.14);border:none;color:white;font-size:17px;flex-shrink:0;}
 .cp-p-meta{flex:1;}
 .cp-p-meta div{font-size:12.5px;font-weight:700;opacity:.85;}
@@ -1080,6 +1092,13 @@ body.rp-open.rp-fullscreen .bnav{display:none !important;}
 .cp-p-btn.sec{flex:0 0 64px;background:rgba(255,255,255,.14);color:white;}
 .cp-p-btn.main{background:linear-gradient(135deg,#E8701A,#F4A24C);color:white;}
 </style>
+<script>
+(function(){
+ const ios=/iPhone|iPad|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+ const native=window.Capacitor?.isNativePlatform?.()||location.protocol==='capacitor:'||(ios&&!/Safari/.test(navigator.userAgent));
+ if(ios&&(native||navigator.standalone))document.documentElement.style.setProperty('--native-safe-top',Math.min(screen.width,screen.height)<500?'59px':'24px');
+})();
+</script>
 </head>
 <body>
 
@@ -1155,7 +1174,7 @@ body.rp-open.rp-fullscreen .bnav{display:none !important;}
 <div id="dashboard" class="screen">
 <div class="d-top">
 <div class="blob b1"></div><div class="blob b2"></div>
-<div style="text-align:center;padding-top:calc(env(safe-area-inset-top) + 6px);"><span style="display:inline-block;background:rgba(255,255,255,0.22);color:white;font-size:11px;font-weight:700;padding:4px 14px;border-radius:20px;"><span id="accountLabel">Bienvenue Holistica</span></span></div>
+<div style="text-align:center;padding-top:6px;"><span style="display:inline-block;background:rgba(255,255,255,0.22);color:white;font-size:11px;font-weight:700;padding:4px 14px;border-radius:20px;"><span id="accountLabel">Bienvenue Holistica</span></span></div>
 <div class="dz">
 <div class="d-row">
 <div><div class="d-greet" id="dGreet">Bonjour ☀️</div><div class="d-name">Bienvenue, <em id="dNameDisplay">toi</em></div></div>
@@ -1317,7 +1336,7 @@ body.rp-open.rp-fullscreen .bnav{display:none !important;}
 
 <!-- ═══ PROGRAMME SPORT PERSONNALISÉ (coaching) ═══ -->
 <div id="coachProgramme" class="screen">
-<button class="vd-back" onclick="go('mouvement')" style="position:fixed;top:calc(env(safe-area-inset-top) + 16px);left:16px;z-index:20;background:rgba(255,255,255,0.25);" aria-label="Retour">←</button>
+<button class="vd-back" onclick="go('mouvement')" style="position:fixed;top:calc(var(--app-safe-top) + 16px);left:16px;z-index:20;background:rgba(255,255,255,0.25);" aria-label="Retour">←</button>
 <div class="cp-top">
 <div class="blob b1"></div><div class="blob b2"></div>
 <div class="cp-h1">Mon programme <em style="font-style:normal;">sport</em></div>
@@ -1465,7 +1484,7 @@ body.rp-open.rp-fullscreen .bnav{display:none !important;}
 
 <!-- ═══ MODIFIER MES INFORMATIONS ═══ -->
 <div id="editInfo" class="screen">
-<div class="ob-top" style="background:var(--ivory);padding:calc(env(safe-area-inset-top) + 30px) 20px 10px;">
+<div class="ob-top" style="background:var(--ivory);padding:calc(var(--app-safe-top) + 30px) 20px 10px;">
 <button class="vd-back" onclick="go('profil')" style="position:static;">←</button>
 </div>
 <div class="scroll" style="padding:0 24px calc(env(safe-area-inset-bottom) + 100px);">
@@ -1503,7 +1522,7 @@ body.rp-open.rp-fullscreen .bnav{display:none !important;}
 <div class="menopause-tip-card" id="menopauseTipCard"></div>
 </div>
 <div id="doshaProfile" class="screen">
-<div class="ob-top" style="background:var(--ivory);padding:calc(env(safe-area-inset-top) + 30px) 20px 10px;">
+<div class="ob-top" style="background:var(--ivory);padding:calc(var(--app-safe-top) + 30px) 20px 10px;">
 <button class="vd-back" onclick="go('profil')" style="position:static;">←</button>
 </div>
 <div class="scroll" style="padding:0 24px calc(env(safe-area-inset-bottom) + 100px);">
@@ -1536,7 +1555,7 @@ Partager mon profil
 
 <!-- ═══ MA PROGRESSION ═══ -->
 <div id="progressionScreen" class="screen">
-<div class="ob-top" style="background:var(--ivory);padding:calc(env(safe-area-inset-top) + 30px) 20px 10px;">
+<div class="ob-top" style="background:var(--ivory);padding:calc(var(--app-safe-top) + 30px) 20px 10px;">
 <button class="vd-back" onclick="go('profil')" style="position:static;">←</button>
 </div>
 <div class="scroll" style="padding:0 24px calc(env(safe-area-inset-bottom) + 100px);">
@@ -1562,7 +1581,7 @@ Partager mon profil
 
 <!-- ═══ HISTORIQUE BIEN-ÊTRE ═══ -->
 <div id="wellnessHistory" class="screen">
-<div class="ob-top" style="background:var(--ivory);padding:calc(env(safe-area-inset-top) + 30px) 20px 10px;">
+<div class="ob-top" style="background:var(--ivory);padding:calc(var(--app-safe-top) + 30px) 20px 10px;">
 <button class="vd-back" onclick="go('profil')" style="position:static;">←</button>
 </div>
 <div class="scroll" style="padding:0 24px calc(env(safe-area-inset-bottom) + 100px);">
@@ -1575,7 +1594,7 @@ Partager mon profil
 
 <!-- ═══ BADGES ═══ -->
 <div id="badgesScreen" class="screen">
-<div class="ob-top" style="background:var(--ivory);padding:calc(env(safe-area-inset-top) + 30px) 20px 10px;">
+<div class="ob-top" style="background:var(--ivory);padding:calc(var(--app-safe-top) + 30px) 20px 10px;">
 <button class="vd-back" onclick="go('profil')" style="position:static;">←</button>
 </div>
 <div class="scroll" style="padding:0 24px calc(env(safe-area-inset-bottom) + 100px);">
@@ -1589,7 +1608,7 @@ Partager mon profil
 
 <!-- ═══ DURÉE & SUIVI DE CYCLE ═══ -->
 <div id="cycleSettings" class="screen">
-<div class="ob-top" style="background:var(--ivory);padding:calc(env(safe-area-inset-top) + 30px) 20px 10px;">
+<div class="ob-top" style="background:var(--ivory);padding:calc(var(--app-safe-top) + 30px) 20px 10px;">
 <button class="vd-back" onclick="go('profil')" style="position:static;">←</button>
 </div>
 <div class="scroll" style="padding:0 24px calc(env(safe-area-inset-bottom) + 100px);">
@@ -1614,7 +1633,7 @@ Partager mon profil
 
 <!-- ═══ THÈME ASTRAL ═══ -->
 <div id="astroScreen" class="screen">
-<div class="ob-top" style="background:var(--ivory);padding:calc(env(safe-area-inset-top) + 30px) 20px 10px;">
+<div class="ob-top" style="background:var(--ivory);padding:calc(var(--app-safe-top) + 30px) 20px 10px;">
 <button class="vd-back" onclick="go('profil')" style="position:static;">←</button>
 </div>
 <div class="scroll" style="padding:0 24px calc(env(safe-area-inset-bottom) + 100px);">
@@ -1687,7 +1706,7 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 <!-- ═══ POLITIQUE DE CONFIDENTIALITÉ ═══ -->
 <!-- ═══ RESSOURCES & SOURCES SCIENTIFIQUES ═══ -->
 <div id="sources" class="screen">
-<div class="ob-top" style="background:var(--ivory);padding:calc(env(safe-area-inset-top) + 30px) 20px 10px;">
+<div class="ob-top" style="background:var(--ivory);padding:calc(var(--app-safe-top) + 30px) 20px 10px;">
 <button class="vd-back" onclick="closeSources()" style="position:static;">←</button>
 </div>
 <div class="scroll" style="padding:0 24px calc(env(safe-area-inset-bottom) + 100px);">
@@ -1753,7 +1772,7 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 
 <!-- ═══ CGU ═══ -->
 <div id="terms" class="screen">
-<div class="ob-top" style="background:var(--ivory);padding:calc(env(safe-area-inset-top) + 30px) 20px 10px;">
+<div class="ob-top" style="background:var(--ivory);padding:calc(var(--app-safe-top) + 30px) 20px 10px;">
 <button class="vd-back" onclick="go('profil')" style="position:static;">←</button>
 </div>
 <div class="scroll" style="padding:0 24px calc(env(safe-area-inset-bottom) + 100px);">
@@ -1773,7 +1792,7 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 
 <!-- ═══ MENTIONS LÉGALES ═══ -->
 <div id="legal" class="screen">
-<div class="ob-top" style="background:var(--ivory);padding:calc(env(safe-area-inset-top) + 30px) 20px 10px;">
+<div class="ob-top" style="background:var(--ivory);padding:calc(var(--app-safe-top) + 30px) 20px 10px;">
 <button class="vd-back" onclick="go('profil')" style="position:static;">←</button>
 </div>
 <div class="scroll" style="padding:0 24px calc(env(safe-area-inset-bottom) + 100px);">
@@ -1947,7 +1966,7 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 
 <!-- ═══ TUTORIEL DE BIENVENUE ═══ -->
 <div id="walkthroughOverlay" style="display:none;position:fixed;inset:0;z-index:9999;background:linear-gradient(160deg,#5B4EA8,#8B6FC4);flex-direction:column;">
-<button onclick="wtSkip()" style="position:absolute;top:calc(env(safe-area-inset-top) + 16px);right:20px;background:rgba(255,255,255,0.18);color:white;border:none;border-radius:20px;padding:8px 16px;font-size:13px;font-weight:700;z-index:2;">Passer</button>
+<button onclick="wtSkip()" style="position:absolute;top:calc(var(--app-safe-top) + 16px);right:20px;background:rgba(255,255,255,0.18);color:white;border:none;border-radius:20px;padding:8px 16px;font-size:13px;font-weight:700;z-index:2;">Passer</button>
 <div id="wtScrollArea" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px 32px;">
 <div id="wtIcon" style="width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,0.18);display:flex;align-items:center;justify-content:center;margin-bottom:18px;color:white;"></div>
 <div id="wtTitle" style="font-family:'League Spartan',sans-serif;font-weight:800;font-size:24px;color:white;margin-bottom:10px;"></div>
@@ -3173,6 +3192,7 @@ function switchDietTab(tab){
  document.getElementById('dietScroll').style.display='block';
  document.getElementById('dietBackBtn').style.display='flex';
  document.getElementById('dietScroll').scrollTop=0;
+ document.getElementById('dietPlan').scrollTop=0;
 }
 function closeDietTab(){
  document.getElementById('dietHomeHeader').style.display='block';
@@ -3180,6 +3200,7 @@ function closeDietTab(){
  document.getElementById('dietHomeGuide').style.display='flex';
  document.getElementById('dietScroll').style.display='none';
  document.getElementById('dietBackBtn').style.display='none';
+ document.getElementById('dietPlan').scrollTop=0;
 }
 
 /* ═══ Aliments de saison + Conseils santé/ayurvédiques (tables monthly_seasonal_foods / monthly_diet_tips) ═══ */

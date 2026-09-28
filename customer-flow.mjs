@@ -149,6 +149,8 @@ export function withEmailFooter(html){
  if(html.includes('data-holistica-email-footer'))return html;
  return html.includes('</body>')?html.replace('</body>',EMAIL_FOOTER+'</body>'):html+EMAIL_FOOTER;
 }
+export const IMMERSION_WHATSAPP_URL='https://chat.whatsapp.com/HahC8tXyBfRL91dMWpitOp?mode=gi_t';
+export const IMMERSION_GROUP_BLOCK=`<div style="margin:22px 0;padding:18px;border-radius:14px;background:#F4EFFD;text-align:center"><p style="margin:0 0 12px;color:#2E2650"><strong>Ton groupe Immersion t’attend</strong><br>Challenges, conférence du mois, recettes et échanges : tout se passe dans notre groupe WhatsApp.</p><a href="${IMMERSION_WHATSAPP_URL}" style="display:inline-block;background:#25D366;color:#ffffff;text-decoration:none;font-weight:bold;padding:13px 24px;border-radius:12px">Rejoindre ton groupe WhatsApp</a></div>`;
 export function membershipEmail(kind,state,invoice) {
  const label=state.plan==='immersion'?'Immersion':'Équilibre';
  let subject,content;
@@ -157,6 +159,7 @@ export function membershipEmail(kind,state,invoice) {
   subject=trial?'Ton essai Holistica Club a commencé':'Bienvenue dans Holistica Club';
   content=trial?`Ton essai du Plan ${label} est actif jusqu’au ${new Date(state.sub.trial_end*1000).toLocaleDateString('fr-FR',{timeZone:'Europe/Paris'})}.`:`Ton Plan ${label} est actif. Bienvenue !`;
   content+='<p>Utilise la même adresse e-mail que lors du paiement pour retrouver ton accès.</p>';
+  if(state.plan==='immersion')content+=IMMERSION_GROUP_BLOCK;
  }else if(kind==='paid'){
   subject='Paiement confirmé — Holistica Club';
   const amount=new Intl.NumberFormat('fr-FR',{style:'currency',currency:invoice.currency||'eur'}).format(invoice.amount_paid/100);

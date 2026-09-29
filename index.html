@@ -925,6 +925,27 @@ body.ob-open .bnav{display:none !important;}
 .ch-join h2{margin:0 0 6px;font-size:18px;color:var(--ink);}
 .ch-join p{margin:0 0 14px;font-size:14px;line-height:1.55;color:var(--ink-l);}
 .ch-join-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;box-sizing:border-box;min-height:52px;padding:14px 18px;border-radius:16px;background:#25D366;color:#fff !important;text-decoration:none;font-weight:700;font-size:16px;box-shadow:0 8px 20px rgba(37,211,102,.28);}
+
+/* Challenge : programme du mois (CMS) */
+.ch-hero-k{font-size:11.5px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.85);margin-bottom:6px;position:relative;z-index:1;}
+.ch-now{margin:0 20px 16px;padding:20px;border-radius:20px;background:white;border:2px solid var(--purple-l);box-shadow:var(--sh);}
+.ch-now.conf{border-color:#F4A24C;background:#FFF8F1;}
+.ch-now-k{font-size:11.5px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--purple-m);margin-bottom:6px;}
+.ch-now.conf .ch-now-k{color:#B5530F;}
+.ch-now h2{font-size:20px;line-height:1.3;color:var(--ink);margin:0 0 10px;}
+.ch-now p{font-size:14.5px;line-height:1.65;color:var(--ink);margin:8px 0;white-space:pre-line;}
+.ch-now .ch-now-hint{font-size:13px;color:var(--ink-l);}
+.ch-now-btn{display:flex;align-items:center;justify-content:center;min-height:50px;margin-top:12px;border-radius:14px;background:linear-gradient(135deg,#E8701A,#F4A24C);color:#fff!important;font-weight:700;text-decoration:none;}
+.ch-week-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+.ch-week p{white-space:pre-line;}
+.ch-st{flex-shrink:0;font-size:11.5px;font-weight:700;padding:4px 9px;border-radius:20px;background:var(--lav-pale);color:var(--purple-m);}
+.ch-st.live{background:var(--purple-m);color:#fff;}
+.ch-st.done{background:#E6F6EE;color:#1E7A4F;}
+.ch-week.done h3{color:var(--ink-l);}
+/* Barre d'état iOS : le contenu ne passe plus sous l'heure et la batterie */
+body::before{content:'';position:fixed;top:0;left:0;right:0;height:var(--app-safe-top,env(safe-area-inset-top,0px));background:rgba(250,248,255,.94);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);z-index:95;pointer-events:none;opacity:0;transition:opacity .15s;}
+body.hc-scrolled::before{opacity:1;}
+body.rp-open::before{display:none;}
 </style>
 <script>
 /* ======== GOOGLE ANALYTICS + CONSENTEMENT ======== */
@@ -2076,6 +2097,63 @@ function openImmersionGroup(e){
  window.location.href=IMMERSION_WHATSAPP_URL;
  return false;
 }
+/* ═══ Programme Immersion (géré dans le CMS › onglet Immersion) ═══ */
+let IMM_PROG=null,IMM_PROG_AT=0,IMM_PROG_LOADING=null;
+function immParse(d){if(!d)return null;const [y,m,dd]=String(d).slice(0,10).split('-').map(Number);return new Date(y,m-1,dd);}
+function immAdd(d,n){const x=new Date(d);x.setDate(x.getDate()+n);return x;}
+function immToday(){const d=new Date();d.setHours(0,0,0,0);return d;}
+function immDay(d,opt){return d.toLocaleDateString('fr-FR',opt||{day:'numeric',month:'long'});}
+function immConfLabel(ts){if(!ts)return '';const d=new Date(ts);const h=d.getHours()+'h'+(d.getMinutes()?String(d.getMinutes()).padStart(2,'0'):'');return d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})+' à '+h;}
+function immEsc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+async function loadImmersionProgramme(force){
+ if(!force&&IMM_PROG&&Date.now()-IMM_PROG_AT<10*60*1000)return IMM_PROG;
+ if(IMM_PROG_LOADING)return IMM_PROG_LOADING;
+ IMM_PROG_LOADING=(async()=>{
+  try{
+   const [a,b]=await Promise.all([sb.from('immersion_months').select('*').order('date_debut'),sb.from('immersion_weeks').select('*').order('date_debut')]);
+   if(a.error||b.error)throw (a.error||b.error);
+   IMM_PROG={months:a.data||[],weeks:b.data||[]};IMM_PROG_AT=Date.now();
+  }catch(e){console.warn('Programme Immersion indisponible',e&&e.message);}
+  IMM_PROG_LOADING=null;return IMM_PROG;
+ })();
+ return IMM_PROG_LOADING;
+}
+// Mois en cours (4 semaines à partir de son lundi), sinon le prochain à venir
+function currentImmersionMonth(prog){
+ if(!prog||!prog.months.length)return null;
+ const t=immToday();
+ const withEnd=prog.months.map(m=>({m,start:immParse(m.date_debut),end:immAdd(immParse(m.date_debut),27)}));
+ const cur=withEnd.find(x=>t>=x.start&&t<=x.end);
+ if(cur)return {...cur,upcoming:false};
+ const next=withEnd.filter(x=>x.start>t).sort((a,b)=>a.start-b.start)[0];
+ return next?{...next,upcoming:true}:null;
+}
+function immersionProgrammeHtml(prog){
+ const cm=currentImmersionMonth(prog);if(!cm)return '';
+ const m=cm.m,t=immToday();
+ const weeks=prog.weeks.filter(w=>w.month_id===m.id).sort((a,b)=>a.semaine-b.semaine);
+ const challenges=weeks.filter(w=>w.kind!=='conference');
+ const now=cm.upcoming?null:weeks.find(w=>{const d=immParse(w.date_debut);return t>=d&&t<immAdd(d,7);});
+ const hero=`<div class="ch-hero"><div class="ch-hero-k">${cm.upcoming?'Prochain défi · dès le '+immDay(cm.start,{weekday:'long',day:'numeric',month:'long'}):'Le défi du mois · '+immEsc(m.mois_label)}</div><div class="ch-hero-t">${immEsc(m.theme||m.mois_label)}</div>
+ <div class="ch-hero-p">${challenges.length} mini-challenges, une semaine chacun, puis la conférence du mois pour faire le bilan ensemble.</div></div>`;
+ let nowCard='';
+ if(now&&now.kind==='conference'){
+  nowCard=`<section class="ch-now conf"><div class="ch-now-k">Cette semaine · Semaine ${now.semaine}</div><h2>🎤 C'est la semaine de la conférence</h2>
+  <p><strong>${immEsc(m.conf_titre||'Conférence du mois')}</strong>${m.conf_date?`<br>${immEsc(immConfLabel(m.conf_date))}`:''}</p>${m.conf_contenu?`<p>${immEsc(m.conf_contenu)}</p>`:''}
+  ${m.conf_lien?`<a class="ch-now-btn" href="${immEsc(m.conf_lien)}" target="_blank" rel="noopener">Rejoindre la conférence</a>`:'<p class="ch-now-hint">Le lien de connexion est partagé dans le groupe WhatsApp.</p>'}</section>`;
+ }else if(now){
+  nowCard=`<section class="ch-now"><div class="ch-now-k">Ton défi de la semaine · Semaine ${now.semaine}</div><h2>${immEsc(now.pilier||'Mini-challenge')}</h2>${now.message?`<p>${immEsc(now.message)}</p>`:''}
+  <p class="ch-now-hint">Du ${immDay(immParse(now.date_debut))} au ${immDay(immAdd(immParse(now.date_debut),6))} · partage tes avancées dans le groupe.</p></section>`;
+ }
+ const status=w=>{const d=immParse(w.date_debut);if(t>=immAdd(d,7))return ['done','✓ Terminé'];if(t>=d)return ['live','En cours'];return ['next','Dès le '+immDay(d,{day:'numeric',month:'short'})];};
+ const list=`<section class="ch-summary"><h2>Les challenges du mois</h2><p>Un mini-challenge par semaine, à ton rythme.</p>
+ ${challenges.map(w=>{const [c,l]=status(w);return `<div class="ch-week ${c}"><div class="ch-week-top"><h3>Semaine ${w.semaine} · ${immEsc(w.pilier||'')}</h3><span class="ch-st ${c}">${l}</span></div>${w.message?`<p>${immEsc(w.message)}</p>`:''}</div>`;}).join('')}
+ </section>`;
+ const conf=(now&&now.kind==='conference')?'':`<section class="ch-summary"><h2>La conférence du mois</h2>
+ <p><strong>${immEsc(m.conf_titre||'Le thème sera annoncé dans le groupe.')}</strong>${m.conf_date?`<br>📅 ${immEsc(immConfLabel(m.conf_date))}`:''}</p>
+ ${m.conf_contenu?`<p>${immEsc(m.conf_contenu)}</p>`:''}<p>45 minutes pour explorer le thème avec Maryne, puis 15 minutes de questions-réponses. Le lien de connexion est partagé dans le groupe.</p></section>`;
+ return {top:hero+nowCard,rest:list+conf};
+}
 function renderChallenge(){
  if(!hasImmersionAccess())return;
  const card=document.getElementById('chCommunityCard');
@@ -2084,25 +2162,27 @@ function renderChallenge(){
  const p=CHALLENGE_PROGRAM;
  const section=(title,text)=>`<section class="ch-summary"><h2>${title}</h2><p>${text}</p></section>`;
  const join=`<div class="ch-join"><h2>Ton groupe Immersion</h2><p>Challenges, conférence du mois, recettes et échanges : tout se passe dans notre groupe WhatsApp.</p><a class="ch-join-btn" href="${IMMERSION_WHATSAPP_URL}" target="_blank" rel="noopener" onclick="return openImmersionGroup(event)"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2s.2-1.1.2-1.2-.3-.2-.5-.3z"/></svg>Rejoindre le groupe WhatsApp</a></div>`;
- card.innerHTML=`
- ${join}
- <div class="ch-hero"><div class="ch-hero-t">${p.cap}</div>
+ const live=IMM_PROG&&immersionProgrammeHtml(IMM_PROG);
+ const fallback=`<div class="ch-hero"><div class="ch-hero-t">${p.cap}</div>
  <div class="ch-hero-p">L’application te montre le cap du mois. Le groupe te permet de vivre l’expérience avec les autres.</div></div>
  ${section('La prochaine conférence',`<strong>${p.conferenceTitle}</strong><br>Un rendez-vous par mois avec Maryne : 45 minutes pour explorer un thème, puis 15 minutes de questions-réponses.<br>Pour les dates, horaires et détails pratiques, vérifie les informations dans notre groupe.`)}
  <section class="ch-summary"><h2>Les challenges du mois</h2><p>Trois intentions pour avancer sans pression. Retrouve le programme détaillé et les échanges dans le groupe.</p>
- ${p.weeks.map(w=>`<div class="ch-week"><h3>${w.title}</h3><p>${w.text}</p></div>`).join('')}
- <p>Tu participes à ton rythme. Les détails des challenges et les rappels se retrouvent dans notre groupe.</p></section>
+ ${p.weeks.map(w=>`<div class="ch-week"><h3>${w.title}</h3><p>${w.text}</p></div>`).join('')}</section>`;
+ card.innerHTML=`
+ ${live?live.top+join+live.rest:join+fallback}
  ${section('La recette du mois','Une idée de saison à explorer ensemble. La recette sélectionnée, les variantes et les partages sont annoncés dans notre groupe.')}
  ${section('La posture du mois','Un mouvement à découvrir à ton rythme. La posture sélectionnée et les indications de pratique sont présentées dans notre groupe.')}
- ${section('Le challenge du mois','Choisir une petite habitude et lui faire une place dans son quotidien. Les consignes du mois, les encouragements et les retours d’expérience se retrouvent dans le groupe Immersion.')}
- ${section('Quelques thèmes à explorer','Routines du quotidien · Cuisine de saison · Mouvement doux · Repos · Motivation.<br>Les nouveautés du mois sont annoncées dans notre groupe.')}
  <section class="ch-summary"><h2>Motivation, soutien, rencontre et partage</h2>
  <p>Tu avances avec du soutien. Les échanges, les partages, les questions, les réussites et les petits coups de motivation se retrouvent dans notre groupe.</p>
- <div class="ch-badges"><span>Pas de spam</span><span>Pas envahissant</span><span>Tu participes quand tu le souhaites</span></div>
- <p>Retrouve les échanges et les informations du mois dans notre groupe Immersion.</p></section>
+ <div class="ch-badges"><span>Pas de spam</span><span>Pas envahissant</span><span>Tu participes quand tu le souhaites</span></div></section>
  ${join}<p class="ch-closing">Envie d’aller plus loin ? Retrouve les échanges, les détails des challenges, les annonces et les nouveautés directement dans notre groupe Immersion.</p><figure class="ch-signature"><img src="https://d1yei2z3i6k35z.cloudfront.net/125337/6a6b68a0e66b11.10456858_6a462a575b9503.59317668_dfghn.png" alt="Maryne Ares" loading="lazy" decoding="async"><figcaption>par Maryne Ares</figcaption></figure>`;
  upgrade.innerHTML='';
+ // Programme à jour depuis le CMS (sans bloquer l'affichage)
+ if(!IMM_PROG||Date.now()-IMM_PROG_AT>10*60*1000){loadImmersionProgramme().then(pr=>{if(pr&&document.getElementById('challenge')?.classList.contains('active'))renderChallengeLive();});}
 }
+// Voile sous la barre d'état dès que l'écran défile (le contenu ne passe plus sous l'heure)
+document.addEventListener('scroll',e=>{const t=e.target;if(t&&t.classList&&t.classList.contains('screen'))document.body.classList.toggle('hc-scrolled',t.scrollTop>8);},true);
+function renderChallengeLive(){const t=IMM_PROG_AT;renderChallenge();IMM_PROG_AT=t;}
 
 // FREE is a read-only showcase, independent of account history and calendar time.
 function freezeDemo(value){Object.values(value).forEach(v=>{if(v&&typeof v==='object')freezeDemo(v);});return Object.freeze(value);}
@@ -3663,6 +3743,7 @@ function go(id){
  if(id==='dietPlan')closeDietTab();
  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
  document.getElementById(id).classList.add('active');
+ document.body.classList.toggle('hc-scrolled',document.getElementById(id).scrollTop>8);
  document.querySelectorAll('.ni,.ni-ctr').forEach(n=>{n.classList.remove('act');n.removeAttribute('aria-current');});
  const ni=document.getElementById('ni-'+id);if(ni){ni.classList.add('act');ni.setAttribute('aria-current','page');}
  if(id==='mouvement')renderMv();

@@ -1134,8 +1134,14 @@ body.rp-open.rp-fullscreen .bnav{display:none !important;}
 </head>
 <body>
 
+<!-- La connexion reste masquée jusqu’à la restauration de la session. -->
+<div id="authLoading" class="screen active" style="padding:25vh 24px;text-align:center;" aria-busy="true">
+ <div class="si-brand">Holistica <span>Club</span></div>
+ <p id="authLoadingMessage" role="status" aria-live="polite">Restauration de ta connexion…</p>
+ <button id="authRetry" class="btn-w" style="display:none;" onclick="restoreMemberSession()">Réessayer</button>
+</div>
 <!-- ═══ SIGNIN ═══ -->
-<div id="signin" class="screen active">
+<div id="signin" class="screen">
 <div class="rings"><div class="ring r1"></div><div class="ring r2"></div><div class="ring r3"></div><div class="ring r4"></div><div class="ring r5"></div></div>
 <div class="si-top">
 <img src="logo-mark.png" class="si-logo" onerror="this.style.display='none'">
@@ -2054,7 +2060,7 @@ const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{
  auth:{
  persistSession:true,
  autoRefreshToken:true,
- detectSessionInUrl:true,
+ detectSessionInUrl:false,
  storage:HC_AUTH_STORAGE,
  storageKey:'holistica-auth'
  }
@@ -2474,6 +2480,7 @@ async function confirmNewPassword(){
  btn.textContent='Valider le nouveau mot de passe';
  if(error){toast('Erreur : '+error.message);return;}
  toast('Mot de passe mis à jour');
+ authRecovery=false;
  // La session de récupération est déjà active : on entre directement dans l'app
  currentUser=(await sb.auth.getUser()).data.user;
  loadProfileAndEnter();
@@ -2610,7 +2617,7 @@ async function signInWithOAuth(provider){
    listenerHandle=await appPlugin.addListener('appUrlOpen',async ({url})=>{
      if(url && (url.includes('access_token')||url.includes('code='))){
        try{ await browserPlugin.close(); }catch(_e){}
-       window.location.href=url; // la page se recharge, Supabase détecte la session dans l'URL comme sur le web
+       window.location.href=url; // la restauration au démarrage traite explicitement le retour OAuth
        if(listenerHandle) listenerHandle.remove();
      }
    });
@@ -2991,20 +2998,14 @@ document.addEventListener('visibilitychange',()=>{
  else{refreshLocalDay();void resumeMemberSession();}
 });
 setInterval(()=>{if(!document.hidden)refreshLocalDay();},30000);
-let resumeSessionFlight=null;
 async function resumeMemberSession(){
- if(resumeSessionFlight)return resumeSessionFlight;
- resumeSessionFlight=(async()=>{
-  try{
-   const {data,error}=await sb.auth.getSession();
-   if(error)return; // Une interruption réseau n'est pas une demande de déconnexion.
-   if(data.session){
-    if(!profileLoaded){profileLoaded=true;currentUser=data.session.user;await loadProfileAndEnter();}
-    else await flushProfileSave();
-   }
-  }catch(e){console.warn('Reprise en attente du réseau');}
- })();
- try{await resumeSessionFlight;}finally{resumeSessionFlight=null;}
+ if(authRecovery)return;
+ if(!authReady||!profileLoaded){await restoreMemberSession();return;}
+ try{
+  const {data,error}=await sb.auth.getSession();
+  if(error)return; // Le SDK conserve la session lors d’une panne réseau.
+  if(data.session){currentUser=data.session.user;await flushProfileSave();}
+ }catch(e){console.warn('Reprise en attente du réseau');}
 }
 
 function collectProfilePayload(){
@@ -3021,54 +3022,111 @@ function collectProfilePayload(){
  });
 }
 
-// Point d'entrée unique pour toute connexion réussie : email/mdp, Google, Apple, ou session déjà active
-sb.auth.onAuthStateChange((event,session)=>{
- // Certains clients Supabase déclenchent ce callback de façon synchrone dès l'inscription (avec
- // la session déjà active), potentiellement avant que le reste du script ait fini de s'exécuter
- // (variables déclarées plus bas dans le fichier). On repousse donc systématiquement d'un tick
- // pour être certaine que tout le script est chargé avant d'entrer dans l'app.
- setTimeout(()=>{
- console.log('[Auth] event:',event,'session:',!!session);
- if(event==='PASSWORD_RECOVERY'){
- profileLoaded=true; // empêche l'entrée automatique dans l'app tant que le nouveau mot de passe n'est pas défini
- currentUser=session.user;
- go('resetPassword');
- return;
- }
- if(event==='TOKEN_REFRESHED'&&profileLoaded)checkMembershipChange();
- if(session&&currentUser&&currentUser.id!==session.user.id){profileLoaded=false;personalDataMode='unknown';resetProfilePersistence();}
- if(session&&!profileLoaded){
- profileLoaded=true;
- currentUser=session.user;
- loadProfileAndEnter();
- }
+// AUTH_SESSION_START — aucune navigation Login avant la restauration explicite.
+let authReady=false,authRestoring=false,authRecovery=false,authRestoreFlight=null;
+let pendingAuthEvent=null;
+function showAuthLoading(message='Restauration de ta connexion…',retry=false){
+ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+ document.getElementById('freeDemoScreen')?.classList.remove('active');
+ document.getElementById('bnav').style.display='none';
+ const screen=document.getElementById('authLoading');
+ screen.classList.add('active');screen.setAttribute('aria-busy',String(!retry));
+ document.getElementById('authLoadingMessage').textContent=message;
+ document.getElementById('authRetry').style.display=retry?'inline-block':'none';
+}
+async function applyMemberSession(event,session){
  if(event==='SIGNED_OUT'){
- resetProfilePersistence();
- personalDataMode='unknown';document.getElementById('freeDemoScreen')?.classList.remove('active');
- profileLoaded=false;
- currentUser=null;
- document.getElementById('bnav').style.display='none';go('signin');
+  authRecovery=false;resetProfilePersistence();personalDataMode='unknown';
+  document.getElementById('freeDemoScreen')?.classList.remove('active');
+  profileLoaded=false;currentUser=null;
+  document.getElementById('bnav').style.display='none';go('signin');return;
  }
- },0);
-});
-
-// Filet de sécurité : si le listener n'a rien capté après le chargement (ex: retour OAuth raté),
-// on vérifie manuellement s'il existe une session active.
-window.addEventListener('load',async()=>{
- setTimeout(async()=>{
+ if(!session){if(!currentUser)go('signin');return;}
+ if(event==='PASSWORD_RECOVERY'){
+  authRecovery=true;profileLoaded=true;currentUser=session.user;go('resetPassword');return;
+ }
+ if(currentUser&&currentUser.id!==session.user.id){
+  profileLoaded=false;personalDataMode='unknown';resetProfilePersistence();
+ }
+ currentUser=session.user;
+ if(authRecovery)return;
  if(!profileLoaded){
- const {data,error}=await sb.auth.getSession();
- console.log('[Auth] fallback session:',!!data.session,!!error);
- if(data.session&&!profileLoaded){
- profileLoaded=true;
- currentUser=data.session.user;
- loadProfileAndEnter();
- } else if(!data.session&&window.location.hash.includes('access_token')){
- toast('Jeton reçu mais session non créée, vérifie la config Supabase');
- }
- }
- },1500);
+  profileLoaded=true;showAuthLoading('Chargement de ton espace…');
+  try{await loadProfileAndEnter();}
+  catch(e){profileLoaded=false;}
+  if(currentUser?.id===session.user.id&&!profileLoaded){
+   showAuthLoading('Ton espace est temporairement indisponible. Réessaie lorsque la connexion revient.',true);
+  }
+ }else if(event==='TOKEN_REFRESHED')checkMembershipChange();
+}
+// detectSessionInUrl=false : les retours OAuth et récupération restent pris en charge.
+async function consumeAuthCallback(){
+ const url=new URL(location.href),hash=new URLSearchParams(url.hash.slice(1));
+ const access=hash.get('access_token'),refresh=hash.get('refresh_token');
+ const code=url.searchParams.get('code');
+ if(!access&&!refresh&&!code)return null;
+ let result;
+ if(access&&refresh)result=await sb.auth.setSession({access_token:access,refresh_token:refresh});
+ else if(code)result=await sb.auth.exchangeCodeForSession(code);
+ else throw new Error('Lien de connexion incomplet');
+ if(result.error)throw result.error;
+ const recovery=hash.get('type')==='recovery'||result.data.redirectType==='recovery';
+ if(access||refresh)url.hash='';
+ url.searchParams.delete('code');
+ history.replaceState(history.state,'',url.pathname+url.search+url.hash);
+ return recovery?'PASSWORD_RECOVERY':null;
+}
+async function restoreMemberSession(){
+ if(authRestoreFlight)return authRestoreFlight;
+ authRestoring=true;pendingAuthEvent=null;showAuthLoading();
+ authRestoreFlight=(async()=>{
+  try{
+   const callbackEvent=await consumeAuthCallback();
+   const {data,error}=await sb.auth.getSession();
+   if(error&&pendingAuthEvent?.event!=='SIGNED_OUT')throw error;
+   const latest=pendingAuthEvent;
+   const session=latest?latest.session:data.session;
+   authReady=true;authRestoring=false;
+   await applyMemberSession(latest?.event==='SIGNED_OUT'?'SIGNED_OUT':callbackEvent||latest?.event||'INITIAL_SESSION',session);
+  }catch(e){
+   // Une erreur réseau n’autorise ni suppression de session ni redirection Login.
+   showAuthLoading('Connexion momentanément indisponible. Ta session est conservée ; tu peux réessayer.',true);
+  }finally{authRestoring=false;authRestoreFlight=null;}
+ })();
+ return authRestoreFlight;
+}
+sb.auth.onAuthStateChange((event,session)=>{
+ // Aucun appel Auth imbriqué dans le callback : évite le verrou du SDK.
+ if(event==='INITIAL_SESSION')return;
+ if(authRestoring||!authReady){pendingAuthEvent={event,session};return;}
+ setTimeout(()=>{void applyMemberSession(event,session);},0);
 });
+// Équivalent AppState pour le web/PWA et le conteneur Capacitor déjà utilisé.
+let nativeAuthActive=true,authRefreshActive=null,authPageHidden=false;
+function updateAuthRefresh(){
+ const active=!document.hidden&&!authPageHidden&&nativeAuthActive;
+ if(active===authRefreshActive)return;
+ authRefreshActive=active;
+ if(active){sb.auth.startAutoRefresh();if(authReady)void resumeMemberSession();}
+ else sb.auth.stopAutoRefresh();
+}
+document.addEventListener('visibilitychange',updateAuthRefresh);
+window.addEventListener('pagehide',()=>{authPageHidden=true;updateAuthRefresh();});
+window.addEventListener('pageshow',()=>{authPageHidden=false;updateAuthRefresh();});
+async function initializeAuth(){
+ const C=window.Capacitor,app=C?.isNativePlatform?.()&&C.Plugins?.App;
+ if(app){
+  try{
+   let changed=false;
+   await app.addListener('appStateChange',({isActive})=>{changed=true;nativeAuthActive=isActive;updateAuthRefresh();});
+   const state=await app.getState();if(!changed)nativeAuthActive=state.isActive;
+  }catch(e){console.warn('État natif indisponible ; suivi de visibilité conservé.');}
+ }
+ updateAuthRefresh();
+ await restoreMemberSession();
+}
+window.addEventListener('DOMContentLoaded',()=>{void initializeAuth();},{once:true});
+// AUTH_SESSION_END
 
 /* ═══════ NAV ═══════ */
 const PROTECTED_SCREENS=['dashboard','mouvement','recettes','naturo','doshaProfile','editInfo','wellnessHistory','badgesScreen','cycleSettings','astroScreen','programDetail','dossierDetail','progressionScreen'];
@@ -3738,6 +3796,7 @@ function renderAddFoodPanelHtml(){
 }
 
 function go(id){
+ if((!authReady||authRestoring)&&id==='signin')return;
  if(id==='cycleSettings'&&isMaleProfile())id='profil';
  {const _rp=document.getElementById('routinePlayer');if(_rp&&_rp.classList.contains('open'))closeRoutinePlayer();}
  if(isFreeDemo()&&!['sources','privacy','signin','signup','resetPassword'].includes(id)){renderFreeDemo(id);return;}

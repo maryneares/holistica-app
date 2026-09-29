@@ -2324,6 +2324,7 @@ function syncAccountUI(){
    :plan==='equilibre'?'Ton plan Équilibre est actif. Pour passer à Immersion, modifier ou résilier ton abonnement, rends-toi dans ton espace membre sur le site.'
    :'Ton compte standard est gratuit. Si tu as souscrit un plan Équilibre ou Immersion sur Holistica, utilise la même adresse e-mail puis actualise ton accès ici.';
  }}
+ {const rb=document.getElementById('refreshMembershipBtn');if(rb)rb.style.display=(tx||plan!=='standard')?'none':'';}
  for(const id of ['accountLabel','pfSubscription']){const el=document.getElementById(id);if(el)el.textContent=label;}
  for(const id of ['profileChallenge']){
  const el=document.getElementById(id);if(el)el.style.display=hasImmersionAccess()?'flex':'none';

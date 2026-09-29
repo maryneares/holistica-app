@@ -1493,7 +1493,7 @@ body.rp-open.rp-fullscreen .bnav{display:none !important;}
 </div>
 <div class="scroll">
 <div class="sec"><h2>Mon <em>espace</em></h2></div>
-<div class="pf-acts"><div class="diet-info-card" style="margin:0 0 16px;"><div class="diet-info-t">Mon compte Holistica</div><div class="diet-guide-s">Ton compte standard est gratuit. Si tu as souscrit un plan Équilibre ou Immersion sur Holistica, utilise la même adresse e-mail puis actualise ton accès ici.</div><button class="btn-ob purple" id="refreshMembershipBtn" onclick="refreshMembership()">Actualiser mon accès</button></div>
+<div class="pf-acts"><div class="diet-info-card" style="margin:0 0 16px;"><div class="diet-info-t">Mon compte Holistica</div><div class="diet-guide-s" id="accountInfoText">Ton compte standard est gratuit. Si tu as souscrit un plan Équilibre ou Immersion sur Holistica, utilise la même adresse e-mail puis actualise ton accès ici.</div><button class="btn-ob purple" id="refreshMembershipBtn" onclick="refreshMembership()">Actualiser mon accès</button></div>
 <div class="pa" onclick="openEditInfo()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.5 3-6.5 7-6.5s7 3 7 6.5"/></svg></div><div class="pa-body"><div class="pa-t">Modifier mes informations</div><div class="pa-s">Nom, poids, taille, activité</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="go('doshaProfile')"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1.5 3 2.5 5 2.5 8a2.5 2.5 0 0 1-5 0c0-3 1-5 2.5-8z"/><path d="M5 10c2 1 4 3 5 6"/><path d="M19 10c-2 1-4 3-5 6"/><path d="M4 15c2.5 3 5 4 8 4s5.5-1 8-4"/></svg></div><div class="pa-body"><div class="pa-t">Mon profil ayurvédique</div><div class="pa-s" id="pfDoshaDetail">Vata dominant</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="openWellnessHistory()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V10M9 19V5M14 19v-7M19 19V8"/></svg></div><div class="pa-body"><div class="pa-t">Historique bien-être</div><div class="pa-s">Sommeil · Stress · Humeur</div></div><span class="pa-arr">›</span></div>
@@ -2315,7 +2315,15 @@ function syncAccountUI(){
  syncGenderUI();
  for(const id of ['ni-challenge','ni-dietPlan']){const el=document.getElementById(id);if(el)el.style.display='flex';}
  const plan=accountPlan();
- const label={standard:'Bienvenue Holistica · Compte gratuit',equilibre:'Plan Équilibre',immersion:'Plan Immersion'}[plan];
+ const tx=userProfile.transformationExpiresAt&&new Date(userProfile.transformationExpiresAt)>new Date()?new Date(userProfile.transformationExpiresAt):null;
+ const label=tx?'Programme Transformation':{standard:'Bienvenue Holistica · Compte gratuit',equilibre:'Plan Équilibre',immersion:'Plan Immersion'}[plan];
+ {const info=document.getElementById('accountInfoText');if(info){
+  const fin=tx?tx.toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'}):'';
+  info.textContent=tx?`Ton programme Transformation est actif jusqu’au ${fin}. Il inclut tout le plan Immersion : communauté, challenges du mois et plan alimentaire personnalisé.`
+   :plan==='immersion'?'Ton plan Immersion est actif : communauté, challenges du mois et plan alimentaire personnalisé. Pour modifier ou résilier ton abonnement, rends-toi dans ton espace membre sur le site.'
+   :plan==='equilibre'?'Ton plan Équilibre est actif. Pour passer à Immersion, modifier ou résilier ton abonnement, rends-toi dans ton espace membre sur le site.'
+   :'Ton compte standard est gratuit. Si tu as souscrit un plan Équilibre ou Immersion sur Holistica, utilise la même adresse e-mail puis actualise ton accès ici.';
+ }}
  for(const id of ['accountLabel','pfSubscription']){const el=document.getElementById(id);if(el)el.textContent=label;}
  for(const id of ['profileChallenge']){
  const el=document.getElementById(id);if(el)el.style.display=hasImmersionAccess()?'flex':'none';

@@ -377,6 +377,36 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .pd-intro-freq{font-size:13.5px;color:var(--purple-m);font-weight:700;margin-top:8px;}
 .pd-progress-card{margin:0 20px 8px;background:white;border-radius:16px;padding:14px 18px;box-shadow:var(--sh);border:1px solid var(--border);}
 .pd-progress-bar{height:8px;background:var(--ivory-d);border-radius:50px;overflow:hidden;}
+/* Thème orange, propre à l'écran formation, pour la distinguer du reste de l'app (violet) */
+#formationHome{
+--purple:#CD6113;--purple-m:#E0791F;--purple-l:#FF9F5A;
+--lav-pale:#FFEBD9;--ivory-d:#FBEADF;--border:#F5DFC6;
+--grad:linear-gradient(145deg,#E0791F,#FF9F5A);
+--grad-h:linear-gradient(160deg,#CD6113 0%,#E0791F 30%,#FF9F5A 60%,#FFC896 85%,#FFE3C4 100%);
+}
+.fm-module-card{display:flex;align-items:center;gap:14px;background:var(--white);border-radius:16px;padding:14px 16px;margin:0 20px 10px;box-shadow:var(--sh);cursor:pointer;}
+.fm-module-card.locked{opacity:.5;cursor:default;}
+.fm-module-card.done{border:1.5px solid var(--purple-m);}
+.fm-module-num{width:38px;height:38px;border-radius:50%;background:var(--lav-pale);color:var(--purple-m);display:flex;align-items:center;justify-content:center;font-family:'League Spartan',sans-serif;font-weight:800;font-size:15px;flex-shrink:0;}
+.fm-module-card.done .fm-module-num{background:var(--grad);color:#fff;}
+.fm-module-body{flex:1;min-width:0;}
+.fm-module-t{font-family:'League Spartan',sans-serif;font-weight:700;font-size:14.5px;color:var(--ink);}
+.fm-module-s{font-size:12px;color:var(--ink-l);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.fm-module-state{flex-shrink:0;font-size:17px;}
+.fm-tools-row{display:flex;gap:10px;padding:0 20px;overflow-x:auto;margin-bottom:22px;-webkit-overflow-scrolling:touch;}
+.fm-tools-row::-webkit-scrollbar{display:none;}
+.fm-tool-card{position:relative;flex:0 0 auto;width:112px;background:var(--white);border-radius:14px;padding:14px 12px 12px;box-shadow:var(--sh);text-align:center;cursor:pointer;}
+.fm-tool-ic{width:26px;height:26px;margin:0 auto 8px;color:var(--purple-m);display:flex;align-items:center;justify-content:center;}
+.fm-tool-ic svg{width:100%;height:100%;}
+.fm-tool-t{font-family:'League Spartan',sans-serif;font-weight:700;font-size:12px;color:var(--ink);line-height:1.3;}
+.fm-tool-add{border:1.5px dashed var(--purple-l);background:var(--ivory-d);display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.fm-tool-add .fm-tool-ic{color:var(--purple);}
+.fm-file-row{display:flex;align-items:center;gap:12px;background:var(--white);border-radius:14px;padding:12px 14px;margin:0 20px 8px;box-shadow:var(--sh);}
+.fm-file-ic{width:20px;height:20px;color:var(--purple-m);flex-shrink:0;}
+.fm-file-name{flex:1;min-width:0;font-family:'League Spartan',sans-serif;font-weight:600;font-size:13.5px;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.fm-file-del{flex-shrink:0;background:none;border:none;color:var(--ink-l);font-size:18px;cursor:pointer;padding:4px;}
+.fm-empty-hint{margin:0 20px 6px;font-size:12.5px;color:var(--ink-l);padding:6px 2px;}
+.fm-files-card{margin:0 20px 22px;background:var(--white);border-radius:16px;padding:16px;box-shadow:var(--sh);display:flex;align-items:center;gap:12px;}
 .pd-progress-fill{height:100%;background:var(--grad);border-radius:50px;transition:width .4s;}
 .pd-progress-lbl{font-size:13.5px;color:var(--ink-l);font-weight:600;margin-top:8px;}
 .pd-week-title{font-size:14.5px;font-weight:800;color:var(--ink-l);text-transform:uppercase;letter-spacing:.5px;margin:22px 20px 10px;}
@@ -1371,6 +1401,26 @@ body.rp-open.rp-fullscreen .bnav{display:none !important;}
 </div>
 </div>
 
+<!-- ═══ MA FORMATION (accueil) ═══ -->
+<div id="formationHome" class="screen">
+<button class="vd-back" onclick="go('profil')" style="position:fixed;top:calc(env(safe-area-inset-top) + 16px);left:16px;z-index:20;background:rgba(255,255,255,0.25);" aria-label="Retour">←</button>
+<div class="pd-top">
+<div class="blob b1"></div><div class="blob b2"></div>
+<div style="font-size:13px;color:rgba(255,255,255,0.85);font-weight:600;margin-bottom:4px;position:relative;z-index:1;" id="fmHello"></div>
+<div class="pd-h1" id="fmTitle">Ma formation</div>
+<div class="pd-progress-bar" style="margin-top:14px;position:relative;z-index:1;"><div class="pd-progress-fill" id="fmProgressFill" style="width:0%"></div></div>
+<div style="font-size:12.5px;color:rgba(255,255,255,0.85);margin-top:6px;position:relative;z-index:1;" id="fmProgressLbl"></div>
+</div>
+<div class="scroll" style="padding-top:20px;">
+<div class="sec-stacked"><h2>Ta <em>boîte à outils</em></h2></div>
+<div class="fm-tools-row" id="fmTools"></div>
+<div class="sec-stacked"><h2>Mes <em>fichiers</em></h2></div>
+<div id="fmFiles"></div>
+<div class="sec-stacked"><h2>Tes <em>modules</em></h2></div>
+<div id="fmModulesList"></div>
+<div style="height:20px;"></div>
+</div>
+</div>
 
 <!-- ═══ PROGRAMME SPORT PERSONNALISÉ (coaching) ═══ -->
 <div id="coachProgramme" class="screen">
@@ -1502,6 +1552,7 @@ body.rp-open.rp-fullscreen .bnav{display:none !important;}
 <div class="pf-acts"><div class="diet-info-card" style="margin:0 0 16px;"><div class="diet-info-t">Mon compte Holistica</div><div class="diet-guide-s" id="accountInfoText">Ton compte standard est gratuit. Si tu as souscrit un plan Équilibre ou Immersion sur Holistica, utilise la même adresse e-mail puis actualise ton accès ici.</div><button class="btn-ob purple" id="refreshMembershipBtn" onclick="refreshMembership()">Actualiser mon accès</button></div>
 <div class="pa" onclick="openEditInfo()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.5 3-6.5 7-6.5s7 3 7 6.5"/></svg></div><div class="pa-body"><div class="pa-t">Modifier mes informations</div><div class="pa-s">Nom, poids, taille, activité</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="go('doshaProfile')"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1.5 3 2.5 5 2.5 8a2.5 2.5 0 0 1-5 0c0-3 1-5 2.5-8z"/><path d="M5 10c2 1 4 3 5 6"/><path d="M19 10c-2 1-4 3-5 6"/><path d="M4 15c2.5 3 5 4 8 4s5.5-1 8-4"/></svg></div><div class="pa-body"><div class="pa-t">Mon profil ayurvédique</div><div class="pa-s" id="pfDoshaDetail">Vata dominant</div></div><span class="pa-arr">›</span></div>
+<div class="pa" onclick="go('formationHome')"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V4.5a1 1 0 0 1 1-1h13a1 1 0 0 1 1 1V21l-4-2-4 2-4-2-3.5 2Z"/></svg></div><div class="pa-body"><div class="pa-t">Ma formation</div><div class="pa-s">Ayurveda & Périménopause</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="openWellnessHistory()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V10M9 19V5M14 19v-7M19 19V8"/></svg></div><div class="pa-body"><div class="pa-t">Historique bien-être</div><div class="pa-s">Sommeil · Stress · Humeur</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="go('progressionScreen');renderProgression();"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18l5-6 4 3 5-8 4 5"/></svg></div><div class="pa-body"><div class="pa-t">Ma progression</div><div class="pa-s">Bilan mensuel de tes séances et de ton bien-être</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="go('badgesScreen');renderBadges();"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M8.5 13.5L7 22l5-3 5 3-1.5-8.5"/></svg></div><div class="pa-body"><div class="pa-t">Mes badges</div><div class="pa-s" id="pfBadgesDetail">0/9 débloqués</div></div><span class="pa-arr">›</span></div>
@@ -3822,6 +3873,7 @@ function go(id){
  if(id==='dietPlan')renderDietPlan();
  if(id==='challenge')renderChallenge();
  if(id==='coachProgramme')cpRender();
+ if(id==='formationHome')renderFormationHome();
  if(id==='mouvement'||id==='dashboard')cpRefreshEntry();
 }
 
@@ -6043,6 +6095,103 @@ function openProgram(programId){
  currentProgramId=programId;
  renderProgramDetail();
  go('programDetail');
+}
+
+// ═══ MA FORMATION ═══
+const FORMATION_ID='ayurveda-perimenopause';
+let fmModulesCache=null,fmProgressCache=null,fmToolboxCache=null,fmFilesCache=null;
+
+const FM_ICONS={
+ dosha:'<path d="M12 3c1.5 3 2.5 5 2.5 8a2.5 2.5 0 0 1-5 0c0-3 1-5 2.5-8z"/><path d="M5 10c2 1 4 3 5 6"/><path d="M19 10c-2 1-4 3-5 6"/><path d="M4 15c2.5 3 5 4 8 4s5.5-1 8-4"/>',
+ journal:'<path d="M4 19.5V4.5a1 1 0 0 1 1-1h13a1 1 0 0 1 1 1V21l-4-2-4 2-4-2-3.5 2Z"/>',
+ checklist:'<path d="M9 11l2.5 2.5L16 9"/><rect x="3" y="4" width="18" height="16" rx="2"/>',
+ target:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r=".5" fill="currentColor"/>',
+ heart:'<path d="M12 21c-4-3-9-6.5-9-11.5A5 5 0 0 1 12 6a5 5 0 0 1 9 3.5C21 14.5 16 18 12 21z"/>',
+ file:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/>',
+ tool:'<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.5-3.5a6 6 0 0 1-7.7 7.7l-6.6 6.6a2.1 2.1 0 0 1-3-3l6.6-6.6a6 6 0 0 1 7.7-7.7l-3.5 3.5z"/>',
+};
+function fmIcon(key,size){size=size||18;return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${FM_ICONS[key]||FM_ICONS.tool}</svg>`;}
+
+async function renderFormationHome(){
+ if(!currentUser)return;
+ document.getElementById('fmHello').textContent='Bonjour '+(userProfile.name||'');
+ const [{data:modules},{data:progressRows},{data:toolboxItems},{data:userFiles}]=await Promise.all([
+  appTable('formation_modules').select('id,module_number,title,subtitle,status').eq('formation_id',FORMATION_ID).order('module_number'),
+  appTable('formation_progress').select('module_id,status,last_page').eq('user_id',currentUser.id).eq('formation_id',FORMATION_ID),
+  appTable('formation_toolbox_items').select('*').eq('formation_id',FORMATION_ID).eq('active',true).order('sort_order'),
+  appTable('formation_user_files').select('*').eq('user_id',currentUser.id).eq('formation_id',FORMATION_ID).order('uploaded_at',{ascending:false})
+ ]);
+ fmModulesCache=modules||[];
+ fmProgressCache={};
+ (progressRows||[]).forEach(r=>{fmProgressCache[r.module_id]=r;});
+ fmToolboxCache=toolboxItems||[];
+ fmFilesCache=userFiles||[];
+
+ const total=fmModulesCache.length;
+ const completed=fmModulesCache.filter(m=>fmProgressCache[m.id]?.status==='completed').length;
+ const pct=total?Math.round(completed/total*100):0;
+ document.getElementById('fmProgressFill').style.width=pct+'%';
+ document.getElementById('fmProgressLbl').textContent=completed+'/'+total+' modules terminés';
+
+ const toolCards=fmToolboxCache.map(t=>{
+  const action=t.action_type==='external'?`window.open('${t.action_value}','_blank')`:`go('${t.action_value}')`;
+  return `<div class="fm-tool-card" onclick="${action}"><div class="fm-tool-ic">${fmIcon(t.icon_key,26)}</div><div class="fm-tool-t">${t.label}</div></div>`;
+ }).join('');
+ const addFileCard=`<div class="fm-tool-card fm-tool-add" onclick="document.getElementById('fmFileInput').click()"><div class="fm-tool-ic">${fmIcon('file',22)}</div><div class="fm-tool-t">Ajouter un fichier</div><input type="file" id="fmFileInput" style="display:none;" onchange="uploadFormationFile(event)"></div>`;
+ document.getElementById('fmTools').innerHTML=toolCards+addFileCard;
+
+ renderFmFiles();
+
+ let prevCompleted=true;
+ document.getElementById('fmModulesList').innerHTML=fmModulesCache.map(m=>{
+  const prog=fmProgressCache[m.id];
+  const isDone=prog?.status==='completed';
+  const unlocked=m.module_number===0||prevCompleted;
+  prevCompleted=isDone;
+  const stateHtml=isDone?`<span class="fm-module-state">${fmIcon('checklist',18)}</span>`:unlocked?'<span class="pa-arr">›</span>':`<span class="fm-module-state">${fmIcon('file',16)}</span>`;
+  const clickAction=unlocked?`openFormationModule('${m.id}')`:`toast('Termine le module précédent pour débloquer celui-ci')`;
+  return `<div class="fm-module-card ${isDone?'done':''} ${unlocked?'':'locked'}" onclick="${clickAction}">
+   <div class="fm-module-num">${m.module_number}</div>
+   <div class="fm-module-body"><div class="fm-module-t">${m.title||''}</div><div class="fm-module-s">${m.subtitle||''}</div></div>
+   ${stateHtml}
+  </div>`;
+ }).join('');
+}
+
+function renderFmFiles(){
+ const zone=document.getElementById('fmFiles');
+ if(!fmFilesCache||!fmFilesCache.length){
+  zone.innerHTML='<div class="fm-empty-hint">Aucun fichier pour le moment. Utilise le bouton "Ajouter un fichier" dans ta boîte à outils ci-dessus.</div>';
+  return;
+ }
+ zone.innerHTML=fmFilesCache.map(f=>`<div class="fm-file-row"><span class="fm-file-ic">${fmIcon('file',20)}</span><span class="fm-file-name">${f.file_name}</span><a href="${f.file_url}" target="_blank" class="pa-arr" style="text-decoration:none;">›</a><button class="fm-file-del" onclick="deleteFormationFile('${f.id}','${f.file_url}')">×</button></div>`).join('');
+}
+
+async function uploadFormationFile(evt){
+ const file=evt.target.files[0];
+ if(!file||!currentUser)return;
+ const path=currentUser.id+'/'+Date.now()+'_'+file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+ toast('Envoi du fichier...');
+ const {error:upErr}=await sb.storage.from('formation-user-files').upload(path,file);
+ if(upErr){toast('Erreur pendant l\'envoi');return;}
+ const {data:urlData}=await sb.storage.from('formation-user-files').createSignedUrl(path,60*60*24*365);
+ await appTable('formation_user_files').insert({user_id:currentUser.id,formation_id:FORMATION_ID,file_name:file.name,file_url:urlData?.signedUrl||'',file_size:file.size});
+ toast('Fichier ajouté');
+ const {data:userFiles}=await appTable('formation_user_files').select('*').eq('user_id',currentUser.id).eq('formation_id',FORMATION_ID).order('uploaded_at',{ascending:false});
+ fmFilesCache=userFiles||[];
+ renderFmFiles();
+}
+
+async function deleteFormationFile(id,url){
+ if(!confirm('Supprimer ce fichier ?'))return;
+ await appTable('formation_user_files').delete().eq('id',id);
+ fmFilesCache=(fmFilesCache||[]).filter(f=>f.id!==id);
+ renderFmFiles();
+ toast('Fichier supprimé');
+}
+
+function openFormationModule(moduleId){
+ toast('La lecture des modules arrive bientôt dans l\'app');
 }
 
 function renderProgramDetail(){

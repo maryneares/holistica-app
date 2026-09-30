@@ -388,6 +388,7 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .fm-module-card.locked{opacity:.5;cursor:default;}
 .fm-module-card.done{border:1.5px solid var(--purple-m);}
 .fm-module-num{width:38px;height:38px;border-radius:50%;background:var(--lav-pale);color:var(--purple-m);display:flex;align-items:center;justify-content:center;font-family:'League Spartan',sans-serif;font-weight:800;font-size:15px;flex-shrink:0;}
+.fm-module-photo{width:48px;height:48px;border-radius:11px;object-fit:cover;flex-shrink:0;background:var(--lav-pale);}
 .fm-module-card.done .fm-module-num{background:var(--grad);color:#fff;}
 .fm-module-body{flex:1;min-width:0;}
 .fm-module-t{font-family:'League Spartan',sans-serif;font-weight:700;font-size:14.5px;color:var(--ink);}
@@ -1414,6 +1415,8 @@ body.rp-open.rp-fullscreen .bnav{display:none !important;}
 <div class="scroll" style="padding-top:20px;">
 <div class="sec-stacked"><h2>Ta <em>boîte à outils</em></h2></div>
 <div class="fm-tools-row" id="fmTools"></div>
+<div class="sec-stacked" id="fmResourcesSec" style="display:none;"><h2>Ressources <em>de la formation</em></h2></div>
+<div id="fmResources"></div>
 <div class="sec-stacked"><h2>Mes <em>fichiers</em></h2></div>
 <div id="fmFiles"></div>
 <div class="sec-stacked"><h2>Tes <em>modules</em></h2></div>
@@ -6115,17 +6118,28 @@ function fmIcon(key,size){size=size||18;return `<svg width="${size}" height="${s
 async function renderFormationHome(){
  if(!currentUser)return;
  document.getElementById('fmHello').textContent='Bonjour '+(userProfile.name||'');
- const [{data:modules},{data:progressRows},{data:toolboxItems},{data:userFiles}]=await Promise.all([
-  appTable('formation_modules').select('id,module_number,title,subtitle,status').eq('formation_id',FORMATION_ID).order('module_number'),
+ const [{data:modules},{data:progressRows},{data:toolboxItems},{data:userFiles},{data:sharedFiles}]=await Promise.all([
+  appTable('formation_modules').select('id,module_number,title,subtitle,status,photo_url').eq('formation_id',FORMATION_ID).order('module_number'),
   appTable('formation_progress').select('module_id,status,last_page').eq('user_id',currentUser.id).eq('formation_id',FORMATION_ID),
   appTable('formation_toolbox_items').select('*').eq('formation_id',FORMATION_ID).eq('active',true).order('sort_order'),
-  appTable('formation_user_files').select('*').eq('user_id',currentUser.id).eq('formation_id',FORMATION_ID).order('uploaded_at',{ascending:false})
+  appTable('formation_user_files').select('*').eq('user_id',currentUser.id).eq('formation_id',FORMATION_ID).order('uploaded_at',{ascending:false}),
+  appTable('formation_shared_files').select('*').eq('formation_id',FORMATION_ID).order('sort_order')
  ]);
  fmModulesCache=modules||[];
  fmProgressCache={};
  (progressRows||[]).forEach(r=>{fmProgressCache[r.module_id]=r;});
  fmToolboxCache=toolboxItems||[];
  fmFilesCache=userFiles||[];
+
+ const resSec=document.getElementById('fmResourcesSec');
+ const resZone=document.getElementById('fmResources');
+ if(sharedFiles&&sharedFiles.length){
+  resSec.style.display='block';
+  resZone.innerHTML=sharedFiles.map(f=>'<div class="fm-file-row"><span class="fm-file-ic">'+fmIcon('file',20)+'</span><span class="fm-file-name">'+f.file_name+'</span><a href="'+f.file_url+'" target="_blank" class="pa-arr" style="text-decoration:none;">›</a></div>').join('');
+ } else {
+  resSec.style.display='none';
+  resZone.innerHTML='';
+ }
 
  const total=fmModulesCache.length;
  const completed=fmModulesCache.filter(m=>fmProgressCache[m.id]?.status==='completed').length;
@@ -6150,8 +6164,9 @@ async function renderFormationHome(){
   prevCompleted=isDone;
   const stateHtml=isDone?`<span class="fm-module-state">${fmIcon('checklist',18)}</span>`:unlocked?'<span class="pa-arr">›</span>':`<span class="fm-module-state">${fmIcon('file',16)}</span>`;
   const clickAction=unlocked?`openFormationModule('${m.id}')`:`toast('Termine le module précédent pour débloquer celui-ci')`;
+  const photoHtml=m.photo_url?`<img class="fm-module-photo" src="${m.photo_url}" alt="">`:`<div class="fm-module-num">${m.module_number}</div>`;
   return `<div class="fm-module-card ${isDone?'done':''} ${unlocked?'':'locked'}" onclick="${clickAction}">
-   <div class="fm-module-num">${m.module_number}</div>
+   ${photoHtml}
    <div class="fm-module-body"><div class="fm-module-t">${m.title||''}</div><div class="fm-module-s">${m.subtitle||''}</div></div>
    ${stateHtml}
   </div>`;

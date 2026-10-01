@@ -100,6 +100,34 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .si-top{position:relative;z-index:2;padding:60px 24px 0;display:flex;flex-direction:column;align-items:center;}
 .si-logo{width:80px;height:80px;object-fit:contain;filter:brightness(0) invert(1);opacity:.9;}
 .si-brand{font-family:'League Spartan',sans-serif;font-size:26px;font-weight:800;color:white;margin-top:10px;letter-spacing:-.01em;}
+
+/* ═══ ECRAN DE CHARGEMENT ═══ */
+.al-screen{background:var(--grad-h);justify-content:center;align-items:center;}
+.al-wrap{display:flex;flex-direction:column;align-items:center;padding:24px;}
+.al-arc{position:relative;width:260px;height:70px;margin-bottom:4px;}
+.al-letter{position:absolute;top:0;left:50%;font-family:'League Spartan',sans-serif;font-weight:800;font-size:19px;color:#fff;letter-spacing:.02em;transform-origin:50% 130px;opacity:0;animation:alLetterIn .6s cubic-bezier(.2,.8,.3,1) forwards;text-shadow:0 2px 10px rgba(91,78,168,0.35);}
+@keyframes alLetterIn{from{opacity:0;transform:translate(-50%,8px) scale(.6) rotate(var(--rot));}to{opacity:1;transform:translate(-50%,0) scale(1) rotate(var(--rot));}}
+
+.al-lotus-zone{position:relative;width:132px;height:132px;display:flex;align-items:center;justify-content:center;margin:10px 0 18px;}
+.al-ray{position:absolute;inset:-14px;border-radius:50%;background:repeating-conic-gradient(from 0deg,rgba(255,255,255,0.55) 0deg 1.6deg,transparent 1.6deg 18deg);-webkit-mask:radial-gradient(circle,transparent 38%,#000 46%,#000 62%,transparent 72%);mask:radial-gradient(circle,transparent 38%,#000 46%,#000 62%,transparent 72%);animation:alRaySpin 9s linear infinite,alRayPulse 2.4s ease-in-out infinite;}
+@keyframes alRaySpin{to{transform:rotate(360deg);}}
+@keyframes alRayPulse{0%,100%{opacity:.55;}50%{opacity:1;}}
+.al-lotus{position:relative;width:92px;height:92px;filter:drop-shadow(0 6px 18px rgba(40,20,70,0.28));animation:alLotusBreathe 3.6s ease-in-out infinite;}
+@keyframes alLotusBreathe{0%,100%{transform:scale(1);}50%{transform:scale(1.06);}}
+.al-petal-set path{opacity:.96;}
+.al-sparkle{position:absolute;width:6px;height:6px;background:#fff;border-radius:50%;box-shadow:0 0 8px 2px rgba(255,255,255,0.9);animation:alSparkle 1.8s ease-in-out infinite;}
+.al-sparkle::before,.al-sparkle::after{content:'';position:absolute;background:#fff;}
+.al-sparkle::before{width:1.5px;height:12px;left:2.25px;top:-3px;}
+.al-sparkle::after{width:12px;height:1.5px;top:2.25px;left:-3px;}
+.sp1{top:6px;left:18px;animation-delay:0s;}
+.sp2{top:22px;right:10px;animation-delay:.4s;}
+.sp3{bottom:14px;left:4px;animation-delay:.9s;}
+.sp4{bottom:2px;right:24px;animation-delay:1.3s;}
+.sp5{top:50%;left:-6px;animation-delay:1.7s;}
+@keyframes alSparkle{0%,100%{opacity:0;transform:scale(.4);}50%{opacity:1;transform:scale(1);}}
+.al-msg{font-family:'League Spartan',sans-serif;font-size:14.5px;color:rgba(255,255,255,0.92);font-weight:600;text-align:center;animation:alMsgFade 1.8s ease-in-out infinite;}
+@keyframes alMsgFade{0%,100%{opacity:.75;}50%{opacity:1;}}
+.al-retry{margin-top:18px;}
 .si-brand span{font-weight:400;opacity:.7;}
 .si-tagline{font-size:16px;color:rgba(255,255,255,0.95);margin-top:8px;}
 .si-form{position:relative;z-index:2;padding:0 24px 40px;display:flex;flex-direction:column;gap:12px;}
@@ -1166,10 +1194,41 @@ body.rp-open.rp-fullscreen .bnav{display:none !important;}
 <body>
 
 <!-- La connexion reste masquée jusqu’à la restauration de la session. -->
-<div id="authLoading" class="screen active" style="padding:25vh 24px;text-align:center;" aria-busy="true">
- <div class="si-brand">Holistica <span>Club</span></div>
- <p id="authLoadingMessage" role="status" aria-live="polite">Restauration de ta connexion…</p>
- <button id="authRetry" class="btn-w" style="display:none;" onclick="restoreMemberSession()">Réessayer</button>
+<div id="authLoading" class="screen active al-screen" aria-busy="true">
+ <div class="al-wrap">
+  <div class="al-arc" id="alArc" aria-label="Holistica Club"></div>
+  <div class="al-lotus-zone">
+   <div class="al-ray"></div>
+   <svg class="al-lotus" viewBox="0 0 100 100" aria-hidden="true">
+    <defs>
+     <linearGradient id="alPetalGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#D8CFF2"/>
+     </linearGradient>
+    </defs>
+    <g class="al-petals">
+     <g class="al-petal-set">
+      <path d="M50,50 C46,34 40,22 50,6 C60,22 54,34 50,50 Z" fill="url(#alPetalGrad)"/>
+      <path d="M50,50 C46,34 40,22 50,6 C60,22 54,34 50,50 Z" fill="url(#alPetalGrad)" transform="rotate(45 50 50)"/>
+      <path d="M50,50 C46,34 40,22 50,6 C60,22 54,34 50,50 Z" fill="url(#alPetalGrad)" transform="rotate(90 50 50)"/>
+      <path d="M50,50 C46,34 40,22 50,6 C60,22 54,34 50,50 Z" fill="url(#alPetalGrad)" transform="rotate(135 50 50)"/>
+      <path d="M50,50 C46,34 40,22 50,6 C60,22 54,34 50,50 Z" fill="url(#alPetalGrad)" transform="rotate(180 50 50)"/>
+      <path d="M50,50 C46,34 40,22 50,6 C60,22 54,34 50,50 Z" fill="url(#alPetalGrad)" transform="rotate(225 50 50)"/>
+      <path d="M50,50 C46,34 40,22 50,6 C60,22 54,34 50,50 Z" fill="url(#alPetalGrad)" transform="rotate(270 50 50)"/>
+      <path d="M50,50 C46,34 40,22 50,6 C60,22 54,34 50,50 Z" fill="url(#alPetalGrad)" transform="rotate(315 50 50)"/>
+     </g>
+     <circle cx="50" cy="50" r="7" fill="#FFF6E9"/>
+    </g>
+   </svg>
+   <span class="al-sparkle sp1"></span>
+   <span class="al-sparkle sp2"></span>
+   <span class="al-sparkle sp3"></span>
+   <span class="al-sparkle sp4"></span>
+   <span class="al-sparkle sp5"></span>
+  </div>
+  <p id="authLoadingMessage" class="al-msg" role="status" aria-live="polite">Restauration de ta connexion…</p>
+  <button id="authRetry" class="btn-w al-retry" style="display:none;" onclick="restoreMemberSession()">Réessayer</button>
+ </div>
 </div>
 <!-- ═══ SIGNIN ═══ -->
 <div id="signin" class="screen">
@@ -3079,7 +3138,29 @@ function collectProfilePayload(){
 // AUTH_SESSION_START — aucune navigation Login avant la restauration explicite.
 let authReady=false,authRestoring=false,authRecovery=false,authRestoreFlight=null;
 let pendingAuthEvent=null;
+function buildAlArc(){
+ const el=document.getElementById('alArc');
+ if(!el||el.dataset.built)return;
+ el.dataset.built='1';
+ const text='HOLISTICA CLUB';
+ const n=text.length;
+ const totalArc=130; // degres
+ const start=-totalArc/2;
+ const step=totalArc/(n-1);
+ const R=130;
+ el.innerHTML=text.split('').map((ch,i)=>{
+  const angle=start+step*i;
+  const rad=angle*Math.PI/180;
+  const x=R*Math.sin(rad);
+  const y=R*(1-Math.cos(rad));
+  const delay=(i*0.045).toFixed(3);
+  return `<span class="al-letter" style="--rot:${angle}deg;left:calc(50% + ${x.toFixed(2)}px);top:${y.toFixed(2)}px;animation-delay:${delay}s;">${ch===' '?'&nbsp;':ch}</span>`;
+ }).join('');
+}
+if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',buildAlArc);}else{buildAlArc();}
+
 function showAuthLoading(message='Restauration de ta connexion…',retry=false){
+ buildAlArc();
  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
  document.getElementById('freeDemoScreen')?.classList.remove('active');
  document.getElementById('bnav').style.display='none';

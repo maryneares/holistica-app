@@ -102,32 +102,34 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 .si-brand{font-family:'League Spartan',sans-serif;font-size:26px;font-weight:800;color:white;margin-top:10px;letter-spacing:-.01em;}
 
 /* ═══ ECRAN DE CHARGEMENT ═══ */
-.al-screen{background:var(--grad-h);justify-content:center;align-items:center;}
-.al-wrap{display:flex;flex-direction:column;align-items:center;padding:24px;}
-.al-arc{position:relative;width:260px;height:70px;margin-bottom:4px;}
-.al-letter{position:absolute;top:0;left:50%;font-family:'League Spartan',sans-serif;font-weight:800;font-size:19px;color:#fff;letter-spacing:.02em;transform-origin:50% 130px;opacity:0;animation:alLetterIn .6s cubic-bezier(.2,.8,.3,1) forwards;text-shadow:0 2px 10px rgba(91,78,168,0.35);}
-@keyframes alLetterIn{from{opacity:0;transform:translate(-50%,8px) scale(.6) rotate(var(--rot));}to{opacity:1;transform:translate(-50%,0) scale(1) rotate(var(--rot));}}
+.al-screen{background:#FFFFFF;justify-content:center;align-items:center;}
+.al-wrap{display:flex;flex-direction:column;align-items:center;padding:24px;width:100%;max-width:360px;}
+.al-arc{position:relative;width:100%;height:76px;margin-bottom:2px;}
+.al-letter{position:absolute;top:50%;left:50%;font-family:'League Spartan',sans-serif;font-weight:800;color:var(--purple);letter-spacing:.01em;opacity:0;animation:alLetterIn .55s cubic-bezier(.2,.8,.3,1) forwards;}
+@keyframes alLetterIn{from{opacity:0;}to{opacity:1;}}
 
-.al-lotus-zone{position:relative;width:132px;height:132px;display:flex;align-items:center;justify-content:center;margin:10px 0 18px;}
-.al-ray{position:absolute;inset:-14px;border-radius:50%;background:repeating-conic-gradient(from 0deg,rgba(255,255,255,0.55) 0deg 1.6deg,transparent 1.6deg 18deg);-webkit-mask:radial-gradient(circle,transparent 38%,#000 46%,#000 62%,transparent 72%);mask:radial-gradient(circle,transparent 38%,#000 46%,#000 62%,transparent 72%);animation:alRaySpin 9s linear infinite,alRayPulse 2.4s ease-in-out infinite;}
+.al-lotus-zone{position:relative;width:128px;height:128px;display:flex;align-items:center;justify-content:center;margin:8px 0 22px;}
+.al-ray{position:absolute;inset:-10px;border-radius:50%;background:repeating-conic-gradient(from 0deg,rgba(91,78,168,0.28) 0deg 1.6deg,transparent 1.6deg 18deg);-webkit-mask:radial-gradient(circle,transparent 40%,#000 48%,#000 62%,transparent 72%);mask:radial-gradient(circle,transparent 40%,#000 48%,#000 62%,transparent 72%);animation:alRaySpin 9s linear infinite,alRayPulse 2.4s ease-in-out infinite;}
 @keyframes alRaySpin{to{transform:rotate(360deg);}}
-@keyframes alRayPulse{0%,100%{opacity:.55;}50%{opacity:1;}}
-.al-lotus{position:relative;width:92px;height:92px;filter:drop-shadow(0 6px 18px rgba(40,20,70,0.28));animation:alLotusBreathe 3.6s ease-in-out infinite;}
-@keyframes alLotusBreathe{0%,100%{transform:scale(1);}50%{transform:scale(1.06);}}
-.al-petal-set path{opacity:.96;}
-.al-sparkle{position:absolute;width:6px;height:6px;background:#fff;border-radius:50%;box-shadow:0 0 8px 2px rgba(255,255,255,0.9);animation:alSparkle 1.8s ease-in-out infinite;}
-.al-sparkle::before,.al-sparkle::after{content:'';position:absolute;background:#fff;}
-.al-sparkle::before{width:1.5px;height:12px;left:2.25px;top:-3px;}
-.al-sparkle::after{width:12px;height:1.5px;top:2.25px;left:-3px;}
-.sp1{top:6px;left:18px;animation-delay:0s;}
-.sp2{top:22px;right:10px;animation-delay:.4s;}
-.sp3{bottom:14px;left:4px;animation-delay:.9s;}
-.sp4{bottom:2px;right:24px;animation-delay:1.3s;}
-.sp5{top:50%;left:-6px;animation-delay:1.7s;}
+@keyframes alRayPulse{0%,100%{opacity:.5;}50%{opacity:1;}}
+.al-lotus{position:relative;width:92px;height:92px;filter:drop-shadow(0 6px 16px rgba(91,78,168,0.28));animation:alLotusBreathe 3.6s ease-in-out infinite;}
+@keyframes alLotusBreathe{0%,100%{transform:scale(1);}50%{transform:scale(1.05);}}
+.al-shimmer{animation:alShimmerSweep 2.6s ease-in-out infinite;}
+@keyframes alShimmerSweep{0%{transform:translateX(0);}100%{transform:translateX(160px);}}
+.al-wave{opacity:.85;}
+.al-wave2{opacity:.6;}
+.al-sparkle{position:absolute;width:6px;height:6px;background:var(--purple-m);border-radius:50%;box-shadow:0 0 7px 1px rgba(123,110,200,0.65);animation:alSparkle 1.8s ease-in-out infinite;}
+.al-sparkle::before,.al-sparkle::after{content:'';position:absolute;background:var(--purple-m);}
+.al-sparkle::before{width:1.5px;height:11px;left:2.25px;top:-2.5px;}
+.al-sparkle::after{width:11px;height:1.5px;top:2.25px;left:-2.5px;}
+.sp1{top:4px;left:14px;animation-delay:0s;}
+.sp2{top:20px;right:8px;animation-delay:.4s;}
+.sp3{bottom:16px;left:0px;animation-delay:.9s;}
+.sp4{bottom:4px;right:20px;animation-delay:1.3s;}
+.sp5{top:52%;left:-8px;animation-delay:1.7s;}
 @keyframes alSparkle{0%,100%{opacity:0;transform:scale(.4);}50%{opacity:1;transform:scale(1);}}
-.al-msg{font-family:'League Spartan',sans-serif;font-size:14.5px;color:rgba(255,255,255,0.92);font-weight:600;text-align:center;animation:alMsgFade 1.8s ease-in-out infinite;}
-@keyframes alMsgFade{0%,100%{opacity:.75;}50%{opacity:1;}}
-.al-retry{margin-top:18px;}
+.al-long-msg{font-family:'League Spartan',sans-serif;font-size:14px;font-weight:600;color:var(--purple-m);text-align:center;max-width:300px;line-height:1.5;margin:-6px 0 6px;}
+.al-retry{margin-top:6px;background:var(--grad);color:#fff;border:none;padding:14px 26px;border-radius:14px;font-size:15px;font-weight:700;cursor:pointer;font-family:'League Spartan',sans-serif;box-shadow:0 8px 22px rgba(91,78,168,0.28);}
 .si-brand span{font-weight:400;opacity:.7;}
 .si-tagline{font-size:16px;color:rgba(255,255,255,0.95);margin-top:8px;}
 .si-form{position:relative;z-index:2;padding:0 24px 40px;display:flex;flex-direction:column;gap:12px;}
@@ -1196,29 +1198,29 @@ body.rp-open.rp-fullscreen .bnav{display:none !important;}
 <!-- La connexion reste masquée jusqu’à la restauration de la session. -->
 <div id="authLoading" class="screen active al-screen" aria-busy="true">
  <div class="al-wrap">
-  <div class="al-arc" id="alArc" aria-label="Holistica Club"></div>
+  <div class="al-arc" id="alArc" aria-label="Chargement de ton espace"></div>
   <div class="al-lotus-zone">
    <div class="al-ray"></div>
-   <svg class="al-lotus" viewBox="0 0 100 100" aria-hidden="true">
+   <svg class="al-lotus" viewBox="0 0 100 92" aria-hidden="true">
     <defs>
      <linearGradient id="alPetalGrad" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#FFFFFF"/>
-      <stop offset="100%" stop-color="#D8CFF2"/>
+      <stop offset="0%" stop-color="#9B8ED8"/>
+      <stop offset="55%" stop-color="#5B4EA8"/>
+      <stop offset="100%" stop-color="#4A3F8C"/>
      </linearGradient>
+     <linearGradient id="alShimmerGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#fff" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#fff" stop-opacity=".85"/>
+      <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+     </linearGradient>
+     <clipPath id="alLotusClip">
+      <path d="M50,4 C54,16 60,24 68,30 C77,22 84,20 92,21 C88,29 83,35 76,39 C84,41 90,45 95,51 C86,52 78,51 71,47 C73,56 70,64 63,70 C61,61 60,53 57,46 C55,53 54,61 52,70 C45,64 42,56 44,47 C37,51 29,52 20,51 C25,45 31,41 39,39 C32,35 27,29 23,21 C31,20 38,22 47,30 C55,24 61,16 50,4 Z"/>
+     </clipPath>
     </defs>
-    <g class="al-petals">
-     <g class="al-petal-set">
-      <path d="M50,50 C46,34 40,22 50,6 C60,22 54,34 50,50 Z" fill="url(#alPetalGrad)"/>
-      <path d="M50,50 C46,34 40,22 50,6 C60,22 54,34 50,50 Z" fill="url(#alPetalGrad)" transform="rotate(45 50 50)"/>
-      <path d="M50,50 C46,34 40,22 50,6 C60,22 54,34 50,50 Z" fill="url(#alPetalGrad)" transform="rotate(90 50 50)"/>
-      <path d="M50,50 C46,34 40,22 50,6 C60,22 54,34 50,50 Z" fill="url(#alPetalGrad)" transform="rotate(135 50 50)"/>
-      <path d="M50,50 C46,34 40,22 50,6 C60,22 54,34 50,50 Z" fill="url(#alPetalGrad)" transform="rotate(180 50 50)"/>
-      <path d="M50,50 C46,34 40,22 50,6 C60,22 54,34 50,50 Z" fill="url(#alPetalGrad)" transform="rotate(225 50 50)"/>
-      <path d="M50,50 C46,34 40,22 50,6 C60,22 54,34 50,50 Z" fill="url(#alPetalGrad)" transform="rotate(270 50 50)"/>
-      <path d="M50,50 C46,34 40,22 50,6 C60,22 54,34 50,50 Z" fill="url(#alPetalGrad)" transform="rotate(315 50 50)"/>
-     </g>
-     <circle cx="50" cy="50" r="7" fill="#FFF6E9"/>
-    </g>
+    <path class="al-lotus-fill" d="M50,4 C54,16 60,24 68,30 C77,22 84,20 92,21 C88,29 83,35 76,39 C84,41 90,45 95,51 C86,52 78,51 71,47 C73,56 70,64 63,70 C61,61 60,53 57,46 C55,53 54,61 52,70 C45,64 42,56 44,47 C37,51 29,52 20,51 C25,45 31,41 39,39 C32,35 27,29 23,21 C31,20 38,22 47,30 C55,24 61,16 50,4 Z" fill="url(#alPetalGrad)"/>
+    <rect class="al-shimmer" x="-30" y="0" width="30" height="92" fill="url(#alShimmerGrad)" clip-path="url(#alLotusClip)"/>
+    <path class="al-wave" d="M18,78 C30,84 42,72 50,78 C58,84 70,72 82,78" fill="none" stroke="#5B4EA8" stroke-width="2.6" stroke-linecap="round"/>
+    <path class="al-wave al-wave2" d="M22,85 C32,90 42,81 50,85 C58,90 68,81 78,85" fill="none" stroke="#9B8ED8" stroke-width="2.2" stroke-linecap="round"/>
    </svg>
    <span class="al-sparkle sp1"></span>
    <span class="al-sparkle sp2"></span>
@@ -1226,8 +1228,8 @@ body.rp-open.rp-fullscreen .bnav{display:none !important;}
    <span class="al-sparkle sp4"></span>
    <span class="al-sparkle sp5"></span>
   </div>
-  <p id="authLoadingMessage" class="al-msg" role="status" aria-live="polite">Restauration de ta connexion…</p>
-  <button id="authRetry" class="btn-w al-retry" style="display:none;" onclick="restoreMemberSession()">Réessayer</button>
+  <p id="alLongMsg" class="al-long-msg" style="display:none;"></p>
+  <button id="authRetry" class="al-retry" style="display:none;" onclick="restoreMemberSession()">Réessayer</button>
  </div>
 </div>
 <!-- ═══ SIGNIN ═══ -->
@@ -3138,35 +3140,46 @@ function collectProfilePayload(){
 // AUTH_SESSION_START — aucune navigation Login avant la restauration explicite.
 let authReady=false,authRestoring=false,authRecovery=false,authRestoreFlight=null;
 let pendingAuthEvent=null;
-function buildAlArc(){
+let alLastArcText=null;
+function buildAlArc(text){
+ text=text||'Chargement de ton espace…';
  const el=document.getElementById('alArc');
- if(!el||el.dataset.built)return;
- el.dataset.built='1';
- const text='HOLISTICA CLUB';
+ const longEl=document.getElementById('alLongMsg');
+ if(!el||alLastArcText===text)return;
+ alLastArcText=text;
+ if(text.length>34){
+  el.innerHTML='';el.style.display='none';
+  if(longEl){longEl.textContent=text;longEl.style.display='block';}
+  return;
+ }
+ if(longEl)longEl.style.display='none';
+ el.style.display='block';
  const n=text.length;
- const totalArc=130; // degres
+ const containerW=Math.min(el.clientWidth||340,340);
+ const fontSize=n>26?12:(n>18?14:17);
+ const totalArc=Math.min(150,70+n*3.2); // degres, s'elargit un peu avec la longueur
+ const R=Math.max(110,Math.min(165,containerW*0.46));
  const start=-totalArc/2;
- const step=totalArc/(n-1);
- const R=130;
+ const step=n>1?totalArc/(n-1):0;
  el.innerHTML=text.split('').map((ch,i)=>{
   const angle=start+step*i;
   const rad=angle*Math.PI/180;
   const x=R*Math.sin(rad);
   const y=R*(1-Math.cos(rad));
-  const delay=(i*0.045).toFixed(3);
-  return `<span class="al-letter" style="--rot:${angle}deg;left:calc(50% + ${x.toFixed(2)}px);top:${y.toFixed(2)}px;animation-delay:${delay}s;">${ch===' '?'&nbsp;':ch}</span>`;
+  const delay=(i*0.03).toFixed(3);
+  return `<span class="al-letter" style="font-size:${fontSize}px;transform:translate(calc(-50% + ${x.toFixed(2)}px), calc(-50% + ${y.toFixed(2)}px)) rotate(${angle.toFixed(2)}deg);animation-delay:${delay}s;">${ch===' '?'&nbsp;':esc(ch)}</span>`;
  }).join('');
 }
-if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',buildAlArc);}else{buildAlArc();}
+function esc(s){return (s||'').toString().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',()=>buildAlArc());}else{buildAlArc();}
 
-function showAuthLoading(message='Restauration de ta connexion…',retry=false){
- buildAlArc();
+function showAuthLoading(message='Chargement de ton espace…',retry=false){
+ buildAlArc(message);
  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
  document.getElementById('freeDemoScreen')?.classList.remove('active');
  document.getElementById('bnav').style.display='none';
  const screen=document.getElementById('authLoading');
  screen.classList.add('active');screen.setAttribute('aria-busy',String(!retry));
- document.getElementById('authLoadingMessage').textContent=message;
  document.getElementById('authRetry').style.display=retry?'inline-block':'none';
 }
 async function applyMemberSession(event,session){

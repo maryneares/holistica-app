@@ -104,25 +104,13 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;}
 /* ═══ ECRAN DE CHARGEMENT ═══ */
 .al-screen{background:#FFFFFF;justify-content:center;align-items:center;}
 .al-wrap{display:flex;flex-direction:column;align-items:center;padding:24px;width:100%;max-width:360px;}
-.al-arc{position:relative;width:100%;height:76px;margin-bottom:2px;}
-.al-letter{position:absolute;top:50%;left:50%;font-family:'League Spartan',sans-serif;font-weight:800;color:var(--purple);letter-spacing:.01em;opacity:0;animation:alLetterIn .55s cubic-bezier(.2,.8,.3,1) forwards;}
-@keyframes alLetterIn{from{opacity:0;}to{opacity:1;}}
-
-.al-lotus-zone{position:relative;width:148px;height:97px;display:flex;align-items:center;justify-content:center;margin:12px 0 26px;}
-.al-lotus-mask{
-  width:148px;height:97px;
-  -webkit-mask-image:url('https://d1yei2z3i6k35z.cloudfront.net/125337/6a7597a8744869.08438401_LOGO.png');
-  mask-image:url('https://d1yei2z3i6k35z.cloudfront.net/125337/6a7597a8744869.08438401_LOGO.png');
-  -webkit-mask-size:contain;mask-size:contain;
-  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
-  -webkit-mask-position:center;mask-position:center;
-  background:linear-gradient(100deg,#4A3F8C 0%,#7B6EC8 22%,#C8BEED 42%,#9B8ED8 58%,#5B4EA8 78%,#4A3F8C 100%);
-  background-size:260% 100%;
-  filter:drop-shadow(0 6px 16px rgba(91,78,168,0.28));
-  animation:alLotusSweep 2.8s ease-in-out infinite,alLotusBreathe 3.6s ease-in-out infinite;
-}
-@keyframes alLotusSweep{0%{background-position:0% 50%;}100%{background-position:100% 50%;}}
-@keyframes alLotusBreathe{0%,100%{transform:scale(1);}50%{transform:scale(1.04);}}
+/* Original supplied logo: show its colours directly, without an alpha mask. */
+.al-lotus-zone{position:relative;width:min(260px,68vw);aspect-ratio:1;overflow:hidden;margin:0 0 12px;background:#fff;}
+.al-lotus-image{display:block;width:100%;height:100%;object-fit:contain;}
+.al-lotus-zone::after{content:"";position:absolute;inset:-25% -60%;pointer-events:none;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.18) 44%,rgba(255,255,255,.9) 49%,rgba(255,255,255,.3) 54%,transparent 59%);transform:translateX(-65%);animation:alLightSweep 2.6s ease-in-out infinite;}
+.al-arc{font-family:'League Spartan',sans-serif;font-style:normal;font-weight:600;font-size:15px;letter-spacing:.22em;text-align:center;color:var(--purple);line-height:1.5;margin:0 0 22px;padding-left:.22em;}
+@keyframes alLightSweep{0%,12%{transform:translateX(-65%);}78%,100%{transform:translateX(65%);}}
+@media(prefers-reduced-motion:reduce){.al-lotus-zone::after{animation:none;display:none;}}
 .al-long-msg{font-family:'League Spartan',sans-serif;font-size:14px;font-weight:600;color:var(--purple-m);text-align:center;max-width:300px;line-height:1.5;margin:-6px 0 6px;}
 .al-retry{margin-top:6px;background:var(--grad);color:#fff;border:none;padding:14px 26px;border-radius:14px;font-size:15px;font-weight:700;cursor:pointer;font-family:'League Spartan',sans-serif;box-shadow:0 8px 22px rgba(91,78,168,0.28);}
 .si-brand span{font-weight:400;opacity:.7;}
@@ -1193,10 +1181,10 @@ body.rp-open.rp-fullscreen .bnav{display:none !important;}
 <!-- La connexion reste masquée jusqu’à la restauration de la session. -->
 <div id="authLoading" class="screen active al-screen" aria-busy="true">
  <div class="al-wrap">
-  <div class="al-arc" id="alArc" aria-label="Chargement de ton espace"></div>
-  <div class="al-lotus-zone">
-   <div class="al-lotus-mask"></div>
+  <div class="al-lotus-zone" aria-hidden="true">
+   <img class="al-lotus-image" src="session-lotus.png" alt="" width="1254" height="1254" fetchpriority="high">
   </div>
+  <div class="al-arc" id="alArc" role="status">CHARGEMENT</div>
   <p id="alLongMsg" class="al-long-msg" style="display:none;"></p>
   <button id="authRetry" class="al-retry" style="display:none;" onclick="restoreMemberSession()">Réessayer</button>
  </div>
@@ -1212,14 +1200,14 @@ body.rp-open.rp-fullscreen .bnav{display:none !important;}
 <div class="si-form">
 <input class="si-input" id="siEmail" type="email" inputmode="email" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="e-mail">
 <div class="si-pwd-wrap"><input class="si-input" id="siPassword" type="password" autocomplete="current-password" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="mot de passe"><button type="button" class="si-pwd-toggle" onclick="togglePwdVisibility('siPassword',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
-<div class="si-forgot" onclick="handleForgotPassword()">Mot de passe oublié ?</div>
+<button type="button" class="si-forgot" style="background:none;border:0;color:inherit" onclick="handleForgotPassword()">Mot de passe oublié ?</button><button type="button" class="si-forgot" style="background:none;border:0;color:inherit" onclick="accountUI.open('help')">Une erreur dans mon adresse e-mail</button>
 <button class="btn-w" id="siLoginBtn" onclick="handleSignIn()">Se connecter</button>
 <p id="confirmationNotice" role="status" aria-live="polite" hidden style="color:white;font-size:13px;line-height:1.5;text-align:center;margin:12px 0;"></p>
 <button type="button" id="resendConfirmationBtn" onclick="resendSignupConfirmation()" style="display:block;margin:12px auto;background:transparent;border:0;color:white;text-decoration:underline;font:inherit;font-size:13px;cursor:pointer;">Renvoyer l’e-mail de confirmation</button>
 <div class="si-div">ou</div>
 <button class="btn-glass" onclick="signInWithGoogleNative()" style="display:flex;align-items:center;justify-content:center;gap:10px;"><svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/></svg>Continuer avec Google</button><button class="btn-glass" onclick="signInWithApple()" style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:10px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.08l-.01-.01ZM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25Z"/></svg>Continuer avec Apple</button>
 
-<div class="si-btm">Pas de compte ? <a onclick="go('signup')">Créer un compte</a></div>
+<div class="si-btm">Pas de compte ? <a onclick="accountUI.open('signup')">Créer un compte</a></div>
 
 </div>
 <div class="si-bubbles"><div class="bubble bb1"></div><div class="bubble bb2"></div><div class="bubble bb3"></div></div>
@@ -1236,8 +1224,8 @@ body.rp-open.rp-fullscreen .bnav{display:none !important;}
 </div>
 <div class="si-form">
 <input class="si-input" id="suEmail" type="email" inputmode="email" autocomplete="email" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="e-mail">
-<div class="si-pwd-wrap"><input class="si-input" id="suPassword" type="password" placeholder="mot de passe (6 car. min)"><button type="button" class="si-pwd-toggle" onclick="togglePwdVisibility('suPassword',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
-<button class="btn-w" id="suSignupBtn" onclick="handleSignUp()">Créer mon compte</button>
+<div class="si-pwd-wrap"><input class="si-input" id="suPassword" type="password" placeholder="mot de passe (12 car. min)"><button type="button" class="si-pwd-toggle" onclick="togglePwdVisibility('suPassword',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
+<button class="btn-w" id="suSignupBtn" onclick="accountUI.open('signup',document.getElementById('suEmail').value)">Créer mon compte</button>
 <div class="si-div">ou</div>
 <button class="btn-glass" onclick="signInWithGoogleNative()" style="display:flex;align-items:center;justify-content:center;gap:10px;"><svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/></svg>Continuer avec Google</button><button class="btn-glass" onclick="signInWithApple()" style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:10px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.08l-.01-.01ZM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25Z"/></svg>Continuer avec Apple</button>
 <div class="si-btm">Déjà un compte ? <a onclick="go('signin')">Se connecter</a></div>
@@ -1263,7 +1251,7 @@ body.rp-open.rp-fullscreen .bnav{display:none !important;}
 <div class="si-tagline">Choisis un mot de passe pour ton compte</div>
 </div>
 <div class="si-form">
-<div class="si-pwd-wrap"><input class="si-input" id="rpPassword" type="password" placeholder="Nouveau mot de passe (6 car. min)"><button type="button" class="si-pwd-toggle" onclick="togglePwdVisibility('rpPassword',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
+<div class="si-pwd-wrap"><input class="si-input" id="rpPassword" type="password" placeholder="Nouveau mot de passe (12 car. min)"><button type="button" class="si-pwd-toggle" onclick="togglePwdVisibility('rpPassword',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
 <div class="si-pwd-wrap"><input class="si-input" id="rpPassword2" type="password" placeholder="Confirme le mot de passe"><button type="button" class="si-pwd-toggle" onclick="togglePwdVisibility('rpPassword2',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
 <button class="btn-w" id="rpBtn" onclick="confirmNewPassword()">Valider le nouveau mot de passe</button>
 </div>
@@ -1277,7 +1265,7 @@ body.rp-open.rp-fullscreen .bnav{display:none !important;}
 <div class="dz">
 <div class="d-row">
 <div><div class="d-greet" id="dGreet">Bonjour ☀️</div><div class="d-name">Bienvenue, <em id="dNameDisplay">toi</em></div></div>
-<div class="d-av" id="dAvatar"></div>
+<button type="button" class="d-av" id="dAvatar" aria-label="Gérer mon compte" onclick="accountUI.open('settings')"></button>
 </div>
 <div class="d-pill"><div class="d-pill-dot"></div><div class="d-pill-txt" id="dPill">Profil Vata · Été</div></div>
 <div class="journey-evo" id="journeyEvo">
@@ -1582,7 +1570,7 @@ body.rp-open.rp-fullscreen .bnav{display:none !important;}
 </div>
 <div class="scroll">
 <div class="sec"><h2>Mon <em>espace</em></h2></div>
-<div class="pf-acts"><div class="diet-info-card" style="margin:0 0 16px;"><div class="diet-info-t">Mon compte Holistica</div><div class="diet-guide-s" id="accountInfoText">Ton compte standard est gratuit. Si tu as souscrit un plan Équilibre ou Immersion sur Holistica, utilise la même adresse e-mail puis actualise ton accès ici.</div><button class="btn-ob purple" id="refreshMembershipBtn" onclick="refreshMembership()">Actualiser mon accès</button></div>
+<div class="pf-acts"><a href="https://www.holisticaclub.com/mon-compte" target="_blank" rel="noopener" class="btn-ob purple" style="display:block;text-align:center;text-decoration:none;margin-bottom:14px">Compte et abonnement · factures et résiliation</a><div class="diet-info-card" style="margin:0 0 16px;"><div class="diet-info-t">Mon compte Holistica</div><div class="diet-guide-s" id="accountInfoText">Ton compte standard est gratuit. Si tu as souscrit un plan Équilibre ou Immersion sur Holistica, utilise la même adresse e-mail puis actualise ton accès ici.</div><button class="btn-ob purple" id="refreshMembershipBtn" onclick="refreshMembership()">Actualiser mon accès</button></div>
 <div class="pa" onclick="openEditInfo()"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.5 3-6.5 7-6.5s7 3 7 6.5"/></svg></div><div class="pa-body"><div class="pa-t">Modifier mes informations</div><div class="pa-s">Nom, poids, taille, activité</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="go('doshaProfile')"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1.5 3 2.5 5 2.5 8a2.5 2.5 0 0 1-5 0c0-3 1-5 2.5-8z"/><path d="M5 10c2 1 4 3 5 6"/><path d="M19 10c-2 1-4 3-5 6"/><path d="M4 15c2.5 3 5 4 8 4s5.5-1 8-4"/></svg></div><div class="pa-body"><div class="pa-t">Mon profil ayurvédique</div><div class="pa-s" id="pfDoshaDetail">Vata dominant</div></div><span class="pa-arr">›</span></div>
 <div class="pa" onclick="go('formationHome')"><div class="pa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple-m)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V4.5a1 1 0 0 1 1-1h13a1 1 0 0 1 1 1V21l-4-2-4 2-4-2-3.5 2Z"/></svg></div><div class="pa-body"><div class="pa-t">Ma formation</div><div class="pa-s">Ayurveda & Périménopause</div></div><span class="pa-arr">›</span></div>
@@ -1613,7 +1601,7 @@ body.rp-open.rp-fullscreen .bnav{display:none !important;}
 <div class="ob-title dt-title" style="text-align:left;font-size:22px;margin-top:8px;">Modifier mes <em>informations</em></div>
 <div class="f-row-app"><label>Prénom</label><input type="text" id="eiName" class="ob-input dt-input"></div>
 <div class="f-row-app"><label>Nom de famille</label><input type="text" id="eiLastName" class="ob-input dt-input"></div>
-<div class="f-row-app"><label>Adresse e-mail</label><input type="email" id="eiEmail" class="ob-input dt-input" placeholder="ton@email.com"></div>
+<div class="f-row-app"><label>Adresse e-mail confirmée</label><input type="email" id="eiEmail" readonly class="ob-input dt-input" placeholder="ton@email.com"><button type="button" onclick="accountUI.open('settings')">Modifier mon adresse ou mon mot de passe</button></div>
 <div class="f-row-app"><label>Poids (kg)</label><input type="number" id="eiWeight" class="ob-input dt-input"></div>
 <div class="f-row-app"><label>Taille (cm)</label><input type="number" id="eiHeight" class="ob-input dt-input"></div>
 <div class="f-row-app"><label for="eiSexe">Ton sexe</label><select id="eiSexe" class="ob-input dt-input"><option value="femme">Femme</option><option value="homme">Homme</option></select></div>
@@ -1906,7 +1894,7 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
 <p style="margin-bottom:14px;"><strong>3. Gratuité.</strong> La création de compte et l’accès standard sont gratuits. Les abonnements Équilibre et Immersion sont gérés sur le site Holistica ; aucun paiement n’est effectué dans cette application.</p>
 <p style="margin-bottom:14px;"><strong>4. Propriété intellectuelle.</strong> Les contenus (textes, vidéos, recettes, visuels) sont la propriété de Holistica Club et ne peuvent être reproduits sans autorisation.</p>
 <p style="margin-bottom:14px;"><strong>5. Responsabilité.</strong> Les conseils proposés sont d'ordre général. Consulte un professionnel de santé avant tout changement important d'alimentation ou d'activité physique, notamment en cas de grossesse ou de condition médicale particulière.</p>
-<p style="margin-bottom:14px;"><strong>6. Résiliation.</strong> Tu peux supprimer ton compte à tout moment depuis l'onglet Profil. Holistica Club se réserve le droit de suspendre un compte en cas d'usage abusif.</p>
+<p style="margin-bottom:14px;"><strong>6. Résiliation.</strong> Pour arrêter le renouvellement, ouvre Compte et abonnement sur le site. La suppression du compte est une démarche distincte, disponible après la fin de l’abonnement ou auprès du support. Holistica Club se réserve le droit de suspendre un compte en cas d'usage abusif.</p>
 <p style="margin-bottom:14px;"><strong>7. Contact.</strong> Pour toute question, écris-nous à info@maryneares.fr.</p>
 </div>
 </div>
@@ -2114,7 +2102,139 @@ Ton <b>signe solaire</b> (le signe où se trouvait le Soleil à ta naissance) re
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.102.0/dist/umd/supabase.min.js"></script>
+<script>
+/* Shared by the website and the Capacitor member application. No server secrets. */
+window.HolisticaAccount = (() => {
+  const policy = p => p.length >= 12 && p.length <= 128 && /[a-z]/.test(p) && /[A-Z]/.test(p) && /[0-9]/.test(p) && /[^A-Za-z0-9]/.test(p);
+  const passwordHelp = '12 à 128 caractères, avec une minuscule, une majuscule, un chiffre et un symbole.';
+  const email = value => value.trim().toLowerCase();
+  function mount({ client, redirectTo, onUserChanged = () => {}, onPasswordChanged = () => {} }) {
+    const dialog = document.createElement('dialog');
+    dialog.className = 'hc-account-dialog';
+    dialog.setAttribute('aria-labelledby', 'hcAccountTitle');
+    dialog.innerHTML = `<form method="dialog" class="hc-account-close"><button aria-label="Fermer">×</button></form><div id="hcAccountBody"></div>`;
+    document.body.append(dialog);
+    const style = document.createElement('style');
+    style.textContent = `.hc-account-dialog{box-sizing:border-box;width:min(94vw,470px);max-height:90dvh;overflow:auto;border:0;border-radius:24px;padding:28px;color:#352847;background:#fff;font:15px/1.6 system-ui,sans-serif;box-shadow:0 24px 100px #241e3844}.hc-account-dialog::backdrop{background:#241e3899}.hc-account-dialog *{box-sizing:border-box}.hc-account-dialog h2{font:700 25px/1.2 system-ui;margin:8px 0 16px;color:#5b3e8e}.hc-account-dialog label{display:block;margin:14px 0 5px;font-weight:600}.hc-account-dialog input{display:block;width:100%;border:1px solid #cfc4dd;border-radius:12px;padding:13px;font:inherit;background:#fff;color:#352847}.hc-account-dialog button{font:inherit;cursor:pointer}.hc-account-dialog button:disabled{opacity:.55;cursor:wait}.hc-account-primary{width:100%;border:0;border-radius:12px;background:#5b3e8e;color:#fff;padding:14px;margin-top:20px;font-weight:700!important}.hc-account-link{background:none;border:0;color:#5b3e8e;text-decoration:underline;padding:8px 0;display:block}.hc-account-dialog small{display:block;font-size:13px;margin-top:8px}.hc-account-close{display:flex;justify-content:flex-end}.hc-account-close button{border:0;background:#f4f0fb;border-radius:50%;width:36px;height:36px;font-size:24px}.hc-account-status{white-space:pre-line;padding:12px;background:#f4f0fb;border-radius:10px;margin-top:14px}.hc-account-status:empty{display:none}.hc-account-dialog a{color:#5b3e8e}`;
+    document.head.append(style);
+    const body = dialog.querySelector('#hcAccountBody');
+    let mode = '', busy = false, verifiedUser = null, recovery = false;
+    const cooldown = new Map();
+    const field = (id, label, type, autocomplete) => `<label for="hc-${id}">${label}</label><input id="hc-${id}" name="${id}" type="${type}" autocomplete="${autocomplete}" required ${type === 'email' ? 'autocapitalize="none" spellcheck="false" maxlength="254"' : 'minlength="12" maxlength="128"'}>`;
+    const message = text => { const el = body.querySelector('[role=status]'); if(el) el.textContent = text; };
+    const errorText = error => {
+      if(error?.status === 429 || /rate.limit|too many|security purposes/i.test(error?.message || '')) return 'Trop de demandes. Attends quelques minutes avant de réessayer.';
+      if(error?.code === 'email_not_confirmed') return 'Confirme ton adresse e-mail avant de te connecter. Tu peux renvoyer le message de confirmation.';
+      if(error?.code === 'weak_password' || error?.code === 'same_password') return 'Choisis un autre mot de passe. '+passwordHelp;
+      if(error?.code === 'user_already_exists' || error?.code === 'email_exists') return 'Cette adresse ne peut pas être utilisée. Connecte-toi ou utilise « Mot de passe oublié ».';
+      if(error?.code === 'reauthentication_needed') return 'Reconnecte-toi puis recommence cette modification.';
+      return 'La demande n’a pas abouti. Vérifie ta connexion et réessaie. Si besoin : info@maryneares.fr.';
+    };
+    async function sync() {
+      const { data: auth, error } = await client.auth.getUser();
+      if(error || !auth.user?.email_confirmed_at) return;
+      verifiedUser = auth.user;
+      onUserChanged(auth.user);
+      const result = await client.functions.invoke('sync-account-email', { body: {} });
+      if(result.error || result.data?.status === 'pending') return 'Ton adresse est confirmée. La mise à jour de la facturation est en attente et sera réessayée automatiquement. Ton abonnement est conservé.';
+      return 'Adresse de connexion et fiche client à jour. Ton abonnement est conservé.';
+    }
+    async function open(next, preset = '') {
+      if(busy) return;
+      mode = next;
+      verifiedUser = null;
+      const headings = { signup:'Créer mon compte', forgot:'Mot de passe oublié', reset:'Nouveau mot de passe', settings:'Mon adresse e-mail', help:'Une erreur dans ton adresse ?' };
+      let content = '';
+      if(next === 'signup') content = `<p>Le même compte pour le site et l’application.</p>${field('email','Adresse e-mail','email','email')}${field('email2','Confirme ton adresse e-mail','email','email')}${field('password','Mot de passe','password','new-password')}<small>${passwordHelp}</small>${field('password2','Confirme ton mot de passe','password','new-password')}`;
+      if(next === 'forgot') content = `<p>Nous t’enverrons un lien pour choisir un nouveau mot de passe.</p>${field('email','Adresse e-mail','email','email')}`;
+      if(next === 'reset') content = `${field('password','Nouveau mot de passe','password','new-password')}<small>${passwordHelp}</small>${field('password2','Confirme ton mot de passe','password','new-password')}`;
+      if(next === 'settings') content = `<p id="hc-current-email">Vérification de ton compte…</p>${field('email','Nouvelle adresse e-mail','email','email')}${field('email2','Confirme la nouvelle adresse','email','email')}<p>Confirme les liens reçus à l’ancienne et à la nouvelle adresse. L’adresse de facturation sera mise à jour après validation, sans résilier ni recréer ton abonnement.</p>`;
+      if(next === 'help') content = `<p><b>Tu peux encore te connecter :</b> ouvre « Mon adresse e-mail » pour la corriger et conserver ton compte et ton abonnement.</p><p><b>Tu n’as pas encore confirmé ton compte et tu n’as rien payé :</b> recommence l’inscription avec la bonne adresse.</p><p><b>Tu as déjà payé ou tu n’as plus accès à l’ancienne boîte mail :</b> contacte <a href="mailto:info@maryneares.fr?subject=Correction%20de%20mon%20adresse%20Holistica">info@maryneares.fr</a> pour vérifier ton achat et corriger le rattachement. Ne reprends pas d’abonnement. Ne transmets jamais ton mot de passe ni ton numéro de carte.</p>`;
+      const labels = {signup:'Créer mon compte',forgot:'Envoyer le lien',reset:'Enregistrer mon mot de passe',settings:'Confirmer le changement'};
+      body.innerHTML = `<h2 id="hcAccountTitle">${headings[next]}</h2><form id="hcAccountForm">${content}${labels[next] ? `<button class="hc-account-primary" type="submit">${labels[next]}</button>` : ''}</form><p class="hc-account-status" role="status" aria-live="polite"></p>${next !== 'help' ? '<button class="hc-account-link" type="button" data-action="help">Une erreur dans mon adresse e-mail</button>' : ''}${next === 'forgot' || next === 'signup' ? '<button class="hc-account-link" type="button" data-action="resend">Renvoyer la confirmation du compte</button>' : ''}${next === 'settings' ? '<button class="hc-account-link" type="button" data-action="forgot">Réinitialiser mon mot de passe</button><button class="hc-account-link" type="button" data-action="sync">Vérifier la mise à jour de ma fiche</button>' : ''}`;
+      const input = body.querySelector('#hc-email');
+      if(input) input.value = preset;
+      if(!dialog.open) dialog.showModal();
+      if(next === 'settings') {
+        try {
+          const {data,error} = await client.auth.getUser();
+          if(mode !== next) return;
+          if(error || !data.user) { message('Reconnecte-toi pour modifier ton adresse.'); body.querySelector('[type=submit]').disabled = true; return; }
+          verifiedUser = data.user;
+          body.querySelector('#hc-current-email').textContent = 'Adresse actuelle : '+data.user.email+(data.user.new_email ? '\nEn attente de confirmation : '+data.user.new_email : '');
+        } catch(e) { message(errorText(e)); }
+      }
+    }
+    async function submit(action) {
+      if(busy) return;
+      const form = body.querySelector('#hcAccountForm');
+      const input = body.querySelector('#hc-email');
+      const address = input ? email(input.value) : '';
+      if(action !== 'sync' && action !== 'resend' && !form.reportValidity()) return;
+      if(action === 'resend' && (!input || !input.reportValidity())) return;
+      if(['signup','settings'].includes(action) && address !== email(body.querySelector('#hc-email2').value)) { message('Les deux adresses e-mail doivent être identiques.'); return; }
+      const password = body.querySelector('#hc-password')?.value;
+      if(['signup','reset'].includes(action)) {
+        if(!policy(password)) { message(passwordHelp); return; }
+        if(password !== body.querySelector('#hc-password2').value) { message('Les deux mots de passe doivent être identiques.'); return; }
+      }
+      const key = action+':'+address;
+      if(Date.now() < (cooldown.get(key)||0)) { message('Attends une minute avant une nouvelle demande.'); return; }
+      busy = true;
+      body.querySelectorAll('button').forEach(b=>b.disabled=true);
+      message('Demande en cours…');
+      try {
+        let result;
+        if(action === 'signup') result = await client.auth.signUp({email:address,password,options:{emailRedirectTo:redirectTo}});
+        else if(action === 'forgot') result = await client.auth.resetPasswordForEmail(address,{redirectTo});
+        else if(action === 'resend') result = await client.auth.resend({type:'signup',email:address,options:{emailRedirectTo:redirectTo}});
+        else if(action === 'settings') {
+          const {data,error} = await client.auth.getUser();
+          if(error || !data.user) throw error || new Error('Session missing');
+          if(address === email(data.user.email)) { message('Cette adresse est déjà celle de ton compte.'); return; }
+          result = await client.auth.updateUser({email:address},{emailRedirectTo:redirectTo});
+        } else if(action === 'reset') {
+          const {data,error} = await client.auth.getUser();
+          if(!recovery || error || !data.user) { message('Ouvre un lien de réinitialisation récent envoyé par e-mail.'); return; }
+          result = await client.auth.updateUser({password});
+        } else if(action === 'sync') { message(await sync() || 'Reconnecte-toi pour vérifier ta fiche.'); return; }
+        if(result.error) throw result.error;
+        cooldown.set(key,Date.now()+60000);
+        form.querySelectorAll('input[type=password]').forEach(i=>i.value='');
+        if(action === 'signup') message(result.data?.session ? 'Ton compte est créé. Tu peux accéder à ton espace.' : 'Si une confirmation est nécessaire, un e-mail a été demandé. Vérifie ta boîte mail et les indésirables. Si tu as déjà un compte, utilise la connexion ou la réinitialisation.');
+        if(action === 'forgot') message('Si un compte correspond à cette adresse, un e-mail de réinitialisation a été demandé. Vérifie aussi les indésirables.');
+        if(action === 'resend') message('Si ce compte attend une confirmation, un nouvel e-mail a été demandé. Utilise le lien le plus récent.');
+        if(action === 'settings') message('Demande enregistrée. Confirme les liens reçus par e-mail. Ton adresse actuelle reste utilisable jusqu’à la validation.');
+        if(action === 'reset') {
+          recovery = false;
+          const signedOut = await client.auth.signOut({scope:'global'});
+          message(signedOut.error ? 'Mot de passe enregistré. La fermeture des autres sessions n’a pas pu être confirmée.' : 'Mot de passe enregistré. Reconnecte-toi avec ton nouveau mot de passe.');
+          onPasswordChanged();
+        }
+      } catch(error) { message(errorText(error)); }
+      finally { busy=false; body.querySelectorAll('button').forEach(b=>b.disabled=false); }
+    }
+    body.addEventListener('submit',e=>{e.preventDefault();void submit(mode);});
+    body.addEventListener('click',e=>{
+      const action=e.target.closest('[data-action]')?.dataset.action;
+      if(!action) return;
+      if(action==='help') void open('help');
+      else if(action==='forgot') void open('forgot',verifiedUser?.email || '');
+      else void submit(action);
+    });
+    dialog.addEventListener('cancel',e=>{if(busy)e.preventDefault();});
+    dialog.querySelector('.hc-account-close').addEventListener('submit',e=>{if(busy)e.preventDefault();});
+    client.auth.onAuthStateChange((event,session)=>{
+      if(event==='PASSWORD_RECOVERY') { recovery=true; setTimeout(()=>void open('reset'),0); }
+      if(session && ['SIGNED_IN','USER_UPDATED'].includes(event)) setTimeout(()=>{void sync().catch(()=>{});},0);
+    });
+    return {open,sync,setRecovery:()=>{recovery=true;void open('reset');}};
+  }
+  return {mount,policy,passwordHelp};
+})();
+
+</script>
 <script>
 /* ═══════ SUPABASE ═══════ */
 const SUPABASE_URL='https://lsoddhgahdfcpmuydmbt.supabase.co';
@@ -2149,6 +2269,8 @@ const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{
  storageKey:'holistica-auth'
  }
 });
+
+const accountUI=HolisticaAccount.mount({client:sb,redirectTo:'https://app.holisticaclub.com/',onUserChanged:user=>{if(typeof currentUser!=='undefined'&&currentUser?.id===user.id){currentUser=user;userProfile.email=user.email||'';}},onPasswordChanged:()=>{authRecovery=false;go('signin');}});
 
 // Demande à iOS/Safari de considérer le stockage de l'app comme "protégé", pour réduire le
 // risque qu'il efface la session entre 2 ouvertures (limite connue des apps ajoutées à l'écran
@@ -2351,7 +2473,7 @@ function renderFreeDemo(route){
  else if(route==='profil'){
  content=demoCard('Présentation de la démonstration',`<button onclick="setDemoAudience('femme')" aria-pressed="${demoAudience==='femme'}">Femme</button> <button onclick="setDemoAudience('homme')" aria-pressed="${demoAudience==='homme'}">Homme</button><p>Les données de démonstration restent fictives et fixes.</p>`)+demoCard('Mon compte Holistica','Mode gratuit : découverte avec des données fictives fixes. Les plans Équilibre et Immersion utilisent ton vrai profil.')+`<div style="padding:0 20px"><button class="journey-replay-btn" onclick="refreshMembership()">Actualiser mon accès</button></div>`;
  for(const [id,label] of [['editInfo','Mes informations de démonstration'],['doshaProfile','Mon profil ayurvédique'],['wellnessHistory','Historique bien-être'],['progressionScreen','Ma progression'],['badgesScreen','Mes badges'],['cycleSettings','Mon cycle'],['astroScreen','Mon astrologie']].filter(([id])=>id!=='cycleSettings'||!isMaleProfile()))content+=`<button class="demo-profile-row" onclick="go('${id}')">${label}<span>›</span></button>`;
- content+=`<div class="demo-footer"><button class="profile-legal-link" onclick="openSources('profil')">Confidentialité & ressources scientifiques</button><button class="journey-replay-btn" onclick="handleSignOut()">Déconnexion</button><button class="profile-legal-link" onclick="confirmDeleteAccount()">Supprimer mon compte</button></div>`;
+ content+=`<div class="demo-footer"><a href="https://www.holisticaclub.com/mon-compte" target="_blank" rel="noopener">Compte et abonnement · aide et factures</a><button class="journey-replay-btn" onclick="accountUI.open('settings')">Mon adresse e-mail et mon mot de passe</button><button class="profile-legal-link" onclick="openSources('profil')">Confidentialité & ressources scientifiques</button><button class="journey-replay-btn" onclick="handleSignOut()">Déconnexion</button><button class="profile-legal-link" onclick="confirmDeleteAccount()">Supprimer mon compte</button></div>`;
  }else if(route==='cycleSettings')content=demoCard('Cycle de démonstration',`Jour ${d.cycle.day}/${d.cycle.length} · ${d.cycle.phase}`);
  else if(route==='editInfo')content=demoCard('Profil fictif',`${d.displayName} · ${d.profile.age} ans · ${d.profile.weight} kg · ${d.profile.height} cm`);
  else if(route==='astroScreen')content=demoCard('Astrologie',d.astro);
@@ -2414,6 +2536,7 @@ function syncAccountUI(){
    :plan==='equilibre'?'Ton plan Équilibre est actif. Pour passer à Immersion, modifier ou résilier ton abonnement, rends-toi dans ton espace membre sur le site.'
    :'Ton compte standard est gratuit. Si tu as souscrit un plan Équilibre ou Immersion sur Holistica, utilise la même adresse e-mail puis actualise ton accès ici.';
  }}
+ if(userProfile.subscriptionEndsAt){const info=document.getElementById('accountInfoText');if(info)info.textContent+=' Renouvellement arrêté : accès jusqu’au '+new Date(userProfile.subscriptionEndsAt).toLocaleDateString('fr-FR')+'.';}
  {const rb=document.getElementById('refreshMembershipBtn');if(rb)rb.style.display=(tx||plan!=='standard')?'none':'';}
  for(const id of ['accountLabel','pfSubscription']){const el=document.getElementById(id);if(el)el.textContent=label;}
  for(const id of ['profileChallenge']){
@@ -2554,29 +2677,8 @@ async function handleSignIn(){
  finally{btn.disabled=false;btn.textContent='Se connecter';}
 }
 
-async function confirmNewPassword(){
- const p1=document.getElementById('rpPassword').value;
- const p2=document.getElementById('rpPassword2').value;
- if(!p1||p1.length<6){toast('Le mot de passe doit faire au moins 6 caractères');return;}
- if(p1!==p2){toast('Les deux mots de passe ne correspondent pas');return;}
- const btn=document.getElementById('rpBtn');btn.textContent='Validation...';
- const {error}=await sb.auth.updateUser({password:p1});
- btn.textContent='Valider le nouveau mot de passe';
- if(error){toast('Erreur : '+error.message);return;}
- toast('Mot de passe mis à jour');
- authRecovery=false;
- // La session de récupération est déjà active : on entre directement dans l'app
- currentUser=(await sb.auth.getUser()).data.user;
- loadProfileAndEnter();
-}
-
-async function handleForgotPassword(){
- const email=document.getElementById('siEmail').value.trim().toLowerCase();
- if(!email){toast('Entre d\'abord ton email ci-dessus, puis reclique');return;}
- const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+window.location.pathname});
- if(error){toast('Erreur : '+error.message);return;}
- toast('Email de réinitialisation envoyé à '+email);
-}
+async function confirmNewPassword(){accountUI.setRecovery();}
+async function handleForgotPassword(){await accountUI.open('forgot',document.getElementById('siEmail').value);}
 
 async function claimPendingSubscription(){
  try{
@@ -2595,28 +2697,7 @@ async function claimPendingSubscription(){
  }
 }
 
-async function handleSignUp(){
- const input=document.getElementById('suEmail');
- const email=input.value.trim().toLowerCase();
- const password=document.getElementById('suPassword').value;
- if(!email||!input.checkValidity()){toast('Entre une adresse e-mail valide');return;}
- if(password.length<6){toast('Le mot de passe doit faire au moins 6 caractères');return;}
- const btn=document.getElementById('suSignupBtn');if(btn.disabled)return;
- btn.disabled=true;btn.textContent='Création…';
- try{
-  const {data,error}=await sb.auth.signUp({email,password,options:{emailRedirectTo:AUTH_EMAIL_REDIRECT}});
-  if(error)throw error;
-  trackEvent('inscription');
-  if(!data?.session){
-   go('signin');document.getElementById('siEmail').value=email;
-   confirmationCooldown.set(email,Date.now()+60000);
-   showConfirmationNotice('Vérifie ta boîte e-mail et les indésirables pour confirmer ton adresse. Si tu as déjà un compte, connecte-toi ou utilise « Mot de passe oublié ».');
-   return;
-  }
-  toast('Compte créé. Bienvenue dans Holistica !');
- }catch(error){toast(authEmailMessage(error));}
- finally{btn.disabled=false;btn.textContent='Créer mon compte';}
-}
+async function handleSignUp(){await accountUI.open('signup',document.getElementById('suEmail').value);}
 
 async function handleSignOut(){
  await flushProfileSave();
@@ -2626,7 +2707,7 @@ async function handleSignOut(){
 }
 
 function confirmDeleteAccount(){
- const ok=confirm('Supprimer définitivement ton compte et toutes tes données (profil, historique, progression) ? Cette action est irréversible.\n\nBesoin d\'aide avant de supprimer ? Contacte-nous : info@maryneares.fr');
+ const ok=confirm('Supprimer définitivement ton compte et tes données personnelles dans Holistica ? Cette action est irréversible. La suppression ne résilie pas ton abonnement. Un contrôle Stripe empêchera la suppression tant qu’un abonnement est en cours.\n\nPour arrêter le renouvellement : ouvre Compte et abonnement. Besoin d’aide : info@maryneares.fr');
  if(ok)deleteAccount();
 }
 
@@ -2648,7 +2729,7 @@ async function deleteAccount(){
  }catch(e){toast('Erreur : '+e.message);return;}
  discardProfilePersistence(currentUser.id);
  await sb.auth.signOut();
- toast('✅ Ton compte et toutes tes données personnelles ont été définitivement supprimés');
+ toast('✅ La suppression de ton compte Holistica est confirmée');
  setTimeout(()=>location.reload(),1200);
 }
 
@@ -2823,7 +2904,7 @@ async function loadProfileAndEnter(){
  routineState=profile.routine_state||{};
  document.getElementById('freeDemoScreen')?.classList.remove('active');
  if(profile){
- userProfile={name:profile.name||'',lastName:profile.last_name||'',email:profile.email||'',goal:profile.goal||'bien-être',sexe:profile.sexe||'femme',age:profile.age||30,weight:profile.weight||62,height:profile.height||165,activity:profile.activity||'modérée',hasPeriod:profile.has_period,menopause:profile.menopause,perimenopause:profile.perimenopause||false,contraception:profile.contraception||false,dosha:profile.dosha||'vata',lastPeriodStart:profile.last_period_start||'',doshaV:profile.dosha_v??33,doshaP:profile.dosha_p??33,doshaK:profile.dosha_k??34,cycleLength:profile.cycle_length||28,birthDate:profile.birth_date||'',birthTime:profile.birth_time||'',birthPlace:profile.birth_place||'',transformationExpiresAt:profile.transformation_expires_at||null,subscriptionStatus:profile.subscription_status||'inactive',subscriptionPlan:profile.subscription_plan||null,dietType:profile.diet_type||'flexitarien',allergies:profile.allergies||'',referralCode:profile.referral_code||'',referredBy:profile.referred_by||null,hasSeenWalkthrough:profile.has_seen_walkthrough||false,journeyStartDate:profile.subscription_started_at||profile.created_at||new Date().toISOString(),lastMonthlyEvalAt:profile.last_monthly_eval_at||null,buddyAvailable:profile.buddy_available||false};
+ userProfile={name:profile.name||'',lastName:profile.last_name||'',email:currentUser.email||'',goal:profile.goal||'bien-être',sexe:profile.sexe||'femme',age:profile.age||30,weight:profile.weight||62,height:profile.height||165,activity:profile.activity||'modérée',hasPeriod:profile.has_period,menopause:profile.menopause,perimenopause:profile.perimenopause||false,contraception:profile.contraception||false,dosha:profile.dosha||'vata',lastPeriodStart:profile.last_period_start||'',doshaV:profile.dosha_v??33,doshaP:profile.dosha_p??33,doshaK:profile.dosha_k??34,cycleLength:profile.cycle_length||28,birthDate:profile.birth_date||'',birthTime:profile.birth_time||'',birthPlace:profile.birth_place||'',transformationExpiresAt:profile.transformation_expires_at||null,subscriptionEndsAt:profile.subscription_cancel_at||(profile.subscription_cancel_at_period_end?profile.subscription_current_period_end:null),subscriptionStatus:profile.subscription_status||'inactive',subscriptionPlan:profile.subscription_plan||null,dietType:profile.diet_type||'flexitarien',allergies:profile.allergies||'',referralCode:profile.referral_code||'',referredBy:profile.referred_by||null,hasSeenWalkthrough:profile.has_seen_walkthrough||false,journeyStartDate:profile.subscription_started_at||profile.created_at||new Date().toISOString(),lastMonthlyEvalAt:profile.last_monthly_eval_at||null,buddyAvailable:profile.buddy_available||false};
  if(isDevAccount()){
  // Accès complet en mémoire uniquement pour tester (n'écrase jamais la vraie valeur en base)
  userProfile.subscriptionStatus='active';
@@ -3111,34 +3192,16 @@ let authReady=false,authRestoring=false,authRecovery=false,authRestoreFlight=nul
 let pendingAuthEvent=null;
 let alLastArcText=null;
 function buildAlArc(text){
- text=text||'Chargement de ton espace…';
  const el=document.getElementById('alArc');
  const longEl=document.getElementById('alLongMsg');
- if(!el||alLastArcText===text)return;
- alLastArcText=text;
- if(text.length>34){
-  el.innerHTML='';el.style.display='none';
-  if(longEl){longEl.textContent=text;longEl.style.display='block';}
-  return;
+ if(el)el.textContent='CHARGEMENT';
+ if(longEl){
+  const detail=text && text!=='Chargement de ton espace…' ? text : '';
+  longEl.textContent=detail;
+  longEl.style.display=detail?'block':'none';
  }
- if(longEl)longEl.style.display='none';
- el.style.display='block';
- const n=text.length;
- const containerW=Math.min(el.clientWidth||340,340);
- const fontSize=n>26?12:(n>18?14:17);
- const totalArc=Math.min(150,70+n*3.2); // degres, s'elargit un peu avec la longueur
- const R=Math.max(110,Math.min(165,containerW*0.46));
- const start=-totalArc/2;
- const step=n>1?totalArc/(n-1):0;
- el.innerHTML=text.split('').map((ch,i)=>{
-  const angle=start+step*i;
-  const rad=angle*Math.PI/180;
-  const x=R*Math.sin(rad);
-  const y=R*(1-Math.cos(rad));
-  const delay=(i*0.03).toFixed(3);
-  return `<span class="al-letter" style="font-size:${fontSize}px;transform:translate(calc(-50% + ${x.toFixed(2)}px), calc(-50% + ${y.toFixed(2)}px)) rotate(${angle.toFixed(2)}deg);animation-delay:${delay}s;">${ch===' '?'&nbsp;':esc(ch)}</span>`;
- }).join('');
 }
+
 function esc(s){return (s||'').toString().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',()=>buildAlArc());}else{buildAlArc();}
 
@@ -3160,7 +3223,7 @@ async function applyMemberSession(event,session){
  }
  if(!session){if(!currentUser)go('signin');return;}
  if(event==='PASSWORD_RECOVERY'){
-  authRecovery=true;profileLoaded=true;currentUser=session.user;go('resetPassword');return;
+  authRecovery=true;profileLoaded=true;currentUser=session.user;go('signin');accountUI.setRecovery();return;
  }
  if(currentUser&&currentUser.id!==session.user.id){
   profileLoaded=false;personalDataMode='unknown';resetProfilePersistence();
@@ -3179,6 +3242,7 @@ async function applyMemberSession(event,session){
 // detectSessionInUrl=false : les retours OAuth et récupération restent pris en charge.
 async function consumeAuthCallback(){
  const url=new URL(location.href),hash=new URLSearchParams(url.hash.slice(1));
+ if(hash.get('error')||url.searchParams.get('error')){history.replaceState(history.state,'',url.pathname);go('signin');showConfirmationNotice('Ce lien est expiré ou déjà utilisé. Demande un nouveau lien de confirmation ou de réinitialisation.');return null;}
  const access=hash.get('access_token'),refresh=hash.get('refresh_token');
  const code=url.searchParams.get('code');
  if(!access&&!refresh&&!code)return null;
@@ -6587,7 +6651,7 @@ function saveEditInfo(){
  if(isFreeDemo())return;
  userProfile.name=document.getElementById('eiName').value.trim();
  userProfile.lastName=document.getElementById('eiLastName').value.trim();
- userProfile.email=document.getElementById('eiEmail').value.trim();
+ userProfile.email=currentUser?.email||userProfile.email;
  userProfile.weight=parseFloat(document.getElementById('eiWeight').value)||userProfile.weight;
  userProfile.height=parseFloat(document.getElementById('eiHeight').value)||userProfile.height;
  userProfile.age=parseInt(document.getElementById('eiAge').value)||userProfile.age;
@@ -8279,7 +8343,7 @@ function frMessage(msg){
   [/invalid login credentials/i,'E-mail ou mot de passe incorrect.'],
   [/email not confirmed/i,'Ton adresse e-mail n\'est pas encore confirmée. Vérifie ta boîte mail (et tes spams).'],
   [/user already registered|already been registered/i,'Un compte existe déjà avec cette adresse e-mail. Connecte-toi.'],
-  [/password should be at least|password.*(short|characters)/i,'Le mot de passe doit contenir au moins 6 caractères.'],
+  [/password should be at least|password.*(short|characters)/i,'Le mot de passe doit contenir au moins 12 caractères.'],
   [/same password|different from the old/i,'Choisis un mot de passe différent de l\'ancien.'],
   [/invalid format|valid email|unable to validate email/i,'Cette adresse e-mail n\'est pas valide.'],
   [/rate limit|too many|security purposes/i,'Trop de tentatives. Patiente quelques minutes puis réessaie.'],
@@ -8366,7 +8430,7 @@ function wtFinish(){
  document.getElementById('wtDots').style.display='none';
  const btn=document.getElementById('wtNextBtn');
  btn.textContent="Créer mon compte";
- btn.onclick=function(){document.getElementById('walkthroughOverlay').style.display='none';go('signup');};
+ btn.onclick=function(){document.getElementById('walkthroughOverlay').style.display='none';accountUI.open('signup');};
  const skipBtn=document.querySelector('#walkthroughOverlay > button[onclick="wtSkip()"]');
  if(skipBtn){skipBtn.textContent='← Retour';skipBtn.onclick=function(){document.getElementById('walkthroughOverlay').style.display='none';go('signin');};}
  return;

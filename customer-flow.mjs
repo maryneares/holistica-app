@@ -53,6 +53,9 @@ export async function subscriptionState(stripe,subId) {
   return {sub,plan,product,customer,email:emailOf(customer.deleted ? '' : customer.email),active,payload:{
     subscription_plan:plan,subscription_status:sub.status,stripe_customer_id:idOf(sub.customer),stripe_subscription_id:sub.id,
     subscription_started_at:new Date((sub.start_date||sub.created)*1000).toISOString(),
+    subscription_current_period_end:(sub.current_period_end||item.current_period_end)?new Date((sub.current_period_end||item.current_period_end)*1000).toISOString():null,
+    subscription_cancel_at:sub.cancel_at?new Date(sub.cancel_at*1000).toISOString():null,
+    subscription_cancel_at_period_end:Boolean(sub.cancel_at_period_end),
     trial_end:sub.trial_end ? new Date(sub.trial_end*1000).toISOString() : null,
     mrr_amount:active && months ? Math.round((price.unit_amount||0)*(item.quantity||1)/months)/100 : 0
   }};
@@ -142,7 +145,7 @@ export function makeDeleteHandler({db,deleteUser,mailer}) {
   };
 }
 const escapeHtml = value => String(value || '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-export const MEMBER_SITE_URL='https://www.holisticaclub.com/accueil';
+export const MEMBER_SITE_URL='https://www.holisticaclub.com/mon-compte';
 export const EMAIL_FOOTER='<p data-holistica-email-footer="v1" style="font-size:12px;line-height:1.6;color:#625878">Pour toute question, contactez-nous à : <a href="mailto:info@maryneares.fr">info@maryneares.fr</a><br>Merci de ne pas répondre directement à cet email.</p>';
 export const ACCOUNT_EMAIL_NOTICE=`<p>Pour gérer ton compte, modifier ou résilier ton abonnement, ou supprimer ton compte, connecte-toi à ton espace membre sur <a href="${MEMBER_SITE_URL}">le site Holistica</a>. Ces démarches se font uniquement sur le site internet, et non dans l’application.</p>`;
 export function withEmailFooter(html){
@@ -182,9 +185,9 @@ export async function sendOnce({db,fetcher,apiKey,from},key,message) {
     const result=await fetcher('https://api.resend.com/emails',{method:'POST',headers:{Authorization:`Bearer ${apiKey}`,'Content-Type':'application/json','Idempotency-Key':key},body:JSON.stringify(delivery),signal:AbortSignal.timeout(8000)});
     if(!result.ok)throw new Error(`Resend refused delivery (${result.status})`);
     const receipt=await result.json();if(!receipt.id)throw new Error('Resend receipt missing');
-    checked(await db.from('holistica_transactional_emails').update({sent_at:new Date().toISOString(),resend_id:receipt.id,lease_until:null,payload:{}}).eq('delivery_key',key));
+    checked(await db.from('holistica_transactional_emails').update({sent_at:new Date().toISOString(),resend_id:receipt.id,lease_until:null,last_error:null,payload:{}}).eq('delivery_key',key));
   }catch(e){
-    checked(await db.from('holistica_transactional_emails').update({lease_until:null}).eq('delivery_key',key).is('sent_at',null));
+    checked(await db.from('holistica_transactional_emails').update({lease_until:null,last_error:String(e.message).slice(0,160),next_attempt_at:new Date(Date.now()+300000).toISOString()}).eq('delivery_key',key).is('sent_at',null));
     throw e;
   }
 }

@@ -6316,7 +6316,7 @@ async function uploadFormationFile(evt){
  toast('Envoi du fichier...');
  const {error:upErr}=await sb.storage.from('formation-user-files').upload(path,file);
  if(upErr){toast('Erreur pendant l\'envoi');return;}
- const {data:urlData}=await sb.storage.from('formation-user-files').createSignedUrl(path,60*60*24*365);
+ const {data:urlData}=await sb.storage.from('formation-user-files').createSignedUrl(path,3600);
  await appTable('formation_user_files').insert({user_id:currentUser.id,formation_id:FORMATION_ID,file_name:file.name,file_url:urlData?.signedUrl||'',file_size:file.size});
  toast('Fichier ajouté');
  const {data:userFiles}=await appTable('formation_user_files').select('*').eq('user_id',currentUser.id).eq('formation_id',FORMATION_ID).order('uploaded_at',{ascending:false});
@@ -8580,12 +8580,12 @@ renderFormationHome=async function(){
  try{
   const state=await hcTrainingCall('status');
   if(!state.hasAccess){zone.innerHTML='<h2>Retrouver ma formation</h2><p>Aucun achat confirmé n’est rattaché à ce compte. Connecte-toi avec l’adresse utilisée lors du paiement.</p><button onclick="hcRefreshCourse()">Actualiser mon accès</button><p>Si tu as déjà payé, ne souscris pas à nouveau. Écris à <a href="mailto:info@maryneares.fr">info@maryneares.fr</a> avec ta référence de facture.</p><a href="https://www.holisticaclub.com/formation-perimenopause" target="_blank" rel="noopener">Découvrir la formation</a>';return;}
-  const [modules,progress,resources]=await Promise.all([
+  const [modules,progress,resources,userFiles]=await Promise.all([
    appTable('formation_modules').select('id,module_number,title,subtitle,status').eq('formation_id',FORMATION_ID).order('module_number'),
    appTable('formation_progress').select('module_id,status,last_page,quiz_score').eq('user_id',currentUser.id).eq('formation_id',FORMATION_ID),
-   hcTrainingCall('resources')]);
-  if(modules.error||progress.error)throw new Error('Le chargement de ta progression n’a pas abouti. Réessaie.');
-  fmModulesCache=modules.data||[];fmProgressCache={};(progress.data||[]).forEach(p=>fmProgressCache[p.module_id]=p);
+   hcTrainingCall('resources'),appTable('formation_user_files').select('*').eq('user_id',currentUser.id).eq('formation_id',FORMATION_ID).order('uploaded_at',{ascending:false})]);
+  if(modules.error||progress.error||userFiles.error)throw new Error('Le chargement de ta progression n’a pas abouti. Réessaie.');
+  fmFilesCache=userFiles.data||[];fmModulesCache=modules.data||[];fmProgressCache={};(progress.data||[]).forEach(p=>fmProgressCache[p.module_id]=p);
   const completed=fmModulesCache.filter(m=>fmProgressCache[m.id]?.status==='completed').length;
   document.getElementById('fmTitle').textContent='Ayurveda & Périménopause';document.getElementById('fmHello').textContent='Bonjour '+(userProfile.name||'');
   document.getElementById('fmProgressFill').style.width=(fmModulesCache.length?100*completed/fmModulesCache.length:0)+'%';document.getElementById('fmProgressLbl').textContent=completed+'/'+fmModulesCache.length+' modules terminés';
@@ -8594,7 +8594,8 @@ renderFormationHome=async function(){
   zone.innerHTML='<h2>Ma formation</h2><p>Ta progression est partagée entre téléphone et ordinateur. Aucun abonnement à l’app n’est nécessaire.</p><button class="hc-outline" onclick="hcRefreshCourse()">Actualiser mon accès</button>'+fmModulesCache.map(m=>{
    const done=fmProgressCache[m.id]?.status==='completed';const unlocked=previous||currentUser.id==='b0eefc9b-6ba9-4588-809f-c58573e62052';previous=done;
    return `<button class="hc-course-module" ${unlocked?'':'disabled'} onclick="openFormationModule('${hcEsc(m.id)}')">${done?'✓ ':''}${hcEsc(m.title)}<small>${unlocked?'Module '+m.module_number+(m.status==='draft'?' · Aperçu administrateur':''):'Termine le module précédent'}${m.subtitle?' · '+hcEsc(m.subtitle):''}</small></button>`;
-  }).join('')+(resources.resources.length?'<h2>Mes ressources</h2>'+resources.resources.map(r=>`<p><a href="${hcEsc(hcUrl(r.url))}" target="_blank" rel="noopener">${hcEsc(r.name)}</a></p>`).join(''):'');
+  }).join('')+(resources.resources.length?'<h2>Mes ressources</h2>'+resources.resources.map(r=>`<p><a href="${hcEsc(hcUrl(r.url))}" target="_blank" rel="noopener">${hcEsc(r.name)}</a></p>`).join(''):'')+'<h2>Mes fichiers</h2><p>Ajoute tes documents personnels pour les retrouver avec ton compte.</p><input type="file" id="fmFileInput" onchange="uploadFormationFile(event)"><div id="fmFiles"></div>';
+  renderFmFiles();
  }catch(e){zone.innerHTML='<p>'+hcEsc(e.message)+'</p><button onclick="renderFormationHome()">Réessayer</button>';}
 };
 window.hcRefreshCourse=async()=>{try{await hcTrainingCall('refresh');await renderFormationHome();}catch(e){toast(e.message);}};
@@ -8663,6 +8664,9 @@ sb.auth.onAuthStateChange((_event,session)=>{if(session&&hcCourseRequested)setTi
 const hcCourseBoot=setInterval(()=>{if(authReady&&!authRestoring){clearInterval(hcCourseBoot);hcOpenRequestedCourse();}},500);
 
 window.hcDoshaCourse=()=>{document.getElementById('hcReaderBody').innerHTML='<button class="hc-outline" onclick="hcRenderCoursePage()">← Revenir au module</button><h2>Découvrir mon profil ayurvédique</h2><p>Un outil de réflexion personnel, sans diagnostic médical.</p><form id="hcDoshaForm">'+HC_COURSE_DOSHA.map((q,i)=>'<fieldset><legend>'+hcEsc(q.q)+'</legend>'+['a','b','c'].map(k=>'<label><input required type="radio" name="q'+i+'" value="'+k+'">'+hcEsc(q[k])+'</label>').join('')+'</fieldset>').join('')+'<button>Voir mon résultat</button><p id="hcDoshaResult" role="status"></p></form>';document.getElementById('hcDoshaForm').onsubmit=e=>{e.preventDefault();const total={a:0,b:0,c:0};for(const v of new FormData(e.target).values())total[v]++;const top=Math.max(...Object.values(total));const labels={a:'Vata',b:'Pitta',c:'Kapha'};document.getElementById('hcDoshaResult').textContent='Tes réponses se rapprochent du profil '+Object.keys(total).filter(k=>total[k]===top).map(k=>labels[k]).join(' / ')+'. Ce résultat ne mesure pas ton état de santé et ne remplace pas un avis médical.';};document.getElementById('formationReader').scrollTop=0;};
+
+renderFmFiles=function(){const zone=document.getElementById('fmFiles');if(!zone)return;zone.innerHTML=(fmFilesCache||[]).map(f=>'<p><button class="hc-outline" onclick="hcOpenFormationFile(\''+hcEsc(f.id)+'\')">'+hcEsc(f.file_name)+'</button> <button class="hc-outline" onclick="deleteFormationFile(\''+hcEsc(f.id)+'\',\'\')">Supprimer</button></p>').join('')||'<p>Aucun fichier ajouté.</p>';};
+window.hcOpenFormationFile=async id=>{try{const file=(fmFilesCache||[]).find(f=>f.id===id);if(!file)return;const url=new URL(file.file_url);const prefix='/formation-user-files/';const i=url.pathname.indexOf(prefix);const path=decodeURIComponent(url.pathname.slice(i+prefix.length));if(i<0||!path.startsWith(currentUser.id+'/'))throw new Error('Fichier indisponible.');const result=await sb.storage.from('formation-user-files').createSignedUrl(path,3600);if(result.error)throw new Error('Le fichier ne peut pas être ouvert.');window.open(result.data.signedUrl,'_blank','noopener');}catch(e){toast(e.message);}};
 
 </script>
 </body>

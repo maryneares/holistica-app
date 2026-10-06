@@ -8655,7 +8655,10 @@ window.hcCourseFinish=async()=>{
  document.getElementById('formationReader').scrollTop=0;
 };
 let hcCourseRequested=new URLSearchParams(location.search).get('formation')===FORMATION_ID;
-function hcOpenRequestedCourse(){if(!hcCourseRequested||!authReady||authRestoring)return;if(currentUser){hcCourseRequested=false;go('formationHome');}else go('signin');}
+function hcOpenRequestedCourse(){if(!hcCourseRequested||!authReady||authRestoring)return;if(currentUser){go('formationHome');}else go('signin');}
+const hcOriginalGo=go;
+go=function(id){if(hcCourseRequested&&currentUser&&authReady&&!authRestoring&&['dashboard','onboarding','profil'].includes(id)){id='formationHome';hcCourseRequested=false;}return hcOriginalGo(id);};
+document.addEventListener('click',e=>{if(currentUser&&e.target.closest('.ni,.ni-ctr,.vd-back,.hc-course-module'))hcCourseRequested=false;},true);
 sb.auth.onAuthStateChange((_event,session)=>{if(session&&hcCourseRequested)setTimeout(hcOpenRequestedCourse,300);});
 const hcCourseBoot=setInterval(()=>{if(authReady&&!authRestoring){clearInterval(hcCourseBoot);hcOpenRequestedCourse();}},500);
 

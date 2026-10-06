@@ -2426,7 +2426,7 @@ function appTable(table){
  let mutation=false;
  function wrap(builder){return new Proxy(builder,{get(target,prop){
  if(prop==='then')return(resolve,reject)=>{
-  if(mutation&&personalDataMode!=='paid')return Promise.resolve({data:null,error:{message:'Mode démonstration : aucune sauvegarde personnelle.'}}).then(resolve,reject);
+  if(mutation&&personalDataMode!=='paid'&&!(typeof hcCourseAuthorized!=='undefined'&&hcCourseAuthorized&&hcCourseOwner===currentUser?.id&&['formation_progress','formation_user_files'].includes(table)))return Promise.resolve({data:null,error:{message:'Mode démonstration : aucune sauvegarde personnelle.'}}).then(resolve,reject);
   return target.then(resolve,reject);
  };
  const method=target[prop];
@@ -2486,6 +2486,7 @@ function renderFreeDemo(route){
  for(const id of ['ni-challenge','ni-dietPlan'])document.getElementById(id).style.display='flex';
 }
 async function checkMembershipChange(){
+ if(typeof hcCourseOnly!=='undefined'&&hcCourseOnly)return;
  if(!currentUser||!profileLoaded||membershipCheckRunning)return;
  const id=currentUser.id;membershipCheckRunning=true;
  try{
@@ -2869,6 +2870,7 @@ async function signInWithApple(){
 
 async function loadProfileAndEnter(){
  if(!currentUser)return;
+ if(typeof hcResolveCourseEntry==='function'&&await hcResolveCourseEntry())return;
  const loadingUserId=currentUser.id;
  if(profileSaveFlight)await profileSaveFlight;
  try{await claimPendingSubscription();}catch(e){profileLoaded=false;toast(e.message);return;}
@@ -3237,7 +3239,7 @@ async function applyMemberSession(event,session){
   if(currentUser?.id===session.user.id&&!profileLoaded){
    showAuthLoading('Ton espace est temporairement indisponible. Réessaie lorsque la connexion revient.',true);
   }
- }else if(event==='TOKEN_REFRESHED')checkMembershipChange();
+ }else if(event==='TOKEN_REFRESHED'){if(typeof hcCourseOnly!=='undefined'&&hcCourseOnly)void hcResolveCourseEntry();else checkMembershipChange();}
 }
 // detectSessionInUrl=false : les retours OAuth et récupération restent pris en charge.
 async function consumeAuthCallback(){
@@ -8568,7 +8570,7 @@ async function hcTrainingCall(action,extra={}){
  const result=await r.json();if(!r.ok)throw new Error(result.error||'Formation indisponible.');return result;
 }
 const hcLearningStyle=document.createElement('style');hcLearningStyle.textContent=`
-.hc-learning{padding:20px;color:#352847;font:16px/1.7 'Quicksand',Arial,sans-serif}.hc-learning h2,.hc-learning h3{font-family:'League Spartan',Arial,sans-serif;color:#765aaf}.hc-learning button,.hc-learning .hc-course-btn{border:0;border-radius:12px;background:#765aaf;color:white;padding:14px 20px;font:700 15px Arial,sans-serif;cursor:pointer;min-height:44px}.hc-learning button:disabled{opacity:.55;cursor:default}.hc-learning .hc-outline{background:#eee6f8;color:#5b3e8e}.hc-learning .hc-note{background:#f4effb;border-left:4px solid #c98fb0;padding:18px;border-radius:12px;white-space:pre-wrap}.hc-learning img{max-width:100%;height:auto;display:block;margin:auto}.hc-learning figure{margin:18px 0}.hc-learning iframe,.hc-learning video{width:100%;aspect-ratio:16/9;border:0;border-radius:14px}.hc-learning table{border-collapse:collapse;min-width:500px}.hc-learning th,.hc-learning td{padding:12px;border:1px solid #ded2ed;text-align:left}.hc-table-wrap{overflow:auto}.hc-course-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:18px}.hc-course-block{min-width:0}.hc-course-block p{white-space:pre-wrap}.hc-course-module{display:block!important;width:100%;text-align:left;margin:14px 0;background:white!important;color:#352847!important;box-shadow:0 6px 20px #765aaf18;border:1px solid #e4daf0!important}.hc-course-module small{display:block;color:#776785}.hc-course-nav{display:flex;gap:12px;justify-content:space-between;align-items:center;margin:26px 0 90px}.hc-learning label{display:block;padding:12px;margin:10px 0;border:1px solid #ded2ed;border-radius:12px;cursor:pointer}.hc-learning input[type=radio],.hc-learning input[type=checkbox]{margin-right:12px}.hc-learning input:focus-visible,.hc-learning button:focus-visible{outline:3px solid #c98fb0;outline-offset:3px}.hc-exam-question{border-bottom:1px solid #ded2ed;margin:20px 0;padding:14px 0}.hc-certificate{background:#f4effb;padding:22px;border:2px solid #765aaf;border-radius:18px}#formationReader .scroll{padding-top:16px}#formationReader .hc-learning{max-width:840px;margin:auto}@media(max-width:600px){.hc-course-block{grid-column:span 12!important}}@media(min-width:760px){body:has(#formationReader.active) #formationReader{max-width:920px;left:50%;transform:translateX(-50%);width:100%}}`;
+.hc-learning{padding:20px;color:#2e2016;font:16px/1.7 'Quicksand',Arial,sans-serif}.hc-learning h2,.hc-learning h3{font-family:'League Spartan',Arial,sans-serif;color:#a84e22}.hc-learning button,.hc-learning .hc-course-btn{border:0;border-radius:12px;background:#a84e22;color:white;padding:14px 20px;font:700 15px Arial,sans-serif;cursor:pointer;min-height:44px}.hc-learning button:disabled{opacity:.55;cursor:default}.hc-learning .hc-outline{background:#f5e3d2;color:#a84e22}.hc-learning .hc-note{background:#fbf7f1;border-left:4px solid #e07a3e;padding:18px;border-radius:12px;white-space:pre-wrap}.hc-learning img{max-width:100%;height:auto;display:block;margin:auto}.hc-learning figure{margin:18px 0}.hc-learning iframe,.hc-learning video{width:100%;aspect-ratio:16/9;border:0;border-radius:14px}.hc-learning table{border-collapse:collapse;min-width:500px}.hc-learning th,.hc-learning td{padding:12px;border:1px solid #f1b183;text-align:left}.hc-table-wrap{overflow:auto}.hc-course-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:18px}.hc-course-block{min-width:0}.hc-course-block p{white-space:pre-wrap}.hc-course-module{display:block!important;width:100%;text-align:left;margin:14px 0;background:white!important;color:#2e2016!important;box-shadow:0 6px 20px #a84e2218;border:1px solid #f5e3d2!important}.hc-course-module small{display:block;color:#765646}.hc-course-nav{display:flex;gap:12px;justify-content:space-between;align-items:center;margin:26px 0 90px}.hc-learning label{display:block;padding:12px;margin:10px 0;border:1px solid #f1b183;border-radius:12px;cursor:pointer}.hc-learning input[type=radio],.hc-learning input[type=checkbox]{margin-right:12px}.hc-learning input:focus-visible,.hc-learning button:focus-visible{outline:3px solid #e07a3e;outline-offset:3px}.hc-exam-question{border-bottom:1px solid #f1b183;margin:20px 0;padding:14px 0}.hc-certificate{background:#fbf7f1;padding:22px;border:2px solid #a84e22;border-radius:18px}#formationReader .scroll{padding-top:16px}#formationReader .hc-learning{max-width:840px;margin:auto}@media(max-width:600px){.hc-course-block{grid-column:span 12!important}}@media(min-width:760px){body:has(#formationReader.active) #formationReader{max-width:920px;left:50%;transform:translateX(-50%);width:100%}}`;
 document.head.appendChild(hcLearningStyle);
 const hcReader=document.createElement('div');hcReader.id='formationReader';hcReader.className='screen';hcReader.innerHTML='<div class="scroll"><div class="hc-learning" id="hcReaderBody"></div></div>';document.body.appendChild(hcReader);
 function hcShowCourseScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');document.getElementById(id).scrollTop=0;}
@@ -8579,6 +8581,7 @@ renderFormationHome=async function(){
  const zone=document.getElementById('hcCourseHome');
  try{
   const state=await hcTrainingCall('status');
+  hcCourseAuthorized=state.hasAccess;hcCourseOwner=currentUser.id;
   if(!state.hasAccess){zone.innerHTML='<h2>Retrouver ma formation</h2><p>Aucun achat confirmé n’est rattaché à ce compte. Connecte-toi avec l’adresse utilisée lors du paiement.</p><button onclick="hcRefreshCourse()">Actualiser mon accès</button><p>Si tu as déjà payé, ne souscris pas à nouveau. Écris à <a href="mailto:info@maryneares.fr">info@maryneares.fr</a> avec ta référence de facture.</p><a href="https://www.holisticaclub.com/formation-perimenopause" target="_blank" rel="noopener">Découvrir la formation</a>';return;}
   const [modules,progress,resources,userFiles]=await Promise.all([
    appTable('formation_modules').select('id,module_number,title,subtitle,status').eq('formation_id',FORMATION_ID).order('module_number'),
@@ -8587,11 +8590,11 @@ renderFormationHome=async function(){
   if(modules.error||progress.error||userFiles.error)throw new Error('Le chargement de ta progression n’a pas abouti. Réessaie.');
   fmFilesCache=userFiles.data||[];fmModulesCache=modules.data||[];fmProgressCache={};(progress.data||[]).forEach(p=>fmProgressCache[p.module_id]=p);
   const completed=fmModulesCache.filter(m=>fmProgressCache[m.id]?.status==='completed').length;
-  document.getElementById('fmTitle').textContent='Ayurveda & Périménopause';document.getElementById('fmHello').textContent='Bonjour '+(userProfile.name||'');
+  document.getElementById('fmTitle').textContent='Ménopause et Ayurveda';document.getElementById('fmHello').textContent='Bonjour '+(userProfile.name||'');
   document.getElementById('fmProgressFill').style.width=(fmModulesCache.length?100*completed/fmModulesCache.length:0)+'%';document.getElementById('fmProgressLbl').textContent=completed+'/'+fmModulesCache.length+' modules terminés';
   if(!fmModulesCache.length){zone.innerHTML='<h2>Ton inscription est bien retrouvée</h2><p>Les modules ne sont pas encore publiés. Contacte info@maryneares.fr pour connaître leur date d’ouverture.</p>';return;}
   let previous=true;
-  zone.innerHTML='<h2>Ma formation</h2><p>Ta progression est partagée entre téléphone et ordinateur. Aucun abonnement à l’app n’est nécessaire.</p><button class="hc-outline" onclick="hcRefreshCourse()">Actualiser mon accès</button>'+fmModulesCache.map(m=>{
+  zone.innerHTML='<h2>Mes modules</h2><p>Retrouve ta progression sur téléphone et ordinateur.</p><button class="hc-outline" onclick="hcRefreshCourse()">Actualiser mon accès</button>'+fmModulesCache.map(m=>{
    const done=fmProgressCache[m.id]?.status==='completed';const unlocked=previous||currentUser.id==='b0eefc9b-6ba9-4588-809f-c58573e62052';previous=done;
    return `<button class="hc-course-module" ${unlocked?'':'disabled'} onclick="openFormationModule('${hcEsc(m.id)}')">${done?'✓ ':''}${hcEsc(m.title)}<small>${unlocked?'Module '+m.module_number+(m.status==='draft'?' · Aperçu administrateur':''):'Termine le module précédent'}${m.subtitle?' · '+hcEsc(m.subtitle):''}</small></button>`;
   }).join('')+(resources.resources.length?'<h2>Mes ressources</h2>'+resources.resources.map(r=>`<p><a href="${hcEsc(hcUrl(r.url))}" target="_blank" rel="noopener">${hcEsc(r.name)}</a></p>`).join(''):'')+'<h2>Mes fichiers</h2><p>Ajoute tes documents personnels pour les retrouver avec ton compte.</p><input type="file" id="fmFileInput" onchange="uploadFormationFile(event)"><div id="fmFiles"></div>';
@@ -8650,18 +8653,74 @@ window.hcCourseFinish=async()=>{
  document.getElementById('hcReaderBody').innerHTML='<button class="hc-outline" onclick="hcRenderCoursePage()">← Revenir au module</button><h2>'+ (hcCourseModule.module_number===9?'Examen final · 85 % requis':'Quiz du module')+'</h2><form id="hcCourseExam">'+hcCourseQuiz.map((q,i)=>'<fieldset class="hc-exam-question"><legend>'+(i+1)+'. '+hcEsc(q.prompt)+'</legend>'+['a','b','c'].map(k=>'<label><input required type="radio" name="'+hcEsc(q.id)+'" value="'+k+'">'+hcEsc(q['option_'+k])+'</label>').join('')+'</fieldset>').join('')+'<button type="submit">Valider mes réponses</button><p id="hcGradeStatus" role="status"></p></form>';
  document.getElementById('hcCourseExam').onsubmit=async e=>{e.preventDefault();const button=e.target.querySelector('button[type=submit]');button.disabled=true;
   try{const fd=new FormData(e.target);const result=await hcTrainingCall('grade',{moduleId:hcCourseModule.id,answers:hcCourseQuiz.map(q=>({id:q.id,option:fd.get(q.id)}))});
-   document.getElementById('hcReaderBody').innerHTML='<h2>Résultat : '+result.score+' %</h2><p>'+(result.passed?'Ton module est validé.':'Le seuil de 85 % n’est pas atteint. Tu peux revoir le module et réessayer.')+'</p>'+result.correction.map(q=>'<p>'+hcEsc(q.explanation)+'</p>').join('')+(result.certificate?'<div class="hc-certificate"><h2>Attestation de réussite Holistica Club</h2><p>Ayurveda & Périménopause</p><p>'+hcEsc(userProfile.name||currentUser.email)+'</p><p>Examen final : '+result.certificate.score+' % · '+new Date(result.certificate.created_at).toLocaleDateString('fr-FR')+'</p><small>Référence : '+hcEsc(result.certificate.id)+'</small><p>Attestation du parcours éducatif Holistica ; ne constitue pas un diplôme d’État ni une habilitation à exercer une profession de santé.</p></div>':'')+'<button onclick="go(\'formationHome\')">Retour à ma formation</button>';
+   document.getElementById('hcReaderBody').innerHTML='<h2>Résultat : '+result.score+' %</h2><p>'+(result.passed?'Ton module est validé.':'Le seuil de 85 % n’est pas atteint. Tu peux revoir le module et réessayer.')+'</p>'+result.correction.map(q=>'<p>'+hcEsc(q.explanation)+'</p>').join('')+(result.certificate?'<div class="hc-certificate"><h2>Attestation de réussite Holistica Club</h2><p>Ménopause et Ayurveda</p><p>'+hcEsc(userProfile.name||currentUser.email)+'</p><p>Examen final : '+result.certificate.score+' % · '+new Date(result.certificate.created_at).toLocaleDateString('fr-FR')+'</p><small>Référence : '+hcEsc(result.certificate.id)+'</small><p>Attestation du parcours éducatif Holistica ; ne constitue pas un diplôme d’État ni une habilitation à exercer une profession de santé.</p></div>':'')+'<button onclick="go(\'formationHome\')">Retour à ma formation</button>';
   }catch(err){document.getElementById('hcGradeStatus').textContent=err.message;button.disabled=false;}
  };
  document.getElementById('formationReader').scrollTop=0;
 };
-let hcCourseRequested=new URLSearchParams(location.search).get('formation')===FORMATION_ID;
-function hcOpenRequestedCourse(){if(!hcCourseRequested||!authReady||authRestoring)return;if(currentUser){go('formationHome');}else go('signin');}
+// An explicit training entry stays isolated; verified training-only buyers also enter here.
+const hcCourseRequested=new URLSearchParams(location.search).get('formation')===FORMATION_ID;
+let hcCourseOnly=hcCourseRequested,hcCourseAuthorized=false,hcCourseOwner=null;
+const HC_COURSE_SCREENS=new Set(['formationHome','formationReader','signin','signup','resetPassword','authLoading']);
+function hcApplyCourseMode(enabled){
+ hcCourseOnly=enabled;document.body.classList.toggle('hc-course-only',enabled);
+ document.getElementById('bnav').style.display=enabled?'none':document.getElementById('bnav').style.display;
+ document.getElementById('freeDemoScreen')?.classList.remove('active');
+ document.getElementById('walkthroughOverlay').style.display='none';
+ document.querySelector('#formationHome .vd-back').hidden=enabled;
+ document.getElementById('hcCourseToolbar').hidden=!enabled;
+}
+async function hcResolveCourseEntry(){
+ const user=currentUser;if(!user)return false;
+ // Never infer a purchase from a URL or user-editable metadata.
+ let state;
+ try{state=await hcTrainingCall('status');}catch(e){
+  if(!hcCourseRequested)throw e;
+  hcCourseAuthorized=false;hcCourseOwner=user.id;hcApplyCourseMode(true);go('formationHome');return true;
+ }
+ if(currentUser?.id!==user.id)return true;
+ hcCourseAuthorized=state.hasAccess;hcCourseOwner=user.id;
+ const result=await sb.from('profiles').select('name,subscription_plan,subscription_status,transformation_expires_at').eq('id',user.id).maybeSingle();
+ if(result.error)throw new Error('Impossible de vérifier ton espace. Réessaie.');
+ const profile=result.data;
+ const clubActive=profile&&['active','trialing'].includes(profile.subscription_status)&&['equilibre','immersion'].includes(profile.subscription_plan)&&(!profile.transformation_expires_at||new Date(profile.transformation_expires_at)>new Date());
+ const only=hcCourseRequested||(state.hasAccess&&!clubActive);
+ hcApplyCourseMode(only);
+ if(!only)return false;
+ personalDataMode='formation';resetProfilePersistence();
+ userProfile={name:profile?.name||'',email:user.email||''};
+ document.getElementById('fmTitle').textContent='Ménopause et Ayurveda';
+ document.getElementById('fmHello').textContent='Mon espace formation';
+ go('formationHome');return true;
+}
 const hcOriginalGo=go;
-go=function(id){if(hcCourseRequested&&currentUser&&authReady&&!authRestoring&&['dashboard','onboarding','profil'].includes(id)){id='formationHome';hcCourseRequested=false;}return hcOriginalGo(id);};
-document.addEventListener('click',e=>{if(currentUser&&e.target.closest('.ni,.ni-ctr,.vd-back,.hc-course-module'))hcCourseRequested=false;},true);
-sb.auth.onAuthStateChange((_event,session)=>{if(session&&hcCourseRequested)setTimeout(hcOpenRequestedCourse,300);});
-const hcCourseBoot=setInterval(()=>{if(authReady&&!authRestoring){clearInterval(hcCourseBoot);hcOpenRequestedCourse();}},500);
+go=function(id){
+ if(hcCourseOnly){
+  if(!HC_COURSE_SCREENS.has(id))id=currentUser?'formationHome':'signin';
+  // Formation pages require a session; server/RLS still decide access to content.
+  if(!currentUser&&['formationHome','formationReader'].includes(id))id='signin';
+  hcApplyCourseMode(true);
+ }
+ const result=hcOriginalGo(id);
+ if(hcCourseOnly)document.getElementById('bnav').style.display='none';
+ return result;
+};
+const hcToolbar=document.createElement('nav');hcToolbar.id='hcCourseToolbar';hcToolbar.setAttribute('aria-label','Espace formation');hcToolbar.hidden=true;
+hcToolbar.innerHTML='<button onclick="go(\'formationHome\')">Ma formation</button><a href="mailto:info@maryneares.fr?subject=Aide%20formation%20M%C3%A9nopause%20et%20Ayurveda">Besoin d’aide</a><button onclick="handleSignOut()">Déconnexion</button>';
+document.body.appendChild(hcToolbar);
+const hcShellStyle=document.createElement('style');hcShellStyle.textContent=`
+body.hc-course-only{--purple:#a84e22;--purple-m:#e07a3e;--purple-d:#a84e22;--lav:#f5e3d2;--lav-pale:#fbf7f1;--grad-h:linear-gradient(135deg,#a84e22,#e07a3e);background:#fbf7f1}
+body.hc-course-only #bnav,body.hc-course-only #freeDemoScreen,body.hc-course-only #walkthroughOverlay{display:none!important}
+body.hc-course-only .screen.active:not(#formationHome):not(#formationReader):not(#signin):not(#signup):not(#resetPassword):not(#authLoading){display:none!important}
+#formationHome{background:#fbf7f1}#formationHome .pd-top{background:linear-gradient(135deg,#a84e22,#e07a3e)}#formationHome .pd-progress-fill{background:#fff}#formationHome .pd-h1{font-size:clamp(26px,5vw,38px)}
+body.hc-course-only #formationHome .scroll,body.hc-course-only #formationReader .scroll{padding-bottom:calc(100px + env(safe-area-inset-bottom,0px))}
+#hcCourseToolbar{position:fixed;bottom:0;left:0;right:0;z-index:100;background:#fbf7f1;border-top:1px solid #f1b183;display:flex;justify-content:center;gap:8px;padding:12px 10px calc(12px + env(safe-area-inset-bottom,0px));font:600 13px 'League Spartan',Arial,sans-serif}
+#hcCourseToolbar[hidden]{display:none}#hcCourseToolbar button,#hcCourseToolbar a{border:0;background:#f5e3d2;color:#a84e22;border-radius:10px;padding:12px;text-decoration:none;cursor:pointer;min-height:44px}
+body.hc-course-only #formationHome,body.hc-course-only #formationReader{max-width:920px;margin:auto;width:100%;left:50%;transform:translateX(-50%)}
+body.hc-course-only #formationReader{background:#fbf7f1}
+`;document.head.appendChild(hcShellStyle);
+hcApplyCourseMode(hcCourseRequested);
+sb.auth.onAuthStateChange((event)=>{if(event==='SIGNED_OUT'){hcCourseAuthorized=false;hcCourseOwner=null;hcApplyCourseMode(hcCourseRequested);}});
 
 window.hcDoshaCourse=()=>{document.getElementById('hcReaderBody').innerHTML='<button class="hc-outline" onclick="hcRenderCoursePage()">← Revenir au module</button><h2>Découvrir mon profil ayurvédique</h2><p>Un outil de réflexion personnel, sans diagnostic médical.</p><form id="hcDoshaForm">'+HC_COURSE_DOSHA.map((q,i)=>'<fieldset><legend>'+hcEsc(q.q)+'</legend>'+['a','b','c'].map(k=>'<label><input required type="radio" name="q'+i+'" value="'+k+'">'+hcEsc(q[k])+'</label>').join('')+'</fieldset>').join('')+'<button>Voir mon résultat</button><p id="hcDoshaResult" role="status"></p></form>';document.getElementById('hcDoshaForm').onsubmit=e=>{e.preventDefault();const total={a:0,b:0,c:0};for(const v of new FormData(e.target).values())total[v]++;const top=Math.max(...Object.values(total));const labels={a:'Vata',b:'Pitta',c:'Kapha'};document.getElementById('hcDoshaResult').textContent='Tes réponses se rapprochent du profil '+Object.keys(total).filter(k=>total[k]===top).map(k=>labels[k]).join(' / ')+'. Ce résultat ne mesure pas ton état de santé et ne remplace pas un avis médical.';};document.getElementById('formationReader').scrollTop=0;};
 

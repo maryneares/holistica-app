@@ -2472,7 +2472,7 @@ function renderFreeDemo(route){
  else if(route==='challenge')content=demoCard('Découvrir la communauté',d.community)+`<figure class="ch-signature"><img src="https://d1yei2z3i6k35z.cloudfront.net/125337/6a6b68a0e66b11.10456858_6a462a575b9503.59317668_dfghn.png" alt="Maryne Ares" loading="lazy" decoding="async"><figcaption>par Maryne Ares</figcaption></figure>`;
  else if(route==='profil'){
  content=demoCard('Présentation de la démonstration',`<button onclick="setDemoAudience('femme')" aria-pressed="${demoAudience==='femme'}">Femme</button> <button onclick="setDemoAudience('homme')" aria-pressed="${demoAudience==='homme'}">Homme</button><p>Les données de démonstration restent fictives et fixes.</p>`)+demoCard('Mon compte Holistica','Mode gratuit : découverte avec des données fictives fixes. Les plans Équilibre et Immersion utilisent ton vrai profil.')+`<div style="padding:0 20px"><button class="journey-replay-btn" onclick="refreshMembership()">Actualiser mon accès</button></div>`;
- for(const [id,label] of [['editInfo','Mes informations de démonstration'],['doshaProfile','Mon profil ayurvédique'],['wellnessHistory','Historique bien-être'],['progressionScreen','Ma progression'],['badgesScreen','Mes badges'],['cycleSettings','Mon cycle'],['astroScreen','Mon astrologie']].filter(([id])=>id!=='cycleSettings'||!isMaleProfile()))content+=`<button class="demo-profile-row" onclick="go('${id}')">${label}<span>›</span></button>`;
+ for(const [id,label] of [['formationHome','Ma formation · Ayurveda & Périménopause'],['editInfo','Mes informations de démonstration'],['doshaProfile','Mon profil ayurvédique'],['wellnessHistory','Historique bien-être'],['progressionScreen','Ma progression'],['badgesScreen','Mes badges'],['cycleSettings','Mon cycle'],['astroScreen','Mon astrologie']].filter(([id])=>id!=='cycleSettings'||!isMaleProfile()))content+=`<button class="demo-profile-row" onclick="go('${id}')">${label}<span>›</span></button>`;
  content+=`<div class="demo-footer"><a href="https://www.holisticaclub.com/mon-compte" target="_blank" rel="noopener">Compte et abonnement · aide et factures</a><button class="journey-replay-btn" onclick="accountUI.open('settings')">Mon adresse e-mail et mon mot de passe</button><button class="profile-legal-link" onclick="openSources('profil')">Confidentialité & ressources scientifiques</button><button class="journey-replay-btn" onclick="handleSignOut()">Déconnexion</button><button class="profile-legal-link" onclick="confirmDeleteAccount()">Supprimer mon compte</button></div>`;
  }else if(route==='cycleSettings')content=demoCard('Cycle de démonstration',`Jour ${d.cycle.day}/${d.cycle.length} · ${d.cycle.phase}`);
  else if(route==='editInfo')content=demoCard('Profil fictif',`${d.displayName} · ${d.profile.age} ans · ${d.profile.weight} kg · ${d.profile.height} cm`);
@@ -3980,7 +3980,7 @@ function go(id){
  if((!authReady||authRestoring)&&id==='signin')return;
  if(id==='cycleSettings'&&isMaleProfile())id='profil';
  {const _rp=document.getElementById('routinePlayer');if(_rp&&_rp.classList.contains('open'))closeRoutinePlayer();}
- if(isFreeDemo()&&!['sources','privacy','signin','signup','resetPassword'].includes(id)){renderFreeDemo(id);return;}
+ if(isFreeDemo()&&!['sources','privacy','signin','signup','resetPassword','formationHome','formationReader'].includes(id)){renderFreeDemo(id);return;}
  if(id==='privacy')id='sources';
  if(['dietPlan','challenge'].includes(id)&&!hasImmersionAccess()){
  toast('Cet espace est réservé au plan Immersion');
@@ -8524,5 +8524,143 @@ go = function(id){
 <button class="btn-w" style="margin-top:18px;" onclick="closeJourneyReplay()">Fermer</button>
 </div>
 </div>
+<!-- holistica-training-v1 -->
+<script>
+const HC_COURSE_DOSHA=[
+  {q:"Ta morphologie naturelle :",a:"Silhouette fine, ossature légère, articulations plutôt visibles",b:"Silhouette moyenne, proportions harmonieuses, musculature naturelle",c:"Ossature large, silhouette robuste, masse corporelle naturellement développée"},
+  {q:"Comment ton poids évolue naturellement :",a:"Je prends difficilement du poids et peux en perdre rapidement",b:"Je prends ou perds du poids relativement facilement",c:"Je prends facilement du poids et ai davantage de difficulté à en perdre"},
+  {q:"Ta musculature naturelle :",a:"Fine, je dois beaucoup travailler pour développer du muscle",b:"Je développe assez facilement ma musculature",c:"J'ai naturellement une bonne masse musculaire et une bonne densité corporelle"},
+  {q:"Ta peau est naturellement :",a:"Fine, sèche, parfois rugueuse ou déshydratée",b:"Sensible, chaude, sujette aux rougeurs ou aux imperfections",c:"Épaisse, douce, souple et plutôt bien hydratée ou grasse"},
+  {q:"Tes cheveux naturels sont plutôt :",a:"Fins, secs, parfois bouclés, cassants ou sujets aux fourches",b:"Fins à moyens, tendance à devenir gras ou à grisonner précocement",c:"Épais, abondants, forts et naturellement bien hydratés"},
+  {q:"Tes mains et tes pieds sont naturellement :",a:"Souvent froids et secs",b:"Plutôt chauds",c:"Plutôt frais, doux ou légèrement humides"},
+  {q:"Tes articulations sont plutôt :",a:"Fines, mobiles et ont tendance à craquer",b:"Moyennes, souples et bien proportionnées",c:"Épaisses, stables et bien lubrifiées"},
+  {q:"Ton visage est naturellement plutôt :",a:"Fin, allongé ou anguleux",b:"Ovale, proportionné, avec des traits définis",c:"Large, rond ou avec des traits doux"},
+  {q:"Ton appétit naturel est :",a:"Irrégulier : parfois très faim, parfois peu faim",b:"Fort et régulier : j'ai besoin de manger régulièrement",c:"Modéré et relativement constant"},
+  {q:"Si tu sautes un repas :",a:"Je peux ne pas m'en rendre compte puis avoir soudainement faim",b:"Je deviens rapidement irritable, faible ou très affamée",c:"Je supporte relativement bien de sauter un repas"},
+  {q:"Ta digestion est naturellement :",a:"Variable et imprévisible, avec tendance aux ballonnements",b:"Rapide et intense",c:"Lente mais régulière"},
+  {q:"Ton transit est plutôt :",a:"Irrégulier, avec tendance à la constipation",b:"Régulier mais parfois rapide ou avec des selles molles",c:"Lent, avec tendance à la lourdeur ou à la constipation"},
+  {q:"Lorsque tu manges trop, tu ressens principalement :",a:"Ballonnements, gaz ou inconfort abdominal",b:"Acidité, brûlures ou sensation de chaleur",c:"Lourdeur, somnolence ou digestion très lente"},
+  {q:"Ton niveau de soif est généralement :",a:"Variable",b:"Important et régulier",c:"Modéré"},
+  {q:"Ton énergie naturelle fonctionne plutôt :",a:"Par vagues : beaucoup d'énergie puis besoin de récupérer",b:"De manière intense et relativement constante",c:"De manière stable, avec une montée en puissance progressive"},
+  {q:"Ton endurance naturelle est :",a:"Faible à moyenne",b:"Bonne",c:"Très bonne"},
+  {q:"Ton sommeil naturel est :",a:"Léger, facilement perturbé, avec parfois des difficultés d'endormissement",b:"Moyen, parfois perturbé par un mental actif",c:"Profond et généralement long, avec difficulté à émerger le matin"},
+  {q:"Face à une journée très chargée :",a:"Je m'éparpille facilement",b:"Je cherche à tout gérer et peux aller jusqu'à l'épuisement",c:"Je ralentis et ai besoin de retrouver mon calme"},
+  {q:"Ton rythme de vie idéal est :",a:"Varié, spontané et flexible",b:"Organisé, structuré et orienté vers des objectifs",c:"Régulier, prévisible et sécurisant"},
+  {q:"Ton esprit naturel est plutôt :",a:"Rapide, créatif, curieux et très associatif",b:"Analytique, précis, logique et orienté solutions",c:"Calme, réfléchi, stable et méthodique"},
+  {q:"Face au changement :",a:"Je m'adapte rapidement mais peux manquer de stabilité",b:"Je m'adapte lorsqu'il y a une logique ou un objectif",c:"Je préfère mes habitudes et les changements progressifs"},
+  {q:"Lorsque tu es stressée, ta réaction principale est :",a:"Anxiété, inquiétude, agitation ou ruminations",b:"Irritabilité, impatience, frustration ou colère",c:"Retrait, fatigue, découragement ou besoin de confort"},
+  {q:"Après un conflit :",a:"Je peux rapidement passer à autre chose mais j'y pense sur le moment",b:"J'ai tendance à repenser longtemps à ce qui s'est passé",c:"Je pardonne difficilement mais reste profondément attachée"},
+  {q:"Ta façon de communiquer est plutôt :",a:"Rapide, spontanée, expressive et très communicative",b:"Claire, précise, directe et persuasive",c:"Posée, douce, calme et rassurante"},
+  {q:"Quel climat te convient le mieux :",a:"Chaud, humide et sans vent",b:"Tempéré, frais ou légèrement sec",c:"Chaud et sec"},
+  {q:"Quelle condition climatique te déséquilibre le plus :",a:"Froid, vent, sécheresse et changements brusques",b:"Forte chaleur, soleil et humidité importante",c:"Froid humide, grisaille et manque de soleil"},
+  {q:"Ta sensibilité sensorielle est plutôt :",a:"Très sensible aux bruits, au toucher et aux stimulations",b:"Particulièrement sensible à la lumière, aux odeurs ou à la chaleur",c:"Relativement peu sensible aux stimulations extérieures"},
+  {q:"Avant tes changements récents, ton cycle menstruel était :",a:"Court ou variable",b:"Régulier et relativement prévisible",c:"Régulier mais avec tendance à un flux plus important ou plus long"},
+  {q:"Avant ou pendant tes règles, tu ressens principalement :",a:"Ballonnements, anxiété, constipation, douleurs ou sommeil perturbé",b:"Irritabilité, chaleur, migraines, seins sensibles ou flux important",c:"Fatigue, rétention d'eau, lourdeur, envie de sucre ou besoin de dormir davantage"},
+];
+/* Formation access is independent of Équilibre/Immersion. Server verifies the paid order. */
+const HC_TRAINING_API='https://lsoddhgahdfcpmuydmbt.supabase.co/functions/v1/formation-access';
+const hcEsc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const hcUrl=v=>{try{const u=new URL(v);return ['https:','http:'].includes(u.protocol)?u.href:'';}catch{return '';}};
+let hcCourseModule=null,hcCoursePages=[],hcCoursePage=0,hcCourseQuiz=[];
+async function hcTrainingCall(action,extra={}){
+ const {data,error}=await sb.auth.getSession();if(error||!data.session)throw new Error('Connecte-toi pour accéder à ta formation.');
+ const r=await fetch(HC_TRAINING_API,{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+data.session.access_token},body:JSON.stringify({action,...extra})});
+ const result=await r.json();if(!r.ok)throw new Error(result.error||'Formation indisponible.');return result;
+}
+const hcLearningStyle=document.createElement('style');hcLearningStyle.textContent=`
+.hc-learning{padding:20px;color:#352847;font:16px/1.7 'Quicksand',Arial,sans-serif}.hc-learning h2,.hc-learning h3{font-family:'League Spartan',Arial,sans-serif;color:#765aaf}.hc-learning button,.hc-learning .hc-course-btn{border:0;border-radius:12px;background:#765aaf;color:white;padding:14px 20px;font:700 15px Arial,sans-serif;cursor:pointer;min-height:44px}.hc-learning button:disabled{opacity:.55;cursor:default}.hc-learning .hc-outline{background:#eee6f8;color:#5b3e8e}.hc-learning .hc-note{background:#f4effb;border-left:4px solid #c98fb0;padding:18px;border-radius:12px;white-space:pre-wrap}.hc-learning img{max-width:100%;height:auto;display:block;margin:auto}.hc-learning figure{margin:18px 0}.hc-learning iframe,.hc-learning video{width:100%;aspect-ratio:16/9;border:0;border-radius:14px}.hc-learning table{border-collapse:collapse;min-width:500px}.hc-learning th,.hc-learning td{padding:12px;border:1px solid #ded2ed;text-align:left}.hc-table-wrap{overflow:auto}.hc-course-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:18px}.hc-course-block{min-width:0}.hc-course-block p{white-space:pre-wrap}.hc-course-module{display:block!important;width:100%;text-align:left;margin:14px 0;background:white!important;color:#352847!important;box-shadow:0 6px 20px #765aaf18;border:1px solid #e4daf0!important}.hc-course-module small{display:block;color:#776785}.hc-course-nav{display:flex;gap:12px;justify-content:space-between;align-items:center;margin:26px 0 90px}.hc-learning label{display:block;padding:12px;margin:10px 0;border:1px solid #ded2ed;border-radius:12px;cursor:pointer}.hc-learning input[type=radio],.hc-learning input[type=checkbox]{margin-right:12px}.hc-learning input:focus-visible,.hc-learning button:focus-visible{outline:3px solid #c98fb0;outline-offset:3px}.hc-exam-question{border-bottom:1px solid #ded2ed;margin:20px 0;padding:14px 0}.hc-certificate{background:#f4effb;padding:22px;border:2px solid #765aaf;border-radius:18px}#formationReader .scroll{padding-top:16px}#formationReader .hc-learning{max-width:840px;margin:auto}@media(max-width:600px){.hc-course-block{grid-column:span 12!important}}@media(min-width:760px){body:has(#formationReader.active) #formationReader{max-width:920px;left:50%;transform:translateX(-50%);width:100%}}`;
+document.head.appendChild(hcLearningStyle);
+const hcReader=document.createElement('div');hcReader.id='formationReader';hcReader.className='screen';hcReader.innerHTML='<div class="scroll"><div class="hc-learning" id="hcReaderBody"></div></div>';document.body.appendChild(hcReader);
+function hcShowCourseScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');document.getElementById(id).scrollTop=0;}
+renderFormationHome=async function(){
+ const screen=document.getElementById('formationHome');
+ if(!currentUser){go('signin');return;}
+ screen.querySelector('.scroll').innerHTML='<div class="hc-learning" id="hcCourseHome"><p>Vérification de ton accès…</p></div>';
+ const zone=document.getElementById('hcCourseHome');
+ try{
+  const state=await hcTrainingCall('status');
+  if(!state.hasAccess){zone.innerHTML='<h2>Retrouver ma formation</h2><p>Aucun achat confirmé n’est rattaché à ce compte. Connecte-toi avec l’adresse utilisée lors du paiement.</p><button onclick="hcRefreshCourse()">Actualiser mon accès</button><p>Si tu as déjà payé, ne souscris pas à nouveau. Écris à <a href="mailto:info@maryneares.fr">info@maryneares.fr</a> avec ta référence de facture.</p><a href="https://www.holisticaclub.com/formation-perimenopause" target="_blank" rel="noopener">Découvrir la formation</a>';return;}
+  const [modules,progress,resources]=await Promise.all([
+   appTable('formation_modules').select('id,module_number,title,subtitle,status').eq('formation_id',FORMATION_ID).order('module_number'),
+   appTable('formation_progress').select('module_id,status,last_page,quiz_score').eq('user_id',currentUser.id).eq('formation_id',FORMATION_ID),
+   hcTrainingCall('resources')]);
+  if(modules.error||progress.error)throw new Error('Le chargement de ta progression n’a pas abouti. Réessaie.');
+  fmModulesCache=modules.data||[];fmProgressCache={};(progress.data||[]).forEach(p=>fmProgressCache[p.module_id]=p);
+  const completed=fmModulesCache.filter(m=>fmProgressCache[m.id]?.status==='completed').length;
+  document.getElementById('fmTitle').textContent='Ayurveda & Périménopause';document.getElementById('fmHello').textContent='Bonjour '+(userProfile.name||'');
+  document.getElementById('fmProgressFill').style.width=(fmModulesCache.length?100*completed/fmModulesCache.length:0)+'%';document.getElementById('fmProgressLbl').textContent=completed+'/'+fmModulesCache.length+' modules terminés';
+  if(!fmModulesCache.length){zone.innerHTML='<h2>Ton inscription est bien retrouvée</h2><p>Les modules ne sont pas encore publiés. Contacte info@maryneares.fr pour connaître leur date d’ouverture.</p>';return;}
+  let previous=true;
+  zone.innerHTML='<h2>Ma formation</h2><p>Ta progression est partagée entre téléphone et ordinateur. Aucun abonnement à l’app n’est nécessaire.</p><button class="hc-outline" onclick="hcRefreshCourse()">Actualiser mon accès</button>'+fmModulesCache.map(m=>{
+   const done=fmProgressCache[m.id]?.status==='completed';const unlocked=previous||currentUser.id==='b0eefc9b-6ba9-4588-809f-c58573e62052';previous=done;
+   return `<button class="hc-course-module" ${unlocked?'':'disabled'} onclick="openFormationModule('${hcEsc(m.id)}')">${done?'✓ ':''}${hcEsc(m.title)}<small>${unlocked?'Module '+m.module_number+(m.status==='draft'?' · Aperçu administrateur':''):'Termine le module précédent'}${m.subtitle?' · '+hcEsc(m.subtitle):''}</small></button>`;
+  }).join('')+(resources.resources.length?'<h2>Mes ressources</h2>'+resources.resources.map(r=>`<p><a href="${hcEsc(hcUrl(r.url))}" target="_blank" rel="noopener">${hcEsc(r.name)}</a></p>`).join(''):'');
+ }catch(e){zone.innerHTML='<p>'+hcEsc(e.message)+'</p><button onclick="renderFormationHome()">Réessayer</button>';}
+};
+window.hcRefreshCourse=async()=>{try{await hcTrainingCall('refresh');await renderFormationHome();}catch(e){toast(e.message);}};
+openFormationModule=async function(moduleId){
+ const index=(fmModulesCache||[]).findIndex(m=>m.id===moduleId);
+ if(index<0)return;
+ if(index>0&&fmProgressCache[fmModulesCache[index-1].id]?.status!=='completed'&&currentUser.id!=='b0eefc9b-6ba9-4588-809f-c58573e62052'){toast('Termine le module précédent.');return;}
+ try{
+  const {data,error}=await appTable('formation_modules').select('id,module_number,title,subtitle,page_blocks,theory_content,cas_pratique').eq('id',moduleId).eq('formation_id',FORMATION_ID).single();if(error)throw new Error('Ce module ne peut pas être ouvert.');
+  hcCourseModule=data;hcCoursePages=[[]];
+  (data.page_blocks||[]).forEach(b=>{if(b.type==='pagebreak'){if(hcCoursePages.at(-1).length)hcCoursePages.push([]);}else hcCoursePages.at(-1).push(b);});
+  hcCoursePages=hcCoursePages.filter(p=>p.length);
+  if(!hcCoursePages.length)hcCoursePages=[[{type:'paragraph',text:data.theory_content||'Le contenu de ce module sera disponible prochainement.'},{type:'note',text:data.cas_pratique||''}]];
+  hcCoursePage=Math.min(fmProgressCache[moduleId]?.last_page||0,hcCoursePages.length-1);
+  const quiz=await hcTrainingCall('quiz',{moduleId});hcCourseQuiz=quiz.questions;
+  hcRenderCoursePage();hcShowCourseScreen('formationReader');
+ }catch(e){toast(e.message);}
+};
+function hcCourseBlock(b){
+ const text=hcEsc(b.text||'');let html='';
+ if(b.type==='heading')html='<h2>'+text+'</h2>';
+ else if(b.type==='subheading')html='<h3>'+text+'</h3>';
+ else if(b.type==='paragraph')html='<p>'+text+'</p>';
+ else if(b.type==='note')html='<aside class="hc-note">'+text+'</aside>';
+ else if(b.type==='stat')html='<aside class="hc-note"><strong>'+hcEsc(b.number)+'</strong><p>'+hcEsc(b.caption)+'</p></aside>';
+ else if(b.type==='list'||b.type==='flow')html='<'+(b.type==='flow'?'ol':'ul')+'>'+String(b.text||'').split(b.type==='flow'?'|':'\n').filter(x=>x.trim()).map(x=>'<li>'+hcEsc(x)+'</li>').join('')+'</'+(b.type==='flow'?'ol':'ul')+'>';
+ else if(b.type==='image'&&hcUrl(b.url))html='<figure><img loading="lazy" src="'+hcEsc(hcUrl(b.url))+'" alt="'+hcEsc(b.caption||'Illustration de la formation')+'"><figcaption>'+hcEsc(b.caption||'')+'</figcaption></figure>';
+ else if(b.type==='video'&&hcUrl(b.url)){
+  const u=new URL(b.url);let yt='';if(['youtu.be','www.youtu.be'].includes(u.hostname))yt=u.pathname.slice(1);if(['youtube.com','www.youtube.com'].includes(u.hostname))yt=u.searchParams.get('v')||u.pathname.split('/').at(-1);
+  html=/^[A-Za-z0-9_-]{11}$/.test(yt)?'<iframe src="https://www.youtube-nocookie.com/embed/'+yt+'" title="'+hcEsc(b.caption||'Vidéo de formation')+'" allow="fullscreen" allowfullscreen></iframe>':'<p><a href="'+hcEsc(hcUrl(b.url))+'" target="_blank" rel="noopener">Regarder la vidéo</a></p>';
+ }
+ else if(b.type==='table')html='<div class="hc-table-wrap"><table><thead><tr>'+String(b.headersText||'').split('|').map(x=>'<th>'+hcEsc(x)+'</th>').join('')+'</tr></thead><tbody>'+String(b.rowsText||'').split('\n').filter(x=>x.trim()).map(r=>'<tr>'+r.split('|').map(x=>'<td>'+hcEsc(x)+'</td>').join('')+'</tr>').join('')+'</tbody></table></div>';
+ else if(b.type==='checklist')html='<fieldset><legend>'+hcEsc(b.prompt)+'</legend>'+String(b.optionsText||'').split('\n').filter(x=>x.trim()).map(x=>'<label><input type="checkbox">'+hcEsc(x)+'</label>').join('')+'</fieldset>';
+ else if(b.type==='mcq')html='<fieldset><legend>'+hcEsc(b.prompt)+'</legend>'+String(b.optionsText||'').split('\n').filter(x=>x.trim()).map(x=>`<button class="hc-outline" style="display:block;margin:10px 0" onclick="this.parentElement.querySelector('output').textContent=this.dataset.correct==='true'?'Bonne réponse.':'Réessaie.'" data-correct="${x.trim().startsWith('*')}">${hcEsc(x.replace(/^\*/,''))}</button>`).join('')+'<output aria-live="polite"></output><details><summary>Comprendre la réponse</summary>'+hcEsc(b.explanation)+'</details></fieldset>';
+ else if(b.type==='doshaquiz')html='<h3>Mon profil ayurvédique</h3><p>'+hcEsc(b.introText||'Un questionnaire de découverte, sans diagnostic médical.')+'</p><button class="hc-outline" onclick="hcDoshaCourse()">Ouvrir mon questionnaire</button>';
+ return '<div class="hc-course-block" style="grid-column:span '+Math.max(1,Math.min(12,Number(b.width)||12))+'">'+html+'</div>';
+}
+function hcRenderCoursePage(){
+ const last=hcCoursePage===hcCoursePages.length-1;
+ document.getElementById('hcReaderBody').innerHTML='<button class="hc-outline" onclick="go(\'formationHome\')">← Mes modules</button><h2>'+hcEsc(hcCourseModule.title)+'</h2><p>Page '+(hcCoursePage+1)+' / '+hcCoursePages.length+'</p><div class="hc-course-grid">'+hcCoursePages[hcCoursePage].map(hcCourseBlock).join('')+'</div><div class="hc-course-nav"><button class="hc-outline" '+(hcCoursePage===0?'disabled':'')+' onclick="hcCourseMove(-1)">← Précédent</button>'+(last?'<button onclick="hcCourseFinish()">'+(hcCourseQuiz.length?'Passer au quiz':'Terminer ce module')+'</button>':'<button onclick="hcCourseMove(1)">Suivant →</button>')+'</div>';
+ document.getElementById('formationReader').scrollTop=0;
+}
+async function hcSaveCoursePage(page,status){
+ const row={user_id:currentUser.id,formation_id:FORMATION_ID,module_id:hcCourseModule.id,last_page:page,status:status||fmProgressCache[hcCourseModule.id]?.status||'in_progress',updated_at:new Date().toISOString()};
+ if(status==='completed')row.completed_at=new Date().toISOString();
+ const {error}=await appTable('formation_progress').upsert(row,{onConflict:'user_id,module_id'});if(error)throw new Error('Ta progression n’a pas pu être enregistrée. Réessaie.');
+ fmProgressCache[hcCourseModule.id]={...fmProgressCache[hcCourseModule.id],...row};
+}
+window.hcCourseMove=async delta=>{try{const next=hcCoursePage+delta;if(next<0||next>=hcCoursePages.length)return;await hcSaveCoursePage(next);hcCoursePage=next;hcRenderCoursePage();}catch(e){toast(e.message);}};
+window.hcCourseFinish=async()=>{
+ if(!hcCourseQuiz.length){try{if(hcCourseModule.module_number===9)throw new Error('L’examen final n’est pas disponible. Contacte le support.');await hcSaveCoursePage(hcCoursePage,'completed');go('formationHome');}catch(e){toast(e.message);}return;}
+ document.getElementById('hcReaderBody').innerHTML='<button class="hc-outline" onclick="hcRenderCoursePage()">← Revenir au module</button><h2>'+ (hcCourseModule.module_number===9?'Examen final · 85 % requis':'Quiz du module')+'</h2><form id="hcCourseExam">'+hcCourseQuiz.map((q,i)=>'<fieldset class="hc-exam-question"><legend>'+(i+1)+'. '+hcEsc(q.prompt)+'</legend>'+['a','b','c'].map(k=>'<label><input required type="radio" name="'+hcEsc(q.id)+'" value="'+k+'">'+hcEsc(q['option_'+k])+'</label>').join('')+'</fieldset>').join('')+'<button type="submit">Valider mes réponses</button><p id="hcGradeStatus" role="status"></p></form>';
+ document.getElementById('hcCourseExam').onsubmit=async e=>{e.preventDefault();const button=e.target.querySelector('button[type=submit]');button.disabled=true;
+  try{const fd=new FormData(e.target);const result=await hcTrainingCall('grade',{moduleId:hcCourseModule.id,answers:hcCourseQuiz.map(q=>({id:q.id,option:fd.get(q.id)}))});
+   document.getElementById('hcReaderBody').innerHTML='<h2>Résultat : '+result.score+' %</h2><p>'+(result.passed?'Ton module est validé.':'Le seuil de 85 % n’est pas atteint. Tu peux revoir le module et réessayer.')+'</p>'+result.correction.map(q=>'<p>'+hcEsc(q.explanation)+'</p>').join('')+(result.certificate?'<div class="hc-certificate"><h2>Attestation de réussite Holistica Club</h2><p>Ayurveda & Périménopause</p><p>'+hcEsc(userProfile.name||currentUser.email)+'</p><p>Examen final : '+result.certificate.score+' % · '+new Date(result.certificate.created_at).toLocaleDateString('fr-FR')+'</p><small>Référence : '+hcEsc(result.certificate.id)+'</small><p>Attestation du parcours éducatif Holistica ; ne constitue pas un diplôme d’État ni une habilitation à exercer une profession de santé.</p></div>':'')+'<button onclick="go(\'formationHome\')">Retour à ma formation</button>';
+  }catch(err){document.getElementById('hcGradeStatus').textContent=err.message;button.disabled=false;}
+ };
+ document.getElementById('formationReader').scrollTop=0;
+};
+let hcCourseRequested=new URLSearchParams(location.search).get('formation')===FORMATION_ID;
+function hcOpenRequestedCourse(){if(!hcCourseRequested||!authReady||authRestoring)return;if(currentUser){hcCourseRequested=false;go('formationHome');}else go('signin');}
+sb.auth.onAuthStateChange((_event,session)=>{if(session&&hcCourseRequested)setTimeout(hcOpenRequestedCourse,300);});
+const hcCourseBoot=setInterval(()=>{if(authReady&&!authRestoring){clearInterval(hcCourseBoot);hcOpenRequestedCourse();}},500);
+
+window.hcDoshaCourse=()=>{document.getElementById('hcReaderBody').innerHTML='<button class="hc-outline" onclick="hcRenderCoursePage()">← Revenir au module</button><h2>Découvrir mon profil ayurvédique</h2><p>Un outil de réflexion personnel, sans diagnostic médical.</p><form id="hcDoshaForm">'+HC_COURSE_DOSHA.map((q,i)=>'<fieldset><legend>'+hcEsc(q.q)+'</legend>'+['a','b','c'].map(k=>'<label><input required type="radio" name="q'+i+'" value="'+k+'">'+hcEsc(q[k])+'</label>').join('')+'</fieldset>').join('')+'<button>Voir mon résultat</button><p id="hcDoshaResult" role="status"></p></form>';document.getElementById('hcDoshaForm').onsubmit=e=>{e.preventDefault();const total={a:0,b:0,c:0};for(const v of new FormData(e.target).values())total[v]++;const top=Math.max(...Object.values(total));const labels={a:'Vata',b:'Pitta',c:'Kapha'};document.getElementById('hcDoshaResult').textContent='Tes réponses se rapprochent du profil '+Object.keys(total).filter(k=>total[k]===top).map(k=>labels[k]).join(' / ')+'. Ce résultat ne mesure pas ton état de santé et ne remplace pas un avis médical.';};document.getElementById('formationReader').scrollTop=0;};
+
+</script>
 </body>
 </html>

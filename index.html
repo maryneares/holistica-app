@@ -2270,7 +2270,8 @@ const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{
  }
 });
 
-const accountUI=HolisticaAccount.mount({client:sb,redirectTo:'https://app.holisticaclub.com/',onUserChanged:user=>{if(typeof currentUser!=='undefined'&&currentUser?.id===user.id){currentUser=user;userProfile.email=user.email||'';}},onPasswordChanged:()=>{authRecovery=false;go('signin');}});
+const HC_ACCOUNT_REDIRECT='https://app.holisticaclub.com/'+(new URLSearchParams(location.search).get('formation')==='ayurveda-perimenopause'?'?formation=ayurveda-perimenopause':'');
+const accountUI=HolisticaAccount.mount({client:sb,redirectTo:HC_ACCOUNT_REDIRECT,onUserChanged:user=>{if(typeof currentUser!=='undefined'&&currentUser?.id===user.id){currentUser=user;userProfile.email=user.email||'';}},onPasswordChanged:()=>{authRecovery=false;go('signin');}});
 
 // Demande à iOS/Safari de considérer le stockage de l'app comme "protégé", pour réduire le
 // risque qu'il efface la session entre 2 ouvertures (limite connue des apps ajoutées à l'écran
@@ -2634,7 +2635,7 @@ function togglePwdVisibility(inputId,btn){
 }
 
 
-const AUTH_EMAIL_REDIRECT='https://app.holisticaclub.com/';
+const AUTH_EMAIL_REDIRECT=HC_ACCOUNT_REDIRECT;
 let confirmationBusy=false;
 const confirmationCooldown=new Map();
 function authEmailMessage(error){
@@ -2776,7 +2777,7 @@ async function signInWithOAuth(provider){
    // au lieu d'ouvrir le navigateur externe.
    const {data,error}=await sb.auth.signInWithOAuth({
      provider,
-     options:{redirectTo:'https://app.holisticaclub.com',skipBrowserRedirect:true}
+     options:{redirectTo:HC_ACCOUNT_REDIRECT,skipBrowserRedirect:true}
    });
    if(error){toast('Erreur : '+error.message);return;}
    let listenerHandle=null;
@@ -2794,7 +2795,7 @@ async function signInWithOAuth(provider){
  // Web classique (hors app native) : flux inchangé
  const {error}=await sb.auth.signInWithOAuth({
  provider,
- options:{redirectTo:window.location.origin+window.location.pathname}
+ options:{redirectTo:window.location.origin+window.location.pathname+(new URLSearchParams(location.search).get('formation')==='ayurveda-perimenopause'?'?formation=ayurveda-perimenopause':'')}
  });
  if(error)toast('Erreur : '+error.message);
  // La page redirige vers Google/Apple puis revient automatiquement ici
@@ -8710,13 +8711,13 @@ hcToolbar.innerHTML='<button onclick="go(\'formationHome\')">Ma formation</butto
 document.body.appendChild(hcToolbar);
 const hcShellStyle=document.createElement('style');hcShellStyle.textContent=`
 body.hc-course-only{--purple:#a84e22;--purple-m:#e07a3e;--purple-d:#a84e22;--lav:#f5e3d2;--lav-pale:#fbf7f1;--grad-h:linear-gradient(135deg,#a84e22,#e07a3e);background:#fbf7f1}
-body.hc-course-only #bnav,body.hc-course-only #freeDemoScreen,body.hc-course-only #walkthroughOverlay{display:none!important}
+body.hc-course-only #formationHome .vd-back,body.hc-course-only #bnav,body.hc-course-only #freeDemoScreen,body.hc-course-only #walkthroughOverlay{display:none!important}
 body.hc-course-only .screen.active:not(#formationHome):not(#formationReader):not(#signin):not(#signup):not(#resetPassword):not(#authLoading){display:none!important}
 #formationHome{background:#fbf7f1}#formationHome .pd-top{background:linear-gradient(135deg,#a84e22,#e07a3e)}#formationHome .pd-progress-fill{background:#fff}#formationHome .pd-h1{font-size:clamp(26px,5vw,38px)}
 body.hc-course-only #formationHome .scroll,body.hc-course-only #formationReader .scroll{padding-bottom:calc(100px + env(safe-area-inset-bottom,0px))}
 #hcCourseToolbar{position:fixed;bottom:0;left:0;right:0;z-index:100;background:#fbf7f1;border-top:1px solid #f1b183;display:flex;justify-content:center;gap:8px;padding:12px 10px calc(12px + env(safe-area-inset-bottom,0px));font:600 13px 'League Spartan',Arial,sans-serif}
 #hcCourseToolbar[hidden]{display:none}#hcCourseToolbar button,#hcCourseToolbar a{border:0;background:#f5e3d2;color:#a84e22;border-radius:10px;padding:12px;text-decoration:none;cursor:pointer;min-height:44px}
-body.hc-course-only #formationHome,body.hc-course-only #formationReader{max-width:920px;margin:auto;width:100%;left:50%;transform:translateX(-50%)}
+body.hc-course-only #formationHome,body.hc-course-only #formationReader{position:fixed;top:0;bottom:0;height:100dvh;max-width:920px;margin:auto;width:100%;left:50%;transform:translateX(-50%)}
 body.hc-course-only #formationReader{background:#fbf7f1}
 `;document.head.appendChild(hcShellStyle);
 hcApplyCourseMode(hcCourseRequested);
